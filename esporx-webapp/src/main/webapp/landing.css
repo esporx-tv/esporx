@@ -1,0 +1,50 @@
+@font-face {
+  font-family: 'Orbitron'; font-style: normal; font-weight: 400;
+  src: local('Orbitron-Light'), local('Orbitron-Regular'), url('Orbitron400.woff') format('woff');
+}
+
+
+body { background: #2F3133 url(bgStarCraft001.jpg) no-repeat center -50px;}
+a:visited { border: 0;}
+a:focus { outline: 0;}
+
+#wrapper { padding-top: 100px;}
+
+#Player1, #Player2, #MidLine, #Ball {
+	background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(136,136,136)), color-stop(1, rgb(93,97,101)));
+	background-image: -moz-linear-gradient( center bottom, rgb(136,136,136) 0%, rgb(93,97,101) 100%);
+	background-image: -o-linear-gradient( center bottom, rgb(136,136,136) 0%, rgb(93,97,101) 100%);
+	background-image: linear-gradient( center bottom, rgb(136,136,136) 0%, rgb(93,97,101) 100%);
+	-moz-box-shadow: 0 0 4px #000;
+	-webkit-box-shadow: 0 0 4px #000;
+	-o-box-shadow: 0 0 4px #000;
+	box-shadow: 0 0 4px #000;
+	border: 1px solid #555;
+	border-top: 1px solid #777;
+	border-right: 1px solid #999;
+}
+
+#HTMLogo { display: none;}
+#TEHLogo { width: 180px; height: 180px; margin: 20px auto; position: relative;}
+#Player1, #Player2, #MidLine, #Ball { background-color: #888;}
+#Player1, #Player2, #Ball { width: 20%;}
+#Player1, #Player2 { height: 70%; position: relative;}
+#Player1 { float: left; top: 0;}
+#Player2 { float: right; top: 30%;}
+#MidLine { display: block; width: 5%; height: 100%; margin: 0 auto;}
+#Ball { height: 20%; position: absolute; top: 40%; left: 56%;}
+
+#LogoTitle { text-indent: -999em; background: url(logoTxt.png) no-repeat; width: 369px; height: 24px; margin: 0 auto;}
+#LogoBaseline { font-family: "Orbitron", Arial, sans-serif; font-size: 16px; letter-spacing: 0.09em; color: #ccc; text-align: center; margin: 3px auto 20px; text-transform: lowercase;}
+
+#LaunchDate { margin: 75px 0 40px; background: url(bgComingSoon.png) repeat-x -34px 5px;}
+#LaunchDate img { display: block; width: 140px; height: 71px; margin: 0 auto;}
+
+.ShareLinks { list-style-type: none; width: 105px; height: 32px; margin: 0 auto; padding-left: 35px;
+			   background: url(bgShare.png) no-repeat 0 27px;}
+.ShareLinks li{ margin-bottom: 5px; float: left; margin-right: 10px;}
+.ShareLinks a.ShareFB, .ShareLinks a.ShareTweet { text-indent: -999em; display: block; width: 32px; height: 27px; float: left;}
+.ShareLinks a.ShareFB { background: url(ShareFB.jpg) no-repeat 0 0;}
+.ShareLinks a.ShareTweet { background: url(ShareTweet.jpg) no-repeat 0 0;}
+
+.ShareLinks a:hover { background-position: 0 -27px;}

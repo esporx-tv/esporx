@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<!-- production -->
+	<persistence-unit name="eSporxPersistenceUnit" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>tv.esporx.domain.front.ConfigurableSlot</class>
+		<class>tv.esporx.domain.Game</class>
+		<class>tv.esporx.domain.Cast</class>
+		<class>tv.esporx.domain.Event</class>
+		<class>tv.esporx.domain.front.GondolaSlide</class>
+		<class>tv.esporx.domain.front.ConfigurableSlot</class>
+		<class>tv.esporx.domain.User</class>
+		<class>tv.esporx.domain.VideoProvider</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" />
+			<property name="hibernate.connection.charSet" value="UTF-8" />
+		</properties>
+	</persistence-unit>
+	<!-- test -->
+	<persistence-unit name="eSporxPersistenceTestUnit" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>tv.esporx.domain.front.ConfigurableSlot</class>
+		<class>tv.esporx.domain.Game</class>
+		<class>tv.esporx.domain.Cast</class>
+		<class>tv.esporx.domain.Event</class>
+		<class>tv.esporx.domain.front.GondolaSlide</class>
+		<class>tv.esporx.domain.front.ConfigurableSlot</class>
+		<class>tv.esporx.domain.User</class>
+		<class>tv.esporx.domain.VideoProvider</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" />
+			<property name="hibernate.connection.charSet" value="UTF-8" />
+		</properties>
+	</persistence-unit>
+</persistence>

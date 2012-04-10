@@ -1,0 +1,18 @@
+/** event list **/
+#pageContent h2 { font-size:1.0em} 
+#pageContent h3 { font-size:0.8em; margin:5px;} 
+a { cursor:pointer; text-decoration:none; color: #DDD;}
+#eventList { overflow:auto;}
+.eventBox { margin:20px; background-color:rgba(238,238,238,0.1); width:30%; min-height:100px; float:left;}
+.eventTitle { background-color: rgba(65, 75, 102, 0.8); color: #DDD; font-weight: 500; padding: 3px 15px;}
+.eventDescription { font-size:0.7em; font-style:italic; padding:20px; background-color:rgba(238,238,238,0.2);}
+.eventDescription:before, .eventDescription:after { background: none repeat scroll 0 0 rgba(186, 207, 255, 0.2); bottom:5px; content: ""; height: 8px; position: absolute; width: 3px;}
+.casts { list-style-type:none;}
+.casts li { font-size:0.6em; text-decoration: underline; margin:10px 0 0 15px;}
+
+/** event index **/
+#eventDescription { margin:20px; padding:20px; background-color:rgba(238,238,238,0.2);}
+#featuring { margin:10px 20px; font-size:0.8em;}
+#casts { list-style-type:none;}
+#casts li { font-size:0.6em; margin:10px 20px 10px 50px; padding:10px; background-color:rgba(238,238,238,0.1);}
+#casts li:hover { background-color:rgba(238,238,238,0.3);}

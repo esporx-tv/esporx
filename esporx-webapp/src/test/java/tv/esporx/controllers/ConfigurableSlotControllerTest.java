@@ -1,0 +1,84 @@
+package tv.esporx.controllers;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
+
+import tv.esporx.dao.impl.ConfigurableSlotRepository;
+import tv.esporx.domain.front.ConfigurableSlot;
+
+public class ConfigurableSlotControllerTest {
+
+	private ConfigurableSlot configurableSlot;
+	private ConfigurableSlotController configurableSlotController;
+	private ConfigurableSlotRepository slotDao;
+	private HttpServletResponse servletResponse;
+
+	@Before
+	public void setup() {
+		servletResponse = mock(HttpServletResponse.class);
+		configurableSlotController = new ConfigurableSlotController();
+		configurableSlot = new ConfigurableSlot();
+		slotDao = Mockito.mock(ConfigurableSlotRepository.class);
+		when(slotDao.findById(anyInt())).thenReturn(configurableSlot);
+		configurableSlotController.setCastRepository(slotDao);
+	}
+
+	@Test
+	public void when_accessing_edition_page_then_is_configurable_slot_is_retrieved() {
+		ModelAndView modelAndView = configurableSlotController.edition(1L, servletResponse);
+		Map<String, Object> modelMap = modelAndView.getModel();
+		assertThat(modelMap.get("configurableSlotCommand")).isEqualTo(configurableSlot);
+	}
+
+	@Test
+	public void when_accessing_list_page_then_related_configurable_slots_are_retrieved() {
+		configurableSlotController.list();
+		;
+		verify(slotDao).findAll();
+	}
+
+	@Test
+	public void when_accessing_to_edition_page_then_is_retrieved() {
+		configurableSlotController.edition(1L, servletResponse);
+		Mockito.verify(slotDao).findById(1L);
+	}
+
+	@Test
+	public void when_accessing_to_edition_page_then_view_is_retrieved() {
+		ModelAndView modelAndView = configurableSlotController.edition(1L, servletResponse);
+		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/form");
+	}
+
+	@Test
+	public void when_accessing_to_the_form_page_then_is_retrieved() {
+		ModelAndView modelAndView = configurableSlotController.creation();
+		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/form");
+	}
+
+	@Test
+	public void when_accessing_to_the_list_page_then_is_retrieved() {
+		ModelAndView modelAndView = configurableSlotController.list();
+		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/list");
+	}
+
+	@Test
+	public void when_saving_a_configurable_slot_then_save_or_update_is_called() {
+		BindingResult result = mock(BindingResult.class);
+		configurableSlotController.save(configurableSlot, result);
+		verify(slotDao).saveOrUpdate(configurableSlot);
+	}
+
+}

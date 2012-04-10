@@ -1,0 +1,25 @@
+package tv.esporx.framework.validation;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+@Documented
+@Target(FIELD)
+@Retention(RUNTIME)
+@Constraint(validatedBy = SupportedLanguageValidator.class)
+public @interface SupportedLanguage {
+	String message() default "{cast.submission.error.language}";
+
+	Class<?>[] groups() default {};
+
+	Class<? extends Payload>[] payload() default {};
+
+	String value() default "";
+}

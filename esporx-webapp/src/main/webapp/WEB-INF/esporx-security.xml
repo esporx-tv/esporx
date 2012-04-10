@@ -1,0 +1,35 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+	<!-- order matters here! -->
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/img/**" security="none"/>
+    <http pattern="/js/**" security="none"/>
+    <http pattern="/s/**" security="none"/>
+	<http auto-config='true' realm="eSporx, your premium live esports broadcasts">
+		<form-login login-page="/admin/login" default-target-url="/admin/home"
+			authentication-failure-url="/admin/login" />
+		<logout />
+
+		<intercept-url pattern="/admin/login" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
+		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/**" access="ROLE_USER" />
+		
+	</http>
+	
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder hash="sha-256" />
+			<user-service>
+				<user name="flo" password="473c41e081a08431faf5714ec83eb1c373ad26a4ee262a978ec004ac0983d794" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="boebus" password="4b39beedabcbba0118fc077ee19bdba3703a04b23808aa9fbf0a8ca17f477b4c" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="gizmo" password="a8d8e2af064a7beffffe1d09c408b41dc87bdbfa5d60fd2ff079035e0683ca7e" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="samjam" password="c78862c4afddaa20fd3ff12e5e270480706499341ca5d1d7437ec9668556805b" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="adele" password="af06a809dc6d560e2e0b15b419c9705471f0ba2ca956dc4cef4861600c98701a" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="jerem" password="78351fe482f152b44dbc1e8218a1abcbfb2abb41aae985325051f5509ab62811" authorities="ROLE_USER, ROLE_ADMIN" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+</beans:beans>
