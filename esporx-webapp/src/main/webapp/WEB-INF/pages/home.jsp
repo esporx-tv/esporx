@@ -51,24 +51,25 @@
 					<div id="gSlide">
 						<c:forEach var="slide" items="${gondolaSlides}">
 							<article id="gF${slide.id}" class="gFrame event">
-								<img class="gFImg" src="${slide.picture}"/>
-								<div class="fText">
-									<section class="fInfos">
-										<h2 class="fTitle">${slide.title}</h2>
-										<p class="fTagline">${slide.tagLine}</p>
-										<p class="fDesc">${slide.description}</p>
-									</section>
-									<section class="fDetails">
-										<ul class="dList">
-											<li class="dLang"><span>Lang: </span><span>${slide.language}</span></li>
-											<li class="dPrice"><span>Price: </span><span>${slide.prize}</span></li>
-											<li class="dDate"><span>Date: </span><span ><fmt:formatDate
-											pattern=" dd MMMM yyyy"
-											value="${slide.date}" /></span></li>
-										</ul>
-									</section>
-									<a class="gLink" href="<c:url value="${slide.link}" />"></a>
-								</div>
+								<a class="gLink" href="<c:url value="${slide.link}" />">
+									<img class="gFImg" src="${slide.picture}"/>
+									<div class="fText">
+										<section class="fInfos">
+											<h2 class="fTitle">${slide.title}</h2>
+											<p class="fTagline">${slide.tagLine}</p>
+											<p class="fDesc">${slide.description}</p>
+										</section>
+										<section class="fDetails">
+											<ul class="dList">
+												<li class="dLang"><span>Lang: </span><span>${slide.language}</span></li>
+												<li class="dPrice"><span>Price: </span><span>${slide.prize}</span></li>
+												<li class="dDate"><span>Date: </span><span ><fmt:formatDate
+												pattern=" dd MMMM yyyy"
+												value="${slide.date}" /></span></li>
+											</ul>
+										</section>
+									</div>
+								</a>
 							</article>
 							
 						
