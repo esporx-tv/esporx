@@ -54,24 +54,26 @@ ul { list-style-type: none;}
 				   background: url(../img/puceTV.png);}
 
 .evBox .evContent { color: #CCC; border-left: 1px solid #333; border-right: 1px solid #000; position: relative; overflow: hidden;}
-/* .evBox .evContent img:after { content: ''; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: url('../img/bgTileGrid01.png') repeat left top; z-index: 1;} */
+/* .evBox .evContent img:after { content: 
+''; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background: url('../img/bgTileGrid01.png') repeat left top; z-index: 1;} */
 .evBox .evContent img { float: left;}
-.evBox .evContent .shortDesc { font-size: 0.78em;}
-.evBox .evContent .shortDesc p { font-weight: 500; text-shadow: 1px 1px 1px #000;}
+.evBox .evContent a {color:#DDD; text-decoration: none;}
+.evBox .evContent a .shortDesc { font-size: 0.78em; }
+.evBox .evContent a .shortDesc p { font-weight: 500; text-shadow: 1px 1px 1px #000;}
 
 .oneCol { width: 49.2%; float: left;}
-.oneCol .evContent .shortDesc { width: 100%; height: 0; position: absolute; left: 0; bottom: 0; background-color: rgba(20, 20, 30, 0.7);}
-.oneCol .evContent .shortDesc p { padding: 3px 10px 3px 20px;}
-.oneCol .evContent .shortDesc p:before { content: ''; width: 6px; height: 12px; background-color: #495577;
+.oneCol .evContent a .shortDesc { width: 100%; height: 0; position: absolute; left: 0; bottom: 0; background-color: rgba(20, 20, 30, 0.7);}
+.oneCol .evContent a .shortDesc p { padding: 3px 10px 3px 20px;}
+.oneCol .evContent a .shortDesc p:before { content: ''; width: 6px; height: 12px; background-color: #495577;
 				   						position: absolute; top: 5px; left: 5px; box-shadow: 2px 1px 2px #223;
 				   						border-left: 1px solid #6677AA; border-top: 1px solid #7788BB;}
 
 .twoCols { width: 99.5%; float: left;}
 .twoCols .evContent { overflow: auto; background: url("../img/bgTileGrid01.png"), rgba(10, 10, 20, 0.2);}
 .twoCols .evContent img { width: 50%;}
-.twoCols .evContent .shortDesc { width: 50%; margin-left: 50%;}
-.twoCols .evContent .shortDesc h5 { font-size: 1.1em; text-transform: uppercase; padding: 15px 5px 0 14px;}
-.twoCols .evContent .shortDesc p { padding: 10px 15px;}
+.twoCols .evContent  .shortDesc { width: 50%; margin-left: 50%;}
+.twoCols .evContent  .shortDesc h5 { font-size: 1.1em; text-transform: uppercase; padding: 15px 5px 0 14px;}
+.twoCols .evContent  .shortDesc p { padding: 10px 15px;}
 .twoCols .evContent {
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjMiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);

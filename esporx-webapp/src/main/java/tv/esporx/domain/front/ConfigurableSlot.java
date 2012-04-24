@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "configurable_slots")
-@NamedQuery(name = "ConfigurableSlot.findAll", query = "FROM ConfigurableSlot c")
+@NamedQuery(name = "ConfigurableSlot.findAll", query = "FROM ConfigurableSlot")
 public class ConfigurableSlot {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
