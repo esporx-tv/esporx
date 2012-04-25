@@ -2,16 +2,16 @@
  * everything is wrapped in a self-invoked anonymous function to limit variables scope
  */
 (function() {
-	const castTitleInputId = "title";
-	const descriptionInputElementId = "description";
-	const formElementId = "castCommand";
-	const loadingIconId = "loadingIcon";
+	var castTitleInputId = "title";
+	var descriptionInputElementId = "description";
+	var formElementId = "castCommand";
+	var loadingIconId = "loadingIcon";
 
-	const videoUrlInputElementId = "videoUrl";
+	var videoUrlInputElementId = "videoUrl";
 
-	const supportedUrlClass = 'supportedUrl';
-	const unsupportedUrlClass = 'unsupportedUrl';
-	const findVideoProviderUrl = '/esporx/video/matchProvider';
+	var supportedUrlClass = 'supportedUrl';
+	var unsupportedUrlClass = 'unsupportedUrl';
+	var findVideoProviderUrl = '/video/matchProvider';
 
 	document.observe("dom:loaded", function() {
 		var controllerName = 'Cast';

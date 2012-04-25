@@ -4,9 +4,8 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	<!-- order matters here! -->
-    <http pattern="/css/**" security="none"/>
-    <http pattern="/img/**" security="none"/>
-    <http pattern="/js/**" security="none"/>
+    <http pattern="/favicon.ico" security="none"/>
+    <http pattern="/static/img/**" security="none"/>
     <http pattern="/s/**" security="none"/>
 	<http auto-config='true' realm="eSporx, your premium live esports broadcasts">
 		<form-login login-page="/admin/login" default-target-url="/admin/home"
