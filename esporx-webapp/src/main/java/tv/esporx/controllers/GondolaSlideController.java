@@ -102,6 +102,17 @@ public class GondolaSlideController {
 		ModelMap model = new ModelMap("gondolaSlides", slides);
 		return new ModelAndView("slide/list", model);
 	}
+	
+	@RequestMapping(value = "/remove", method = POST)
+	public ModelAndView delete(final HttpServletResponse response, final HttpServletRequest request) {
+		long id = Long.parseLong(request.getParameter("id"));
+		GondolaSlide slide = gondolaDao.findById(id);
+		if (slide == null) {
+			return notFound(response, "cast/notFound");
+		}
+		gondolaDao.delete(slide);
+		return new ModelAndView("redirect:/admin/home");
+	}
 
 	public void setGondolaSlideRepository(final PersistenceCapableGondolaSlide gondolaSlideDao) {
 		this.gondolaDao = gondolaSlideDao;

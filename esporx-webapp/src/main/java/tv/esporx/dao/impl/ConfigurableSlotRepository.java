@@ -50,7 +50,6 @@ public class ConfigurableSlotRepository implements PersistenceCapableConfigurabl
 	@Transactional
 	public void delete(ConfigurableSlot slot) {
 		entityManager.remove(slot);
-		
 	}
 
 

@@ -18,4 +18,6 @@ public interface PersistenceCapableGondolaSlide {
 
 	List<GondolaSlide> findAll();
 
+	void delete(GondolaSlide slide);
+
 }

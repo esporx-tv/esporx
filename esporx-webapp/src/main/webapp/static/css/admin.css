@@ -32,9 +32,9 @@
 .displayNone {display:none}
 #showSlides, #showSlots, #showEvents, #showCasts { cursor: pointer;}
 
-#slotsList{float:left;width:90%}
-#slotsList .slotBox{widht:100%;height:22px}
-#slotsList .slotBox .formSlot{width:auto;float:right;margin:0}
-#slotsList .slotBox a {margin-top:4px}
-#slotsList .slotBox span{margin-top: 4px;float: left;}
-#slotsList .slotBox .send{cursor:pointer;}
+#slotsList, #slidesList{float:left;width:90%}
+#slotsList .slotBox, #slidesList .gondolaBox{widht:100%;height:22px}
+#slotsList .slotBox .formSlot, #slidesList .gondolaBox .formSlide{width:auto;float:right;margin:0}
+#slotsList .slotBox a, #slidesList .gondolaBox a {margin-top:4px}
+#slotsList .slotBox span, #slidesList .gondolaBox span{margin-top: 4px;float: left;}
+#slotsList .slotBox .send, #slidesList .gondolaBox .send{ cursor:pointer;}

@@ -52,4 +52,10 @@ public class GondolaSlideRepository implements PersistenceCapableGondolaSlide {
 		return query.getResultList();
 	}
 
+	@Override
+	@Transactional
+	public void delete(GondolaSlide slide) {
+		entityManager.remove(slide);
+	}
+
 }
