@@ -33,7 +33,7 @@
 					<ul class="adminInfos">
 						<li><a href="/admin/slide/new">Add a new slide</a></li>
 						<li><span id="showSlides">Show all slides</span></li>
-						<div id="slidesList" class="displayNone" >
+						<div id="slidesList" class="displayNone">
 							<c:forEach var="gondola" items="${gondolas}">
 								<div class="gondolaBox">
 									<span><strong style="text-transform:uppercase">[<c:out value="${gondola.language}" />]</strong> <c:out value="${gondola.title}" /></span>
