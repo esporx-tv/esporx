@@ -134,7 +134,6 @@ public class ConfigurableSlot {
 	}
 
 	public void setTitle(final String title) {
-		checkArgument(title.length() > 0);
 		this.title = title;
 	}
 

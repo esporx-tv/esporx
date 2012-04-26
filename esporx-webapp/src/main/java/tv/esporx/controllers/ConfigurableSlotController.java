@@ -1,26 +1,34 @@
 package tv.esporx.controllers;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static tv.esporx.framework.mvc.ControllerUtils.notFound;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import tv.esporx.dao.PersistenceCapableConfigurableSlot;
 import tv.esporx.domain.front.ConfigurableSlot;
+import tv.esporx.framework.EntityConverter;
 
 @Controller
 @RequestMapping("/admin/slot")
@@ -30,29 +38,43 @@ public class ConfigurableSlotController {
 
 	@Autowired
 	private PersistenceCapableConfigurableSlot slotDao;
+	
 
-	@RequestMapping(value = { "/new", "edit/{id}" }, method = POST)
-	public ModelAndView save(@ModelAttribute(COMMAND) @Valid ConfigurableSlot slot, BindingResult result) {
+	@InitBinder(COMMAND)
+	public void customizeConversions(final WebDataBinder binder) {
+		
+		EntityConverter<ConfigurableSlot> entityConverter = new EntityConverter<ConfigurableSlot>(slotDao, ConfigurableSlot.class);
+		((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
+	}
+
+	@ExceptionHandler({ TypeMismatchException.class,
+		IllegalArgumentException.class })
+	@ResponseStatus(value = NOT_FOUND)
+	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
+		return new ModelAndView("cast/notFound");
+	}
+	
+	
+	@RequestMapping(value = { "/new", "edit/{configurableSlotCommand}" }, method = POST)
+	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final ConfigurableSlot configurableSlotCommand, BindingResult result, final HttpServletResponse httpServletResponse, final ModelAndView modelAndView) {
 		if (result.hasErrors()) {
-			return populatedConfigurableSlotForm(slot);
+			return populatedConfigurableSlotForm(modelAndView);
 		}
-		slotDao.saveOrUpdate(slot);
+		slotDao.saveOrUpdate(configurableSlotCommand);
 		return new ModelAndView("redirect:/admin/home");
 	}
 
 	@RequestMapping(value = "/new", method = GET)
-	public ModelAndView creation() {
-		return populatedConfigurableSlotForm(new ConfigurableSlot());
+	public ModelAndView creation(final ModelAndView modelAndView) {
+		return populatedConfigurableSlotForm(modelAndView).addObject(COMMAND, new ConfigurableSlot());
 	}
 
-	@RequestMapping(value = "/edit/{id}", method = GET)
-	public ModelAndView edition(@PathVariable final long id, HttpServletResponse response) {
-		checkArgument(id > 0L);
-		ConfigurableSlot slot = slotDao.findById(id);
-		if (slot == null) {
-			return notFound(response, "configurableSlot/notFound");
+	@RequestMapping(value = "/edit/{configurableSlotCommand}", method = GET)
+	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final ConfigurableSlot configurableSlotCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
+		if (configurableSlotCommand == null) {
+			return notFound(response, "cast/notFound");
 		}
-		return populatedConfigurableSlotForm(slot);
+		return populatedConfigurableSlotForm(modelAndView);
 	}
 
 	@RequestMapping(value = "/browse", method = GET)
@@ -67,10 +89,9 @@ public class ConfigurableSlotController {
 		this.slotDao = slotDao;
 	}
 
-	private ModelAndView populatedConfigurableSlotForm(final ConfigurableSlot slot) {
-		ModelMap model = new ModelMap();
-		model.addAttribute(COMMAND, slot);
-		return new ModelAndView("configurableSlot/form", model);
+	private ModelAndView populatedConfigurableSlotForm(final ModelAndView modelAndView) {
+		modelAndView.setViewName("configurableSlot/form");
+		return modelAndView;
 	}
 
 }

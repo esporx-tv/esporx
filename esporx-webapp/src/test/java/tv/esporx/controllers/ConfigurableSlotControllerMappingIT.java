@@ -29,9 +29,12 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 @Transactional
 public class ConfigurableSlotControllerMappingIT {
 	private MockMvc mvc;
+	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+	
 	private ConfigurableSlot slot;
+	
 	@Autowired
 	private PersistenceCapableConfigurableSlot slotDao;
 	@PersistenceContext
@@ -61,7 +64,7 @@ public class ConfigurableSlotControllerMappingIT {
 
 	@Test
 	public void when_accessing_non_existing_slot_edition_page_then_routed_to_form_page() throws Exception {
-		mvc.perform(get("/admin/slot/edit/" + (slot.getId() + 1000))).andExpect(status().isNotFound()).andExpect(view().name("configurableSlot/notFound"));
+		mvc.perform(get("/admin/slot/edit/" + (slot.getId() + 1000))).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
 	}
 
 	@Test

@@ -6,8 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
@@ -36,12 +34,6 @@ public class ConfigurableSlotControllerTest {
 		configurableSlotController.setCastRepository(slotDao);
 	}
 
-	@Test
-	public void when_accessing_edition_page_then_is_configurable_slot_is_retrieved() {
-		ModelAndView modelAndView = configurableSlotController.edition(1L, servletResponse);
-		Map<String, Object> modelMap = modelAndView.getModel();
-		assertThat(modelMap.get("configurableSlotCommand")).isEqualTo(configurableSlot);
-	}
 
 	@Test
 	public void when_accessing_list_page_then_related_configurable_slots_are_retrieved() {
@@ -50,21 +42,16 @@ public class ConfigurableSlotControllerTest {
 		verify(slotDao).findAll();
 	}
 
-	@Test
-	public void when_accessing_to_edition_page_then_is_retrieved() {
-		configurableSlotController.edition(1L, servletResponse);
-		Mockito.verify(slotDao).findById(1L);
-	}
 
 	@Test
 	public void when_accessing_to_edition_page_then_view_is_retrieved() {
-		ModelAndView modelAndView = configurableSlotController.edition(1L, servletResponse);
+		ModelAndView modelAndView = configurableSlotController.edition(configurableSlot, servletResponse, new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/form");
 	}
 
 	@Test
 	public void when_accessing_to_the_form_page_then_is_retrieved() {
-		ModelAndView modelAndView = configurableSlotController.creation();
+		ModelAndView modelAndView = configurableSlotController.creation(new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/form");
 	}
 
@@ -77,7 +64,7 @@ public class ConfigurableSlotControllerTest {
 	@Test
 	public void when_saving_a_configurable_slot_then_save_or_update_is_called() {
 		BindingResult result = mock(BindingResult.class);
-		configurableSlotController.save(configurableSlot, result);
+		configurableSlotController.save(configurableSlot, result, servletResponse, new ModelAndView());
 		verify(slotDao).saveOrUpdate(configurableSlot);
 	}
 

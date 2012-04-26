@@ -63,10 +63,6 @@ public class ConfigurableSlotTest {
 		slot.setDescription(null);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void when_setting_null_title_then_throws_exception() {
-		slot.setTitle(null);
-	}
 
 	@Test
 	public void when_setting_picture_then_is_retrieved() {
