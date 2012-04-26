@@ -28,7 +28,7 @@ import tv.esporx.framework.validation.CrossDateConstraints;
 
 @Entity
 @Table(name = "events")
-@NamedQueries({ @NamedQuery(name = "Event.findUpNext", query = "FROM Event WHERE startDate > :date"), @NamedQuery(name = "Event.findAll", query = "FROM Event"), @NamedQuery(name = "Event.findTimeLine", query = "FROM Event WHERE startDate > :date AND startDate < :otherDate") })
+@NamedQueries({ @NamedQuery(name = "Event.findUpNext", query = "FROM Event WHERE startDate > :date"), @NamedQuery(name = "Event.findAll", query = "FROM Event"), @NamedQuery(name = "Event.findTimeLine", query = "SELECT DISTINCT cast.event FROM Cast cast WHERE cast.broadcastDate >= :otherDate AND cast.broadcastDate <= :date ") })
 @CrossDateConstraints
 public class Event {
 	@Id
@@ -51,8 +51,9 @@ public class Event {
 	@Length(max = 255)
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
+	// TODO: no EAGER, specific JPQL with fetch instead!
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "casts")
+	@JoinColumn(name = "related_event")
 	private final List<Cast> casts = new ArrayList<Cast>();
 
 	public void addCast(final Cast cast) {
