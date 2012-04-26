@@ -53,7 +53,10 @@
 							<c:forEach var="slot" items="${slots}">
 								<div class="slotBox">
 									<span><c:out value="${slot.title}" /></span>
-									<a href="<c:url value="/admin/slot/remove/${slot.id}" />">Remove</a>
+									<form class="formSlot" name="removeSLot" action="/admin/slot/remove" method="POST">
+										<input name="id" type="hidden" value="<c:out value="${slot.id}" />" />
+										<input class="send" name="send" type="submit" value="Remove" />
+									</form>
 									<a href="<c:url value="/admin/slot/edit/${slot.id}" />">Edit</a>
 								</div>
 							</c:forEach>

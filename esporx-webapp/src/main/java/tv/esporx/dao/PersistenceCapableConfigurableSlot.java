@@ -16,4 +16,6 @@ public interface PersistenceCapableConfigurableSlot {
 
 	void setEntityManager(EntityManager entityManager);
 
+	void delete(ConfigurableSlot slot);
+
 }

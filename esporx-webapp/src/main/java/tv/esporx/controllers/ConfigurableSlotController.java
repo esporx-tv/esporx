@@ -84,6 +84,17 @@ public class ConfigurableSlotController {
 		model.addAttribute("configurableSlots", slots);
 		return new ModelAndView("configurableSlot/list", model);
 	}
+	
+	@RequestMapping(value = "/remove", method = POST)
+	public ModelAndView delete(final HttpServletResponse response, final HttpServletRequest request) {
+		long id = Long.parseLong(request.getParameter("id"));
+		ConfigurableSlot slot = slotDao.findById(id);
+		if (slot == null) {
+			return notFound(response, "cast/notFound");
+		}
+		slotDao.delete(slot);
+		return new ModelAndView("redirect:/admin/home");
+	}
 
 	public void setCastRepository(final PersistenceCapableConfigurableSlot slotDao) {
 		this.slotDao = slotDao;

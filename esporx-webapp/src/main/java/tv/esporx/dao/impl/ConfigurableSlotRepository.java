@@ -46,4 +46,12 @@ public class ConfigurableSlotRepository implements PersistenceCapableConfigurabl
 		this.entityManager = entityManager;
 	}
 
+	@Override
+	@Transactional
+	public void delete(ConfigurableSlot slot) {
+		entityManager.remove(slot);
+		
+	}
+
+
 }
