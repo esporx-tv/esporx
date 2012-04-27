@@ -28,7 +28,7 @@ import tv.esporx.framework.validation.CrossDateConstraints;
 
 @Entity
 @Table(name = "events")
-@NamedQueries({ @NamedQuery(name = "Event.findUpNext", query = "FROM Event WHERE startDate > :date"), @NamedQuery(name = "Event.findAll", query = "FROM Event"), @NamedQuery(name = "Event.findTimeLine", query = "SELECT DISTINCT cast.event FROM Cast cast WHERE cast.broadcastDate >= :otherDate AND cast.broadcastDate <= :date ") })
+@NamedQueries({ @NamedQuery(name = "Event.findUpNext", query = "FROM Event WHERE startDate > :date"), @NamedQuery(name = "Event.findAll", query = "FROM Event"), @NamedQuery(name = "Event.findTimeLine", query = "FROM Event WHERE startDate > :date AND startDate < :otherDate ") })
 @CrossDateConstraints
 public class Event {
 	@Id
