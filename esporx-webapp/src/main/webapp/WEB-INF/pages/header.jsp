@@ -22,7 +22,7 @@
 					<li><a href="<c:url value="/event/new" />"><spring:message code="common.menu.add_event" /></a></li>
 				</ul>
 			</li>
-			<li><a href="<c:url value="/timeline" />"><spring:message code="common.menu.calendar" /></a></li>
+			<li><a href="<c:url value="/timeline/browse" />"><spring:message code="common.menu.calendar" /></a></li>
 		</ul>
 	</nav>
 </header>

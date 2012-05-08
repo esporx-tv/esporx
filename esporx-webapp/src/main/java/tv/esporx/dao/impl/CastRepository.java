@@ -1,7 +1,6 @@
 package tv.esporx.dao.impl;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static javax.persistence.PersistenceContextType.TRANSACTION;
 
 import java.util.List;
 
@@ -10,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +19,7 @@ import tv.esporx.domain.Cast;
 @Repository
 public class CastRepository implements PersistenceCapableCast {
 
-	@PersistenceContext(type = TRANSACTION)
+	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Override
@@ -71,6 +71,15 @@ public class CastRepository implements PersistenceCapableCast {
 	@Transactional(readOnly = true)
 	public List<Cast> findAll() {
 		TypedQuery<Cast> query = entityManager.createNamedQuery("Cast.findAll", Cast.class);
+		return query.getResultList();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Cast> findTimeLine(final DateTime from, final DateTime to) {
+		TypedQuery<Cast> query = entityManager.createNamedQuery("Cast.findTimeLine", Cast.class);
+		query.setParameter("date", from);
+		query.setParameter("otherDate", to);
 		return query.getResultList();
 	}
 

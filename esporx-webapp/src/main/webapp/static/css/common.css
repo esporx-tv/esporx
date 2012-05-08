@@ -75,7 +75,7 @@ h3 { font-size: 15pt;}
 #logoGroup { padding: 20px 0 20px 40px; border-left: 1px solid #444455; border-right: 1px solid #222222;}
 #logo { width: 150px; height: 150px; border: 2px solid black; float: left;}
 
-#siteNav a, #siteNav a:visited { color: #B9B9C0; text-decoration: none; display: block; width: 100%; height: 100%;} 
+#siteNav a, #siteNav a:visited { cursor:pointer; color: #B9B9C0; text-decoration: none; display: block; width: 100%; height: 100%;} 
 #siteNav a:hover, #siteNav li.selected>a { color: #DDD; text-decoration: none;} 
 #siteNav ul { list-style-type: none; position: relative;} 
 #siteNav ul.subNavLvl1 li { font-size: 0.78em; padding: 0.2em 0;} 

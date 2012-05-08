@@ -1,6 +1,7 @@
 package tv.esporx.controllers;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.lang.Long.parseLong;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -18,7 +19,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -34,6 +34,7 @@ import tv.esporx.dao.PersistenceCapableCast;
 import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.domain.Cast;
 import tv.esporx.domain.Event;
+import tv.esporx.services.EventService;
 
 @Controller
 @RequestMapping("/event")
@@ -45,6 +46,8 @@ public class EventController {
 	private PersistenceCapableEvent eventDao;
 	@Autowired
 	private PersistenceCapableCast castDao;
+	@Autowired
+	private EventService eventService;
 
 	@InitBinder(COMMAND)
 	public void customizeConversions(final WebDataBinder binder) {
@@ -125,14 +128,10 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/link", method = POST)
-	@Transactional
 	public ModelAndView update(final HttpServletRequest request) {
-		long castId = Long.parseLong(request.getParameter("cast"));
-		Cast cast = castDao.findById(castId);
-		long eventId = Long.parseLong(request.getParameter("relatedEvent"));
-		Event event = eventDao.findById(eventId);
-		event.addCast(cast);
-		eventDao.saveOrUpdate(event);
+		long castId = parseLong(request.getParameter("cast"));
+		long eventId = parseLong(request.getParameter("relatedEvent"));
+		eventService.saveOrUpdate(castId, eventId);
 		return successfulRedirectionView();
 	}
 

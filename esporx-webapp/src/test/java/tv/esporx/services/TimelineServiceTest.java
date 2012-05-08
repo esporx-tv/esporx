@@ -1,20 +1,19 @@
 package tv.esporx.services;
 
+import static java.util.Arrays.asList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import tv.esporx.dao.PersistenceCapableEvent;
+import tv.esporx.dao.PersistenceCapableCast;
 import tv.esporx.domain.Cast;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.front.Timeline;
@@ -24,18 +23,18 @@ import tv.esporx.domain.front.TimelineRow;
 
 public class TimelineServiceTest {
 
-	private PersistenceCapableEvent eventDao;
+	private PersistenceCapableCast castDao;
 	private TimelineService underTest;
 	private DateTime currentDate;
 	private TimelineDimensions timelineDimensions;
 
 	@Before
-	public void setup() throws Exception {
+	public void setup() {
 		timelineDimensions = new TimelineDimensions();
 		currentDate = new DateTime().withDate(2012, 3, 4).withTime(3, 5, 0, 0);
-		eventDao = mock(PersistenceCapableEvent.class);
+		castDao = mock(PersistenceCapableCast.class);
 		underTest = new TimelineService();
-		setField(underTest, "eventDao", eventDao);
+		setField(underTest, "castDao", castDao);
 	}
 
 	@Test
@@ -114,6 +113,18 @@ public class TimelineServiceTest {
 		assertThat(matchingRows.get(1).getSlots().size()).isEqualTo(1);
 	}
 
+	@Test
+	public void when_1_event_with_2_casts_on_different_days_then_2_columns() {
+		givenOneEventWithGroupedCasts(24 * 60);
+		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
+		assertThat(timeline.getColumns().size()).isEqualTo(2);
+		TimelineColumn column = timeline.getColumns().get(0);
+		assertThat(column.getRows()).satisfies(new ExpectedRowsWithSlotsCondition(1, 1));
+		TimelineColumn column2 = timeline.getColumns().get(1);
+		assertThat(column2.getRows()).satisfies(new ExpectedRowsWithSlotsCondition(1, 1));
+
+	}
+
 	private int minutesInScanInterval() {
 		return timelineDimensions.getRowInterval().asMilliseconds() / 2 / 60000;
 	}
@@ -137,7 +148,7 @@ public class TimelineServiceTest {
 		event.addCast(cast);
 		cast2.setEvent(event);
 		event.addCast(cast2);
-		when(eventDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(Arrays.asList(new Event[] { event }));
+		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] { cast, cast2 }));
 
 	}
 
@@ -155,16 +166,16 @@ public class TimelineServiceTest {
 		event.addCast(cast);
 		cast2.setEvent(event2);
 		event2.addCast(cast2);
-		when(eventDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(Arrays.asList(new Event[] { event, event2 }));
+		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] { cast, cast2 }));
 
 	}
 
 	private void givenNoRelatedCastsFound() {
-		when(eventDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(Arrays.asList(new Event[] { new Event() }));
+		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] {}));
 	}
 
 	private void givenNoEventFound() {
-		when(eventDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(new ArrayList<Event>());
+		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] { new Cast() }));
 	}
 
 	private Cast cast(final String language, final String title, final String url, final int minutes) {

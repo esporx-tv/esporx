@@ -2,7 +2,7 @@ package tv.esporx.controllers;
 
 
 
-public class TimeLineControllerTest {
+public class TimelineControllerTest {
 
 	// @Test
 	// @SuppressWarnings("unchecked")

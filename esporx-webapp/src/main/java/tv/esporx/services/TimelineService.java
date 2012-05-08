@@ -1,9 +1,6 @@
 package tv.esporx.services;
 
-import static com.google.common.collect.ImmutableSet.copyOf;
-import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Lists.transform;
 import static com.google.common.collect.Multimaps.index;
 import static com.google.common.collect.Multimaps.transformValues;
 import static com.google.common.collect.Sets.difference;
@@ -11,14 +8,13 @@ import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newHashSet;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tv.esporx.dao.PersistenceCapableEvent;
+import tv.esporx.dao.PersistenceCapableCast;
 import tv.esporx.domain.Cast;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.front.CastSlot;
@@ -30,16 +26,15 @@ import tv.esporx.domain.front.TimelineRow;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
+import com.google.common.collect.Sets;
 
 @Service
 public class TimelineService {
 
 	@Autowired
-	private PersistenceCapableEvent eventDao;
+	private PersistenceCapableCast castDao;
 	@Autowired
 	private final CastBroadcastDateComparator broadcastDateComparator = new CastBroadcastDateComparator();
-	@Autowired
-	private final CastAggregatorFunction castAggregator = new CastAggregatorFunction();
 	@Autowired
 	private final CastByEventSlotIndexer castByEventSlotIndexer = new CastByEventSlotIndexer();
 	@Autowired
@@ -57,7 +52,7 @@ public class TimelineService {
 	public Timeline buildTimeline(final DateTime startDate) {
 		Timeline result = new Timeline();
 		DateTime maxDate = lastPossibleDate(startDate);
-		Set<Cast> allCasts = retrieveCastsBetween(startDate, maxDate);
+		Set<Cast> allCasts = Sets.filter(retrieveCastsBetween(startDate, maxDate), new CastWithNotNullEventPredicate());
 		if (!allCasts.isEmpty()) {
 			for (DateTime currentColumn = earliestBroadcastDateOf(allCasts); currentColumn.isBefore(lastBroadcastDateOf(allCasts).plusSeconds(1)); currentColumn = nextColumn(currentColumn)) {
 				result.add(buildColumn(allCasts, currentColumn));
@@ -71,8 +66,7 @@ public class TimelineService {
 	}
 
 	private Set<Cast> retrieveCastsBetween(final DateTime startDate, final DateTime maxDate) {
-		List<Event> matchingEvents = eventDao.findTimeLine(startDate, maxDate);
-		return matchingEvents.isEmpty() ? new HashSet<Cast>() : copyOf(concat(transform(matchingEvents, castAggregator)));
+		return new HashSet<Cast>(castDao.findTimeLine(startDate, maxDate));
 	}
 
 	private DateTime earliestBroadcastDateOf(final Set<Cast> allCasts) {
@@ -93,7 +87,10 @@ public class TimelineService {
 		reset();
 		TimelineColumn timelineColumn = new TimelineColumn(currentColumn);
 		for (DateTime currentSlot = currentColumn; currentSlot.isBefore(columnBottom(currentColumn)); currentSlot = nextRow(currentSlot)) {
-			timelineColumn.add(buildRow(allCasts, currentSlot));
+			TimelineRow row = buildRow(allCasts, currentSlot);
+			if (row != null) {
+				timelineColumn.add(row);
+			}
 		}
 		return timelineColumn;
 	}
@@ -114,9 +111,13 @@ public class TimelineService {
 	private TimelineRow buildRow(final Set<Cast> allCasts, final DateTime currentSlotStart) {
 		DateTime slotStart = currentSlotStart;
 		DateTime slotEnd = nextPossibleSlot(currentSlotStart).minusSeconds(1);
-		TimelineRow timelineRow = new TimelineRow(slotStart, slotEnd);
-		timelineRow.putAll(buildMatchingSlots(allCasts, slotStart, slotEnd));
-		return timelineRow;
+		Multimap<EventSlot, CastSlot> matchingSlots = buildMatchingSlots(allCasts, slotStart, slotEnd);
+		if (!matchingSlots.isEmpty()) {
+			TimelineRow timelineRow = new TimelineRow(slotStart, slotEnd);
+			timelineRow.putAll(matchingSlots);
+			return timelineRow;
+		}
+		return null;
 	}
 
 	private DateTime nextPossibleSlot(final DateTime currentSlotStart) {

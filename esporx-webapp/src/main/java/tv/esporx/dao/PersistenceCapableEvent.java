@@ -22,6 +22,4 @@ public interface PersistenceCapableEvent {
 
 	void setEntityManager(EntityManager entityManager);
 
-	List<Event> findTimeLine(DateTime from, DateTime to);
-
 }

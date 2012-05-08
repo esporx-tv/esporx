@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.joda.time.DateTime;
+
 import tv.esporx.domain.Cast;
 
 public interface PersistenceCapableCast {
@@ -21,5 +23,7 @@ public interface PersistenceCapableCast {
 	void setEntityManager(EntityManager entityManager);
 
 	List<Cast> findAll();
+
+	List<Cast> findTimeLine(DateTime from, DateTime to);
 
 }

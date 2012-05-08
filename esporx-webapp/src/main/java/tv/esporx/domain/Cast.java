@@ -31,7 +31,7 @@ import tv.esporx.framework.validation.SupportedLanguage;
 
 @Entity
 @Table(name = "casts")
-@NamedQueries({ @NamedQuery(name = "Cast.findAll", query = "FROM Cast cast ORDER BY cast.title ASC"), @NamedQuery(name = "Cast.findByTitle", query = "FROM Cast cast WHERE UPPER(cast.title) = :title"), @NamedQuery(name = "Cast.findMostViewed", query = "FROM Cast cast ORDER BY cast.viewerCount DESC") })
+@NamedQueries({ @NamedQuery(name = "Cast.findAll", query = "FROM Cast cast ORDER BY cast.title ASC"), @NamedQuery(name = "Cast.findByTitle", query = "FROM Cast cast WHERE UPPER(cast.title) = :title"), @NamedQuery(name = "Cast.findMostViewed", query = "FROM Cast cast ORDER BY cast.viewerCount DESC"), @NamedQuery(name = "Cast.findTimeLine", query = "FROM Cast cast WHERE event IS NOT NULL AND cast.broadcastDate >= :date AND cast.broadcastDate <= :otherDate ORDER BY cast.broadcastDate ASC") })
 public class Cast {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -67,7 +67,7 @@ public class Cast {
 	@Column(name = "language", nullable = false)
 	private String language = "";
 	@ManyToOne
-	@JoinColumn(name = "related_event", nullable = false)
+	@JoinColumn(name = "related_event", nullable = true)
 	private Event event;
 
 	public void addCaster(final User user) {

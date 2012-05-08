@@ -1,13 +1,12 @@
-<%@ include file="../include/common.jsp" %><!DOCTYPE html>
+<%@ include file="../include/common.jsp"%><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title><spring:message code="home.header" />
-</title>
-<link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />"
-	type="text/css" />
-<link rel="stylesheet" href="<c:url value="${staticRoot}/css/timeline.css" />"
-	type="text/css" />
+<title><spring:message code="home.header" /></title>
+<link rel="stylesheet"
+	href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
+<link rel="stylesheet"
+	href="<c:url value="${staticRoot}/css/timeline.css" />" type="text/css" />
 <script type="text/javascript" src="${staticRoot}/js/ext/prototype.js"></script>
 
 <!-- HTML5 Navigators Compatibility Settings -->
@@ -46,7 +45,8 @@ abbr,article,aside,audio,canvas,datalist,details,figure,dialog,footer,header,hgr
 
 <link rel="stylesheet/less" type="text/css"
 	href="<c:url value="${staticRoot}/css/styles.less"/>">
-<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
+<script src="<c:url value="${staticRoot}/js/ext/less.js"/>"
+	type="text/javascript"></script>
 </head>
 
 <body>
@@ -58,181 +58,56 @@ abbr,article,aside,audio,canvas,datalist,details,figure,dialog,footer,header,hgr
 			</h1>
 			<div id="catContent">
 				<div id="calContent">
-					<section id="day1">
-						<h1>Today</h1>
-						<c:forEach var="event" items="${events}">
-							<article>
-								<header>
-									<span class="time"><fmt:formatDate pattern="hh:mm"
-											value="${event.startDate}" />
-									</span>
-									<h1>${event.title}</h1>
-								</header>
-								<div class="calEventDesc">
-									<div class="eventDetails">
-										<img class="gFImg" src="${staticRoot}/img/events/SC2Event.png" />
-										<p>${event.description}</p>
-									</div>
-									<div class="calEventCasts">
-										<c:forEach var="cast" items="${event.casts}">
-											<a href="<c:url value="/cast/watch/${cast.id}" />"><c:out value="${cast.title}" /></a>
-										</c:forEach>
-									</div>
-								</div>
-								<footer></footer>
-							</article>
-						</c:forEach>
+					<c:choose>
+						<c:when test="${empty timeline.columns}">
+							<p>Nothing at the moment...</p>
+						</c:when>
+						<c:otherwise>
 
-						<article>
-							<header>
-								<span class="time">10:30</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">16:00</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="eventDetails">
-									<img class="gFImg" src="${staticRoot}/img/events/SC2Event.png" />
-									<p>This is a short description</p>
-								</div>
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a> <a href="#" title="">Caster
-										2</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">20:30</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a> <a href="#" title="">Caster
-										2</a> <a href="#" title="">Caster 3</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-					</section>
-					<section id="day2">
-						<h1>Friday</h1>
-						<article>
-							<header>
-								<span class="time">08:30</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a> <a href="#" title="">Caster
-										2</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">12:30</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">18:00</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a> <a href="#" title="">Caster
-										2</a> <a href="#" title="">Caster 3</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">22:30</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a> <a href="#" title="">Caster
-										2</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-					</section>
-					<section id="day3">
-						<h1>Saturday</h1>
-						<article>
-							<header>
-								<span class="time">10:00</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">14:00</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a> <a href="#" title="">Caster
-										2</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">17:30</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a> <a href="#" title="">Caster
-										2</a> <a href="#" title="">Caster 3</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-						<article>
-							<header>
-								<span class="time">21:30</span>
-								<h1>Event Name</h1>
-							</header>
-							<div class="calEventDesc">
-								<div class="calEventCasts">
-									<a href="#" title="">Caster 1</a>
-								</div>
-							</div>
-							<footer></footer>
-						</article>
-					</section>
+							<c:forEach var="column" items="${timeline.columns}"
+								varStatus="status">
+								<section id="day<c:out value="${status.count+1}"/>">
+									<h2>
+										<fmt:formatDate value="${column.start}" pattern="EEEE, MMM d" />
+									</h2>
+									<c:forEach var="row" items="${column.rows}">
+										<c:forEach var="eventSlot" items="${row.slots}">
+											<c:set var="event" value="${eventSlot.key}" />
+											<c:set var="casts" value="${eventSlot.value}" />
+											<article>
+												<header>
+													<!-- dirty hack to get first cast date -->
+													<c:forEach var="cast" items="${casts}" end="0">
+														<span class="time"> 
+														  <fmt:formatDate pattern="HH:mm" value="${cast.broadcastDate}" />
+														</span>
+													</c:forEach>
+													<h3>${event.title}</h3>
+												</header>
+												<div class="calEventDesc">
+													<div class="eventDetails">
+														<img class="gFImg"
+															src="<c:url value="${staticRoot}/img/events/SC2Event.png" />" />
+														<p>
+															<c:out value="${event.description}" escapeXml="false" />
+														</p>
+													</div>
+													<div class="calEventCasts">
+														<c:forEach var="cast" items="${casts}">
+															<a href="<c:url value="/cast/watch/${cast.id}" />"> <c:out
+																	value="${cast.title}" />
+															</a>
+														</c:forEach>
+													</div>
+												</div>
+												<footer></footer>
+											</article>
+										</c:forEach>
+									</c:forEach>
+								</section>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>

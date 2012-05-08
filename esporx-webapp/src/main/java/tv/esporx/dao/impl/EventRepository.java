@@ -52,15 +52,6 @@ public class EventRepository implements PersistenceCapableEvent {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<Event> findTimeLine(final DateTime from, final DateTime to) {
-		TypedQuery<Event> query = entityManager.createNamedQuery("Event.findTimeLine", Event.class);
-		query.setParameter("date", from);
-		query.setParameter("otherDate", to);
-		return query.getResultList();
-	}
-
-	@Override
 	@Transactional
 	public void saveOrUpdate(final Event event) {
 		entityManager.persist(event);
