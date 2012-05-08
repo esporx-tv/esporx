@@ -66,6 +66,9 @@ public class Cast {
 	@SupportedLanguage
 	@Column(name = "language", nullable = false)
 	private String language = "";
+	@ManyToOne
+	@JoinColumn(name = "related_event", nullable = false)
+	private Event event;
 
 	public void addCaster(final User user) {
 		casters.add(user);
@@ -150,6 +153,14 @@ public class Cast {
 	public void setId(final long id) {
 		checkArgument(id > 0L);
 		this.id = id;
+	}
+
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(final Event event) {
+		this.event = event;
 	}
 
 	@Override
