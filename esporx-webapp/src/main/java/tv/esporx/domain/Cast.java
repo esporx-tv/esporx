@@ -29,6 +29,7 @@ import org.joda.time.DateTime;
 
 import tv.esporx.framework.validation.SupportedLanguage;
 
+//TODO: add language in findTimeline query?
 @Entity
 @Table(name = "casts")
 @NamedQueries({ @NamedQuery(name = "Cast.findAll", query = "FROM Cast cast ORDER BY cast.title ASC"), @NamedQuery(name = "Cast.findByTitle", query = "FROM Cast cast WHERE UPPER(cast.title) = :title"), @NamedQuery(name = "Cast.findMostViewed", query = "FROM Cast cast ORDER BY cast.viewerCount DESC"), @NamedQuery(name = "Cast.findTimeLine", query = "FROM Cast cast WHERE event IS NOT NULL AND cast.broadcastDate >= :date AND cast.broadcastDate <= :otherDate ORDER BY cast.broadcastDate ASC") })

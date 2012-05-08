@@ -12,7 +12,6 @@ LAST STEPS
 
 
 6. Remove a gondola slide (if needed)
-8. Finished timeline + events page.
 9. Get Provider API in order to insert viewer count for a cast.
 10. Link event only with casts which are not yet linked
 11. Admin video provider (for dev only)
