@@ -8,6 +8,8 @@
 <link rel="stylesheet"
 	href="<c:url value="${staticRoot}/css/timeline.css" />" type="text/css" />
 <script type="text/javascript" src="${staticRoot}/js/ext/prototype.js"></script>
+<script src="<c:url value="${staticRoot}/js/pages/timeline.js"/>"
+    type="text/javascript"></script>
 
 <!-- HTML5 Navigators Compatibility Settings -->
 <!--[if lt IE 7]>
@@ -63,7 +65,6 @@ abbr,article,aside,audio,canvas,datalist,details,figure,dialog,footer,header,hgr
 							<p>Nothing at the moment...</p>
 						</c:when>
 						<c:otherwise>
-
 							<c:forEach var="column" items="${timeline.columns}"
 								varStatus="status">
 								<section id="day<c:out value="${status.count+1}"/>">
@@ -108,6 +109,12 @@ abbr,article,aside,audio,canvas,datalist,details,figure,dialog,footer,header,hgr
 							</c:forEach>
 						</c:otherwise>
 					</c:choose>
+                    <div id="arrowLeft">
+                        <a href="<c:url value="/timeline/shift/past/${currentTimestamp}" />">Previous</a>
+                    </div>
+                    <div id="arrowRight">
+                        <a href="<c:url value="/timeline/shift/future/${currentTimestamp}" />">Next</a>
+                    </div>
 				</div>
 			</div>
 		</div>

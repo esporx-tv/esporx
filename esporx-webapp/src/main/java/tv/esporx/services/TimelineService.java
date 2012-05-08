@@ -62,7 +62,7 @@ public class TimelineService {
 	}
 
 	private DateTime lastPossibleDate(final DateTime startDate) {
-		return dimensions.getMaxWidth().plus(startDate).withTime(23, 59, 59, 999);
+		return dimensions.getMaxWidth().plus(startDate).withTimeAtStartOfDay().minusSeconds(1);
 	}
 
 	private Set<Cast> retrieveCastsBetween(final DateTime startDate, final DateTime maxDate) {

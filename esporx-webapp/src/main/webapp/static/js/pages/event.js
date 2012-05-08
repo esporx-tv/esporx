@@ -13,7 +13,7 @@
 		hasErrors = sanityChecker.checkIfNotExists('#'+ eventTitleInputId, 'Event title input') || hasErrors;
 		
 		if (hasErrors) {
-			castLogger.error('Script initialization failed due to multiple errors');
+			eventLogger.error('Script initialization failed due to multiple errors');
 		} else {
 			$(eventTitleInputId).focus();
 			
