@@ -10,6 +10,8 @@ public interface PersistenceCapableConfigurableSlot {
 
 	List<ConfigurableSlot> findAll();
 
+	List<ConfigurableSlot> findByLanguage(String language);
+
 	ConfigurableSlot findById(long id);
 
 	void saveOrUpdate(ConfigurableSlot slot);
@@ -17,5 +19,4 @@ public interface PersistenceCapableConfigurableSlot {
 	void setEntityManager(EntityManager entityManager);
 
 	void delete(ConfigurableSlot slot);
-
 }

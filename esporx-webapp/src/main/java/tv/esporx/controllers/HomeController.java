@@ -49,8 +49,9 @@ public class HomeController {
 		List<Cast> mostViewedCasts = castDao.findMostViewed();
 		List<Event> mostViewedEvents = eventDao.findAll();
 		List<Event> upNextEvents = eventDao.findUpNext(new DateTime());
-		List<GondolaSlide> slides = gondolaDao.findByLanguage(requestHelper.currentLocale(incomingRequest));
-		List<ConfigurableSlot> slots = slotDao.findAll();
+		String currentLocale = requestHelper.currentLocale(incomingRequest);
+		List<GondolaSlide> slides = gondolaDao.findByLanguage(currentLocale);
+		List<ConfigurableSlot> slots = slotDao.findByLanguage(currentLocale);
 		ModelMap model = new ModelMap("mostViewedEvents", mostViewedEvents);
 		model.addAttribute("mostViewedCasts", mostViewedCasts);
 		model.addAttribute("upNextEvents", upNextEvents);

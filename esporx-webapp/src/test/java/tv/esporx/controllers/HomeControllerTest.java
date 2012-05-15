@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.web.servlet.ModelAndView;
 
 import tv.esporx.dao.PersistenceCapableCast;
@@ -46,7 +45,8 @@ public class HomeControllerTest {
 		homeController.setSlotRepository(slotDao);
 		gameDao = mock(GameRepository.class);
 		homeController.setGameRepository(gameDao);
-		requestUtils = Mockito.mock(RequestUtils.class);
+		requestUtils = mock(RequestUtils.class);
+		givenFrenchIsTheCurrentLanguage();
 		homeController.setRequestHelper(requestUtils);
 	}
 
@@ -58,38 +58,37 @@ public class HomeControllerTest {
 
 	@Test
 	public void when_accessing_index_page_then_configurable_slots_are_retrieved() {
-		homeController.index(null);
-		verify(slotDao).findAll();
+		homeController.index(mock(HttpServletRequest.class));
+		verify(slotDao).findByLanguage("fr");
 	}
 
 	@Test
 	public void when_accessing_index_page_then_gondola_slides_are_included() {
-		ModelAndView modelAndView = homeController.index(null);
+		ModelAndView modelAndView = homeController.index(mock(HttpServletRequest.class));
 		assertTrue(modelAndView.getModelMap().containsKey("gondolaSlides"));
 	}
 
 	@Test
 	public void when_accessing_index_page_then_most_viewed_casts_are_included() {
-		ModelAndView modelAndView = homeController.index(null);
+		ModelAndView modelAndView = homeController.index(mock(HttpServletRequest.class));
 		assertTrue(modelAndView.getModelMap().containsKey("mostViewedCasts"));
 	}
 
 	@Test
 	public void when_accessing_index_page_then_most_viewed_events_are_included() {
-		ModelAndView modelAndView = homeController.index(null);
+		ModelAndView modelAndView = homeController.index(mock(HttpServletRequest.class));
 		assertTrue(modelAndView.getModelMap().containsKey("mostViewedEvents"));
 	}
 
 	@Test
 	public void when_accessing_index_page_then_up_next_events_are_included() {
-		ModelAndView modelAndView = homeController.index(null);
+		ModelAndView modelAndView = homeController.index(mock(HttpServletRequest.class));
 		assertTrue(modelAndView.getModelMap().containsKey("upNextEvents"));
 	}
 
 	@Test
 	public void when_accessing_page_then_gondola_slides_are_retrieved() {
-		givenFrenchIsTheCurrentLanguage();
-		homeController.index(null);
+		homeController.index(mock(HttpServletRequest.class));
 		verify(gondolaDao).findByLanguage("fr");
 	}
 

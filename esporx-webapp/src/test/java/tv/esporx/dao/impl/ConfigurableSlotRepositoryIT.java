@@ -4,15 +4,14 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableConfigurableSlot;
@@ -21,22 +20,21 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-	locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
+locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
 	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
-	"classpath:/META-INF/spring/testApplicationContext.xml"})
+"classpath:/META-INF/spring/testApplicationContext.xml"})
 @Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class ConfigurableSlotRepositoryIT {
 
 	@Autowired
 	private PersistenceCapableConfigurableSlot configurableSlotRepository;
 
-	@PersistenceContext
-	private EntityManager entityManager;
 	private ConfigurableSlot insertedSlot;
+	private ConfigurableSlot equivalentSlot;
 
 	@Before
 	public void setup() {
-		givenDataHasBeenPurged();
 		givenOneSlotIsInserted();
 	}
 
@@ -64,9 +62,16 @@ public class ConfigurableSlotRepositoryIT {
 		assertThat(retrievedSlot).isEqualTo(insertedSlot);
 	}
 
-	private void givenDataHasBeenPurged() {
-		entityManager.createNativeQuery("delete from configurable_slots").executeUpdate();
+	@Test
+	@Ignore(value = "some weird issue to fix first")
+	public void when_setting_one_slot_as_active_then_all_others_at_same_language_and_position_are_set_as_inactive() {
+		givenASimilarSlotIsInserted();
+		insertedSlot.setActive(true);
+		configurableSlotRepository.saveOrUpdate(insertedSlot);
+		assertThat(configurableSlotRepository.findById(insertedSlot.getId()).isActive()).isTrue();
+		assertThat(configurableSlotRepository.findById(equivalentSlot.getId()).isActive()).isFalse();
 	}
+
 
 	private void givenOneSlotIsInserted() {
 		insertedSlot = new ConfigurableSlot();
@@ -74,9 +79,26 @@ public class ConfigurableSlotRepositoryIT {
 		insertedSlot.setDescription("One superb slot");
 		insertedSlot.setPicture("oneSlotToRuleThemAll.png");
 		insertedSlot.setLink("http://www.yourslot.com");
+		insertedSlot.setLanguage("en");
+		insertedSlot.setActive(false);
+		insertedSlot.setPosition(1);
 		assertThat(configurableSlotRepository).isNotNull();
 		configurableSlotRepository.saveOrUpdate(insertedSlot);
 		assertThat(insertedSlot.getId()).isGreaterThan(0L);
+	}
+
+	private void givenASimilarSlotIsInserted() {
+		equivalentSlot = new ConfigurableSlot();
+		equivalentSlot.setTitle("Slot Bis");
+		equivalentSlot.setDescription("Another superb slot");
+		equivalentSlot.setPicture("twoSlotsToRuleThemAll.png");
+		equivalentSlot.setLink("http://www.yoursecondslot.com");
+		equivalentSlot.setLanguage("en");
+		equivalentSlot.setActive(true);
+		equivalentSlot.setPosition(1);
+		assertThat(configurableSlotRepository).isNotNull();
+		configurableSlotRepository.saveOrUpdate(equivalentSlot);
+		assertThat(equivalentSlot.getId()).isGreaterThan(0L);
 	}
 
 }

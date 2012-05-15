@@ -36,14 +36,6 @@ public class ConfigurableSlotControllerTest {
 
 
 	@Test
-	public void when_accessing_list_page_then_related_configurable_slots_are_retrieved() {
-		configurableSlotController.list();
-		;
-		verify(slotDao).findAll();
-	}
-
-
-	@Test
 	public void when_accessing_to_edition_page_then_view_is_retrieved() {
 		ModelAndView modelAndView = configurableSlotController.edition(configurableSlot, servletResponse, new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/form");
@@ -53,12 +45,6 @@ public class ConfigurableSlotControllerTest {
 	public void when_accessing_to_the_form_page_then_is_retrieved() {
 		ModelAndView modelAndView = configurableSlotController.creation(new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/form");
-	}
-
-	@Test
-	public void when_accessing_to_the_list_page_then_is_retrieved() {
-		ModelAndView modelAndView = configurableSlotController.list();
-		assertThat(modelAndView.getViewName()).isEqualTo("configurableSlot/list");
 	}
 
 	@Test

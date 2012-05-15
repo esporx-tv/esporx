@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +22,17 @@ public class ConfigurableSlotRepository implements PersistenceCapableConfigurabl
 	private EntityManager entityManager;
 
 	@Override
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<ConfigurableSlot> findAll() {
-		Query query = entityManager.createNamedQuery("ConfigurableSlot.findAll");
+		TypedQuery<ConfigurableSlot> query = entityManager.createNamedQuery("ConfigurableSlot.findAll", ConfigurableSlot.class);
+		return query.getResultList();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ConfigurableSlot> findByLanguage(final String language) {
+		TypedQuery<ConfigurableSlot> query = entityManager.createNamedQuery("ConfigurableSlot.findByLanguage", ConfigurableSlot.class);
+		query.setParameter("language", language);
 		return query.getResultList();
 	}
 
@@ -38,7 +46,18 @@ public class ConfigurableSlotRepository implements PersistenceCapableConfigurabl
 	@Override
 	@Transactional
 	public void saveOrUpdate(final ConfigurableSlot slot) {
+		maybeUpdateOthersAsInactive(slot);
 		entityManager.persist(slot);
+	}
+
+	private void maybeUpdateOthersAsInactive(final ConfigurableSlot slot) {
+		if (slot.isActive()) {
+			Query query = entityManager.createNamedQuery("ConfigurableSlot.setOthersInactive");
+			query.setParameter("id", slot.getId());
+			query.setParameter("position", slot.getPosition());
+			query.setParameter("language", slot.getLanguage());
+			query.executeUpdate();
+		}
 	}
 
 	@Override
@@ -48,7 +67,7 @@ public class ConfigurableSlotRepository implements PersistenceCapableConfigurabl
 
 	@Override
 	@Transactional
-	public void delete(ConfigurableSlot slot) {
+	public void delete(final ConfigurableSlot slot) {
 		entityManager.remove(slot);
 	}
 

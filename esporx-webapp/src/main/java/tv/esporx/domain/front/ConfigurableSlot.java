@@ -10,15 +10,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "configurable_slots")
-@NamedQuery(name = "ConfigurableSlot.findAll", query = "FROM ConfigurableSlot")
+@NamedQueries({ @NamedQuery(name = "ConfigurableSlot.findAll", query = "FROM ConfigurableSlot"), @NamedQuery(name = "ConfigurableSlot.findByLanguage", query = "FROM ConfigurableSlot WHERE active = TRUE AND language = :language"), @NamedQuery(name = "ConfigurableSlot.setOthersInactive", query = "UPDATE ConfigurableSlot SET active = FALSE WHERE position = :position AND language = :language AND id != :id") })
 public class ConfigurableSlot {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -40,8 +42,14 @@ public class ConfigurableSlot {
 	@Length(max = 100)
 	@Column(name = "title", nullable = false)
 	private String title = "";
+	@NotNull
 	@Column(name = "position", nullable = false)
-	private long position;
+	private int position;
+	@NotNull
+	@Column(name = "is_active", nullable = false)
+	private boolean active;
+	@Column(name = "language", nullable = false)
+	private String language;
 
 	@Override
 	public boolean equals(final Object obj) {
@@ -99,8 +107,25 @@ public class ConfigurableSlot {
 		return title;
 	}
 
-	public long getPosition() {
+	public int getPosition() {
 		return position;
+	}
+
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(final boolean active) {
+		this.active = active;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(final String language) {
+		this.language = language;
 	}
 
 	@Override
@@ -137,7 +162,7 @@ public class ConfigurableSlot {
 		this.title = title;
 	}
 
-	public void setPosition(final long position) {
+	public void setPosition(final int position) {
 		this.position = position;
 	}
 

@@ -5,8 +5,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static tv.esporx.framework.mvc.ControllerUtils.notFound;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -15,7 +17,6 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,11 +39,13 @@ public class ConfigurableSlotController {
 
 	@Autowired
 	private PersistenceCapableConfigurableSlot slotDao;
-	
+
+	@Resource(name = "supportedLanguages")
+	private final Set<String> allowedLocales = new HashSet<String>();
 
 	@InitBinder(COMMAND)
 	public void customizeConversions(final WebDataBinder binder) {
-		
+
 		EntityConverter<ConfigurableSlot> entityConverter = new EntityConverter<ConfigurableSlot>(slotDao, ConfigurableSlot.class);
 		((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
 	}
@@ -53,10 +56,10 @@ public class ConfigurableSlotController {
 	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
 		return new ModelAndView("cast/notFound");
 	}
-	
-	
+
+
 	@RequestMapping(value = { "/new", "edit/{configurableSlotCommand}" }, method = POST)
-	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final ConfigurableSlot configurableSlotCommand, BindingResult result, final HttpServletResponse httpServletResponse, final ModelAndView modelAndView) {
+	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final ConfigurableSlot configurableSlotCommand, final BindingResult result, final HttpServletResponse httpServletResponse, final ModelAndView modelAndView) {
 		if (result.hasErrors()) {
 			return populatedConfigurableSlotForm(modelAndView);
 		}
@@ -77,14 +80,6 @@ public class ConfigurableSlotController {
 		return populatedConfigurableSlotForm(modelAndView);
 	}
 
-	@RequestMapping(value = "/browse", method = GET)
-	public ModelAndView list() {
-		List<ConfigurableSlot> slots = slotDao.findAll();
-		ModelMap model = new ModelMap();
-		model.addAttribute("configurableSlots", slots);
-		return new ModelAndView("configurableSlot/list", model);
-	}
-	
 	@RequestMapping(value = "/remove", method = POST)
 	public ModelAndView delete(final HttpServletResponse response, final HttpServletRequest request) {
 		long id = Long.parseLong(request.getParameter("id"));
@@ -101,6 +96,7 @@ public class ConfigurableSlotController {
 	}
 
 	private ModelAndView populatedConfigurableSlotForm(final ModelAndView modelAndView) {
+		modelAndView.addObject("allowedLocales", allowedLocales);
 		modelAndView.setViewName("configurableSlot/form");
 		return modelAndView;
 	}

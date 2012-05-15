@@ -6,7 +6,7 @@
 header, hgroup, nav, article, footer, address { display: block;} 
 a img { border: none;}
 
-body { background: url('../img/bgTileGrid01.png') repeat left top, url('../img/bgStarCraft002.jpg') repeat center -50px; background-color: #191919;}
+body { background: url('../img/bgTileGrid01.png') repeat left top, url('../img/bgStarCraft002.jpg') no-repeat center -50px; background-color: #191919;}
 #pageContent { font-family: "Orbitron", Trebuchet MS, Arial, sans-serif; font-size: 12pt; letter-spacing: 0.09em; color: #FFF; 
 			   width: 1000px; max-width: 98%; margin: 0 auto; background-color: rgba(146, 142, 165, 0.08); box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);}
 
@@ -193,6 +193,7 @@ form>.submit input { background-color: #CCCCD5;}
   - this could not affect other inputs as we are good guys and do not use tables for our forms :)
  */
 table input[type="button"] { width: auto;}
+.input .checkbox { float: left; margin-left: 68px;}
 
 /************* FORMS End ************/
 

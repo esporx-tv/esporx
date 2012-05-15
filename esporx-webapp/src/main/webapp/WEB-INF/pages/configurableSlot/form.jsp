@@ -24,7 +24,8 @@
 <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
-<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/cast.js" />"></script>
+<script type="text/javascript"
+    src="<c:url value="${staticRoot}/js/pages/slot.js" />"></script>
 	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
 </head>
@@ -78,22 +79,45 @@
 					</div>
 					
 					<div class="input">
+                        <form:label path="language">
+                            <spring:message code="slot.submission.language" />
+                        </form:label>
+                        <form:select path="language">
+                            <form:option value="">
+                                <spring:message code="slot.submission.language.options.choose" />
+                            </form:option>
+                            <form:options items="${allowedLocales}" />
+                        </form:select>
+                        <form:errors path="language" cssClass="errors" />
+                    </div>
+					
+					<div class="input">
 						<form:label path="position">
 							<spring:message code="slot.submission.position" />
 						</form:label>
 						<form:select path="position">
 							<form:option value="1">
-								<spring:message code="slot.submission.language.options.topLeft" />
+								<spring:message code="slot.submission.position.options.topLeft" />
 							</form:option>
 							<form:option value="2">
-								<spring:message code="slot.submission.language.options.topRight" />
+								<spring:message code="slot.submission.position.options.topRight" />
 							</form:option>
 							<form:option value="3">
-								<spring:message code="slot.submission.language.options.bottom" />
+								<spring:message code="slot.submission.position.options.bottom" />
 							</form:option>
 						</form:select>
 						<form:errors path="position" cssClass="errors" />
 					</div>
+					
+					<div class="input">
+                        <spring:message code="slot.submission.active.placeholder"
+                            var="activePlaceholder" />
+                        <form:label path="active" title="${activePlaceholder}">
+                            <spring:message code="slot.submission.active.select" />
+                        </form:label>
+                        <form:checkbox class="checkbox" path="active" value="0" />
+                        <form:errors path="active" cssClass="errors" />
+                    </div>
 					
 					<div class="submit">
 						<input type="submit"
