@@ -6,4 +6,5 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <include file="initial_dump.xml" relativeToChangelogFile="true" />
     <include file="fix_join_column_wrong_name.xml" relativeToChangelogFile="true" />
+    <include file="add_language_and_status_to_slots.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
