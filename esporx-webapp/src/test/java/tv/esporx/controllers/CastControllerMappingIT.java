@@ -9,15 +9,13 @@ import static org.springframework.test.web.server.setup.MockMvcBuilders.webAppli
 
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -31,24 +29,22 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
 @Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class CastControllerMappingIT {
 
-	private Cast cast;
 	@Autowired
 	private PersistenceCapableCast castRepository;
-
-	@PersistenceContext
-	private EntityManager entityManager;
-	private Game game;
 	@Autowired
 	private PersistenceCapableGame gameRepository;
-	private MockMvc mvc;
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
+	private Cast cast;
+	private Game game;
+	private MockMvc mvc;
+
 	@Before
 	public void setup() {
-		givenDataHasBeenPurged();
 		givenAtLeastOneGameIsStored();
 		givenOneCastIsInserted();
 		mvc = webApplicationContextSetup(webApplicationContext).build();
@@ -120,11 +116,6 @@ public class CastControllerMappingIT {
 		game.setDescription("Birds are REALLY angry this time");
 		gameRepository.saveOrUpdate(game);
 		assertThat(game.getId()).isGreaterThan(0L);
-	}
-
-	private void givenDataHasBeenPurged() {
-		entityManager.createNativeQuery("delete from casts").executeUpdate();
-		entityManager.createNativeQuery("delete from games").executeUpdate();
 	}
 
 	private void givenOneCastIsInserted() {
