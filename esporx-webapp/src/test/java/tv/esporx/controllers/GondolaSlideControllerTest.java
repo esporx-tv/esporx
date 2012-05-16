@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
@@ -24,15 +25,18 @@ public class GondolaSlideControllerTest {
 	private PersistenceCapableGondolaSlide gondolaDao;
 	private GondolaSlide gondolaSlide;
 	private HttpServletResponse response;
+	private HttpServletRequest request;
 
 	@Before
 	public void setup() {
 		response = mock(HttpServletResponse.class);
+		request = mock(HttpServletRequest.class);
 		gondolaController = new GondolaSlideController();
 		gondolaSlide = new GondolaSlide();
 		gondolaDao = Mockito.mock(GondolaSlideRepository.class);
 		when(gondolaDao.findById(anyInt())).thenReturn(gondolaSlide);
 		gondolaController.setGondolaSlideRepository(gondolaDao);
+		
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -61,8 +65,23 @@ public class GondolaSlideControllerTest {
 	}
 
 	@Test
-	public void when_when_accessing_to_the_list_page_then_is_retrieved() {
+	public void when_accessing_to_the_list_page_then_is_retrieved() {
 		ModelAndView modelAndView = gondolaController.list();
 		assertThat(modelAndView.getViewName()).isEqualTo("slide/list");
+	}
+	
+	@Test
+	public void when_submitting_slide_to_delete_then_view_is_retrieved() {
+		when(request.getParameter(Mockito.anyString())).thenReturn("0");
+		ModelAndView modelAndView = gondolaController.delete(response, request);
+		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
+	}
+	
+	@Test
+	public void when_submitting_invalid_slide_to_delete_then_throw_exception() {
+		when(request.getParameter(Mockito.anyString())).thenReturn("-15");
+		when(gondolaDao.findById(Mockito.anyLong())).thenReturn(null);
+		ModelAndView modelAndView = gondolaController.delete(response, request);
+		assertThat(modelAndView.getViewName()).isEqualTo("cast/notFound");
 	}
 }

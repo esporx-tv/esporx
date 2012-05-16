@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ public class CastControllerTest {
 	private CastRepository castDao;
 	private HttpServletResponse response;
 	private PersistenceCapableVideoProvider videoProvider;
+	private List<Cast> casts;
 
 	@Before
 	public void setup() {
@@ -40,6 +42,7 @@ public class CastControllerTest {
 		videoProvider = mock(PersistenceCapableVideoProvider.class);
 		when(videoProvider.getEmbeddedContents(anyString())).thenReturn("");
 		castController.setVideoProvider(videoProvider);
+		when(castDao.findAll()).thenReturn(casts);
 	}
 
 
@@ -88,5 +91,19 @@ public class CastControllerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void when_deleting_cast_with_negative_long_then_throws_exception() {
 		castController.delete(-2L, response);
+	}
+	
+	@Test
+	public void when_accessing_casts_list_then_related_view_is_retrieved() {
+		ModelAndView modelAndView = castController.list();
+		assertThat(modelAndView.getViewName()).isEqualTo("cast/list");
+	}
+	
+	@Test
+	public void when_accessing_cast_list_then_casts_are_retrieved() {
+		ModelAndView modelAndView = castController.list();
+		Map<String, Object> modelMap = modelAndView.getModel();
+		assertThat(modelMap.get("casts")).isEqualTo(casts);
+		
 	}
 }
