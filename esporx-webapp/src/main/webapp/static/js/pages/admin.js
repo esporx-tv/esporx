@@ -1,7 +1,7 @@
 var Admin = Class.create({
 	initialize: function() {
 		var controllerName = 'Admin';
-		var eventLogger = new Logger(controllerName);
+		var adminLogger = new Logger(controllerName);
 		var sanityChecker = new SanityChecker(controllerName);
 		
 		var slideContainerId = "showSlides";
@@ -15,10 +15,10 @@ var Admin = Class.create({
 		hasErrors = sanityChecker.checkIfNotExists('#' + castContainerId, 'Cast container input')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + eventContainerId, 'Event container input')|| hasErrors;
 		if (hasErrors) {
-			eventLogger.error('Script initialization failed due to multiple errors');
+			adminLogger.error('Script initialization failed due to multiple errors');
 		}
 		else {
-			eventLogger.debug("Initialize admin js");
+			adminLogger.debug("Initialize admin js");
 			$(slideContainerId).observe("click", this.display.bind($("slidesList")));
 			$(slotContainerId).observe("click", this.display.bind($("slotsList")));
 			$(castContainerId).observe("click", this.display.bind($("castsList")));

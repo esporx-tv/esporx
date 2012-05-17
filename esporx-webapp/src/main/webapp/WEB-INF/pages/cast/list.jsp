@@ -2,13 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title><spring:message code="cast.list.header" /></title>
-<link rel="stylesheet"
-	href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
-<link rel="stylesheet" href="<c:url value="${staticRoot}/css/cast.css" />"
-	type="text/css" />
-		<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
+    <meta charset="utf-8" />
+    <title><spring:message code="cast.list.header" /></title>
+    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
+    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/cast.css" />"	type="text/css" />
+    
+	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
 </head>
 <body>

@@ -1,4 +1,5 @@
 <%@ include file="./include/common.jsp" %>	
+ <c:import url="/WEB-INF/pages/include/noIE6.jsp" />
 <header id="pageHeader">
 	<hgroup id="logoGroup">
 		<div id="TEHLogo">
