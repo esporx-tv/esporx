@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/home.css" />" type="text/css" />
     
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
-    <script type="text/javascript" src="${staticRoot}/js/ext/modernizr.js"></script>
     <script type="text/javascript" src="${staticRoot}/js/lib/logger.js"></script>
+    <script type="text/javascript" src="${staticRoot}/js/ext/modernizr.js"></script>
     <script type="text/javascript" src="${staticRoot}/js/lib/localStorageChecker.js"></script>
     <script type="text/javascript" src="${staticRoot}/js/pages/gondola.js"></script>
 

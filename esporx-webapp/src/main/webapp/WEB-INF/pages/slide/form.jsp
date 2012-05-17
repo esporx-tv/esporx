@@ -6,7 +6,6 @@
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />"	type="text/css" />
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />"	type="text/css" />
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/cast.css" />"	type="text/css" />
-	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype-date-extensions.js" />"></script>
@@ -16,6 +15,10 @@
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/slideAdmin.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+	
+	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/less.js"/>"></script>
 </head>
 <body>

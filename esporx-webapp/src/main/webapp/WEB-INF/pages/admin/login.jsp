@@ -5,28 +5,22 @@
 <meta charset="utf-8" />
 <title>Restricted area</title>
 
-<link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />"
-	type="text/css" />
-<link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />"
-	type="text/css" />
-<link rel="stylesheet" href="<c:url value="${staticRoot}/css/admin.css" />"
-	type="text/css" />
+	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />" type="text/css" />
+	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
+	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/admin.css" />"	type="text/css" />
 
-<script type="text/javascript"
-	src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="${staticRoot}/js/ext/prototype-date-extensions.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="${staticRoot}/js/ext/datepicker.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="${staticRoot}/js/ext/scriptaculous.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
-<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
-		<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
-<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype-date-extensions.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/datepicker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/scriptaculous.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    
+	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
+    <script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
 </head>
 <body>
 	<div id="pageContent">
