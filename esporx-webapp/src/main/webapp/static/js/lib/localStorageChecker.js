@@ -16,12 +16,13 @@ var LocalStorageChecker = Class.create({
 		var limitIsReached = false;
 		do {
 			try {
-				var previousEntry = localStore.getItem(key);
+				var previousEntry = localStorage.getItem(this.testDummyKey);
 				var entry = (previousEntry == null ? "" : previousEntry) + "m";
 				localStorage.setItem(this.testDummyKey, entry);
 			}
 			catch(e) {
-				this.logger.debug("Limit exceeded after " + count + " iteration(s)");
+				this.logger.debug("Limit exceeded after " + count + " iteration(s). Exception received: ");
+				this.logger.debug(e);
 				limitIsReached = true;
 			}
 		}
