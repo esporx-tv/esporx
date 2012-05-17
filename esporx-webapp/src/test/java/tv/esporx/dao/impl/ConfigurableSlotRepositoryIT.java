@@ -4,8 +4,10 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class ConfigurableSlotRepositoryIT {
 
 	@Autowired
 	private PersistenceCapableConfigurableSlot configurableSlotRepository;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	private ConfigurableSlot insertedSlot;
 	private ConfigurableSlot equivalentSlot;
@@ -63,11 +68,12 @@ public class ConfigurableSlotRepositoryIT {
 	}
 
 	@Test
-	@Ignore(value = "some weird issue to fix first")
 	public void when_setting_one_slot_as_active_then_all_others_at_same_language_and_position_are_set_as_inactive() {
 		givenASimilarSlotIsInserted();
 		insertedSlot.setActive(true);
 		configurableSlotRepository.saveOrUpdate(insertedSlot);
+		entityManager.refresh(insertedSlot);
+		entityManager.refresh(equivalentSlot);
 		assertThat(configurableSlotRepository.findById(insertedSlot.getId()).isActive()).isTrue();
 		assertThat(configurableSlotRepository.findById(equivalentSlot.getId()).isActive()).isFalse();
 	}
