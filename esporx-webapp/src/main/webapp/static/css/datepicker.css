@@ -15,6 +15,7 @@
 }
 
 .datepickerControl td {
+	color: #DD2222;
 	text-align: center;
 	font-family: sans-serif;
 	font-size: 11px;
@@ -28,6 +29,7 @@
 }
 
 .datepickerControl tr.navigation td {
+	color: #333333;
 	cursor: pointer;
 }
 
@@ -46,6 +48,7 @@
 }
 
 .datepickerControl td.day,.datepickerControl td.dayothermonth {
+	color: #555555;
 	cursor: pointer;
 	background-color: #FFFFFF;
 	border: 1px solid #EEEEEE;
@@ -68,9 +71,11 @@
 
 .datepickerControl td.today {
 	font-weight: bold;
+	color: #555555;
 }
 
 .datepickerControl td.hour {
+	color: #555555;
 	cursor: pointer;
 	background-color: #FFFFFF;
 	border: 1px solid #EEEEEE;

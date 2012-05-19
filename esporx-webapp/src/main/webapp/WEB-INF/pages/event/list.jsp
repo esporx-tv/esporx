@@ -26,25 +26,23 @@
 	<div id="pageContent">
 		<c:import url="/WEB-INF/pages/header.jsp" />
 		<div id="catMain">
-			<h1 id="mainTitle">
-				Events List
-			</h1>
+			<h1 id="mainTitle">Events List</h1>
+			<div id="eventList">
+				<c:forEach var="event" items="${events}">
+					<div class="eventBox">
+						<h2 class="eventTitle"><a href="<c:url value="/event/see/${event.id}" />"><c:out value="${event.title}" /></a></h2>
+						<c:if test="${not empty event.casts}">
+							<h3>Featured casts</h3>
+							<ul class="casts">
+								<c:forEach var="cast" items="${event.casts}" end="3">
+								    <li><a href="<c:url value="/cast/watch/${cast.id}" />"><c:out value="${cast.title}" /></a></li>
+								</c:forEach>
+							</ul>
+						</c:if>
+					</div>
+				</c:forEach>
+	        </div>
 		</div>
-		<div id="eventList">
-			<c:forEach var="event" items="${events}">
-				<div class="eventBox">
-					<h2 class="eventTitle"><a href="<c:url value="/event/see/${event.id}" />"><c:out value="${event.title}" /></a></h2>
-					<c:if test="${not empty event.casts}">
-						<h3>Featured casts</h3>
-						<ul class="casts">
-							<c:forEach var="cast" items="${event.casts}" end="3">
-							    <li><a href="<c:url value="/cast/watch/${cast.id}" />"><c:out value="${cast.title}" /></a></li>
-							</c:forEach>
-						</ul>
-					</c:if>
-				</div>
-			</c:forEach>
-        </div>
 		<c:import url="/WEB-INF/pages/footer.jsp" />
 	</div>
 </body>

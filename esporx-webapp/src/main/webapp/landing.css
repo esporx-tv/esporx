@@ -38,7 +38,7 @@ a:focus { outline: 0;}
 #LogoBaseline { font-family: "Orbitron", Arial, sans-serif; font-size: 16px; letter-spacing: 0.09em; color: #ccc; text-align: center; margin: 3px auto 20px; text-transform: lowercase;}
 
 #LaunchDate { margin: 75px 0 40px; background: url(bgComingSoon.png) repeat-x -34px 5px;}
-#LaunchDate img { display: block; width: 140px; height: 71px; margin: 0 auto;}
+#LaunchDate img { display: block; margin: 0 auto;}
 
 .ShareLinks { list-style-type: none; width: 105px; height: 32px; margin: 0 auto; padding-left: 35px;
 			   background: url(bgShare.png) no-repeat 0 27px;}

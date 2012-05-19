@@ -1,14 +1,13 @@
 /** event list **/
 #pageContent h2 { font-size:1.0em} 
-#pageContent h3 { font-size:0.8em; margin:5px;} 
+#pageContent h3 { font-size: 0.75em; font-weight: normal; padding: 5px 5px 5px 15px; background: rgba(255, 255, 255, .1);} 
 a { cursor:pointer; text-decoration:none; color: #DDD;}
-#eventList { overflow:auto;}
-.eventBox { margin:20px; background-color:rgba(238,238,238,0.1); width:30%; min-height:100px; float:left;}
-.eventTitle { background-color: rgba(65, 75, 102, 0.8); color: #DDD; font-weight: 500; padding: 3px 15px;}
+#eventList { padding: 32px 0 0; background-color: rgba(8, 8, 4, 0.2); border-radius: 4px 4px 0 0; overflow: auto;}
+.eventBox { margin: 0 0 12px 1.5%; background-color: rgba(238,238,238,0.1); width: 31%; min-height: 140px; float: left;}
+.eventTitle { background-color: rgba(65, 75, 102, 0.8); color: #DDD; font-weight: 500;}
 .eventDescription { font-size:0.7em; font-style:italic; padding:20px; background-color:rgba(238,238,238,0.2);}
 .eventDescription:before, .eventDescription:after { background: none repeat scroll 0 0 rgba(186, 207, 255, 0.2); bottom:5px; content: ""; height: 8px; position: absolute; width: 3px;}
 .casts { list-style-type:none;}
-.casts li { font-size:0.6em; text-decoration: underline; margin:10px 0 0 15px;}
 
 /** event index **/
 #eventDescription { margin:20px; padding:20px; background-color:rgba(238,238,238,0.2);}
@@ -16,3 +15,7 @@ a { cursor:pointer; text-decoration:none; color: #DDD;}
 #casts { list-style-type:none;}
 #casts li { font-size:0.6em; margin:10px 20px 10px 50px; padding:10px; background-color:rgba(238,238,238,0.1);}
 #casts li:hover { background-color:rgba(238,238,238,0.3);}
+
+.eventBox .eventTitle { font-size: .85em; line-height: 2em; padding-left: 40px; position: relative;}
+.eventBox .eventTitle a { font-size: 12px; color: #DCDCF0; font-weight: normal; display: block;}
+ul.casts { padding: 0 0 10px;}

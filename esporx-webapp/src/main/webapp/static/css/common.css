@@ -9,7 +9,7 @@ a img { border: none;}
 body { background: url('../img/bgTileGrid01.png') repeat left top, url('../img/bgStarCraft002.jpg') no-repeat center -50px; background-color: #191919;}
 #pageContent { font-family: "Orbitron", Trebuchet MS, Arial, sans-serif; font-size: 12pt; letter-spacing: 0.09em; color: #FFF; 
 			   width: 1000px; max-width: 98%; margin: 0 auto; background-color: rgba(146, 142, 165, 0.08); box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);}
-
+p, .input label { font-family: Arial; letter-spacing: 0;}
 small { display:inline-block; margin-left:5px; font-style:oblique; font-size:0.5em; vertical-align:bottom;} 
 
 /************* Logo Start ************/
@@ -67,6 +67,7 @@ h3 { font-size: 15pt;}
 #pageHeader { padding: 0;}
 #pageHeader h1 { border-width: 0; padding: 0;}
 
+.eventBox .eventTitle a,
 .castItem .castName a,
 .castBroadcastDate,
 #calContent article h1 { text-overflow: ellipsis; white-space: nowrap; overflow-x: hidden;}
@@ -100,13 +101,16 @@ h3 { font-size: 15pt;}
 .evBox h4:after,
 #sideContent h4:after,
 #alsoBoxes>footer:before,
+.eventBox .eventTitle:after, 
 .castItem .castName:after,
 #calContent article header:after,
 #calContent article footer:before,
 #footer:before { content: ''; position: absolute; left: 0; width: 100%; height: 1px; background-color: #394567;} 
-#siteNav ul:after, .evBox h4:after, #sideContent h4:after, .castItem .castName:after, #calContent section header:after { bottom: 0;} 
+#siteNav ul:after, .evBox h4:after, #sideContent h4:after,
+.eventBox .eventTitle:after, .castItem .castName:after, .adminItem .adminName:after, #calContent section header:after { bottom: 0;} 
 #alsoBoxes>footer:before, #calContent article footer:before, #footer:before { top: 0;} 
 
+.eventBox .eventTitle:before, 
 .castItem .castName:before,
 #calContent article header:before { content:''; width: 100%; height: 1px; position: absolute; left: 0; top: 0; background: rgba(180, 180, 180, .2);}
 
@@ -118,10 +122,10 @@ h1#mainTitle { font-size: 1.5em; font-weight: 400; color: rgba(200, 220, 255, .2
 #catContent { padding: 32px 0 0; background-color: rgba(8, 8, 4, .2); border-radius: 4px 4px 0 0; overflow: auto;}
 
 /***** Cast Links Start ************/
-a.newsLink, .calEventCasts a { font-family: arial; font-size: 0.66em; font-weight: bold; color: #AAB; letter-spacing: 0; text-decoration: none;
+a.newsLink, .eventBox .casts a, .calEventCasts a { font-family: arial; font-size: 0.66em; font-weight: bold; color: #AAB; letter-spacing: 0; text-decoration: none;
 			 display: block; padding: 3px 15px 2px 25px; position: relative;}
 
-a.newsLink:hover, .calEventCasts a:hover { color: #CCD;
+a.newsLink:hover, .eventBox .casts a:hover, .calEventCasts a:hover { color: #CCD;
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
 	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2JhY2ZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjElIiBzdG9wLWNvbG9yPSIjYmFjZmZmIiBzdG9wLW9wYWNpdHk9IjAuNSIvPgogICAgPHN0b3Agb2Zmc2V0PSI5JSIgc3RvcC1jb2xvcj0iI2JhY2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjE1Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjIxJSIgc3RvcC1jb2xvcj0iI2JhY2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjA1Ii8+CiAgICA8c3RvcCBvZmZzZXQ9Ijc5JSIgc3RvcC1jb2xvcj0iI2JhY2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjA1Ii8+CiAgICA8c3RvcCBvZmZzZXQ9IjkxJSIgc3RvcC1jb2xvcj0iI2JhY2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjE1Ii8+CiAgICA8c3RvcCBvZmZzZXQ9Ijk5JSIgc3RvcC1jb2xvcj0iI2JhY2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjUiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2JhY2ZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
 	background: -moz-linear-gradient(left,  rgba(186,207,255,1) 2%, rgba(186,207,255,0.5) 1%, rgba(186,207,255,0.15) 9%, rgba(186,207,255,0.05) 21%, rgba(186,207,255,0.05) 79%, rgba(186,207,255,0.15) 91%, rgba(186,207,255,0.5) 99%, rgba(186,207,255,1) 100%); /* FF3.6+ */
@@ -133,15 +137,15 @@ a.newsLink:hover, .calEventCasts a:hover { color: #CCD;
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bacfff', endColorstr='#bacfff',GradientType=1 ); /* IE6-8 */
 }
 
-a.newsLink:before, .calEventCasts a:before,
-a.newsLink:after, .calEventCasts a:after { content:''; width: 3px; height: 8px; position: absolute; bottom: 5px; background: rgba(186, 207, 255, 0.2);}
-a.newsLink:before, .calEventCasts a:before { left: 5px;}
-a.newsLink:after, .calEventCasts a:after { right: 5px;}
+a.newsLink:before, .eventBox .casts a:before, .calEventCasts a:before,
+a.newsLink:after, .eventBox .casts a:after, .calEventCasts a:after { content:''; width: 3px; height: 8px; position: absolute; bottom: 5px; background: rgba(186, 207, 255, 0.2);}
+a.newsLink:before, .eventBox .casts a:before, .calEventCasts a:before { left: 5px;}
+a.newsLink:after, .eventBox .casts a:after, .calEventCasts a:after { right: 5px;}
 
-a.newsLink:hover:before, .calEventCasts a:hover:before,
-a.newsLink:hover:after, .calEventCasts a:hover:after { content:''; width: 100%; height: 1px; position: absolute; left: 0; background: rgba(186, 207, 255, 0.2);}
-a.newsLink:hover:before, .calEventCasts a:hover:before { top: 0;}
-a.newsLink:hover:after, .calEventCasts a:hover:after { bottom: 0;}
+a.newsLink:hover:before, .eventBox .casts a:hover:before, .calEventCasts a:hover:before,
+a.newsLink:hover:after, .eventBox .casts a:hover:after, .calEventCasts a:hover:after { content:''; width: 100%; height: 1px; position: absolute; left: 0; background: rgba(186, 207, 255, 0.2);}
+a.newsLink:hover:before, .eventBox .casts a:hover:before, .calEventCasts a:hover:before { top: 0;}
+a.newsLink:hover:after, .eventBox .casts a:hover:after, .calEventCasts a:hover:after { bottom: 0;}
 /***** Cast Links End ************/
 
 .castItem blockquote:hover,
@@ -161,7 +165,7 @@ a.newsLink:hover:after, .calEventCasts a:hover:after { bottom: 0;}
 form { width: 70%; margin: 3% auto;}
 
 .input { margin: 5px 0; overflow: auto;}
-.input label { color: #CCCCD0; font-size: 0.9em; text-align: right; width: 35%; float: left;}
+.input label { color: #CCCCD0; font-size: 1em; text-align: right; width: 35%; float: left;}
 .input input,
 .input select,
 .input textarea { float: right; width: 55%; background-color: #DDDDE2 !important; padding: 0 !important;}
