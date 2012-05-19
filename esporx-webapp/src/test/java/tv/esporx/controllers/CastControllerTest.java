@@ -93,17 +93,4 @@ public class CastControllerTest {
 		castController.delete(-2L, response);
 	}
 	
-	@Test
-	public void when_accessing_casts_list_then_related_view_is_retrieved() {
-		ModelAndView modelAndView = castController.list();
-		assertThat(modelAndView.getViewName()).isEqualTo("cast/list");
-	}
-	
-	@Test
-	public void when_accessing_cast_list_then_casts_are_retrieved() {
-		ModelAndView modelAndView = castController.list();
-		Map<String, Object> modelMap = modelAndView.getModel();
-		assertThat(modelMap.get("casts")).isEqualTo(casts);
-		
-	}
 }
