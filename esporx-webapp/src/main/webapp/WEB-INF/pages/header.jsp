@@ -18,7 +18,7 @@
 			<li>
                 <a href="<c:url value="/cast/browse" />"><spring:message code="common.menu.casts" /></a>
 				<ul id="castNav" class="subNavLvl1">
-					<li><a href="<c:url value="/cast/browse" />"><spring:message code="common.menu.latest_casts" /></a></li>
+					<li><a href="#"><spring:message code="common.menu.latest_casts" /></a></li>
 					<li><a href="<c:url value="/cast/new" />"><spring:message code="common.menu.add_cast" /></a></li>
 					<li><a href="<c:url value="/event/new" />"><spring:message code="common.menu.add_event" /></a></li>
 				</ul>
