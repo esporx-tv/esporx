@@ -8,5 +8,5 @@ CKEDITOR.editorConfig = function( config )
 	// Define changes to default configuration here. For example:
 	config.language = 'en',
 	// config.uiColor = '#AADC6E';
-	config.toolbar = [ ['FontSize'], ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About'], [ 'Image', 'Table','HorizontalRule','Smiley' ] ];
+	config.toolbar = [ ['FontSize'], ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About'], [ 'Image', 'Table', 'HorizontalRule' ] ];
 };
