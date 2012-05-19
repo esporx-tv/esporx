@@ -28,10 +28,16 @@ public class EntityConverter<E> implements GenericConverter {
 
 	@Override
 	public Object convert(final Object source, final TypeDescriptor sourceType, final TypeDescriptor targetType) {
-		String idString = (String) source;
-		long id = Long.valueOf(idString);
-		Method method = findMethod(repository.getClass(), "findById", long.class);
-		return invokeMethod(method, repository, id);
+		Object result = null;
+		try {
+			String idString = (String) source;
+			long id = Long.valueOf(idString);
+			Method method = findMethod(repository.getClass(), "findById", long.class);
+			result = invokeMethod(method, repository, id);
+		}
+		catch (NumberFormatException nfe) {
+		}
+		return result;
 	}
 
 }
