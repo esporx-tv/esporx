@@ -175,6 +175,8 @@ form { width: 70%; margin: 3% auto;}
 form>.submit { text-align: center;}
 form>.submit input { background-color: #CCCCD5;}
 
+#submitError { margin:15px auto; padding:10px; width:100%; background-color:white; border:2px solid red; font-weight: bold; font-size:10pt; color:red;}
+#submitError code { font-weight:normal;}
 .errors {
     clear:left;
     color:red;

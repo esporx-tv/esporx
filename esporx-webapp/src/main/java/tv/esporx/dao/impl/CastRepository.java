@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import org.joda.time.DateTime;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.exceptions.PersistenceViolationException;
 import tv.esporx.domain.Cast;
 
 @Repository
@@ -59,7 +61,12 @@ public class CastRepository implements PersistenceCapableCast {
 	@Override
 	@Transactional
 	public void saveOrUpdate(final Cast cast) {
-		entityManager.persist(cast);
+		try {
+			entityManager.persist(cast);
+		}
+		catch (PersistenceException e) {
+			throw new PersistenceViolationException(e);
+		}
 	}
 
 	@Override
