@@ -53,7 +53,7 @@ public class EventControllerMappingIT {
 
 	@Test
 	public void when_accessing_event_with_invalid_id_then_routed_to_not_found() throws Exception {
-		mvc.perform(get("/event/see/-25")).andExpect(status().isNotFound()).andExpect(view().name("event/notFound"));
+		mvc.perform(get("/event/see/-25")).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class EventControllerMappingIT {
 
 	@Test
 	public void when_accessing_event_edition_with_invalid_id_then_routed_to_not_found() throws Exception {
-		mvc.perform(get("/event/edit/-65")).andExpect(status().isNotFound()).andExpect(view().name("event/notFound"));
+		mvc.perform(get("/event/edit/-65")).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class EventControllerMappingIT {
 
 	@Test
 	public void when_deleting_event_with_invalid_id_then_routed_to_not_found() throws Exception {
-		mvc.perform(post("/event/remove/-69")).andExpect(status().isNotFound()).andExpect(view().name("event/notFound"));
+		mvc.perform(post("/event/remove/-69")).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
 	}
 
 	@Test

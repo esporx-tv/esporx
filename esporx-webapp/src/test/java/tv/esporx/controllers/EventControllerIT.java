@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +39,7 @@ public class EventControllerIT {
 
 	@Autowired
 	private Validator validator;
+	private HttpServletRequest request;
 
 	@Before
 	public void setup() {
@@ -48,27 +51,28 @@ public class EventControllerIT {
 		event.setEndDate(new Date());
 		when(eventDao.findById(anyInt())).thenReturn(event);
 		assertThat(eventController).isNotNull();
+		request = mock(HttpServletRequest.class);
 		eventController.setEventRepository(eventDao);
 	}
 
 	@Test
 	public void when_saving_is_successful_then_homepage_view_is_returned() {
 		givenBeanHasBeenValidated();
-		ModelAndView modelAndView = eventController.save(event, bindingResult);
+		ModelAndView modelAndView = eventController.save(event, bindingResult, request, new ModelAndView() );
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
 	}
 
 	@Test
 	public void when_saving_is_unsuccessful_then_edition_page_is_returned() {
 		givenBeanHasBeenInvalidated();
-		ModelAndView modelAndView = eventController.save(event, bindingResult);
+		ModelAndView modelAndView = eventController.save(event, bindingResult, request, new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("event/form");
 	}
 
 	@Test
 	public void when_saving_then_is_persisted() {
 		givenBeanHasBeenValidated();
-		eventController.save(event, bindingResult);
+		eventController.save(event, bindingResult, request, new ModelAndView());
 		verify(eventDao).saveOrUpdate(event);
 	}
 
