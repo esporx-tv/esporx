@@ -43,6 +43,20 @@
 				            <code><c:out value="${persistenceError}" /></code>
 				        </div>
 				    </c:if>
+                    
+                    <div class="input">
+                        <spring:message code="cast.submission.event.placeholder"
+                            var="eventPlaceholder" />
+                        <form:label path="title" title="${eventPlaceholder}">
+                            <spring:message code="cast.submission.event" />
+                        </form:label>
+                        <form:select path="event">
+                            <form:option value=""></form:option>
+                            <form:options items="${events}" itemValue="id" itemLabel="title" />
+                        </form:select>
+                        <form:errors path="event" cssClass="errors" />
+                    </div>
+				    
 					<div class="input">
 						<spring:message code="cast.submission.title.placeholder"
 							var="titlePlaceholder" />
@@ -52,6 +66,19 @@
 						<form:input path="title" placeholder="${titlePlaceholder}" />
 						<form:errors path="title" cssClass="errors" />
 					</div>
+
+                    <div class="input">
+                        <form:label path="language">
+                            <spring:message code="cast.submission.language" />
+                        </form:label>
+                        <form:select path="language">
+                            <form:option value="">
+                                <spring:message code="cast.submission.language.options.choose" />
+                            </form:option>
+                            <form:options items="${allowedLocales}" />
+                        </form:select>
+                        <form:errors path="language" cssClass="errors" />
+                    </div>
 
 					<div class="input">
 						<spring:message code="cast.submission.url.placeholder"
@@ -64,23 +91,9 @@
 					</div>
 
 					<div class="input">
-						<form:label path="language">
-							<spring:message code="cast.submission.language" />
-						</form:label>
-						<form:select path="language">
-							<form:option value="">
-								<spring:message code="cast.submission.language.options.choose" />
-							</form:option>
-							<form:options items="${allowedLocales}" />
-						</form:select>
-						<form:errors path="language" cssClass="errors" />
-					</div>
-
-					<div class="input">
 						<spring:message code="cast.submission.broadcastDate.placeholder"
 							var="broadcastDatePlaceholder" />
-						<form:label path="broadcastDate"
-							title="${broadcastDatePlaceholder}">
+						<form:label path="broadcastDate" title="${broadcastDatePlaceholder}">
 							<spring:message code="cast.submission.broadcastDate" />
 						</form:label>
 						
@@ -98,8 +111,7 @@
 					</div>
 
 					<div class="submit">
-						<input type="submit"
-							value="<spring:message code="cast.submission.submit" />" />
+						<input type="submit" value="<spring:message code="cast.submission.submit" />" />
 					</div>
 				</form:form>
 			</div>

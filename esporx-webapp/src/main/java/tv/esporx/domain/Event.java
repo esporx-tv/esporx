@@ -51,7 +51,7 @@ public class Event {
 	@Length(max = 255)
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
-	// TODO: no EAGER, specific JPQL with fetch instead!
+	// TODO: no EAGER, specific JPQL per usecase with fetch instead!
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "related_event")
 	private final List<Cast> casts = new ArrayList<Cast>();

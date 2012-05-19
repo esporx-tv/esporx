@@ -1,12 +1,14 @@
 package tv.esporx.framework;
 
+import static java.util.Collections.singleton;
+import static org.springframework.util.ReflectionUtils.findMethod;
+import static org.springframework.util.ReflectionUtils.invokeMethod;
+
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.util.ReflectionUtils;
 
 public class EntityConverter<E> implements GenericConverter {
 
@@ -21,15 +23,15 @@ public class EntityConverter<E> implements GenericConverter {
 
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
-		return Collections.singleton(new ConvertiblePair(String.class, entityClass));
+		return singleton(new ConvertiblePair(String.class, entityClass));
 	}
 
 	@Override
 	public Object convert(final Object source, final TypeDescriptor sourceType, final TypeDescriptor targetType) {
 		String idString = (String) source;
 		long id = Long.valueOf(idString);
-		Method method = ReflectionUtils.findMethod(repository.getClass(), "findById", long.class);
-		return ReflectionUtils.invokeMethod(method, repository, id);
+		Method method = findMethod(repository.getClass(), "findById", long.class);
+		return invokeMethod(method, repository, id);
 	}
 
 }

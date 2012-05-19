@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -34,11 +35,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.dao.PersistenceCapableGame;
 import tv.esporx.dao.PersistenceCapableVideoProvider;
 import tv.esporx.dao.exceptions.PersistenceViolationException;
 import tv.esporx.dao.impl.GameRepository;
 import tv.esporx.domain.Cast;
+import tv.esporx.domain.Event;
 import tv.esporx.domain.Game;
 import tv.esporx.framework.EntityConverter;
 import tv.esporx.framework.mvc.RequestUtils;
@@ -53,6 +56,8 @@ public class CastController {
 	private PersistenceCapableCast castDao;
 	@Autowired
 	private PersistenceCapableGame gameDao;
+	@Autowired
+	private PersistenceCapableEvent eventDao;
 
 	@Autowired
 	private RequestUtils requestHelper;
@@ -69,8 +74,11 @@ public class CastController {
 		df.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
 
-		EntityConverter<Cast> entityConverter = new EntityConverter<Cast>(castDao, Cast.class);
-		((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
+		EntityConverter<Cast> castConverter = new EntityConverter<Cast>(castDao, Cast.class);
+		((GenericConversionService) binder.getConversionService()).addConverter(castConverter);
+
+		EntityConverter<Event> eventConverter = new EntityConverter<Event>(eventDao, Event.class);
+		((GenericConversionService) binder.getConversionService()).addConverter(eventConverter);
 	}
 
 	@ExceptionHandler({ TypeMismatchException.class,
@@ -145,6 +153,8 @@ public class CastController {
 	}
 
 	private ModelAndView populatedCastForm(final ModelAndView modelAndView) {
+		List<Event> events = eventDao.findAll();
+		modelAndView.addObject("events", events);
 		modelAndView.addObject("allowedLocales", allowedLocales);
 		modelAndView.setViewName("cast/form");
 		return modelAndView;

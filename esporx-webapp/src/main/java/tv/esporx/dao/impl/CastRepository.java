@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tv.esporx.dao.PersistenceCapableCast;
 import tv.esporx.dao.exceptions.PersistenceViolationException;
 import tv.esporx.domain.Cast;
+import tv.esporx.domain.Event;
 
 @Repository
 public class CastRepository implements PersistenceCapableCast {
@@ -62,6 +63,11 @@ public class CastRepository implements PersistenceCapableCast {
 	@Transactional
 	public void saveOrUpdate(final Cast cast) {
 		try {
+			Event relatedEvent = cast.getEvent();
+			if (relatedEvent != null) {
+				// TODO: move me elsewhere, cast dao shouldn't know about events
+				cast.setEvent(entityManager.find(Event.class, relatedEvent.getId()));
+			}
 			entityManager.persist(cast);
 		}
 		catch (PersistenceException e) {

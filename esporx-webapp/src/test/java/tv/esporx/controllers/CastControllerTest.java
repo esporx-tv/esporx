@@ -6,6 +6,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.dao.PersistenceCapableVideoProvider;
 import tv.esporx.dao.impl.CastRepository;
 import tv.esporx.domain.Cast;
@@ -33,6 +35,7 @@ public class CastControllerTest {
 	public void setup() {
 		response = mock(HttpServletResponse.class);
 		castController = new CastController();
+		setField(castController, "eventDao", mock(PersistenceCapableEvent.class));
 		castDao = mock(CastRepository.class);
 		cast = new Cast();
 		cast.setTitle("Cast Title");
@@ -92,5 +95,5 @@ public class CastControllerTest {
 	public void when_deleting_cast_with_negative_long_then_throws_exception() {
 		castController.delete(-2L, response);
 	}
-	
+
 }
