@@ -34,6 +34,17 @@
 			<div id="catContent">
 				<form:form modelAttribute="configurableSlotCommand">
 					<div class="input">
+						<spring:message code="slot.submission.boxTitle.placeholder"
+							var="boxTitlePlaceholder" />
+						<form:label path="boxTitle" title="${boxTitlePlaceholder}">
+							<spring:message code="slot.submission.boxTitle" />
+						</form:label>
+						<form:input path="boxTitle" placeholder="${boxTitlePlaceholder}" />
+						<form:errors path="boxTitle" cssClass="errors" />
+					</div>
+				
+				
+					<div class="input">
 						<spring:message code="slot.submission.title.placeholder"
 							var="titlePlaceholder" />
 						<form:label path="title" title="${titlePlaceholder}">

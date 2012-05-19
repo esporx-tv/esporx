@@ -70,6 +70,7 @@ public class ConfigurableSlotControllerMappingIT {
 		slot.setLink("http://www.link.com");
 		slot.setPicture("myface.jpg");
 		slot.setLanguage("en");
+		slot.setBoxTitle("Box Title");
 		assertThat(slotDao).isNotNull();
 		slotDao.saveOrUpdate(slot);
 		assertThat(slot.getId()).isGreaterThan(0L);

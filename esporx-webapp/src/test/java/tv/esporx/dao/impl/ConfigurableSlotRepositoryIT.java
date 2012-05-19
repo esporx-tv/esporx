@@ -88,6 +88,7 @@ public class ConfigurableSlotRepositoryIT {
 		insertedSlot.setLanguage("en");
 		insertedSlot.setActive(false);
 		insertedSlot.setPosition(1);
+		insertedSlot.setBoxTitle("Box title 1");
 		assertThat(configurableSlotRepository).isNotNull();
 		configurableSlotRepository.saveOrUpdate(insertedSlot);
 		assertThat(insertedSlot.getId()).isGreaterThan(0L);
@@ -96,6 +97,7 @@ public class ConfigurableSlotRepositoryIT {
 	private void givenASimilarSlotIsInserted() {
 		equivalentSlot = new ConfigurableSlot();
 		equivalentSlot.setTitle("Slot Bis");
+		equivalentSlot.setBoxTitle("Box title 2");
 		equivalentSlot.setDescription("Another superb slot");
 		equivalentSlot.setPicture("twoSlotsToRuleThemAll.png");
 		equivalentSlot.setLink("http://www.yoursecondslot.com");

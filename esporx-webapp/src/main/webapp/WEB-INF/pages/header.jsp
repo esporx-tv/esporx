@@ -24,6 +24,7 @@
 				</ul>
 			</li>
 			<li><a href="<c:url value="/timeline/browse" />"><spring:message code="common.menu.calendar" /></a></li>
+			<li><a href="<c:url value="/admin/home" />">Admin</a></li>
 		</ul>
 	</nav>
 </header>
