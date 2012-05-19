@@ -1,3 +1,4 @@
+<%-- not used right now... --%>
 <%@ include file="../include/common.jsp" %>
 <!DOCTYPE html>
 <html lang="en">

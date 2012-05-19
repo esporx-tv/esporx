@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -102,13 +101,6 @@ public class CastController {
 		ModelMap model = new ModelMap("cast", cast);
 		model.addAttribute("embeddedVideo", videoProvider.getEmbeddedContents(cast.getVideoUrl()));
 		return new ModelAndView("cast/index", model);
-	}
-
-	@RequestMapping(value = "/browse", method = GET)
-	public ModelAndView list() {
-		List<Cast> cast = castDao.findAll();
-		ModelMap model = new ModelMap("casts", cast);
-		return new ModelAndView("cast/list", model);
 	}
 
 	@RequestMapping(value = { "/new", "edit/{castCommand}" }, method = POST)
