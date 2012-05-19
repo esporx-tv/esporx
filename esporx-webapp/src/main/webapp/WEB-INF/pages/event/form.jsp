@@ -56,8 +56,8 @@
 						<form:label path="startDate" title="${startDatePlaceholder}">
 							<spring:message code="event.submission.startDate" />
 						</form:label>
-						<form:input path="startDate" cssClass="datepicker"
-							placeholder="${startDatePlaceholder}" />
+						<fmt:formatDate value='${eventCommand.startDate}' pattern='dd/MM/yyyy HH:mm' var="formattedDate"/>
+						<input type="text" id="startDate" name="startDate" class="datepicker" placeholder="<c:out value="${startDatePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
 						<form:errors path="startDate" cssClass="errors" />
 					</div>
 
@@ -67,8 +67,8 @@
 						<form:label path="endDate" title="${endDatePlaceholder}">
 							<spring:message code="event.submission.endDate" />
 						</form:label>
-						<form:input path="endDate" cssClass="datepicker"
-							placeholder="${endDatePlaceholder}" />
+					<fmt:formatDate value='${eventCommand.endDate}' pattern='dd/MM/yyyy HH:mm' var="formattedDate"/>
+						<input type="text" id="endDate" name="endDate" class="datepicker" placeholder="<c:out value="${endDatePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
 						<form:errors path="endDate" cssClass="errors" />
 					</div>
 					

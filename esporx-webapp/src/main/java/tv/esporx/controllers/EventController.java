@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -34,6 +36,7 @@ import tv.esporx.dao.PersistenceCapableCast;
 import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.domain.Cast;
 import tv.esporx.domain.Event;
+import tv.esporx.framework.EntityConverter;
 import tv.esporx.services.EventService;
 
 @Controller
@@ -54,12 +57,16 @@ public class EventController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		df.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
+		
+		EntityConverter<Event> entityConverter = new EntityConverter<Event>(eventDao, Event.class);
+		((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
 	}
 
-	@ExceptionHandler(IllegalArgumentException.class)
+	@ExceptionHandler({ TypeMismatchException.class,
+		IllegalArgumentException.class })
 	@ResponseStatus(value = NOT_FOUND)
-	public ModelAndView handleIllegalArguments(final IllegalArgumentException exception, final HttpServletRequest request) {
-		return new ModelAndView("event/notFound");
+	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
+		return new ModelAndView("cast/notFound");
 	}
 
 	@RequestMapping(value = "/see/{id}", method = GET)
@@ -74,26 +81,24 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/new", method = GET)
-	public ModelAndView creation() {
-		return populatedEventForm(new Event());
+	public ModelAndView creation(final ModelAndView modelAndView) {
+		return populatedEventForm(modelAndView).addObject(COMMAND, new Event());
 	}
 
-	@RequestMapping(value = "/edit/{id}", method = GET)
-	public ModelAndView edition(@PathVariable final long id, final HttpServletResponse response) {
-		checkArgument(id > 0L);
-		Event event = eventDao.findById(id);
-		if (event == null) {
-			return notFound(response, "event/notFound");
+	@RequestMapping(value = "/edit/{eventCommand}", method = GET)
+	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Event eventCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
+		if (eventCommand == null) {
+			return notFound(response, "cast/notFound");
 		}
-		return populatedEventForm(event);
+		return populatedEventForm(modelAndView);
 	}
 
-	@RequestMapping(value = { "/new", "edit/{id}" }, method = POST)
-	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Event event, final BindingResult result) {
+	@RequestMapping(value = { "/new", "edit/{eventCommand}" }, method = POST)
+	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Event eventCommand, final BindingResult result, final HttpServletRequest request, final ModelAndView modelAndView) {
 		if (result.hasErrors()) {
-			return populatedEventForm(event);
+			return populatedEventForm(modelAndView);
 		}
-		eventDao.saveOrUpdate(event);
+		eventDao.saveOrUpdate(eventCommand);
 		return successfulRedirectionView();
 	}
 
@@ -143,8 +148,9 @@ public class EventController {
 		return new ModelAndView("redirect:/admin/home");
 	}
 
-	private ModelAndView populatedEventForm(final Event event) {
-		ModelMap model = new ModelMap(COMMAND, event);
-		return new ModelAndView("event/form", model);
+	private ModelAndView populatedEventForm(final ModelAndView modelAndView) {
+		modelAndView.setViewName("event/form");
+		return modelAndView;
 	}
+
 }

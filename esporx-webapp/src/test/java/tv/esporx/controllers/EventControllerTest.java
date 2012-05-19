@@ -7,8 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
@@ -32,21 +30,14 @@ public class EventControllerTest {
 		eventDao = mock(EventRepository.class);
 		event = new Event();
 		event.setTitle("EventTitle");
+		event.setDescription("description");
 		when(eventDao.findById(anyInt())).thenReturn(event);
 		eventController.setEventRepository(eventDao);
 	}
-
-	@Test
-	public void when_accessing_edition_page_then_is_retrieved() {
-		ModelAndView modelAndView = eventController.edition(1L, response);
-		Map<String, Object> modelMap = modelAndView.getModel();
-		assertThat(modelMap.get("eventCommand")).isEqualTo(event);
-
-	}
-
+	
 	@Test
 	public void when_accessing_form_page_then_is_retrieved() {
-		ModelAndView modelAndView = eventController.creation();
+		ModelAndView modelAndView = eventController.creation(new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("event/form");
 	}
 
