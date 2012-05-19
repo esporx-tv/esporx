@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.dao.PersistenceCapableCast;
 import tv.esporx.dao.PersistenceCapableGame;
 import tv.esporx.dao.PersistenceCapableVideoProvider;
+import tv.esporx.dao.exceptions.PersistenceViolationException;
 import tv.esporx.dao.impl.GameRepository;
 import tv.esporx.domain.Cast;
 import tv.esporx.domain.Game;
@@ -67,7 +68,7 @@ public class CastController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		df.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
-		
+
 		EntityConverter<Cast> entityConverter = new EntityConverter<Cast>(castDao, Cast.class);
 		((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
 	}
@@ -78,7 +79,7 @@ public class CastController {
 	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
 		return new ModelAndView("cast/notFound");
 	}
-	
+
 
 	@RequestMapping(value = "/remove/{id}", method = POST)
 	public ModelAndView delete(@PathVariable final long id, final HttpServletResponse response) {
@@ -104,14 +105,20 @@ public class CastController {
 	}
 
 	@RequestMapping(value = { "/new", "edit/{castCommand}" }, method = POST)
-	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Cast castCommand, final BindingResult result, final HttpServletRequest request, final ModelAndView modelAndView) {
+	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Cast castCommand, final BindingResult result, final HttpServletRequest request, ModelAndView modelAndView) {
 		Game game = gameDao.findByTitle(requestHelper.currentGame(request));
 		castCommand.setRelatedGame(game);
-		if (result.hasErrors()) {
-			return populatedCastForm(modelAndView);
+		modelAndView = populatedCastForm(modelAndView);
+		try {
+			if (!result.hasErrors()) {
+				castDao.saveOrUpdate(castCommand);
+				modelAndView = successfulRedirectionView();
+			}
 		}
-		castDao.saveOrUpdate(castCommand);
-		return successfulRedirectionView();
+		catch (PersistenceViolationException pve) {
+			modelAndView.addObject("persistenceError", pve.getCauseMessage());
+		}
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "/new", method = GET)

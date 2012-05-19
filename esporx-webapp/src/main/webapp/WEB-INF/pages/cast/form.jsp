@@ -37,6 +37,12 @@
 
 			<div id="catContent">
 				<form:form modelAttribute="castCommand">
+				    <c:if test="${not empty persistenceError}">
+				        <div id="submitError">
+				            An error occurred while trying to save:
+				            <code><c:out value="${persistenceError}" /></code>
+				        </div>
+				    </c:if>
 					<div class="input">
 						<spring:message code="cast.submission.title.placeholder"
 							var="titlePlaceholder" />

@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableCast;
 import tv.esporx.dao.PersistenceCapableGame;
+import tv.esporx.dao.exceptions.PersistenceViolationException;
 import tv.esporx.domain.Cast;
 import tv.esporx.domain.Game;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
@@ -69,7 +69,7 @@ public class CastRepositoryIT {
 		assertThat(retrievedCast).isNull();
 	}
 
-	@Test(expected = PersistenceException.class)
+	@Test(expected = PersistenceViolationException.class)
 	public void when_inserting_a_new_cast_with_already_stored_title_then_exception() {
 		Cast cast = new Cast();
 		cast.setRelatedGame(relatedGame);
@@ -81,7 +81,7 @@ public class CastRepositoryIT {
 		castRepository.saveOrUpdate(cast);
 	}
 
-	@Test(expected = PersistenceException.class)
+	@Test(expected = PersistenceViolationException.class)
 	public void when_inserting_a_new_cast_with_already_stored_video_url_then_exception() {
 		Cast cast = new Cast();
 		cast.setRelatedGame(relatedGame);
