@@ -50,7 +50,7 @@
 											<ul class="dList">
 												<li class="dLang"><span>Lang: </span><span>${slide.language}</span>
 												</li>
-												<li class="dPrice"><span>Price: </span><span>${slide.prize}</span>
+												<li class="dPrice"><span>Prize: </span><span>${slide.prize}</span>
 												</li>
 												<li class="dDate"><span>Date: </span><span><fmt:formatDate
 															pattern=" dd MMMM yyyy" value="${slide.date}" /> </span></li>
