@@ -14,11 +14,6 @@ public class ConfigurableSlotTest {
 		slot = new ConfigurableSlot();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void when_assigning_invalid_link_then_throws_exception() {
-		slot.setLink("toto");
-	}
-
 	@Test
 	public void when_getting_id_then_must_be_positive() {
 		assertThat(slot.getId()).isGreaterThanOrEqualTo(0L);

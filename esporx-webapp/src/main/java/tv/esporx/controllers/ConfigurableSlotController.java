@@ -69,7 +69,9 @@ public class ConfigurableSlotController {
 
 	@RequestMapping(value = "/new", method = GET)
 	public ModelAndView creation(final ModelAndView modelAndView) {
-		return populatedConfigurableSlotForm(modelAndView).addObject(COMMAND, new ConfigurableSlot());
+		ConfigurableSlot slot = new ConfigurableSlot();
+		slot.setLink("http://");
+		return populatedConfigurableSlotForm(modelAndView).addObject(COMMAND, slot);
 	}
 
 	@RequestMapping(value = "/edit/{configurableSlotCommand}", method = GET)
