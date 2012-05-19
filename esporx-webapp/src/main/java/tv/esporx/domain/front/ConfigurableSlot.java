@@ -2,9 +2,6 @@ package tv.esporx.domain.front;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -144,12 +141,6 @@ public class ConfigurableSlot {
 	}
 
 	public void setLink(final String link) {
-		try {
-			new URL(link);
-		}
-		catch (MalformedURLException e) {
-			throw new IllegalArgumentException(e);
-		}
 		this.link = link;
 	}
 

@@ -70,7 +70,9 @@ public class GondolaSlideController {
 	@RequestMapping(value = "/new", method = GET)
 	public ModelAndView creation(final ModelAndView modelAndView) {
 		checkNotNull(modelAndView);
-		return populateModelAndView(modelAndView).addObject(COMMAND, new GondolaSlide());
+		GondolaSlide slide = new GondolaSlide();
+		slide.setLink("http://");
+		return populateModelAndView(modelAndView).addObject(COMMAND, slide);
 	}
 
 	@RequestMapping(value = {
@@ -102,7 +104,7 @@ public class GondolaSlideController {
 		ModelMap model = new ModelMap("gondolaSlides", slides);
 		return new ModelAndView("slide/list", model);
 	}
-	
+
 	@RequestMapping(value = "/remove", method = POST)
 	public ModelAndView delete(final HttpServletResponse response, final HttpServletRequest request) {
 		long id = Long.parseLong(request.getParameter("id"));

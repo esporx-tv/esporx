@@ -23,11 +23,6 @@ public class GondolaSlideTest {
 		assertThat(gondolaSlide.getDate()).isEqualTo(date);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void when_assigning_invalid_link_then_throws_exception() {
-		gondolaSlide.setLink("tata");
-	}
-
 	@Test
 	public void when_assigning_lang_then_is_retrieved() {
 		String lang = "FR";

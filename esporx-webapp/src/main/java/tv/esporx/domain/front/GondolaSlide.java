@@ -3,8 +3,6 @@ package tv.esporx.domain.front;
 import static com.google.common.base.Preconditions.checkArgument;
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -175,12 +173,6 @@ public class GondolaSlide {
 	}
 
 	public void setLink(final String link) {
-		try {
-			new URL(link);
-		}
-		catch (MalformedURLException e) {
-			throw new IllegalArgumentException();
-		}
 		this.link = link;
 	}
 
