@@ -59,14 +59,4 @@ public class EventControllerTest {
 		assertTrue(modelAndView.getModelMap().containsKey("event"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void when_deleting_cast_with_null_event_then_throws_exception() {
-		eventController.delete(0);
-	}
-
-	@Test
-	public void when_deleting_then_deletion_called() {
-		eventController.delete(5L);
-		verify(eventDao).delete(event);
-	}
 }

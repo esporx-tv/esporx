@@ -85,15 +85,5 @@ public class CastControllerTest {
 		assertThat(modelMap.get("cast")).isEqualTo(cast);
 	}
 
-	@Test
-	public void when_deleting_cast_then_cast_is_deleted() {
-		castController.delete(9L, response);
-		verify(castDao).delete(cast);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void when_deleting_cast_with_negative_long_then_throws_exception() {
-		castController.delete(-2L, response);
-	}
 
 }
