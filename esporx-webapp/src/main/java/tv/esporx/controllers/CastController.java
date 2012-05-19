@@ -123,7 +123,9 @@ public class CastController {
 
 	@RequestMapping(value = "/new", method = GET)
 	public ModelAndView creation(final ModelAndView modelAndView) {
-		return populatedCastForm(modelAndView).addObject(COMMAND, new Cast());
+		Cast cast = new Cast();
+		cast.setVideoUrl("http://");
+		return populatedCastForm(modelAndView).addObject(COMMAND, cast);
 	}
 
 	@RequestMapping(value = "/edit/{castCommand}", method = GET)

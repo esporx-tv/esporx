@@ -45,7 +45,6 @@ public class ConfigurableSlotController {
 
 	@InitBinder(COMMAND)
 	public void customizeConversions(final WebDataBinder binder) {
-
 		EntityConverter<ConfigurableSlot> entityConverter = new EntityConverter<ConfigurableSlot>(slotDao, ConfigurableSlot.class);
 		((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
 	}
@@ -71,6 +70,7 @@ public class ConfigurableSlotController {
 	public ModelAndView creation(final ModelAndView modelAndView) {
 		ConfigurableSlot slot = new ConfigurableSlot();
 		slot.setLink("http://");
+		slot.setPicture("http://");
 		return populatedConfigurableSlotForm(modelAndView).addObject(COMMAND, slot);
 	}
 

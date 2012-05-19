@@ -72,6 +72,7 @@ public class GondolaSlideController {
 		checkNotNull(modelAndView);
 		GondolaSlide slide = new GondolaSlide();
 		slide.setLink("http://");
+		slide.setPicture("http://");
 		return populateModelAndView(modelAndView).addObject(COMMAND, slide);
 	}
 
