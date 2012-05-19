@@ -58,12 +58,6 @@ public class ConfigurableSlotTest {
 		assertThat(slot.getLink()).isEqualTo(link);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void when_setting_null_description_longer_then_throws_exception() {
-		slot.setDescription(null);
-	}
-
-
 	@Test
 	public void when_setting_picture_then_is_retrieved() {
 		String picture = "toto.png";
