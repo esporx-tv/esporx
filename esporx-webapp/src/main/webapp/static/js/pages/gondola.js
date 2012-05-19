@@ -15,7 +15,13 @@ if (document.addEventListener) {
 }
 
 window.onload = function() {
-  setTimeout( "if (!alreadyrunflag){ gondolaLaunch();}", 0);
+	setTimeout( 
+		function() {
+			if (!alreadyrunflag){ 
+				gondolaLaunch();
+			}
+		}, 
+	0);
 };
 
 var docWidth;
@@ -30,6 +36,8 @@ var slideNext = true;
 var slideTimer;
 var slideTransTimer;
 
+var stopTransition =  false;
+
 function gondolaLaunch() {
 	nbSlides = document.getElementById("gSlide").getElementsByTagName("article");
 	slidesStyleWidth =  nbSlides.length * 100 +"%";
@@ -37,7 +45,7 @@ function gondolaLaunch() {
 	var clickNext = document.getElementById("arrowRight");
 				
 	docWidth = document.getElementById("pageContent").offsetWidth;
-	document.getElementById("gSlide").style.width = slidesStyleWidth; // set Gondole full width (included hidden slides) from the number of slides.
+	document.getElementById("gSlide").style.width = slidesStyleWidth; // set Gondola full width (included hidden slides) from the number of slides.
 	slideStyleWidth = 100 / nbSlides.length +"%";
 	for (i=0; i<nbSlides.length; i++) { nbSlides[i].style.width = slideStyleWidth;}
 	slideTimer = setInterval( gondolAnim, slideInterval);
@@ -51,25 +59,35 @@ function gondolaLaunch() {
 		}
 	};
 	
+	$$('section.fInfos').each(function(element) {
+		element.observe('mouseover', function(event) {
+			stopTransition = true;
+		});
+		element.observe('mouseout', function(event) {
+			stopTransition = false;
+		});
+	});
+	
 }
 
 function gondolAnim() {
 //	alert(slideCurrent +" "+ nbSlides.length +" "+ docWidth)
-	
-	if (slideNext) {
-		if (slideCurrent == nbSlides.length) {
-			slideCurrent = 1;
-			document.getElementById("gSlide").style.marginLeft = "0";
+	if (!stopTransition) {
+		if (slideNext) {
+			if (slideCurrent == nbSlides.length) {
+				slideCurrent = 1;
+				document.getElementById("gSlide").style.marginLeft = "0";
+			} else {
+				slideTransTimer = setInterval( slideTransition, animSpeed);
+			}
 		} else {
-			slideTransTimer = setInterval( slideTransition, animSpeed);
-		}
-	} else {
-		if (slideCurrent==1) {
-			slideCurrent = nbSlides.length;
-			var lastSlide = -(slideCurrent-1) * 100 + "%";
-			document.getElementById("gSlide").style.marginLeft = lastSlide;
-		} else {
-			slideTransTimer = setInterval( slideTransition, animSpeed);
+			if (slideCurrent==1) {
+				slideCurrent = nbSlides.length;
+				var lastSlide = -(slideCurrent-1) * 100 + "%";
+				document.getElementById("gSlide").style.marginLeft = lastSlide;
+			} else {
+				slideTransTimer = setInterval( slideTransition, animSpeed);
+			}
 		}
 	}
 }
