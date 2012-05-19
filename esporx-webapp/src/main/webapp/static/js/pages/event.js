@@ -22,7 +22,7 @@
 					'datePicker' : true,
 					'timePicker' : true,
 					'timePickerAdjacent' : true,
-					'icon' : '/img/calendar.png',
+					'icon' : '/static/img/calendar.png',
 					'iconBgColor' : '#E6E6E6',
 					'use24hrs' : true,
 					'dateTimeFormat' : 'dd/MM/yyyy HH:mm'
