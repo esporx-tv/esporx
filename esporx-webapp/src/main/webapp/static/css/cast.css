@@ -1,12 +1,8 @@
 #broadcastDate { cursor: pointer;}
+input.supportedUrl { border:2px solid green;}
+input.unsupportedUrl { border:2px solid red;}
 
-input.supportedUrl {
-	border:2px solid green;
-}
-
-input.unsupportedUrl {
-	border:2px solid red;
-}
+#cke_description { margin-top: 15px; padding:0; float:left; width:100%; border:0 none;}
 
 /******* Cast List  **********/
 .castItem { color: #666; width: 31%; margin: 0 0 12px 1.5%; position: relative; float: left; overflow: auto;}

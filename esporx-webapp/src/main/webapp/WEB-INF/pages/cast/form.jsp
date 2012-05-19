@@ -15,9 +15,10 @@
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/cast.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/ckeditor/ckeditor_basic.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/cast.js" />"></script>
     
 	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
@@ -25,8 +26,7 @@
 <body>
 	<div id="feedbackArea">
 		<img id="loadingIcon" style="display: none;"
-			src="<c:url value="${staticRoot}/img/loading.gif" />" title="" alt="loading..."
-			height="32" width="32" />
+			src="<c:url value="${staticRoot}/img/loading.gif" />" title="" alt="loading..."	height="32" width="32" />
 	</div>
 	<div id="pageContent">
 		<c:import url="/WEB-INF/pages/header.jsp" />
@@ -89,7 +89,7 @@
 						<form:label path="description">
 							<spring:message code="cast.submission.description" />
 						</form:label>
-						<form:textarea path="description" />
+						<form:textarea path="description" cssClass="ckeditor" />
 						<form:errors path="description" cssClass="errors" />
 					</div>
 

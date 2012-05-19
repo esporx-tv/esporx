@@ -38,7 +38,7 @@
 					</div>
 					<div class="castDetails">
 						<blockquote>
-							<p><c:out value="${cast.description}" /></p>
+							<p><c:out value="${cast.description}" escapeXml="false" /></p>
 						</blockquote>
 						<ul>
 							<li><spring:message code="cast.details.labels.language" /> <c:choose>
