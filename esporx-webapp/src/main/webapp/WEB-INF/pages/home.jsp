@@ -73,7 +73,7 @@
 					<c:forEach var="slot" items="${slots}">
 						<c:if test="${slot.position == 1}">
 							<article class="evBox oneCol">
-								<h4>Hottest Live Event</h4>
+								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="gFImg" src="${slot.picture}" />
 									<a href="<c:url value="${slot.link}" />">
@@ -86,7 +86,7 @@
 						</c:if>
 						<c:if test="${slot.position == 2}">
 							<article class="evBox oneCol">
-								<h4>Up next</h4>
+								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="gFImg" src="${slot.picture}" />
 									<a href="<c:url value="${slot.link}" />">
@@ -99,7 +99,7 @@
 						</c:if>
 						<c:if test="${slot.position == 3}">
 							<article class="evBox twoCols">
-								<h4>Event</h4>
+								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="eImg" src="${slot.picture}" />
 									<div class="shortDesc">

@@ -48,6 +48,8 @@ public class ConfigurableSlot {
 	private boolean active;
 	@Column(name = "language", nullable = false)
 	private String language;
+	@Column(name = "box_title", nullable = false)
+	private String boxTitle;
 
 	@Override
 	public boolean equals(final Object obj) {
@@ -166,6 +168,14 @@ public class ConfigurableSlot {
 	@Override
 	public String toString() {
 		return "ConfigurableSlot [description=" + description + ", link=" + link + ", picture=" + picture + ", title=" + title + "]";
+	}
+
+	public String getBoxTitle() {
+		return boxTitle;
+	}
+
+	public void setBoxTitle(String boxTitle) {
+		this.boxTitle = boxTitle;
 	}
 
 }
