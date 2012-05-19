@@ -1,6 +1,5 @@
 package tv.esporx.domain.front;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.net.MalformedURLException;
@@ -26,9 +25,8 @@ public class ConfigurableSlot {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", nullable = false)
 	private long id;
-	@NotBlank
 	@Length(max = 1000)
-	@Column(name = "description", nullable = false)
+	@Column(name = "description")
 	private String description = "";
 	@NotBlank
 	@Length(max = 255)
@@ -140,7 +138,6 @@ public class ConfigurableSlot {
 	}
 
 	public void setDescription(final String description) {
-		checkArgument(description.length() > 0);
 		this.description = description;
 	}
 

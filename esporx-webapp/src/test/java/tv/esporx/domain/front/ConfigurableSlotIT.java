@@ -53,11 +53,6 @@ public class ConfigurableSlotIT {
 		assertThat(violations).hasSize(1);
 	}
 
-	@Test
-	public void when_slot_has_empty_description_then_it_is_invalid() {
-		Set<ConstraintViolation<ConfigurableSlot>> violations = validator.validateProperty(slot, "description");
-		assertThat(violations).hasSize(1);
-	}
 
 	@Test
 	public void when_slot_has_empty_link_then_it_is_invalid() {
