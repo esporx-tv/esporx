@@ -34,7 +34,7 @@
 			</h1>
 		</div>
 		<p id="eventDescription">
-			<c:out value="${event.description}" />
+			<c:out value="${event.description}" escapeXml="false" />
 		</p>
         <c:if test="${not empty event.casts}">
             <h2 id="featuring">Featured casts</h2>

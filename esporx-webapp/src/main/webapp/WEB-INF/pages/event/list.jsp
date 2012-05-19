@@ -34,9 +34,6 @@
 			<c:forEach var="event" items="${events}">
 				<div class="eventBox">
 					<h2 class="eventTitle"><a href="<c:url value="/event/see/${event.id}" />"><c:out value="${event.title}" /></a></h2>
-					<blockquote class="eventDescription">
-						<c:out value="${fn:substring(event.description,0,50)}" />...
-					</blockquote>
 					<c:if test="${not empty event.casts}">
 						<h3>Featured casts</h3>
 						<ul class="casts">

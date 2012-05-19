@@ -83,7 +83,7 @@ h3 { font-size: 15pt;}
 #siteNav ul li { height: 100%; text-transform: lowercase; text-align: center; border-width: 0 1px;}
 
 #siteNav>ul { height: 35px; border-top: 1px solid #333;}
-#siteNav>ul>li { width: 25%; float: left;}
+#siteNav>ul>li { width: 20%; float: left;}
 #siteNav ul li a { height: auto !important; padding: 6px 0 .6em;}
 #siteNav ul.subNavLvl1 { height: auto; top: -3px; z-index: 100;} 
 #siteNav li ul.subNavLvl1 { border-left: 2px solid #394567; border-right: 2px solid #394567; border-radius: 0 0 10px 10px / 0 0 100px 100px;
@@ -174,7 +174,7 @@ form { width: 70%; margin: 3% auto;}
 .input input,.input select,.input textarea { border: 1px solid black;}
 form>.submit { text-align: center;}
 form>.submit input { background-color: #CCCCD5;}
-
+#cke_description { margin-top: 15px; padding:0; float:left; width:100%; border:0 none;}
 #submitError { margin:15px auto; padding:10px; width:100%; background-color:white; border:2px solid red; font-weight: bold; font-size:10pt; color:red;}
 #submitError code { font-weight:normal;}
 .errors {

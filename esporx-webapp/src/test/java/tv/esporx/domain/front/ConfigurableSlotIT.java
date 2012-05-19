@@ -75,6 +75,7 @@ public class ConfigurableSlotIT {
 	@Test
 	public void when_slot_has_title_longer_than_100_then_it_is_invalid() {
 		slot.setTitle("Toto Roxx");
+		slot.setBoxTitle("Box title");
 		Set<ConstraintViolation<ConfigurableSlot>> violations = validator.validateProperty(slot, "title");
 		assertThat(violations).hasSize(0);
 		slot.setTitle(generateString(101));

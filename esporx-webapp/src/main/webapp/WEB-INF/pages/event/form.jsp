@@ -15,9 +15,10 @@
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
-	<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/event.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/ckeditor/ckeditor_basic.js" />"></script>
+	<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/event.js" />"></script>
 	
 	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
     <script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
@@ -39,15 +40,6 @@
 						</form:label>
 						<form:input path="title" placeholder="${titlePlaceholder}" />
 						<form:errors path="title" cssClass="errors" />
-					</div>
-					<div class="input">
-						<spring:message code="event.submission.description.placeholder"
-							var="descriptionPlaceholder" />
-						<form:label path="description" title="${descriptionPlaceholder}">
-							<spring:message code="event.submission.description" />
-						</form:label>
-						<form:textarea path="description" />
-						<form:errors path="description" cssClass="errors" />
 					</div>
 
 					<div class="input">
@@ -71,6 +63,16 @@
 						<input type="text" id="endDate" name="endDate" class="datepicker" placeholder="<c:out value="${endDatePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
 						<form:errors path="endDate" cssClass="errors" />
 					</div>
+					
+                    <div class="input">
+                        <spring:message code="event.submission.description.placeholder"
+                            var="descriptionPlaceholder" />
+                        <form:label path="description" title="${descriptionPlaceholder}">
+                            <spring:message code="event.submission.description" />
+                        </form:label>
+                        <form:textarea path="description"  cssClass="ckeditor" />
+                        <form:errors path="description" cssClass="errors" />
+                    </div>
 					
 					<div class="submit">
 						<input type="submit"
