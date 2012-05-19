@@ -44,7 +44,7 @@
 										<section class="fInfos">
 											<h2 class="fTitle">${slide.title}</h2>
 											<p class="fTagline">${slide.tagLine}</p>
-											<p class="fDesc">${slide.description}</p>
+											<p class="fDesc"><c:out value="${slide.description}" escapeXml="false" /></p>
 										</section>
 										<section class="fDetails">
 											<ul class="dList">
@@ -106,7 +106,7 @@
 										<a href="<c:url value="${slot.link}" />">
 											<h5>${slot.title}</h5>
 										</a>
-										<p>${slot.description}</p>
+										<p><c:out value="${slot.description}" escapeXml="false" /></p>
 									</div>
 								</div>
 							</article>

@@ -14,9 +14,10 @@
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
-	<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/slideAdmin.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/ckeditor/ckeditor_basic.js" />"></script>
+	<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/slideAdmin.js" />"></script>
 	
 	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/less.js"/>"></script>
@@ -50,14 +51,6 @@
 						<form:input path="tagLine" placeholder="${tagLinePlaceholder}" />
 						<form:errors path="tagLine" cssClass="errors" />
 					</div>
-
-					<div class="input">
-						<form:label path="description">
-							<spring:message code="slide.submission.description" />
-						</form:label>
-						<form:textarea path="description" />
-						<form:errors path="description" cssClass="errors" />
-					</div>
 					
 					<div class="input">
 						<spring:message code="slide.submission.date.placeholder"
@@ -69,7 +62,6 @@
 						
                         <fmt:formatDate value='${gondolaSlideCommand.date}' pattern='dd/MM/yyyy HH:mm' var="formattedDate"/>
 						<input type="text" id="date" name="date" class="datepicker" placeholder="<c:out value="${datePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
-<%-- 						<form:input path="date" cssClass="datepicker" placeholder="${datePlaceholder}" /> --%>
 						<form:errors path="date" cssClass="errors" />
 					</div>
 
@@ -115,11 +107,17 @@
 						<form:input path="prize" placeholder="${prizePlaceholder}" />
 						<form:errors path="prize" cssClass="errors" />
 					</div>
-					
+
+                    <div class="input">
+                        <form:label path="description">
+                            <spring:message code="slide.submission.description" />
+                        </form:label>
+                        <form:textarea path="description" cssClass="ckeditor" />
+                        <form:errors path="description" cssClass="errors" />
+                    </div>
 					
 					<div class="submit">
-						<input type="submit"
-							value="<spring:message code="cast.submission.submit" />" />
+						<input type="submit" value="<spring:message code="cast.submission.submit" />" />
 					</div>
 				</form:form>
 			</div>

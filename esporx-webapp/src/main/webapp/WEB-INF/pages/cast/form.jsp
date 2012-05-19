@@ -87,15 +87,8 @@
 						<fmt:formatDate value='${castCommand.broadcastDate}' pattern='dd/MM/yyyy HH:mm' var="formattedDate"/>
 						<input type="text" id="broadcastDate" name="broadcastDate" class="datepicker" placeholder="<c:out value="${broadcastDatePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
 						<form:errors path="broadcastDate" cssClass="errors" />
-						
-<%-- 						<form:input path="broadcastDate" cssClass="datepicker" --%>
-<%-- 							placeholder="${broadcastDatePlaceholder}" /> --%>
-<%-- 						<form:errors path="broadcastDate" cssClass="errors" /> --%>
 					</div>
 					
-				
-					
-
 					<div class="input">
 						<form:label path="description">
 							<spring:message code="cast.submission.description" />

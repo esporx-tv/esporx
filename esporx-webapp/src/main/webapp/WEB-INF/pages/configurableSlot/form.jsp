@@ -15,9 +15,10 @@
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
-	<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/slot.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/ckeditor/ckeditor_basic.js" />"></script>
+	<script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/slot.js" />"></script>
 	
 	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
@@ -40,14 +41,6 @@
 						</form:label>
 						<form:input path="title" placeholder="${titlePlaceholder}" />
 						<form:errors path="title" cssClass="errors" />
-					</div>
-					
-					<div class="input">
-						<form:label path="description">
-							<spring:message code="slot.submission.description" />
-						</form:label>
-						<form:textarea path="description" />
-						<form:errors path="description" cssClass="errors" />
 					</div>
 					
 					
@@ -110,6 +103,14 @@
                         </form:label>
                         <form:checkbox class="checkbox" path="active" value="0" />
                         <form:errors path="active" cssClass="errors" />
+                    </div>
+                    
+                    <div class="input">
+                        <form:label path="description">
+                            <spring:message code="slot.submission.description" />
+                        </form:label>
+                        <form:textarea path="description" cssClass="ckeditor" />
+                        <form:errors path="description" cssClass="errors" />
                     </div>
 					
 					<div class="submit">
