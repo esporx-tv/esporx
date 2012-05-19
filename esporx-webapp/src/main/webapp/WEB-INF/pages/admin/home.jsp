@@ -102,8 +102,13 @@
 								<div id="eventsList">
 									<c:forEach var="event" items="${events}">
 										<div class="eventBox">
-											<span><c:out value="${event.title}" /> </span> <a
-												href="<c:url value="/event/remove/${event.id}" />">Remove</a>
+											<span><c:out value="${event.title}" /> </span>
+											<form class="formEvent" action="/event/remove"
+												method="POST">
+												<input name="id" type="hidden"
+													value="<c:out value="${event.id}" />" /> <input
+													class="send" name="send" type="submit" value="Remove" />
+											</form>
 											<a href="<c:url value="/event/edit/${event.id}" />">Edit</a>
 											<a href="<c:url value="/event/link/${event.id}" />">Link
 												cast to this event</a>
@@ -115,12 +120,16 @@
 						<div id="castsContainer" class="displayNone">
 							<div class="adminInfos">
 								<a href="/cast/new">Add a cast</a>
-								<span id="showCasts">Show all casts</span>
 								<div id="castsList" >
 									<c:forEach var="cast" items="${casts}">
 										<div class="castBox">
-											<span><c:out value="${cast.title}" /> </span> <a
-												href="<c:url value="/cast/remove/${cast.id} "/>">Remove</a>
+											<span><c:out value="${cast.title}" /> </span>
+											<form class="formCast" action="/cast/remove"
+												method="POST">
+												<input name="id" type="hidden"
+													value="<c:out value="${cast.id}" />" /> <input
+													class="send" name="send" type="submit" value="Remove" />
+											</form>
 											<a href="<c:url value="/cast/edit/${cast.id}" />">Edit</a>
 										</div>
 									</c:forEach>

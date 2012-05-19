@@ -102,10 +102,13 @@ public class EventController {
 		return successfulRedirectionView();
 	}
 
-	@RequestMapping(value = "/remove/{id}", method = POST)
-	public ModelAndView delete(@PathVariable final long id) {
-		checkArgument(id > 0);
+	@RequestMapping(value = "/remove", method = POST)
+	public ModelAndView delete(final HttpServletResponse response, final HttpServletRequest request) {
+		long id = Long.parseLong(request.getParameter("id"));
 		Event event = eventDao.findById(id);
+		if (event == null) {
+			return notFound(response, "cast/notFound");
+		}
 		eventDao.delete(event);
 		return successfulRedirectionView();
 	}

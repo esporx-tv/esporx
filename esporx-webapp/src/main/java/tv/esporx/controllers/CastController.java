@@ -89,9 +89,9 @@ public class CastController {
 	}
 
 
-	@RequestMapping(value = "/remove/{id}", method = POST)
-	public ModelAndView delete(@PathVariable final long id, final HttpServletResponse response) {
-		checkArgument(id > 0);
+	@RequestMapping(value = "/remove", method = POST)
+	public ModelAndView delete(final HttpServletResponse response, final HttpServletRequest request) {
+		long id = Long.parseLong(request.getParameter("id"));
 		Cast cast = castDao.findById(id);
 		if (cast == null) {
 			return notFound(response, "cast/notFound");
