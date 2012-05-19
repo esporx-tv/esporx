@@ -20,10 +20,22 @@ var Admin = Class.create({
 		}
 		else {
 			adminLogger.debug("Initialize admin js");
-			$(slideContainerId).observe("click", this.display.bind($("slidesList")));
-			$(slotContainerId).observe("click", this.display.bind($("slotsList")));
-			$(castContainerId).observe("click", this.display.bind($("castsList")));
-			$(eventContainerId).observe("click", this.display.bind($("eventsList")));
+			$(slideContainerId).observe("click", function () {
+				this.display($("slidesContainer"));
+				this.active($(slideContainerId));
+			}.bind(this));
+			$(slotContainerId).observe("click", function() {
+				this.display($("slotsContainer"));
+				this.active($(slotContainerId));
+			}.bind(this));
+			$(castContainerId).observe("click", function() {
+				this.display($("castsContainer"));
+				this.active($(castContainerId));
+			}.bind(this));
+			$(eventContainerId).observe("click", function() {
+				this.display($("eventsContainer"));
+				this.active($(eventContainerId));
+			}.bind(this));
 			
 			$$(".gondolaRemove").each(function(element) {
 				element.observe("click", function(event) {
@@ -36,9 +48,35 @@ var Admin = Class.create({
 		
 	},
 
-	display: function(event) {
-		if (this.hasClassName("displayNone")) this.removeClassName("displayNone");
-		else this.addClassName("displayNone");
+	display: function(containerToDisplay) {
+		var ArrayContainer = new Array($("slidesContainer"), $("slotsContainer"), $("castsContainer"), $("eventsContainer"));
+//		var containerToDisplay = this;
+		ArrayContainer.each(function(container) {
+			if (container == containerToDisplay) {
+				if (containerToDisplay.hasClassName("displayNone")) containerToDisplay.removeClassName("displayNone");
+			} else {
+				if (!container.hasClassName("displayNone")) container.addClassName("displayNone");
+			}
+		});
+	},
+	
+	active: function(linkToActive) {
+		console.log('test');
+		var linkContainer = new Array($("showSlides"), $("showSlots"), $("showCasts"), $("showEvents"));
+//		var linkToActive = this;
+		linkContainer.each(function(link) {
+			if (linkToActive == link) {
+				if (!linkToActive.hasClassName("containerSelected"))  {
+					linkToActive.removeClassName("adminName");
+					linkToActive.addClassName("containerSelected");
+				}
+			} else {
+				if (link.hasClassName("containerSelected")) {
+					link.removeClassName("containerSelected");
+					link.addClassName("adminName");
+				}
+			}
+		});
 	}
 });
 
