@@ -52,25 +52,27 @@
 											<c:set var="event" value="${eventSlot.key}" />
 											<c:set var="casts" value="${eventSlot.value}" />
 											<article>
-												<header>
-													<!-- dirty hack to get first cast date -->
-													<c:forEach var="cast" items="${casts}" end="0">
-														<span class="time"> 
-														  <fmt:formatDate pattern="HH:mm" value="${cast.broadcastDate}" />
-														</span>
-													</c:forEach>
-													<h3>${event.title}</h3>
-												</header>
-												<div class="calEventDesc">
-													<c:if test="${event.highlighted}">
-														<div class="eventDetails">
-															<img class="gFImg"
-																src="<c:url value="${staticRoot}/img/events/SC2Event.png" />" />
-															<p>
-																<c:out escapeXml="false" value="${fn:substring(event.strippedDescription, 0, 140)} ..." />
-															</p>
-														</div>
-													</c:if>
+												<a href="/event/see/${event.id}">
+													<header>
+														<!-- dirty hack to get first cast date -->
+														<c:forEach var="cast" items="${casts}" end="0">
+															<span class="time"> 
+															  <fmt:formatDate pattern="HH:mm" value="${cast.broadcastDate}" />
+															</span>
+														</c:forEach>
+														<h3>${event.title}</h3>
+													</header>
+													<div class="calEventDesc">
+														<c:if test="${event.highlighted}">
+															<div class="eventDetails">
+																<img class="gFImg"
+																	src="<c:url value="${staticRoot}/img/events/SC2Event.png" />" />
+																<p>
+																	<c:out escapeXml="false" value="${fn:substring(event.strippedDescription, 0, 140)} ..." />
+																</p>
+															</div>
+														</c:if>
+													</a>
 													<div class="calEventCasts">
 														<c:forEach var="cast" items="${casts}">
 															<a href="<c:url value="/cast/watch/${cast.id}" />"> <c:out
