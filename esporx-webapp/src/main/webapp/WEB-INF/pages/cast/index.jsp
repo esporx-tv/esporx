@@ -11,6 +11,8 @@
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>    
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/externalLinkDetector.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/common.js" />"></script>
     
 	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
