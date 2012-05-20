@@ -26,7 +26,9 @@ input.unsupportedUrl { border:2px solid red;}
 .castItem:nth-child(n+7) blockquote { display: none; padding: 0;}					   
 
 /******* Cast Details  **********/
-.videoPlayer { text-align: center; margin: 20px 0;}
+.videoPlayer { position: relative; text-align: center; padding-top:25px; height:0; padding-bottom: 56.25%; /* 16:9 */}
+.videoPlayer iframe, .videoPlayer object { position: absolute; top: 0; left: 5%; width: 90%; height: 100%;}
+
 
 .castDetails { margin-bottom: 20px;}
 .castDetails blockquote { color: #555; font-size: 0.7em; font-weight: 500; font-style: italic; letter-spacing: .06em; line-height: 1.12em;
