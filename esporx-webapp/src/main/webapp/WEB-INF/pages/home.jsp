@@ -80,11 +80,11 @@
 								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="gFImg" src="${slot.picture}" />
-									<a class="<c:if test="${empty slot.link}"> nopointer</c:if>" href="<c:url value="${slot.link}" />">
+									<c:if test="${not empty slot.link}"><a href="<c:url value="${slot.link}" />"></c:if>
 										<div class="shortDesc">
 											<p>${slot.title}</p>
 										</div> 
-									</a>
+									<c:if test="${not empty slot.link}"></a></c:if>
 								</div>
 							</article>
 						</c:if>
@@ -93,11 +93,11 @@
 								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="gFImg" src="${slot.picture}" />
-									<a class="<c:if test="${empty slot.link}"> nopointer</c:if>" href="<c:url value="${slot.link}" />">
+                                    <c:if test="${not empty slot.link}"><a href="<c:url value="${slot.link}" />"></c:if>
 										<div class="shortDesc">
 											<p>${slot.title}</p>
 										</div> 
-									</a>
+                                    <c:if test="${not empty slot.link}"></a></c:if>
 								</div>
 							</article>
 						</c:if>
@@ -107,9 +107,9 @@
 								<div class="evContent">
 									<img class="eImg" src="${slot.picture}" />
 									<div class="shortDesc">
-										<a class="<c:if test="${empty slot.link}"> nopointer</c:if>" href="<c:url value="${slot.link}" />">
+                                        <c:if test="${not empty slot.link}"><a href="<c:url value="${slot.link}" />"></c:if>
 											<h5>${slot.title}</h5>
-										</a>
+                                        <c:if test="${not empty slot.link}"></a></c:if>
 										<p><c:out value="${slot.description}" escapeXml="false" /></p>
 									</div>
 								</div>

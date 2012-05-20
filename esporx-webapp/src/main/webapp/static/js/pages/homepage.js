@@ -19,7 +19,9 @@ var Homepage = Class.create({
 					var el = Event.element(event);
 					if (!this.isContainedInALink(el)) { 
 						var link = this.matchingFirstDescendantWithTag(this.matchingFirstParentWithClass(el, eventBoxClassName), 'a');
-						this.redirect(link);
+						if(link != undefined) {
+							this.redirect(link);
+						}
 					}
 				}.bind(this));
 			}.bind(this));
