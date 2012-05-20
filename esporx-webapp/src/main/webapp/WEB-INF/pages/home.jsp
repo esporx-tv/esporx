@@ -74,11 +74,11 @@
 				<section id="homeHilits">
 					<c:forEach var="slot" items="${slots}">
 						<c:if test="${slot.position == 1}">
-							<article class="evBox oneCol">
+							<article class="evBox oneCol <c:if test="${not empty slot.link}"> pointer</c:if>">
 								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="gFImg" src="${slot.picture}" />
-									<a href="<c:url value="${slot.link}" />">
+									<a class="<c:if test="${empty slot.link}"> nopointer</c:if>" href="<c:url value="${slot.link}" />">
 										<div class="shortDesc">
 											<p>${slot.title}</p>
 										</div> 
@@ -87,11 +87,11 @@
 							</article>
 						</c:if>
 						<c:if test="${slot.position == 2}">
-							<article class="evBox oneCol">
+							<article class="evBox oneCol <c:if test="${not empty slot.link}"> pointer</c:if>">
 								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="gFImg" src="${slot.picture}" />
-									<a href="<c:url value="${slot.link}" />">
+									<a class="<c:if test="${empty slot.link}"> nopointer</c:if>" href="<c:url value="${slot.link}" />">
 										<div class="shortDesc">
 											<p>${slot.title}</p>
 										</div> 
@@ -100,12 +100,12 @@
 							</article>
 						</c:if>
 						<c:if test="${slot.position == 3}">
-							<article class="evBox twoCols">
+							<article class="evBox twoCols <c:if test="${not empty slot.link}"> pointer</c:if>">
 								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
 									<img class="eImg" src="${slot.picture}" />
 									<div class="shortDesc">
-										<a href="<c:url value="${slot.link}" />">
+										<a class="<c:if test="${empty slot.link}"> nopointer</c:if>" href="<c:url value="${slot.link}" />">
 											<h5>${slot.title}</h5>
 										</a>
 										<p><c:out value="${slot.description}" escapeXml="false" /></p>

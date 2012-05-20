@@ -25,9 +25,8 @@ public class ConfigurableSlot {
 	@Length(max = 1000)
 	@Column(name = "description")
 	private String description = "";
-	@NotBlank
 	@Length(max = 255)
-	@Column(name = "link", nullable = false)
+	@Column(name = "link")
 	private String link = "";
 	@NotBlank
 	@Length(max = 255)

@@ -17,8 +17,10 @@ var Homepage = Class.create({
 			$$('#'+highLightsContainerId+' article.'+eventBoxClassName).each(function(element) {
 				element.observe('click', function(event) {
 					var el = Event.element(event);
-					var link = this.matchingFirstDescendantWithTag(this.matchingFirstParentWithClass(el, eventBoxClassName), 'a');
-					this.redirect(link);
+					if (el.tagName.toUpperCase() != 'A') { 
+						var link = this.matchingFirstDescendantWithTag(this.matchingFirstParentWithClass(el, eventBoxClassName), 'a');
+						this.redirect(link);
+					}
 				}.bind(this));
 			}.bind(this));
 		}
@@ -50,7 +52,7 @@ var Homepage = Class.create({
 	},
 	
 	redirect: function(linkElement) {
-		var destination = linkElement.href;
+		var destination = linkElement.readAttribute('href');
 		if(!destination.blank()) {
 			window.location = destination;
 		}

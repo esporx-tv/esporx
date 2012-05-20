@@ -40,9 +40,11 @@ ul { list-style-type: none;}
 #homeHilits { width: 70%; margin-right: 0.3%; float: left;}
 #sideContent { border-top: 1px solid #333;}
 
-#homeHilits article { border-radius: 0 4px 0 4px / 0 20px 0 20px; box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.8); overflow: hidden; cursor:pointer;}
+#homeHilits article { border-radius: 0 4px 0 4px / 0 20px 0 20px; box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.8); overflow: hidden;}
 #homeHilits article { margin: 0 0 10px 0;}
 #homeHilits article.oneCol:nth-child(2n+1) { margin-right: 1%;}
+.pointer { cursor: pointer;}
+.nopointer { cursor: default;}
 .evBox { position: relative; overflow: hidden;}
 /*.evBox .evContent:before { content: ''; width: 1px; height: 100%; position: absolute; left: 0; top: 0; background-color: #333; z-index: 1;} */
 #homeContent:after { content: ''; width: 1px; height: 100%; position: absolute; right: 0; top: 0; background-color: rgba(20, 20, 30, 0.5);}
