@@ -1,4 +1,19 @@
-@import url( http://fonts.googleapis.com/css?family=Orbitron:400,500,700,900);
+@font-face {
+  font-family: 'Orbitron'; font-style: normal; font-weight: 900;
+  src: local('Orbitron-Black'), url('Orbitron900.woff') format('woff');
+}
+@font-face {
+  font-family: 'Orbitron'; font-style: normal; font-weight: 500;
+  src: local('Orbitron-Medium'), url('Orbitron500.woff') format('woff');
+}
+@font-face {
+  font-family: 'Orbitron'; font-style: normal; font-weight: 400;
+  src: local('Orbitron-Light'), local('Orbitron-Regular'), url('Orbitron400.woff') format('woff');
+}
+@font-face {
+  font-family: 'Orbitron'; font-style: normal; font-weight: 700;
+  src: local('Orbitron-Bold'), url('Orbitron700.woff') format('woff');
+}
 
 *{ margin: 0; padding: 0;}
 
