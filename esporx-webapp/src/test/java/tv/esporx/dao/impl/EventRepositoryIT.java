@@ -118,6 +118,7 @@ public class EventRepositoryIT {
 		insertedEvent.setDescription("Just read this description and you'll be convinced");
 		insertedEvent.setEndDate(new Date());
 		insertedEvent.addCast(cast);
+		insertedEvent.setHighlighted(false);
 		assertThat(eventRepository).isNotNull();
 		eventRepository.saveOrUpdate(insertedEvent);
 		assertThat(insertedEvent.getId()).isGreaterThan(0L);

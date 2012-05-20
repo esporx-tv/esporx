@@ -8,4 +8,5 @@
     <include file="fix_join_column_wrong_name.xml" relativeToChangelogFile="true" />
     <include file="add_language_and_status_to_slots.xml" relativeToChangelogFile="true" />
     <include file="add_box_title_on_configurable_slots.xml" relativeToChangelogFile="true" />
+    <include file="add_highlight_on_event.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

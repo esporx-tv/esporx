@@ -52,6 +52,9 @@ public class Event {
 	@Length(max = 255)
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
+	@NotNull
+	@Column(name = "highlight", nullable = false)
+	private boolean highlighted;
 	// TODO: no EAGER, specific JPQL per usecase with fetch instead!
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "related_event")
@@ -147,6 +150,14 @@ public class Event {
 	@Override
 	public String toString() {
 		return "Event [description=" + description + ", title=" + title + "]";
+	}
+
+	public boolean isHighlighted() {
+		return highlighted;
+	}
+
+	public void setHighlighted(boolean highlighted) {
+		this.highlighted = highlighted;
 	}
 
 }

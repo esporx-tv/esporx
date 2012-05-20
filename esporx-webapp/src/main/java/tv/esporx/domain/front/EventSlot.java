@@ -9,16 +9,18 @@ public class EventSlot {
 	private final long id;
 	private final String title;
 	private final String description;
+	private final boolean highlighted;
 
-	private EventSlot(final long id, final String title, final String description) {
+	private EventSlot(final long id, final String title, final String description, boolean highlighted) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
+		this.highlighted = highlighted;
 	}
 
 	public static EventSlot from(final Event event) {
 		checkNotNull(event);
-		return new EventSlot(event.getId(), event.getTitle(), event.getDescription());
+		return new EventSlot(event.getId(), event.getTitle(), event.getDescription(), event.isHighlighted());
 	}
 
 	public long getId() {
@@ -76,6 +78,10 @@ public class EventSlot {
 		else if (!title.equals(other.title))
 			return false;
 		return true;
+	}
+
+	public boolean isHighlighted() {
+		return highlighted;
 	}
 
 }

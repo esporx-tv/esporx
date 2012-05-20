@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +73,7 @@ public class EventControllerMappingIT {
 
 	@Test
 	public void when_saving_valid_event_then_routed_to_admin_home() throws Exception {
-		mvc.perform(post("/event/new").param("title", "Event Title").param("description", "Event description").param("startDate", "28/03/2015 12:13").param("endDate", "12/12/2018 12:12")).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/event/new").param("title", "Event Title").param("description", "Event description").param("startDate", "28/03/2015 12:13").param("endDate", "12/12/2018 12:12").param("highlighted", "0")).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
 	}
 
 	@Test
@@ -83,15 +82,13 @@ public class EventControllerMappingIT {
 	}
 
 	@Test
-	@Ignore
 	public void when_deleting_event_with_invalid_id_then_routed_to_not_found() throws Exception {
-		mvc.perform(post("/event/remove/-69")).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
+		mvc.perform(post("/event/remove").param("id", "-10000")).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
 	}
 
 	@Test
-	@Ignore
 	public void when_deleting_event_then_routed_to_home() throws Exception {
-		mvc.perform(post("/event/remove/" + event.getId())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/event/remove").param("id", ""+event.getId())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
 	}
 
 	private void givenDataHasBeenPurged() {
@@ -104,6 +101,7 @@ public class EventControllerMappingIT {
 		event.setDescription("Awesome description");
 		event.setStartDate(new Date(100000L));
 		event.setEndDate(new Date());
+		event.setHighlighted(false);
 		assertThat(eventRepository).isNotNull();
 		eventRepository.saveOrUpdate(event);
 		assertThat(event.getId()).isGreaterThan(0L);
