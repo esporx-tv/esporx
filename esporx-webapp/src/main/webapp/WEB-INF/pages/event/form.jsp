@@ -64,6 +64,17 @@
 						<form:errors path="endDate" cssClass="errors" />
 					</div>
 					
+					
+                    <div class="input">
+                        <spring:message code="event.submission.highlight.placeholder"
+                            var="highlightPlaceholder" />
+                        <form:label path="highlighted" title="${highlightPlaceholder}">
+                            <spring:message code="event.submission.highlight.select" />
+                        </form:label>
+                        <form:checkbox class="checkbox" path="highlighted" value="0" />
+                        <form:errors path="highlighted" cssClass="errors" />
+                    </div>
+                    
                     <div class="input">
                         <spring:message code="event.submission.description.placeholder"
                             var="descriptionPlaceholder" />
@@ -73,6 +84,7 @@
                         <form:textarea path="description"  cssClass="ckeditor" />
                         <form:errors path="description" cssClass="errors" />
                     </div>
+                    
 					
 					<div class="submit">
 						<input type="submit"

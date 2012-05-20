@@ -60,13 +60,15 @@
 													<h3>${event.title}</h3>
 												</header>
 												<div class="calEventDesc">
-													<div class="eventDetails">
-														<img class="gFImg"
-															src="<c:url value="${staticRoot}/img/events/SC2Event.png" />" />
-														<p>
-															<c:out value="${fn:substring(event.strippedDescription, 0, 140)} ..." />
-														</p>
-													</div>
+													<c:if test="${event.highlighted}">
+														<div class="eventDetails">
+															<img class="gFImg"
+																src="<c:url value="${staticRoot}/img/events/SC2Event.png" />" />
+															<p>
+																<c:out escapeXml="false" value="${fn:substring(event.strippedDescription, 0, 140)} ..." />
+															</p>
+														</div>
+													</c:if>
 													<div class="calEventCasts">
 														<c:forEach var="cast" items="${casts}">
 															<a href="<c:url value="/cast/watch/${cast.id}" />"> <c:out

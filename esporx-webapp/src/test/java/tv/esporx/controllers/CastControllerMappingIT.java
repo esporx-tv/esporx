@@ -71,7 +71,7 @@ public class CastControllerMappingIT {
 	}
 
 	@Test
-	public void when_requesting_cast_edition_page_with_wrong_id_then_error() throws Exception {
+	public void when_requesting_cast_edition_page_with_wrong_id_then_error() throws Exception{
 		mvc.perform(get("/cast/edit/-10")).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
 	}
 
@@ -87,7 +87,7 @@ public class CastControllerMappingIT {
 
 	@Test
 	public void when_requesting_non_existing_cast_removal_then_error() throws Exception {
-		mvc.perform(post("/cast/remove/" + (cast.getId() + 1000))).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
+		mvc.perform(post("/cast/remove").param("id", "100000")).andExpect(status().isNotFound()).andExpect(view().name("cast/notFound"));
 	}
 
 	@Test
