@@ -40,7 +40,7 @@ ul { list-style-type: none;}
 #homeHilits { width: 70%; margin-right: 0.3%; float: left;}
 #sideContent { border-top: 1px solid #333;}
 
-#homeHilits article { border-radius: 0 4px 0 4px / 0 20px 0 20px; box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.8); overflow: hidden;}
+#homeHilits article { border-radius: 0 4px 0 4px / 0 20px 0 20px; box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.8); overflow: hidden; cursor:pointer;}
 #homeHilits article { margin: 0 0 10px 0;}
 #homeHilits article.oneCol:nth-child(2n+1) { margin-right: 1%;}
 .evBox { position: relative; overflow: hidden;}
