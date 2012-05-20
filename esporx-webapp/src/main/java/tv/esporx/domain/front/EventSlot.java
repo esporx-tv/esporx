@@ -2,6 +2,7 @@ package tv.esporx.domain.front;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import tv.esporx.domain.Event;
+import tv.esporx.framework.string.MarkupKiller;
 
 public class EventSlot {
 
@@ -30,6 +31,10 @@ public class EventSlot {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String getStrippedDescription() {
+		return new MarkupKiller().stripTags(description);
 	}
 
 	@Override

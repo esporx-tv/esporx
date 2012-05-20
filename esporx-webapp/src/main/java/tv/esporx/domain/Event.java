@@ -24,6 +24,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 
+import tv.esporx.framework.string.MarkupKiller;
 import tv.esporx.framework.validation.CrossDateConstraints;
 
 @Entity
@@ -112,13 +113,8 @@ public class Event {
 		return title;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		return result;
+	public String getStrippedDescription() {
+		return new MarkupKiller().stripTags(description);
 	}
 
 	public void setDescription(final String description) {
@@ -137,6 +133,15 @@ public class Event {
 	public void setTitle(final String title) {
 		checkArgument(title != null);
 		this.title = title;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
 	}
 
 	@Override

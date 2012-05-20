@@ -40,8 +40,7 @@
 							<p>Nothing at the moment...</p>
 						</c:when>
 						<c:otherwise>
-							<c:forEach var="column" items="${timeline.columns}"
-								varStatus="status">
+							<c:forEach var="column" items="${timeline.columns}"	varStatus="status">
 								<section id="day<c:out value="${status.count+1}"/>">
 									<h2>
 										<fmt:formatDate value="${column.start}" pattern="EEEE, MMM d" />
@@ -65,7 +64,7 @@
 														<img class="gFImg"
 															src="<c:url value="${staticRoot}/img/events/SC2Event.png" />" />
 														<p>
-															<c:out value="${event.description}" escapeXml="false" />
+															<c:out value="${fn:substring(event.strippedDescription, 0, 140)} ..." />
 														</p>
 													</div>
 													<div class="calEventCasts">
