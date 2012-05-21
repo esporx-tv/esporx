@@ -2,7 +2,7 @@
  * everything is wrapped in a self-invoked anonymous function to limit variables scope
  */
 (function () {  
-	const eventTitleInputId = "title";
+	var eventTitleInputId = "title";
 	
 	document.observe("dom:loaded",function() {
 		var controllerName = 'Event';
