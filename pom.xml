@@ -54,6 +54,7 @@
 		<surefire-plugin.version>2.12</surefire-plugin.version>
 		<war-plugin.version>2.2</war-plugin.version>
 		<jetty-plugin.version>6.1.26</jetty-plugin.version>
+		<jasmine-plugin.version>1.1.0</jasmine-plugin.version>
 
 		<!-- dependency versions -->
 		<junit.version>4.10</junit.version>
@@ -264,7 +265,7 @@
 	</dependencyManagement>
 
 	<build>
-	    <finalName>esporx_tv</finalName>
+		<finalName>esporx_tv</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -293,14 +294,14 @@
 					</execution>
 				</executions>
 			</plugin>
-            <plugin>
-                <groupId>com.cloudbees</groupId>
-                <artifactId>bees-maven-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
-                <configuration>
-                    <port>9998</port>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>com.cloudbees</groupId>
+				<artifactId>bees-maven-plugin</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				<configuration>
+					<port>9998</port>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -359,7 +360,7 @@
 					<artifactId>liquibase-maven-plugin</artifactId>
 					<version>${liquibase.version}</version>
 					<configuration>
-                        <promptOnNonLocalDatabase>${liquibase.prompt-when-remote}</promptOnNonLocalDatabase>
+						<promptOnNonLocalDatabase>${liquibase.prompt-when-remote}</promptOnNonLocalDatabase>
 						<changeLogFile>src/main/resources/tv/esporx/master.xml</changeLogFile>
 						<propertyFile>${env.file}</propertyFile>
 					</configuration>
@@ -372,6 +373,29 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.github.searls</groupId>
+					<artifactId>jasmine-maven-plugin</artifactId>
+					<version>${jasmine-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<jsSrcDir>src/main/webapp/static/js</jsSrcDir>
+						<sourceIncludes>
+						  <include>ext/prototype.js</include>
+						</sourceIncludes>
+						<sourceExcludes>
+							<exclude>ext/*.js</exclude>
+                            <exclude>ext/ckeditor/*.js</exclude>
+                            <exclude>ext/ckeditor/**/*.js</exclude>
+						</sourceExcludes>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
