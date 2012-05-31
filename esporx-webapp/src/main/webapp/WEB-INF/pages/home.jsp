@@ -8,13 +8,15 @@
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/home.css" />" type="text/css" />
     
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/scriptaculous.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/carousel.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/externalLinkDetector.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/common.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/gondola.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/homepage.js" />"></script>
 
     <!-- HTML5 Navigators Compatibility Settings -->
@@ -40,8 +42,8 @@
 			<section id="homeGondola">
 				<div id="gSlideView">
 					<div id="gSlide">
-						<c:forEach var="slide" items="${gondolaSlides}">
-							<article id="gF${slide.id}" class="gFrame event">
+						<c:forEach var="slide" items="${gondolaSlides}" varStatus="loop">
+							<article class="gFrame">
 								<a class="gLink" href="<c:url value="${slide.link}" />"> 
 								    <img class="gFImg" src="${slide.picture}" />
 									<div class="fText">
@@ -63,12 +65,12 @@
 									</div> </a>
 							</article>
 						</c:forEach>
-						<div id="arrowLeft">
+						<a href="#" class="carousel-control" id="arrowLeft" rel="prev">
 							<p>Previous</p>
-						</div>
-						<div id="arrowRight">
+						</a>
+						<a href="#" class="carousel-control" id="arrowRight" rel="next">
 							<p>Next</p>
-						</div>
+						</a>
 					</div>
 				</div>
 			</section>

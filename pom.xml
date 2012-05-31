@@ -388,13 +388,23 @@
 					<configuration>
 						<jsSrcDir>src/main/webapp/static/js</jsSrcDir>
 						<sourceIncludes>
-						  <include>ext/prototype.js</include>
+                            <include>ext/simulate.js</include>
+							<include>ext/prototype.js</include>
+							<include>lib/*.js</include>
+							<include>pages/*.js</include>
 						</sourceIncludes>
 						<sourceExcludes>
 							<exclude>ext/*.js</exclude>
-                            <exclude>ext/ckeditor/*.js</exclude>
-                            <exclude>ext/ckeditor/**/*.js</exclude>
+							<exclude>ext/ckeditor/*.js</exclude>
+							<exclude>ext/ckeditor/**/*.js</exclude>
 						</sourceExcludes>
+                        <preloadSources>
+                            <source>ext/prototype.js</source>
+                            <source>ext/modernizr.js</source>
+                            <source>lib/logger.js</source>
+                            <source>lib/sanityChecker.js</source>
+                            <source>ext/simulate.js</source>
+                        </preloadSources>
 					</configuration>
 				</plugin>
 			</plugins>

@@ -18,7 +18,8 @@
 *{ margin: 0; padding: 0;}
 
 /* Make HTML 5 elements display block-level for consistent styling */  
-header, hgroup, nav, article, footer, address { display: block;} 
+header, hgroup, nav, article, footer, address { display: block;}
+a { outline: none;}
 a img { border: none;}
 
 body { background: url('../img/bgTileGrid01.png') repeat left top, url('../img/bgStarCraft002.jpg') no-repeat center -50px; background-color: #191919;}
