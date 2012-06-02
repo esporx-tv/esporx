@@ -7,78 +7,31 @@ var Homepage = Class.create({
 		
 		var highLightsContainerId = "homeHilits";
 		var eventBoxClassName = "evBox";
-		var gondolaContainer = "gSlide";
 		
 		var hasErrors = false;
 		hasErrors = sanityChecker.checkIfNotExists('#' + highLightsContainerId, 'Highlights container area')|| hasErrors;
-		hasErrors = sanityChecker.checkIfNotExists('#' + gondolaContainer, 'Gondola container area')|| hasErrors;
 		if (hasErrors) {
 			homepageLogger.error('Script initialization failed due to multiple errors');
 		}
 		else {
-			try {
-				homepageLogger.debug('Initializing homepage');
-				
-				$$('#'+highLightsContainerId+' article.'+eventBoxClassName).each(function(element) {
-					element.observe('click', function(event) {
-						var el = Event.element(event);
-						if (!this.isContainedInALink(el)) { 
-							var link = this.matchingFirstDescendantWithTag(this.matchingFirstParentWithClass(el, eventBoxClassName), 'a');
-							if(link != undefined) {
-								this.redirect(link);
-							}
+			homepageLogger.debug('Initializing homepage');
+			
+			$$('#'+highLightsContainerId+' article.'+eventBoxClassName).each(function(element) {
+				element.observe('click', function(event) {
+					var el = Event.element(event);
+					if (!this.isContainedInALink(el)) { 
+						var link = this.matchingFirstDescendantWithTag(this.matchingFirstParentWithClass(el, eventBoxClassName), 'a');
+						if(link != undefined) {
+							this.redirect(link);
 						}
-					}.bind(this));
+					}
 				}.bind(this));
-				
-				this.initCarousel();
-			}
-			catch(e) {
-				console.log(e);
-			}
+			}.bind(this));
+			
+			new Gondola().trigger();
 		}
 	},
 
-	initCarousel: function() {
-		this.duplicateFirstSlide();
-		
-		var slides = $$('article.gFrame');
-		var slideCount = slides.size();
-		var slideContainerWidth = 100 * slideCount;
-		$('gSlide').setStyle({width: slideContainerWidth + '%'});
-		
-		var slideWidth = 100 / slideCount;
-		slides.each(function(slide) {
-			slide.setStyle({width: slideWidth + '%'});
-		});
-		
-		var lastSlideWidth = 100 - (slideCount-1) * slideWidth;
-		slides.last().setStyle({width: lastSlideWidth  + '%'});
-		
-		var carousel = new Carousel('gSlideView', $$('article.gFrame'), $$('.carousel-control'), {
-			auto: true,
-			circular: true,
-			wheel: false,
-			frequency: 3
-		});
-
-		$$('.fInfos').each(function(textBox) {
-			textBox.observe('mouseover', function(event) {
-				var element = Event.element(event);
-				carousel.pause();
-			});
-			textBox.observe('mouseout', function(event) {
-				var element = Event.element(event);
-				carousel.resume(event);
-			});
-		});
-	},
-	
-	duplicateFirstSlide: function() {
-		var copy = $$('article.gFrame').first().clone(true);
-		$$('article.gFrame').last().insert({'after': copy});	
-	},
-	
 	/*
 	 * true if element is a link (<a>) or one of his ancestor is a link
 	 */
