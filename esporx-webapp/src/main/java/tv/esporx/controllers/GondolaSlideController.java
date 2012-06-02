@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -107,8 +108,7 @@ public class GondolaSlideController {
 	}
 
 	@RequestMapping(value = "/remove", method = POST)
-	public ModelAndView delete(final HttpServletResponse response, final HttpServletRequest request) {
-		long id = Long.parseLong(request.getParameter("id"));
+	public ModelAndView delete(@RequestParam final long id, final HttpServletResponse response) {
 		GondolaSlide slide = gondolaDao.findById(id);
 		if (slide == null) {
 			return notFound(response, "cast/notFound");

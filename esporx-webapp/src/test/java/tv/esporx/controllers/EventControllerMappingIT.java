@@ -84,7 +84,7 @@ public class EventControllerMappingIT {
 
 	@Test
 	public void when_deleting_event_then_routed_to_home() throws Exception {
-		mvc.perform(post("/event/remove").param("id", ""+event.getId())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/event/remove").param("id", "" + event.getId())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
 	}
 
 	private void givenOneEventIsInserted() {
