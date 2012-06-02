@@ -15,7 +15,7 @@ import tv.esporx.domain.front.TimelineDimensions;
 import tv.esporx.services.TimelineService;
 
 @Controller
-@RequestMapping("/timeline")
+@RequestMapping("/calendar")
 public class TimelineController {
 
 	@Autowired

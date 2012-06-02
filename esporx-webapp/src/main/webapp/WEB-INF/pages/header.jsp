@@ -14,8 +14,8 @@
 	<nav id="siteNav">
 		<ul>
 			<li><a href="<c:url value="/home" />"><spring:message code="common.menu.home" /></a></li>
-			<li><a href="<c:url value="/timeline/browse" />"><spring:message code="common.menu.calendar" /></a></li>
-			<li><a href="<c:url value="/event/list" />"><spring:message code="common.menu.events" /></a></li>
+			<li><a href="<c:url value="/calendar/browse" />"><spring:message code="common.menu.calendar" /></a></li>
+			<li><a href="<c:url value="/event/browse" />"><spring:message code="common.menu.events" /></a></li>
 			<li><a href="<c:url value="/admin/home" />">Admin</a></li>
 		</ul>
 	</nav>

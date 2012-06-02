@@ -57,7 +57,7 @@ public class EventController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		df.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
-		
+
 		EntityConverter<Event> entityConverter = new EntityConverter<Event>(eventDao, Event.class);
 		((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
 	}
@@ -113,7 +113,7 @@ public class EventController {
 		return successfulRedirectionView();
 	}
 
-	@RequestMapping(value = "/list", method = GET)
+	@RequestMapping(value = "/browse", method = GET)
 	public ModelAndView list() {
 		ModelMap model = new ModelMap();
 		List<Event> events = eventDao.findAll();
