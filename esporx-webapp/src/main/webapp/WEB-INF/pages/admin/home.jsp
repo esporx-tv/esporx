@@ -18,6 +18,7 @@
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/domNavigationUtils.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/externalLinkDetector.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/common.js" />"></script>
 
@@ -29,8 +30,7 @@
 		<c:import url="/WEB-INF/pages/header.jsp" />
 		<div id="catMain">
 			<h1 id="mainTitle">
-				Welcome
-				<c:out value="${adminName}" />
+				&iexcl;Welcome <c:out value="${adminName}" />!
 			</h1>
 			<div id="catContent">
 				<div class="adminItem">
@@ -89,15 +89,12 @@
 									<c:forEach var="event" items="${events}">
 										<div class="eventBox">
 											<span><c:out value="${event.title}" /> </span>
-											<form class="formEvent" action="/event/remove"
-												method="POST">
-												<input name="id" type="hidden"
-													value="<c:out value="${event.id}" />" /> <input
-													class="send" name="send" type="submit" value="Remove" />
+											<form class="formEvent" action="/event/remove" method="POST">
+												<input name="id" type="hidden" value="<c:out value="${event.id}" />" /> 
+												<input class="send" name="send" type="submit" value="Remove" />
 											</form>
 											<a href="<c:url value="/event/edit/${event.id}" />">Edit</a>
-											<a href="<c:url value="/event/link/${event.id}" />">Link
-												cast to this event</a>
+											<a href="<c:url value="/event/link/${event.id}" />">Link cast to this event</a>
 										</div>
 									</c:forEach>
 								</div>
@@ -110,11 +107,9 @@
 									<c:forEach var="cast" items="${casts}">
 										<div class="castBox">
 											<span><c:out value="${cast.title}" /> </span>
-											<form class="formCast" action="/cast/remove"
-												method="POST">
-												<input name="id" type="hidden"
-													value="<c:out value="${cast.id}" />" /> <input
-													class="send" name="send" type="submit" value="Remove" />
+											<form class="formCast" action="/cast/remove" method="POST">
+												<input name="id" type="hidden" value="<c:out value="${cast.id}" />" /> 
+												<input class="send" name="send" type="submit" value="Remove" />
 											</form>
 											<a href="<c:url value="/cast/edit/${cast.id}" />">Edit</a>
 										</div>
@@ -127,5 +122,6 @@
 			</div>
 			<c:import url="/WEB-INF/pages/footer.jsp" />
 		</div>
+	</div>
 </body>
 </html>

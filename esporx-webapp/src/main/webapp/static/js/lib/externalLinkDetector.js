@@ -7,10 +7,28 @@ var ExternalLinkDetector = Class.create({
 			}
 		}.bind(this));
 	},
+	
 	isExternalLink: function(url) {
-	    return !(this._getDomain(window.location.href) === this._getDomain(url));
+	    return !(this.getDomain(window.location.href) === this.getDomain(url));
 	},
-	_getDomain: function(url) {
+	
+	getDomain: function(url) {
 		return url.replace('http://', '').replace('https://', '').split('/')[0];
+	},
+
+	isContainedInALink: function(element) {
+		return element.tagName.toUpperCase() == 'A' || new DomNavigationUtils().firstAncestorWithTag('a', element) != undefined;
+	},
+	
+	interceptRedirect: function(linkElement) {
+		var destination = linkElement.readAttribute('href');
+		if (!destination.blank() && destination.indexOf('#') != 0) {
+			if(this.isExternalLink(destination)) {
+				window.open(destination);
+			}
+			else {
+				window.location = destination;
+			}
+		}
 	}
 });

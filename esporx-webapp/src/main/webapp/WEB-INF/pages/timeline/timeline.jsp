@@ -11,6 +11,7 @@
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/timeline.js"/>"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/domNavigationUtils.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/externalLinkDetector.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/common.js" />"></script>
 
