@@ -2,8 +2,6 @@ package tv.esporx.dao.impl;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
 import org.junit.Before;
@@ -12,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableVideoProvider;
@@ -20,21 +19,19 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-	locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
+locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
 	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
-	"classpath:/META-INF/spring/testApplicationContext.xml"})
+"classpath:/META-INF/spring/testApplicationContext.xml"})
 @Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class VideoProviderRepositoryIT {
 
 	@Autowired
 	private PersistenceCapableVideoProvider repository;
-	@PersistenceContext
-	private EntityManager entityManager;
 	private VideoProvider provider;
 
 	@Before
 	public void setup() {
-		givenDataHasBeenPurged();
 		givenOneProviderHasBeenInserted();
 	}
 
@@ -44,10 +41,6 @@ public class VideoProviderRepositoryIT {
 		copy.setPattern("^(?:(?:https?):\\/\\/)?(?:www\\.)?regame.tv\\/(?:live|vod)\\/([0-9]+).*");
 		copy.setTemplate("whatever");
 		repository.saveOrUpdate(copy);
-	}
-
-	private void givenDataHasBeenPurged() {
-		entityManager.createNativeQuery("delete from video_providers").executeUpdate();
 	}
 
 	private void givenOneProviderHasBeenInserted() {

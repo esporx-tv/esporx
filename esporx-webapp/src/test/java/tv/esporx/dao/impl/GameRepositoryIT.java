@@ -2,15 +2,13 @@ package tv.esporx.dao.impl;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableGame;
@@ -19,14 +17,12 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-	locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
+locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
 	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
-	"classpath:/META-INF/spring/testApplicationContext.xml"})
+"classpath:/META-INF/spring/testApplicationContext.xml"})
 @Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class GameRepositoryIT {
-
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	private Game game;
 	@Autowired
@@ -34,7 +30,6 @@ public class GameRepositoryIT {
 
 	@Before
 	public void setup() {
-		givenDataHasBeenPurged();
 		givenOneInsertedGame();
 	}
 
@@ -61,10 +56,6 @@ public class GameRepositoryIT {
 		assertThat(retrievedGame.getTitle()).isEqualTo(newTitle);
 		assertThat(retrievedGame).isEqualTo(game);
 		assertThat(gameRepository.findByTitle("world of wurstkraft")).isNull();
-	}
-
-	private void givenDataHasBeenPurged() {
-		entityManager.createNativeQuery("delete from games").executeUpdate();
 	}
 
 	private void givenOneInsertedGame() {

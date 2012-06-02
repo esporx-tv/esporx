@@ -5,9 +5,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableCast;
@@ -31,14 +29,13 @@ locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml",
 	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
 "classpath:/META-INF/spring/testApplicationContext.xml"})
 @Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class EventRepositoryIT {
 
 	private Cast cast;
 
 	@Autowired
 	private PersistenceCapableCast castRepository;
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	@Autowired
 	private PersistenceCapableEvent eventRepository;
@@ -52,7 +49,6 @@ public class EventRepositoryIT {
 
 	@Before
 	public void setup() {
-		givenDataHasBeenPurged();
 		givenOneEventIsInserted();
 	}
 
@@ -102,12 +98,6 @@ public class EventRepositoryIT {
 		insertDummyGame();
 		game = gameRepository.findByTitle("Who gives a pluck?");
 		assertThat(game).isNotNull();
-	}
-
-	private void givenDataHasBeenPurged() {
-		entityManager.createNativeQuery("delete from games").executeUpdate();
-		entityManager.createNativeQuery("delete from casts").executeUpdate();
-		entityManager.createNativeQuery("delete from events").executeUpdate();
 	}
 
 	private void givenOneEventIsInserted() {

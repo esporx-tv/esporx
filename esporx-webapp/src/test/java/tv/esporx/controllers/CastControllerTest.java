@@ -27,13 +27,11 @@ public class CastControllerTest {
 	private Cast cast;
 	private CastController castController;
 	private CastRepository castDao;
-	private HttpServletResponse response;
 	private PersistenceCapableVideoProvider videoProvider;
 	private List<Cast> casts;
 
 	@Before
 	public void setup() {
-		response = mock(HttpServletResponse.class);
 		castController = new CastController();
 		setField(castController, "eventDao", mock(PersistenceCapableEvent.class));
 		castDao = mock(CastRepository.class);

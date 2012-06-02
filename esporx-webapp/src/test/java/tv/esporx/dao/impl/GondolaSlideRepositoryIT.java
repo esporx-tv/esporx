@@ -5,15 +5,13 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableGondolaSlide;
@@ -22,14 +20,12 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-	locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
+locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
 	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
-	"classpath:/META-INF/spring/testApplicationContext.xml"})
+"classpath:/META-INF/spring/testApplicationContext.xml"})
 @Transactional
+@TransactionConfiguration(defaultRollback = true)
 public class GondolaSlideRepositoryIT {
-
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	private GondolaSlide gondolaSlide;
 	@Autowired
@@ -37,7 +33,6 @@ public class GondolaSlideRepositoryIT {
 
 	@Before
 	public void setup() {
-		givenDataHasBeenPurged();
 		givenOneInsertedSlide();
 	}
 
@@ -64,10 +59,6 @@ public class GondolaSlideRepositoryIT {
 		assertThat(retrievedSlide.getLanguage()).isEqualTo(newLanguage);
 		assertThat(retrievedSlide).isEqualTo(gondolaSlide);
 		assertThat(gondolaSlideRepository.findByLanguage("fr_FR")).isEmpty();
-	}
-
-	private void givenDataHasBeenPurged() {
-		entityManager.createNativeQuery("delete from gondola_slides").executeUpdate();
 	}
 
 	private void givenOneInsertedSlide() {
