@@ -285,6 +285,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>${failsafe-plugin.version}</version>
+                <configuration>
+                    <forkMode>perthread</forkMode>
+                    <parallel>classes</parallel>
+                    <threadCount>4</threadCount>
+                </configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -388,7 +393,7 @@
 					<configuration>
 						<jsSrcDir>src/main/webapp/static/js</jsSrcDir>
 						<sourceIncludes>
-                            <include>ext/simulate.js</include>
+							<include>ext/simulate.js</include>
 							<include>ext/prototype.js</include>
 							<include>lib/*.js</include>
 							<include>pages/*.js</include>
@@ -398,13 +403,13 @@
 							<exclude>ext/ckeditor/*.js</exclude>
 							<exclude>ext/ckeditor/**/*.js</exclude>
 						</sourceExcludes>
-                        <preloadSources>
-                            <source>ext/prototype.js</source>
-                            <source>ext/modernizr.js</source>
-                            <source>lib/logger.js</source>
-                            <source>lib/sanityChecker.js</source>
-                            <source>ext/simulate.js</source>
-                        </preloadSources>
+						<preloadSources>
+							<source>ext/prototype.js</source>
+							<source>ext/modernizr.js</source>
+							<source>lib/logger.js</source>
+							<source>lib/sanityChecker.js</source>
+							<source>ext/simulate.js</source>
+						</preloadSources>
 					</configuration>
 				</plugin>
 			</plugins>
