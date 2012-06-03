@@ -11,14 +11,9 @@ LAST STEPS
 		 2.2.7. Add test on admin home page + timeline controller
 
 
-6. Remove a gondola slide (if needed)
 9. Get Provider API in order to insert viewer count for a cast.
 10. Link event only with casts which are not yet linked
 11. Admin video provider (for dev only)
-13. configurable slot position mix-up
 14. add */notFound.jsp or change to a unique one with a funky design !
 
-16. Add language to configurable slot
 17. Use sitemesh or tiles for templating stuff.
-
-test
