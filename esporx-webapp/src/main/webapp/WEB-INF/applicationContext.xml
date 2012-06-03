@@ -45,9 +45,12 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<beans profile="default">
-	   <context:property-placeholder location="datasource.properties" system-properties-mode="OVERRIDE" />
+	   <context:property-placeholder location="WEB-INF/datasource.properties" system-properties-mode="OVERRIDE" />
 	</beans>
-	<beans profile="preprod">
-	   <context:property-placeholder location="preprod-datasource.properties" system-properties-mode="OVERRIDE" />
-	</beans>
+    <beans profile="preprod">
+       <context:property-placeholder location="WEB-INF/preprod-datasource.properties" system-properties-mode="OVERRIDE" />
+    </beans>
+    <beans profile="prod">
+       <context:property-placeholder location="WEB-INF/prod-datasource.properties" system-properties-mode="OVERRIDE" />
+    </beans>
 </beans>
