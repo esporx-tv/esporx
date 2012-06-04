@@ -423,9 +423,6 @@
 					<plugin>
 						<groupId>com.cloudbees</groupId>
 						<artifactId>bees-maven-plugin</artifactId>
-						<configuration>
-							<environment>qa</environment>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
