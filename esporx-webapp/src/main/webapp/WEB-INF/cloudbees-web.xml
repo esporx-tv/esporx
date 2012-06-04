@@ -1,17 +1,9 @@
 <?xml version="1.0"?>
 <cloudbees-web-app xmlns="http://www.cloudbees.com/xml/webapp/1">
     <environment name="qa">
-		<appid>esporxtv/preprod</appid>
-		<context-param>
-			<param-name>spring.profiles.active</param-name>
-			<param-value>preprod</param-value>
-		</context-param>
+		<sysprop name="spring.profiles.active" value="preprod" />
 	</environment>
     <environment name="prod">
-        <appid>esporxtv/prod</appid>
-        <context-param>
-            <param-name>spring.profiles.active</param-name>
-            <param-value>prod</param-value>
-        </context-param>
+        <sysprop name="spring.profiles.active" value="prod" />
     </environment>
 </cloudbees-web-app>
