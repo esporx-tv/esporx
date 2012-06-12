@@ -23,13 +23,16 @@ public class DummyController implements EnvironmentAware {
 	public String test() {
 		String string = "the active profile is: ";
 		List<String> activeProfiles = asList(environment.getActiveProfiles());
+		boolean found = false;
 		if(activeProfiles.contains("prod")) {
-			string += "prod";
+			found = true;
+			string += "prod ";
 		}
-		else if (activeProfiles.contains("preprod")) {
-			string += "preprod";
+		if (activeProfiles.contains("preprod")) {
+			found = true;
+			string += "preprod ";
 		}
-		else {
+		if (!found) {
 			string += "default";
 		}
 		return string;
