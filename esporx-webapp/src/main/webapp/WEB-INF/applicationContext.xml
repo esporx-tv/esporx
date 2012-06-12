@@ -16,14 +16,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	   <property name="validationMessageSource" ref="messageSource"/>
 	</bean>
 
-	<!-- data source definition -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="${database.driverClassName}" />
-		<property name="url" value="${database.url}" />
-		<property name="username" value="${database.username}" />
-		<property name="password" value="${database.password}" />
-	</bean>
-
 	<!-- entity manager -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -45,12 +37,30 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<beans profile="default">
-	   <context:property-placeholder location="WEB-INF/datasource.properties" system-properties-mode="OVERRIDE" />
+       <!-- data source definition -->
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+            <property name="url" value="jdbc:mysql://localhost:3306/esporx" />
+            <property name="username" value="root" />
+            <property name="password" value="" />
+        </bean>
 	</beans>
     <beans profile="preprod">
-       <context:property-placeholder location="WEB-INF/preprod-datasource.properties" system-properties-mode="OVERRIDE" />
+       <!-- data source definition -->
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+            <property name="url" value="jdbc:cloudbees://esporx_qa" />
+            <property name="username" value="w4Lafh1" />
+            <property name="password" value="Z0ul4la" />
+        </bean>
     </beans>
     <beans profile="prod">
-       <context:property-placeholder location="WEB-INF/prod-datasource.properties" system-properties-mode="OVERRIDE" />
+       <!-- data source definition -->
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+            <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+            <property name="url" value="jdbc:cloudbees://esporx" />
+            <property name="username" value="c4ndYr0t" />
+            <property name="password" value="3p0s1M74" />
+        </bean>
     </beans>
 </beans>
