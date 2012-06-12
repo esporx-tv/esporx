@@ -5,7 +5,6 @@
            http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	
 	<!-- order matters here! -->
-    <http pattern="/cloudbees-test/" security="none"/>
     <http pattern="/favicon.ico" security="none"/>
     <http pattern="/static/img/**" security="none"/>
     <http pattern="/s/**" security="none"/>
