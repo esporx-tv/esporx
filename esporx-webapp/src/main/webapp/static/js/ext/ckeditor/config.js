@@ -9,4 +9,5 @@ CKEDITOR.editorConfig = function( config )
 	config.language = 'en',
 	// config.uiColor = '#AADC6E';
 	config.toolbar = [ ['FontSize'], ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About'], [ 'Image', 'Table', 'HorizontalRule' ] ];
+	config.autoParagraph = false;
 };
