@@ -38,7 +38,7 @@
 						<li id="showSlides" class="adminName containerSelected">Gondola Slide</li>
 						<li id="showSlots" class="adminName">Configurable Slot</li>
 						<li id="showEvents" class="adminName">Event</li>
-						<li id="showCasts" class="adminName">Cast</li>
+						<li id="showChannels" class="adminName">Channel</li>
 					</ul>
 					<div class="adminContent">
 						<div id="slidesContainer">
@@ -94,24 +94,24 @@
 												<input class="send" name="send" type="submit" value="Remove" />
 											</form>
 											<a href="<c:url value="/event/edit/${event.id}" />">Edit</a>
-											<a href="<c:url value="/event/link/${event.id}" />">Link cast to this event</a>
+											<a href="<c:url value="/event/link/${event.id}" />">Link channel to this event</a>
 										</div>
 									</c:forEach>
 								</div>
 							</div>
 						</div>
-						<div id="castsContainer" class="displayNone">
+						<div id="channelsContainer" class="displayNone">
 							<div class="adminInfos">
-								<a href="/cast/new">Add a cast</a>
-								<div id="castsList" >
-									<c:forEach var="cast" items="${casts}">
-										<div class="castBox">
-											<span><c:out value="${cast.title}" /> </span>
-											<form class="formCast" action="/cast/remove" method="POST">
-												<input name="id" type="hidden" value="<c:out value="${cast.id}" />" /> 
+								<a href="/channel/new">Add a channel</a>
+								<div id="channelsList" >
+									<c:forEach var="channel" items="${channels}">
+										<div class="channelBox">
+											<span><c:out value="${channel.title}" /> </span>
+											<form class="formChannel" action="/channel/remove" method="POST">
+												<input name="id" type="hidden" value="<c:out value="${channel.id}" />" /> 
 												<input class="send" name="send" type="submit" value="Remove" />
 											</form>
-											<a href="<c:url value="/cast/edit/${cast.id}" />">Edit</a>
+											<a href="<c:url value="/channel/edit/${channel.id}" />">Edit</a>
 										</div>
 									</c:forEach>
 								</div>

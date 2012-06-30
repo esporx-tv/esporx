@@ -31,7 +31,7 @@ public class ConfigurableSlotControllerTest {
 		configurableSlot = new ConfigurableSlot();
 		slotDao = Mockito.mock(ConfigurableSlotRepository.class);
 		when(slotDao.findById(anyInt())).thenReturn(configurableSlot);
-		configurableSlotController.setCastRepository(slotDao);
+		configurableSlotController.setChannelRepository(slotDao);
 	}
 
 

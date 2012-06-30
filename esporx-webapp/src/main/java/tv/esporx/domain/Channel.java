@@ -1,11 +1,12 @@
 package tv.esporx.domain;
 
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Collections.unmodifiableList;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,40 +16,36 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
-import org.joda.time.DateTime;
 
 import tv.esporx.framework.validation.SupportedLanguage;
 
-//TODO: add language in findTimeline query?
+import com.google.inject.internal.Objects;
+
 @Entity
-@Table(name = "casts")
-@NamedQueries({ @NamedQuery(name = "Cast.findAll", query = "FROM Cast cast ORDER BY cast.title ASC"), @NamedQuery(name = "Cast.findByTitle", query = "FROM Cast cast WHERE UPPER(cast.title) = :title"), @NamedQuery(name = "Cast.findMostViewed", query = "FROM Cast cast ORDER BY cast.viewerCount DESC"), @NamedQuery(name = "Cast.findTimeLine", query = "FROM Cast cast WHERE event IS NOT NULL AND cast.broadcastDate >= :date AND cast.broadcastDate <= :otherDate ORDER BY cast.broadcastDate ASC") })
-public class Cast {
+@Table(name = "channels")
+@NamedQueries({ //
+	/**/@NamedQuery(name = "Channel.findAll", query = "FROM Channel channel ORDER BY channel.title ASC"), //
+	@NamedQuery(name = "Channel.findByTitle", query = "FROM Channel channel WHERE UPPER(channel.title) = :title"), //
+	@NamedQuery(name = "Channel.findMostViewed", query = "FROM Channel channel ORDER BY channel.viewerCount DESC"), //
+	@NamedQuery(name = "Channel.findTimeLine", query = "FROM Channel channel WHERE event IS NOT NULL") //
+})
+public class Channel {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", nullable = false)
 	private long id;
-	@NotNull
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	@Column(name = "broadcast_date", nullable = false)
-	private DateTime broadcastDate = new DateTime();
+	@Column(name = "is_live", nullable = false)
+	private boolean live;
 	@ManyToMany
-	@JoinTable(name = "cast_casters", joinColumns = { @JoinColumn(name = "castId") }, inverseJoinColumns = { @JoinColumn(name = "casterId") })
+	@JoinTable(name = "channel_casters", joinColumns = { @JoinColumn(name = "channelId") }, inverseJoinColumns = { @JoinColumn(name = "casterId") })
 	private final List<User> casters = new ArrayList<User>();
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "related_game", nullable = false)
-	private Game relatedGame = new Game();
 	@NotBlank
 	@Length(max = 255)
 	@Column(name = "title", nullable = false, unique = true)
@@ -58,7 +55,7 @@ public class Cast {
 	@Column(name = "description", nullable = false)
 	private String description = "";
 	@NotBlank
-	@URL(protocol = "http", message = "{cast.submission.error.url}")
+	@URL(protocol = "http", message = "{channel.submission.error.url}")
 	@Length(max = 255)
 	@Column(name = "video_url", nullable = false, unique = true)
 	private String videoUrl = "";
@@ -67,16 +64,9 @@ public class Cast {
 	@SupportedLanguage
 	@Column(name = "language", nullable = false)
 	private String language = "";
-	@ManyToOne
-	@JoinColumn(name = "related_event", nullable = true)
-	private Event event;
 
 	public void addCaster(final User user) {
 		casters.add(user);
-	}
-
-	public Date getBroadcastDate() {
-		return broadcastDate.toDate();
 	}
 
 	public User getCaster(final int index) {
@@ -89,10 +79,6 @@ public class Cast {
 
 	public long getId() {
 		return id;
-	}
-
-	public Game getRelatedGame() {
-		return relatedGame;
 	}
 
 	public String getTitle() {
@@ -109,15 +95,6 @@ public class Cast {
 
 	public int getViewerCount() {
 		return viewerCount;
-	}
-
-	public void setBroadcastDate(final Date broadcastDate) {
-		this.broadcastDate = new DateTime(broadcastDate);
-	}
-
-	public void setRelatedGame(final Game game) {
-		checkArgument(game != null);
-		this.relatedGame = game;
 	}
 
 	public void setTitle(final String title) {
@@ -156,57 +133,40 @@ public class Cast {
 		this.id = id;
 	}
 
-	public Event getEvent() {
-		return event;
+	public boolean isLive() {
+		return live;
 	}
 
-	public void setEvent(final Event event) {
-		this.event = event;
+	public void setLive(final boolean live) {
+		this.live = live;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((language == null) ? 0 : language.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((videoUrl == null) ? 0 : videoUrl.hashCode());
-		return result;
+		return Objects.hashCode(language, title, videoUrl);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+
+		if (obj == null || (getClass() != obj.getClass()))
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cast other = (Cast) obj;
-		if (language == null) {
-			if (other.language != null)
-				return false;
-		}
-		else if (!language.equals(other.language))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		}
-		else if (!title.equals(other.title))
-			return false;
-		if (videoUrl == null) {
-			if (other.videoUrl != null)
-				return false;
-		}
-		else if (!videoUrl.equals(other.videoUrl))
-			return false;
-		return true;
+
+		Channel other = (Channel) obj;
+		return equal(this.language, other.language) //
+				&& equal(this.title, other.title) //
+				&& equal(this.videoUrl, other.videoUrl);
 	}
 
 	@Override
 	public String toString() {
-		return "Cast [title=" + title + ", videoUrl=" + videoUrl + ", language=" + language + "]";
+		return toStringHelper(this) //
+				.add("title", title) //
+				.add("videoUrl", videoUrl) //
+				.add("language", language) //
+				.toString();
 	}
 
 }

@@ -11,11 +11,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableConfigurableSlot;
 import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.dao.PersistenceCapableGondolaSlide;
-import tv.esporx.domain.Cast;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.front.ConfigurableSlot;
 import tv.esporx.domain.front.GondolaSlide;
@@ -29,7 +29,7 @@ public class AdminController {
 	@Autowired
 	private PersistenceCapableConfigurableSlot slotDao;
 	@Autowired
-	private PersistenceCapableCast castDao;
+	private PersistenceCapableChannel channelDao;
 	@Autowired
 	private PersistenceCapableEvent eventDao;
 
@@ -38,14 +38,14 @@ public class AdminController {
 		ModelMap model = new ModelMap();
 		List<GondolaSlide> gondolas = gondolaDao.findAll();
 		List<ConfigurableSlot> slots = slotDao.findAll();
-		List<Cast> casts = castDao.findAll();
+		List<Channel> channels = channelDao.findAll();
 		List<Event> events = eventDao.findAll();
 		if (principalHasAName(principal)) {
 			String name = principal.getName();
 			model.addAttribute("adminName", name);
 			model.addAttribute("gondolas", gondolas);
 			model.addAttribute("slots", slots);
-			model.addAttribute("casts", casts);
+			model.addAttribute("channels", channels);
 			model.addAttribute("events", events);
 		}
 		return new ModelAndView("admin/home", model);

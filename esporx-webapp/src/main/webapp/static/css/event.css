@@ -8,15 +8,15 @@ a { cursor:pointer; text-decoration:none; color: #DDD;}
 
 .eventBox blockquote { font-size:9pt; word-wrap: break-word; padding:10px;}
 
-.casts { list-style-type:none;}
+.channels { list-style-type:none;}
 
 /** event index **/
 #eventDescription { margin:20px; padding:20px; background-color:rgba(238,238,238,0.2);}
 #featuring { margin:10px 20px; font-size:0.8em;}
-#casts { list-style-type:none;}
-#casts li { font-size:0.6em; margin:10px 20px 10px 50px; padding:10px; background-color:rgba(238,238,238,0.1);}
-#casts li:hover { background-color:rgba(238,238,238,0.3);}
+#channels { list-style-type:none;}
+#channels li { font-size:0.6em; margin:10px 20px 10px 50px; padding:10px; background-color:rgba(238,238,238,0.1);}
+#channels li:hover { background-color:rgba(238,238,238,0.3);}
 
 .eventBox .eventTitle { font-size: .85em; line-height: 2em; padding-left: 40px; position: relative;}
 .eventBox .eventTitle a { font-size: 12px; color: #DCDCF0; font-weight: normal; display: block;}
-ul.casts { padding: 0 0 10px;}
+ul.channels { padding: 0 0 10px;}

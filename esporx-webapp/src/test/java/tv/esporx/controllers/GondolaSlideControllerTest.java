@@ -77,6 +77,6 @@ public class GondolaSlideControllerTest {
 	public void when_submitting_invalid_slide_to_delete_then_throw_exception() {
 		when(gondolaDao.findById(Mockito.anyLong())).thenReturn(null);
 		ModelAndView modelAndView = gondolaController.delete(-15, response);
-		assertThat(modelAndView.getViewName()).isEqualTo("cast/notFound");
+		assertThat(modelAndView.getViewName()).isEqualTo("channel/notFound");
 	}
 }

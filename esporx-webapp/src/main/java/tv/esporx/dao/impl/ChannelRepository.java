@@ -14,35 +14,34 @@ import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.exceptions.PersistenceViolationException;
-import tv.esporx.domain.Cast;
-import tv.esporx.domain.Event;
+import tv.esporx.domain.Channel;
 
 @Repository
-public class CastRepository implements PersistenceCapableCast {
+public class ChannelRepository implements PersistenceCapableChannel {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Override
 	@Transactional
-	public void delete(final Cast cast) {
-		entityManager.remove(cast);
+	public void delete(final Channel channel) {
+		entityManager.remove(channel);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Cast findById(final long id) {
+	public Channel findById(final long id) {
 		checkArgument(id >= 0);
-		return entityManager.find(Cast.class, id);
+		return entityManager.find(Channel.class, id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Cast findByTitle(final String title) {
+	public Channel findByTitle(final String title) {
 		checkArgument(title != null);
-		TypedQuery<Cast> query = entityManager.createNamedQuery("Cast.findByTitle", Cast.class);
+		TypedQuery<Channel> query = entityManager.createNamedQuery("Channel.findByTitle", Channel.class);
 		query.setParameter("title", title.toUpperCase()).setMaxResults(1);
 		try {
 			return query.getSingleResult();
@@ -54,21 +53,16 @@ public class CastRepository implements PersistenceCapableCast {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Cast> findMostViewed() {
-		TypedQuery<Cast> query = entityManager.createNamedQuery("Cast.findMostViewed", Cast.class);
+	public List<Channel> findMostViewed() {
+		TypedQuery<Channel> query = entityManager.createNamedQuery("Channel.findMostViewed", Channel.class);
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional
-	public void saveOrUpdate(final Cast cast) {
+	public void saveOrUpdate(final Channel channel) {
 		try {
-			Event relatedEvent = cast.getEvent();
-			if (relatedEvent != null) {
-				// TODO: move me elsewhere, cast dao shouldn't know about events
-				cast.setEvent(entityManager.find(Event.class, relatedEvent.getId()));
-			}
-			entityManager.persist(cast);
+			entityManager.persist(channel);
 		}
 		catch (PersistenceException e) {
 			throw new PersistenceViolationException(e);
@@ -82,15 +76,15 @@ public class CastRepository implements PersistenceCapableCast {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Cast> findAll() {
-		TypedQuery<Cast> query = entityManager.createNamedQuery("Cast.findAll", Cast.class);
+	public List<Channel> findAll() {
+		TypedQuery<Channel> query = entityManager.createNamedQuery("Channel.findAll", Channel.class);
 		return query.getResultList();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Cast> findTimeLine(final DateTime from, final DateTime to) {
-		TypedQuery<Cast> query = entityManager.createNamedQuery("Cast.findTimeLine", Cast.class);
+	public List<Channel> findTimeLine(final DateTime from, final DateTime to) {
+		TypedQuery<Channel> query = entityManager.createNamedQuery("Channel.findTimeLine", Channel.class);
 		query.setParameter("date", from);
 		query.setParameter("otherDate", to);
 		return query.getResultList();

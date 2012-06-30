@@ -39,11 +39,11 @@
 		<p id="eventDescription">
 			<c:out value="${event.description}" escapeXml="false" />
 		</p>
-        <c:if test="${not empty event.casts}">
-            <h2 id="featuring">Featured casts</h2>
-            <ul id="casts">
-                <c:forEach var="cast" items="${event.casts}" end="3">
-                    <li><a href="<c:url value="/cast/watch/${cast.id}" />"><c:out value="${cast.title}" /></a></li>
+        <c:if test="${not empty event.channels}">
+            <h2 id="featuring">Featured channels</h2>
+            <ul id="channels">
+                <c:forEach var="channel" items="${event.channels}" end="3">
+                    <li><a href="<c:url value="/channel/watch/${channel.id}" />"><c:out value="${channel.title}" /></a></li>
                 </c:forEach>
             </ul>
         </c:if>

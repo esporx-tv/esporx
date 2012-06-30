@@ -12,7 +12,7 @@
 							 border-width: 1px; border-style: solid; border-color:#5C6889#7F90BE#7F90BE#5C6889; border-radius: 4px; float: left;}
 #calContent article h3 { font-size: 12px; color:#DCDCF0; font-weight: normal; padding: 5px; border-bottom: 1px solid#ABC1FF;}
 .eventDetails {color : white}
-.calEventCasts { max-height: 0; background: rgba(202, 202, 255, .04); overflow: hidden;}
+.calEventChannels { max-height: 0; background: rgba(202, 202, 255, .04); overflow: hidden;}
 
 .eventDetails { padding: 10px; background: none repeat scroll 0 0 rgba(0, 0, 0, 0.35); overflow: auto;}
 .eventDetails img { float: left;}

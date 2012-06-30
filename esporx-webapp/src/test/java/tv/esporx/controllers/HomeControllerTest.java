@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
-import tv.esporx.dao.PersistenceCapableCast;
-import tv.esporx.dao.impl.CastRepository;
+import tv.esporx.dao.PersistenceCapableChannel;
+import tv.esporx.dao.impl.ChannelRepository;
 import tv.esporx.dao.impl.ConfigurableSlotRepository;
 import tv.esporx.dao.impl.EventRepository;
 import tv.esporx.dao.impl.GameRepository;
@@ -24,7 +24,7 @@ import tv.esporx.framework.mvc.RequestUtils;
 
 public class HomeControllerTest {
 
-	private PersistenceCapableCast castDao;
+	private PersistenceCapableChannel channelDao;
 	private EventRepository eventDao;
 	private GameRepository gameDao;
 	private GondolaSlideRepository gondolaDao;
@@ -35,8 +35,8 @@ public class HomeControllerTest {
 	@Before
 	public void setup() {
 		homeController = new HomeController();
-		castDao = mock(CastRepository.class);
-		homeController.setCastRepository(castDao);
+		channelDao = mock(ChannelRepository.class);
+		homeController.setChannelRepository(channelDao);
 		eventDao = mock(EventRepository.class);
 		homeController.setEventRepository(eventDao);
 		gondolaDao = mock(GondolaSlideRepository.class);
@@ -69,9 +69,9 @@ public class HomeControllerTest {
 	}
 
 	@Test
-	public void when_accessing_index_page_then_most_viewed_casts_are_included() {
+	public void when_accessing_index_page_then_most_viewed_channels_are_included() {
 		ModelAndView modelAndView = homeController.index(mock(HttpServletRequest.class));
-		assertTrue(modelAndView.getModelMap().containsKey("mostViewedCasts"));
+		assertTrue(modelAndView.getModelMap().containsKey("mostViewedChannels"));
 	}
 
 	@Test
@@ -93,9 +93,9 @@ public class HomeControllerTest {
 	}
 
 	@Test
-	public void when_accessing_page_then_most_viewed_casts_are_retrieved() {
+	public void when_accessing_page_then_most_viewed_channels_are_retrieved() {
 		homeController.index(null);
-		verify(castDao).findMostViewed();
+		verify(channelDao).findMostViewed();
 	}
 
 	@Test

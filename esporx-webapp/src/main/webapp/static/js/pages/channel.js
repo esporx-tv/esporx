@@ -2,9 +2,9 @@
  * everything is wrapped in a self-invoked anonymous function to limit variables scope
  */
 (function() {
-	var castTitleInputId = "title";
+	var channelTitleInputId = "title";
 	var descriptionInputElementId = "description";
-	var formElementId = "castCommand";
+	var formElementId = "channelCommand";
 	var loadingIconId = "loadingIcon";
 
 	var videoUrlInputElementId = "videoUrl";
@@ -14,21 +14,21 @@
 	var findVideoProviderUrl = '/video/matchProvider';
 
 	document.observe("dom:loaded", function() {
-		var controllerName = 'Cast';
-		var castLogger = new Logger(controllerName);
+		var controllerName = 'Channel';
+		var channelLogger = new Logger(controllerName);
 		var sanityChecker = new SanityChecker(controllerName);
 		
 		var hasErrors = false;
-		hasErrors = sanityChecker.checkIfNotExists('#' + castTitleInputId, 'Cast title input')|| hasErrors;
+		hasErrors = sanityChecker.checkIfNotExists('#' + channelTitleInputId, 'Channel title input')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + descriptionInputElementId, 'Description textarea element')	|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + formElementId, 'Form element')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + loadingIconId, 'Loading icon')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + videoUrlInputElementId, 'Video URL text input') || hasErrors;
 
 			if (hasErrors) {
-				castLogger.error('Script initialization failed due to multiple errors');
+				channelLogger.error('Script initialization failed due to multiple errors');
 			} else {
-				$(castTitleInputId).focus();
+				$(channelTitleInputId).focus();
 				$$('input.datepicker').each(function(e) {
 					new Control.DatePicker(e, {
 						'datePicker' : true,
@@ -58,14 +58,14 @@
 								if (!response.empty()) {
 									input.removeClassName(unsupportedUrlClass);
 									input.addClassName(supportedUrlClass);
-									castLogger.debug('Match found: '+ response);
+									channelLogger.debug('Match found: '+ response);
 								} else {
 									input.removeClassName(supportedUrlClass);
 									input.addClassName(unsupportedUrlClass);
 								}
 							},
 							onFailure : function() {
-								castLogger.debug('Request failed - could not find any matching video provider');
+								channelLogger.debug('Request failed - could not find any matching video provider');
 							}
 						});
 					};

@@ -1,0 +1,39 @@
+#broadcastDate { cursor: pointer;}
+input.supportedUrl { border:2px solid green;}
+input.unsupportedUrl { border:2px solid red;}
+
+/******* Channel List  **********/
+.channelItem { color: #666; width: 31%; margin: 0 0 12px 1.5%; position: relative; float: left; overflow: auto;}
+.channelItem:first-child { width: 63.4%;}
+.channelItem:hover { background-color: rgba( 200, 210, 220, 0.9);}
+.channelItem a { color: #999; text-decoration: none;}
+.channelItem a:hover { color: #BBB !important;}
+.channelItem>a { font-family: "Trebuchet MS"; font-size: 1.2em; letter-spacing: -0.2em; text-align: right;
+			  padding-right: 15px; border-top: 1px solid #333; display: block; overflow: auto;}
+
+.channelItem .channelName { font-size: .85em; line-height: 2em; padding-left: 40px; position: relative;}
+.channelItem .channelName a { font-size: 12px; color: #DCDCF0; font-weight: normal; display: block;}
+.channelInfos { font-size: .54em; list-style-type: none; overflow: auto; background: none rgba(25, 25, 45, 0.5);
+				border-bottom: 1px solid #111; position: relative;}
+.channelBroadcastDate { color: #AAC; font-weight: 700; text-shadow: 0 0 0 #DCDCFA; width: 70%; margin: 2px 40px 0 14px;}
+.channelLanguage { color: #DDDDDD; text-transform: uppercase; text-align: center;
+				 padding: 0 .7em; background-color: #334; border: 1px solid #445; position: absolute; top: 0; right: 0;}
+.channelItem blockquote { color: #AAB; font-size: 0.75em; font-weight: 500; font-style: italic; letter-spacing: .05em; line-height: 1.3em; 
+						padding: 1.5em; border-top: 1px solid #333;
+					   /* color: #99A0AA; background-color: rgba(20, 21, 28, 0.85); */}
+.channelItem blockquote p { height: 4.2em; overflow: hidden;}					   
+.channelItem:first-child blockquote p { height: 17.8em;}					   
+.channelItem:nth-child(n+7) blockquote { display: none; padding: 0;}					   
+
+/******* Channel Details  **********/
+.videoPlayer { position: relative; text-align: center; padding-top:25px; height:0; padding-bottom: 56.25%; /* 16:9 */}
+.videoPlayer iframe, .videoPlayer object { position: absolute; top: 0; left: 5%; width: 90%; height: 100%;}
+
+
+.channelDetails { margin-bottom: 20px;}
+.channelDetails blockquote { color: #555; font-size: 0.7em; font-weight: 500; font-style: italic; letter-spacing: .06em; line-height: 1.12em;
+							width: 90%; margin: 0 auto; background-color: rgba(20, 21, 22, 0.5); overflow: auto; border-radius: 4px 4px 0 0;}
+.channelDetails blockquote p { color: #A9A9B0; margin: 1.5em;}
+.channelDetails ul { list-style-type: none; width: 90%; margin: 0 auto; padding: 5px 0; background-color: #000; overflow: auto; border-radius: 0 0 4px 4px;}
+								
+.channelDetails li { font-family: Arial; font-size: 0.5em;  font-weight: bold; text-transform: uppercase; color: #999999; margin: 0 20px; float: left;}

@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-	<title><spring:message code="cast.submission.main_header" /></title>
+	<title><spring:message code="channel.submission.main_header" /></title>
 	
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />" type="text/css" />
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
-	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/cast.css" />" type="text/css" />
+	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/channel.css" />" type="text/css" />
 
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype-date-extensions.js" />"></script>
@@ -21,7 +21,7 @@
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/domNavigationUtils.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/externalLinkDetector.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/common.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/cast.js" />"></script>
+    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/channel.js" />"></script>
     
 	<link rel="stylesheet/less" type="text/css" href="<c:url value="${staticRoot}/css/styles.less"/>">
 	<script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
@@ -35,11 +35,11 @@
 		<c:import url="/WEB-INF/pages/header.jsp" />
 		<div id="catMain">
 			<h1 id="mainTitle">
-				<spring:message code="cast.submission.main_header" />
+				<spring:message code="channel.submission.main_header" />
 			</h1>
 
 			<div id="catContent">
-				<form:form modelAttribute="castCommand">
+				<form:form modelAttribute="channelCommand">
 				    <c:if test="${not empty persistenceError}">
 				        <div id="submitError">
 				            An error occurred while trying to save:
@@ -47,24 +47,11 @@
 				        </div>
 				    </c:if>
                     
-                    <div class="input">
-                        <spring:message code="cast.submission.event.placeholder"
-                            var="eventPlaceholder" />
-                        <form:label path="title" title="${eventPlaceholder}">
-                            <spring:message code="cast.submission.event" />
-                        </form:label>
-                        <form:select path="event">
-                            <form:option value=""></form:option>
-                            <form:options items="${events}" itemValue="id" itemLabel="title" />
-                        </form:select>
-                        <form:errors path="event" cssClass="errors" />
-                    </div>
-				    
 					<div class="input">
-						<spring:message code="cast.submission.title.placeholder"
+						<spring:message code="channel.submission.title.placeholder"
 							var="titlePlaceholder" />
 						<form:label path="title" title="${titlePlaceholder}">
-							<spring:message code="cast.submission.title" />
+							<spring:message code="channel.submission.title" />
 						</form:label>
 						<form:input path="title" placeholder="${titlePlaceholder}" />
 						<form:errors path="title" cssClass="errors" />
@@ -72,11 +59,11 @@
 
                     <div class="input">
                         <form:label path="language">
-                            <spring:message code="cast.submission.language" />
+                            <spring:message code="channel.submission.language" />
                         </form:label>
                         <form:select path="language">
                             <form:option value="">
-                                <spring:message code="cast.submission.language.options.choose" />
+                                <spring:message code="channel.submission.language.options.choose" />
                             </form:option>
                             <form:options items="${allowedLocales}" />
                         </form:select>
@@ -84,37 +71,25 @@
                     </div>
 
 					<div class="input">
-						<spring:message code="cast.submission.url.placeholder"
+						<spring:message code="channel.submission.url.placeholder"
 							var="urlPlaceholder" />
 						<form:label path="videoUrl" title="${urlPlaceholder}">
-							<spring:message code="cast.submission.url" />
+							<spring:message code="channel.submission.url" />
 						</form:label>
 						<form:input path="videoUrl" placeholder="${urlPlaceholder}" />
 						<form:errors path="videoUrl" cssClass="errors" />
 					</div>
 
 					<div class="input">
-						<spring:message code="cast.submission.broadcastDate.placeholder"
-							var="broadcastDatePlaceholder" />
-						<form:label path="broadcastDate" title="${broadcastDatePlaceholder}">
-							<spring:message code="cast.submission.broadcastDate" />
-						</form:label>
-						
-						<fmt:formatDate value='${castCommand.broadcastDate}' pattern='dd/MM/yyyy HH:mm' var="formattedDate"/>
-						<input type="text" id="broadcastDate" name="broadcastDate" class="datepicker" placeholder="<c:out value="${broadcastDatePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
-						<form:errors path="broadcastDate" cssClass="errors" />
-					</div>
-					
-					<div class="input">
 						<form:label path="description">
-							<spring:message code="cast.submission.description" />
+							<spring:message code="channel.submission.description" />
 						</form:label>
 						<form:textarea path="description" cssClass="ckeditor" />
 						<form:errors path="description" cssClass="errors" />
 					</div>
 
 					<div class="submit">
-						<input type="submit" value="<spring:message code="cast.submission.submit" />" />
+						<input type="submit" value="<spring:message code="channel.submission.submit" />" />
 					</div>
 				</form:form>
 			</div>

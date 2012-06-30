@@ -51,14 +51,14 @@
 									<c:forEach var="row" items="${column.rows}">
 										<c:forEach var="eventSlot" items="${row.slots}">
 											<c:set var="event" value="${eventSlot.key}" />
-											<c:set var="casts" value="${eventSlot.value}" />
+											<c:set var="channels" value="${eventSlot.value}" />
 											<article>
 												<a href="/event/see/${event.id}">
 													<header>
-														<!-- dirty hack to get first cast date -->
-														<c:forEach var="cast" items="${casts}" end="0">
+														<!-- dirty hack to get first channel date -->
+														<c:forEach var="channel" items="${channels}" end="0">
 															<span class="time"> 
-															  <fmt:formatDate pattern="HH:mm" value="${cast.broadcastDate}" />
+															  <fmt:formatDate pattern="HH:mm" value="${channel.broadcastDate}" />
 															</span>
 														</c:forEach>
 														<h3>${event.title}</h3>
@@ -74,10 +74,10 @@
 															</div>
 														</c:if>
 													</a>
-													<div class="calEventCasts">
-														<c:forEach var="cast" items="${casts}">
-															<a href="<c:url value="/cast/watch/${cast.id}" />"> <c:out
-																	value="${cast.title}" />
+													<div class="calEventChannels">
+														<c:forEach var="channel" items="${channels}">
+															<a href="<c:url value="/channel/watch/${channel.id}" />"> <c:out
+																	value="${channel.title}" />
 															</a>
 														</c:forEach>
 													</div>

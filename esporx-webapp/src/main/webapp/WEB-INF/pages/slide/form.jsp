@@ -5,7 +5,7 @@
     <title><spring:message code="slide.submission.main_header" /></title>
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />"	type="text/css" />
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />"	type="text/css" />
-	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/cast.css" />"	type="text/css" />
+	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/channel.css" />"	type="text/css" />
 	
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype-date-extensions.js" />"></script>
@@ -94,7 +94,7 @@
 						</form:label>
 						<form:select path="language">
                             <form:option value="">
-                                <spring:message code="cast.submission.language.options.choose" />
+                                <spring:message code="channel.submission.language.options.choose" />
                             </form:option>
                             <form:options items="${allowedLocales}" />
 						</form:select>
@@ -120,7 +120,7 @@
                     </div>
 					
 					<div class="submit">
-						<input type="submit" value="<spring:message code="cast.submission.submit" />" />
+						<input type="submit" value="<spring:message code="channel.submission.submit" />" />
 					</div>
 				</form:form>
 			</div>

@@ -13,8 +13,8 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import tv.esporx.dao.PersistenceCapableCast;
-import tv.esporx.domain.Cast;
+import tv.esporx.dao.PersistenceCapableChannel;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.front.Timeline;
 import tv.esporx.domain.front.TimelineColumn;
@@ -23,7 +23,7 @@ import tv.esporx.domain.front.TimelineRow;
 
 public class TimelineServiceTest {
 
-	private PersistenceCapableCast castDao;
+	private PersistenceCapableChannel channelDao;
 	private TimelineService underTest;
 	private DateTime currentDate;
 	private TimelineDimensions timelineDimensions;
@@ -32,9 +32,9 @@ public class TimelineServiceTest {
 	public void setup() {
 		timelineDimensions = new TimelineDimensions();
 		currentDate = new DateTime().withDate(2012, 3, 4).withTime(3, 5, 0, 0);
-		castDao = mock(PersistenceCapableCast.class);
+		channelDao = mock(PersistenceCapableChannel.class);
 		underTest = new TimelineService();
-		setField(underTest, "castDao", castDao);
+		setField(underTest, "channelDao", channelDao);
 	}
 
 	@Test
@@ -45,20 +45,20 @@ public class TimelineServiceTest {
 	}
 
 	@Test
-	public void when_no_casts_found_then_timeline_is_empty() {
-		givenNoRelatedCastsFound();
+	public void when_no_channels_found_then_timeline_is_empty() {
+		givenNoRelatedChannelsFound();
 		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
 		assertThat(timeline.getColumns()).isEmpty();
 	}
 
 	/*
-	 * there should be only 1 event slot in this column because the 2 casts
+	 * there should be only 1 event slot in this column because the 2 channels
 	 * belong to the same event and their broadcast date are comprised within
 	 * the row scan interval
 	 */
 	@Test
-	public void when_1_event_with_casts_within_timelime_row_scan_time_window_then_timeline_has_only_1_event_slot() {
-		givenOneEventWithGroupedCasts(minutesInScanInterval());
+	public void when_1_event_with_channels_within_timelime_row_scan_time_window_then_timeline_has_only_1_event_slot() {
+		givenOneEventWithGroupedChannels(minutesInScanInterval());
 		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
 		assertThat(timeline.getColumns().size()).isEqualTo(1);
 		TimelineColumn column = timeline.getColumns().get(0);
@@ -66,13 +66,13 @@ public class TimelineServiceTest {
 	}
 
 	/*
-	 * there should be only 1 event slot in this column because the 2 casts
+	 * there should be only 1 event slot in this column because the 2 channels
 	 * belong to the same event and their broadcast date are comprised within
 	 * the same slot
 	 */
 	@Test
-	public void when_1_event_with_casts_within_timelime_slot_time_window_then_timeline_has_only_1_event_slot() {
-		givenOneEventWithGroupedCasts(minutesOutOfScanInterval());
+	public void when_1_event_with_channels_within_timelime_slot_time_window_then_timeline_has_only_1_event_slot() {
+		givenOneEventWithGroupedChannels(minutesOutOfScanInterval());
 		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
 		assertThat(timeline.getColumns().size()).isEqualTo(1);
 		TimelineColumn column = timeline.getColumns().get(0);
@@ -80,8 +80,8 @@ public class TimelineServiceTest {
 	}
 
 	@Test
-	public void when_1_event_with_casts_NOT_within_timelime_slot_time_window_then_timeline_has_2_event_slot() {
-		givenOneEventWithGroupedCasts(minutesNotInSlotInterval());
+	public void when_1_event_with_channels_NOT_within_timelime_slot_time_window_then_timeline_has_2_event_slot() {
+		givenOneEventWithGroupedChannels(minutesNotInSlotInterval());
 		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
 		assertThat(timeline.getColumns().size()).isEqualTo(1);
 		TimelineColumn column = timeline.getColumns().get(0);
@@ -89,8 +89,8 @@ public class TimelineServiceTest {
 	}
 
 	@Test
-	public void when_2_events_with_casts_within_the_row_scan_interval_then_one_row_with_two_slots() {
-		givenTwoEventsWithGroupedCasts(minutesInScanInterval());
+	public void when_2_events_with_channels_within_the_row_scan_interval_then_one_row_with_two_slots() {
+		givenTwoEventsWithGroupedChannels(minutesInScanInterval());
 		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
 		assertThat(timeline.getColumns().size()).isEqualTo(1);
 		TimelineColumn column = timeline.getColumns().get(0);
@@ -101,8 +101,8 @@ public class TimelineServiceTest {
 	}
 
 	@Test
-	public void when_2_events_with_casts_NOT_within_the_row_scan_interval_then_two_rows_with_one_slot_each() {
-		givenTwoEventsWithGroupedCasts(minutesOutOfScanInterval());
+	public void when_2_events_with_channels_NOT_within_the_row_scan_interval_then_two_rows_with_one_slot_each() {
+		givenTwoEventsWithGroupedChannels(minutesOutOfScanInterval());
 		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
 		assertThat(timeline.getColumns().size()).isEqualTo(1);
 		TimelineColumn column = timeline.getColumns().get(0);
@@ -114,8 +114,8 @@ public class TimelineServiceTest {
 	}
 
 	@Test
-	public void when_1_event_with_2_casts_on_different_days_then_2_columns() {
-		givenOneEventWithGroupedCasts(24 * 60);
+	public void when_1_event_with_2_channels_on_different_days_then_2_columns() {
+		givenOneEventWithGroupedChannels(24 * 60);
 		Timeline timeline = underTest.buildTimeline(currentDate, timelineDimensions);
 		assertThat(timeline.getColumns().size()).isEqualTo(2);
 		TimelineColumn column = timeline.getColumns().get(0);
@@ -137,24 +137,22 @@ public class TimelineServiceTest {
 		return 10 + timelineDimensions.getRowInterval().asMilliseconds() / 60000;
 	}
 
-	private void givenOneEventWithGroupedCasts(final int minutes) {
-		Cast cast = cast("fr", "Cast One", "http://www.whatever.com", 0);
-		Cast cast2 = cast("fr", "Cast Two", "http://www.whateverbis.com", minutes);
+	private void givenOneEventWithGroupedChannels(final int minutes) {
+		Channel channel = channel("fr", "Channel One", "http://www.whatever.com", 0);
+		Channel channel2 = channel("fr", "Channel Two", "http://www.whateverbis.com", minutes);
 
 		Event event = new Event();
 		event.setTitle("Beijing power");
 		event.setDescription("Deskrypsyon");
-		cast.setEvent(event);
-		event.addCast(cast);
-		cast2.setEvent(event);
-		event.addCast(cast2);
-		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] { cast, cast2 }));
+		event.addChannel(channel);
+		event.addChannel(channel2);
+		when(channelDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Channel[] { channel, channel2 }));
 
 	}
 
-	private void givenTwoEventsWithGroupedCasts(final int minutes) {
-		Cast cast = cast("fr", "Cast One", "http://www.whatever.com", 0);
-		Cast cast2 = cast("fr", "Cast Two", "http://www.whateverbis.com", minutes);
+	private void givenTwoEventsWithGroupedChannels(final int minutes) {
+		Channel channel = channel("fr", "Channel One", "http://www.whatever.com", 0);
+		Channel channel2 = channel("fr", "Channel Two", "http://www.whateverbis.com", minutes);
 
 		Event event = new Event();
 		event.setTitle("Beijing power");
@@ -162,29 +160,26 @@ public class TimelineServiceTest {
 		Event event2 = new Event();
 		event2.setTitle("Beijing power 2");
 		event2.setDescription("Deskrypsyon bis");
-		cast.setEvent(event);
-		event.addCast(cast);
-		cast2.setEvent(event2);
-		event2.addCast(cast2);
-		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] { cast, cast2 }));
+		event.addChannel(channel);
+		event2.addChannel(channel2);
+		when(channelDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Channel[] { channel, channel2 }));
 
 	}
 
-	private void givenNoRelatedCastsFound() {
-		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] {}));
+	private void givenNoRelatedChannelsFound() {
+		when(channelDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Channel[] {}));
 	}
 
 	private void givenNoEventFound() {
-		when(castDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Cast[] { new Cast() }));
+		when(channelDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Channel[] { new Channel() }));
 	}
 
-	private Cast cast(final String language, final String title, final String url, final int minutes) {
-		Cast cast = new Cast();
-		cast.setLanguage(language);
-		cast.setTitle(title);
-		cast.setVideoUrl(url);
-		cast.setBroadcastDate(currentDate.plusDays(1).plusMinutes(minutes).toDate());
-		return cast;
+	private Channel channel(final String language, final String title, final String url, final int minutes) {
+		Channel channel = new Channel();
+		channel.setLanguage(language);
+		channel.setTitle(title);
+		channel.setVideoUrl(url);
+		return channel;
 	}
 
 }

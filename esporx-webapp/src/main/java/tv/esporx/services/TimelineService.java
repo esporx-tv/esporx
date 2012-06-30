@@ -14,10 +14,10 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tv.esporx.dao.PersistenceCapableCast;
-import tv.esporx.domain.Cast;
+import tv.esporx.dao.PersistenceCapableBroadcast;
+import tv.esporx.domain.Broadcast;
 import tv.esporx.domain.Event;
-import tv.esporx.domain.front.CastSlot;
+import tv.esporx.domain.front.BroadcastSlot;
 import tv.esporx.domain.front.EventSlot;
 import tv.esporx.domain.front.Timeline;
 import tv.esporx.domain.front.TimelineColumn;
@@ -32,17 +32,17 @@ import com.google.common.collect.Sets;
 public class TimelineService {
 
 	@Autowired
-	private PersistenceCapableCast castDao;
+	private PersistenceCapableBroadcast broadcastDao;
 	@Autowired
-	private final CastBroadcastDateComparator broadcastDateComparator = new CastBroadcastDateComparator();
+	private final BroadcastDateComparator broadcastDateComparator = new BroadcastDateComparator();
 	@Autowired
-	private final CastByEventSlotIndexer castByEventSlotIndexer = new CastByEventSlotIndexer();
+	private final BroadcastByEventSlotIndexer channelByEventSlotIndexer = new BroadcastByEventSlotIndexer();
 	@Autowired
-	private final CastToEventConverterFunction castToEventConverter = new CastToEventConverterFunction();
+	private final BroadcastToEventConverterFunction channelToEventConverter = new BroadcastToEventConverterFunction();
 	@Autowired
-	private final CastToCastSlotConverterFunction castToCastSlotConverter = new CastToCastSlotConverterFunction();
+	private final BroadcastToBroadcastSlotConverterFunction channelToChannelSlotConverter = new BroadcastToBroadcastSlotConverterFunction();
 	private TimelineDimensions dimensions = new TimelineDimensions();
-	private Set<Cast> previouslyMatchedCasts;
+	private Set<Broadcast> previouslyMatchedChannels;
 
 	public Timeline buildTimeline(final DateTime startDate, final TimelineDimensions dimensions) {
 		this.dimensions = dimensions;
@@ -52,10 +52,10 @@ public class TimelineService {
 	public Timeline buildTimeline(final DateTime startDate) {
 		Timeline result = new Timeline();
 		DateTime maxDate = lastPossibleDate(startDate);
-		Set<Cast> allCasts = Sets.filter(retrieveCastsBetween(startDate, maxDate), new CastWithNotNullEventPredicate());
-		if (!allCasts.isEmpty()) {
-			for (DateTime currentColumn = earliestBroadcastDateOf(allCasts); currentColumn.isBefore(lastBroadcastDateOf(allCasts).plusSeconds(1)); currentColumn = nextColumn(currentColumn)) {
-				result.add(buildColumn(allCasts, currentColumn));
+		Set<Broadcast> allChannels = Sets.filter(retrieveChannelsBetween(startDate, maxDate), new BroadcastWithNotNullEventPredicate());
+		if (!allChannels.isEmpty()) {
+			for (DateTime currentColumn = earliestBroadcastDateOf(allChannels); currentColumn.isBefore(lastBroadcastDateOf(allChannels).plusSeconds(1)); currentColumn = nextColumn(currentColumn)) {
+				result.add(buildColumn(allChannels, currentColumn));
 			}
 		}
 		return result;
@@ -65,17 +65,17 @@ public class TimelineService {
 		return dimensions.getMaxWidth().plus(startDate).withTimeAtStartOfDay().minusSeconds(1);
 	}
 
-	private Set<Cast> retrieveCastsBetween(final DateTime startDate, final DateTime maxDate) {
-		return new HashSet<Cast>(castDao.findTimeLine(startDate, maxDate));
+	private Set<Broadcast> retrieveChannelsBetween(final DateTime startDate, final DateTime maxDate) {
+		return new HashSet<Broadcast>(broadcastDao.findTimeLine(startDate, maxDate));
 	}
 
-	private DateTime earliestBroadcastDateOf(final Set<Cast> allCasts) {
-		DateTime broadcastDate = new DateTime(Ordering.from(broadcastDateComparator).min(allCasts).getBroadcastDate());
+	private DateTime earliestBroadcastDateOf(final Set<Broadcast> allChannels) {
+		DateTime broadcastDate = new DateTime(Ordering.from(broadcastDateComparator).min(allChannels).getBroadcastDate());
 		return broadcastDate.minusMinutes(broadcastDate.getMinuteOfHour() % (dimensions.getRowInterval().asMilliseconds() / 60000));
 	}
 
-	private DateTime lastBroadcastDateOf(final Set<Cast> allCasts) {
-		DateTime broadcastDate = new DateTime(Ordering.from(broadcastDateComparator).max(allCasts).getBroadcastDate());
+	private DateTime lastBroadcastDateOf(final Set<Broadcast> allChannels) {
+		DateTime broadcastDate = new DateTime(Ordering.from(broadcastDateComparator).max(allChannels).getBroadcastDate());
 		return broadcastDate.minusMinutes(broadcastDate.getMinuteOfHour() % (dimensions.getRowInterval().asMilliseconds() / 60000));
 	}
 
@@ -83,11 +83,11 @@ public class TimelineService {
 		return dimensions.getColumnInterval().plus(currentColumn.withTimeAtStartOfDay());
 	}
 
-	private TimelineColumn buildColumn(final Set<Cast> allCasts, final DateTime currentColumn) {
+	private TimelineColumn buildColumn(final Set<Broadcast> allChannels, final DateTime currentColumn) {
 		reset();
 		TimelineColumn timelineColumn = new TimelineColumn(currentColumn);
 		for (DateTime currentSlot = currentColumn; currentSlot.isBefore(columnBottom(currentColumn)); currentSlot = nextRow(currentSlot)) {
-			TimelineRow row = buildRow(allCasts, currentSlot);
+			TimelineRow row = buildRow(allChannels, currentSlot);
 			if (row != null) {
 				timelineColumn.add(row);
 			}
@@ -96,7 +96,7 @@ public class TimelineService {
 	}
 
 	private void reset() {
-		previouslyMatchedCasts = new HashSet<Cast>();
+		previouslyMatchedChannels = new HashSet<Broadcast>();
 	}
 
 
@@ -108,10 +108,10 @@ public class TimelineService {
 		return dimensions.getRowInterval().plus(currentSlotStart);
 	}
 
-	private TimelineRow buildRow(final Set<Cast> allCasts, final DateTime currentSlotStart) {
+	private TimelineRow buildRow(final Set<Broadcast> allChannels, final DateTime currentSlotStart) {
 		DateTime slotStart = currentSlotStart;
 		DateTime slotEnd = nextPossibleSlot(currentSlotStart).minusSeconds(1);
-		Multimap<EventSlot, CastSlot> matchingSlots = buildMatchingSlots(allCasts, slotStart, slotEnd);
+		Multimap<EventSlot, BroadcastSlot> matchingSlots = buildMatchingSlots(allChannels, slotStart, slotEnd);
 		if (!matchingSlots.isEmpty()) {
 			TimelineRow timelineRow = new TimelineRow(slotStart, slotEnd);
 			timelineRow.putAll(matchingSlots);
@@ -124,37 +124,37 @@ public class TimelineService {
 		return dimensions.getMaxSlotHeight().plus(currentSlotStart);
 	}
 
-	private Multimap<EventSlot, CastSlot> buildMatchingSlots(final Set<Cast> allCasts, final DateTime slotStart, final DateTime slotEnd) {
-		Set<Cast> matchingCasts = findAndTrackMatchingCasts(allCasts, slotStart, slotEnd);
-		Multimap<EventSlot, Cast> indexedCasts = index(matchingCasts, castByEventSlotIndexer);
-		Multimap<EventSlot, CastSlot> result = transformValues(indexedCasts, castToCastSlotConverter);
+	private Multimap<EventSlot, BroadcastSlot> buildMatchingSlots(final Set<Broadcast> allChannels, final DateTime slotStart, final DateTime slotEnd) {
+		Set<Broadcast> matchingChannels = findAndTrackMatchingChannels(allChannels, slotStart, slotEnd);
+		Multimap<EventSlot, Broadcast> indexedChannels = index(matchingChannels, channelByEventSlotIndexer);
+		Multimap<EventSlot, BroadcastSlot> result = transformValues(indexedChannels, channelToChannelSlotConverter);
 		return result;
 	}
 
-	private Set<Cast> findAndTrackMatchingCasts(final Set<Cast> allCasts, final DateTime slotStart, final DateTime slotEnd) {
-		Set<Cast> onlyNewMembers = findMatchingCasts(allCasts, slotStart, slotEnd);
+	private Set<Broadcast> findAndTrackMatchingChannels(final Set<Broadcast> allChannels, final DateTime slotStart, final DateTime slotEnd) {
+		Set<Broadcast> onlyNewMembers = findMatchingChannels(allChannels, slotStart, slotEnd);
 		trackMatchingSlots(onlyNewMembers);
 		return onlyNewMembers;
 	}
 
-	private Set<Cast> findMatchingCasts(final Set<Cast> allCasts, final DateTime slotStart, final DateTime slotEnd) {
-		Set<Cast> onlyNewMembers = newHashSet(difference(findNaturalCastMatches(allCasts, slotStart), previouslyMatchedCasts));
-		Set<Cast> magnetizedMembers = magnetizedCastMatches(allCasts, slotStart, slotEnd, onlyNewMembers);
+	private Set<Broadcast> findMatchingChannels(final Set<Broadcast> allChannels, final DateTime slotStart, final DateTime slotEnd) {
+		Set<Broadcast> onlyNewMembers = newHashSet(difference(findNaturalChannelMatches(allChannels, slotStart), previouslyMatchedChannels));
+		Set<Broadcast> magnetizedMembers = magnetizedChannelMatches(allChannels, slotStart, slotEnd, onlyNewMembers);
 		onlyNewMembers.addAll(magnetizedMembers);
 		return onlyNewMembers;
 	}
 
-	private Set<Cast> findNaturalCastMatches(final Set<Cast> allCasts, final DateTime slotStart) {
-		return filter(allCasts, new CastInRowPredicate(slotStart, nextRow(slotStart).minusSeconds(1)));
+	private Set<Broadcast> findNaturalChannelMatches(final Set<Broadcast> allChannels, final DateTime slotStart) {
+		return filter(allChannels, new BroadcastInRowPredicate(slotStart, nextRow(slotStart).minusSeconds(1)));
 	}
 
-	private Set<Cast> magnetizedCastMatches(final Set<Cast> allCasts, final DateTime slotStart, final DateTime slotEnd, final Set<Cast> naturalMembers) {
-		Iterable<Event> parentEvents = newHashSet(transform(naturalMembers, castToEventConverter));
-		Set<Cast> magnetizedMembers = filter(allCasts, new CastInSlotPredicate(nextRow(slotStart), slotEnd, parentEvents));
+	private Set<Broadcast> magnetizedChannelMatches(final Set<Broadcast> allChannels, final DateTime slotStart, final DateTime slotEnd, final Set<Broadcast> naturalMembers) {
+		Iterable<Event> parentEvents = newHashSet(transform(naturalMembers, channelToEventConverter));
+		Set<Broadcast> magnetizedMembers = filter(allChannels, new BroadcastInSlotPredicate(nextRow(slotStart), slotEnd, parentEvents));
 		return magnetizedMembers;
 	}
 
-	private void trackMatchingSlots(final Set<Cast> onlyNewMembers) {
-		previouslyMatchedCasts.addAll(onlyNewMembers);
+	private void trackMatchingSlots(final Set<Broadcast> onlyNewMembers) {
+		previouslyMatchedChannels.addAll(onlyNewMembers);
 	}
 }

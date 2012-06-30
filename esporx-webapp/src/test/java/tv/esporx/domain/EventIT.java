@@ -37,7 +37,7 @@ public class EventIT {
 	}
 
 	@Test
-	public void when_cast_title_has_more_than_255_then_it_is_invalid() {
+	public void when_channel_title_has_more_than_255_then_it_is_invalid() {
 		event.setTitle("Toto Roxx");
 		Set<ConstraintViolation<Event>> violations = validator.validateProperty(event, "title");
 		assertThat(violations).hasSize(0);

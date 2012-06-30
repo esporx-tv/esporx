@@ -4,9 +4,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title><spring:message code="cast.list.header" /></title>
+    <title><spring:message code="channel.list.header" /></title>
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
-    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/cast.css" />"	type="text/css" />
+    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/channel.css" />"	type="text/css" />
     
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
     <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>    
@@ -24,34 +24,34 @@
 		<c:import url="/WEB-INF/pages/header.jsp" />
 		<div id="catMain">
 			<h1 id="mainTitle">
-				<spring:message code="cast.list.main_header" />
+				<spring:message code="channel.list.main_header" />
 			</h1>
 			<c:choose>
-				<c:when test="${empty casts}">
+				<c:when test="${empty channels}">
 					<p>
-						<spring:message code="cast.list.no_results" />
+						<spring:message code="channel.list.no_results" />
 					</p>
 				</c:when>
 				<c:otherwise>
 					<div id="catContent">
-						<c:forEach var="cast" items="${casts}">
-							<div class="castItem">
-								<h2 class="castName">
-									<a href="<c:url value="/cast/watch/${cast.id}" />">
-										&ldquo; <c:out value="${cast.title}" /> &rdquo;</a>
+						<c:forEach var="channel" items="${channels}">
+							<div class="channelItem">
+								<h2 class="channelName">
+									<a href="<c:url value="/channel/watch/${channel.id}" />">
+										&ldquo; <c:out value="${channel.title}" /> &rdquo;</a>
 								</h2>
-								<ul class="castInfos">
-									<li class="castBroadcastDate"><fmt:formatDate
+								<ul class="channelInfos">
+									<li class="channelBroadcastDate"><fmt:formatDate
 											pattern="EEEEEEEEEEE dd MMMM yyyy, HH:mm"
-											value="${cast.broadcastDate}" />
+											value="${channel.broadcastDate}" />
 									</li>
-									<li class="castLanguage">${cast.language}</li>
+									<li class="channelLanguage">${channel.language}</li>
 								</ul>
 			
-								<blockquote class="castDescription">
-									<p>&ldquo;<c:out value="${fn:substring(cast.description,0,200)}" />...&rdquo;</p>
+								<blockquote class="channelDescription">
+									<p>&ldquo;<c:out value="${fn:substring(channel.description,0,200)}" />...&rdquo;</p>
 								</blockquote>
-								<a href="<c:url value="/cast/watch/${cast.id}" />"> &gt;&gt; </a>
+								<a href="<c:url value="/channel/watch/${channel.id}" />"> &gt;&gt; </a>
 							</div>
 							
 						</c:forEach>

@@ -54,7 +54,7 @@ public class ConfigurableSlotController {
 		IllegalArgumentException.class })
 	@ResponseStatus(value = NOT_FOUND)
 	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
-		return new ModelAndView("cast/notFound");
+		return new ModelAndView("channel/notFound");
 	}
 
 
@@ -78,7 +78,7 @@ public class ConfigurableSlotController {
 	@RequestMapping(value = "/edit/{configurableSlotCommand}", method = GET)
 	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final ConfigurableSlot configurableSlotCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
 		if (configurableSlotCommand == null) {
-			return notFound(response, "cast/notFound");
+			return notFound(response, "channel/notFound");
 		}
 		return populatedConfigurableSlotForm(modelAndView);
 	}
@@ -87,13 +87,13 @@ public class ConfigurableSlotController {
 	public ModelAndView delete(@RequestParam final long id, final HttpServletResponse response) {
 		ConfigurableSlot slot = slotDao.findById(id);
 		if (slot == null) {
-			return notFound(response, "cast/notFound");
+			return notFound(response, "channel/notFound");
 		}
 		slotDao.delete(slot);
 		return new ModelAndView("redirect:/admin/home");
 	}
 
-	public void setCastRepository(final PersistenceCapableConfigurableSlot slotDao) {
+	public void setChannelRepository(final PersistenceCapableConfigurableSlot slotDao) {
 		this.slotDao = slotDao;
 	}
 

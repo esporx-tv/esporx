@@ -5,8 +5,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Date;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -26,9 +25,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.ModelAndView;
 
-import tv.esporx.dao.impl.CastRepository;
+import tv.esporx.dao.impl.ChannelRepository;
 import tv.esporx.dao.impl.GameRepository;
-import tv.esporx.domain.Cast;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Game;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
 
@@ -38,13 +37,13 @@ locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml",
 	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
 "classpath:/META-INF/spring/testApplicationContext.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
-public class CastControllerIT {
+public class ChannelControllerIT {
 	private BindingResult bindingResult;
-	private Cast cast;
+	private Channel channel;
 
 	@Autowired
-	private CastController castController;
-	private CastRepository castDao;
+	private ChannelController channelController;
+	private ChannelRepository channelDao;
 	private GameRepository gameDao;
 
 	@Autowired
@@ -55,17 +54,16 @@ public class CastControllerIT {
 	public void setup() {
 		givenOneGame();
 		givenGameRepositoryIsMocked();
-		givenOneCast();
-		givenCastRepositoryIsMocked();
+		givenOneChannel();
+		givenChannelRepositoryIsMocked();
 	}
 
-	private void givenOneCast() {
-		cast = new Cast();
-		cast.setTitle("Cast Title");
-		cast.setVideoUrl("http://site.com");
-		cast.setBroadcastDate(new Date());
-		cast.setDescription("Zuper description");
-		cast.setLanguage("fr");
+	private void givenOneChannel() {
+		channel = new Channel();
+		channel.setTitle("Channel Title");
+		channel.setVideoUrl("http://site.com");
+		channel.setDescription("Zuper description");
+		channel.setLanguage("fr");
 	}
 
 	private void givenOneGame() {
@@ -73,11 +71,11 @@ public class CastControllerIT {
 		game.setTitle("starcraft2");
 	}
 
-	private void givenCastRepositoryIsMocked() {
-		castDao = mock(CastRepository.class);
-		when(castDao.findById(anyInt())).thenReturn(cast);
-		assertThat(castController).isNotNull();
-		castController.setCastRepository(castDao);
+	private void givenChannelRepositoryIsMocked() {
+		channelDao = mock(ChannelRepository.class);
+		when(channelDao.findById(anyInt())).thenReturn(channel);
+		assertThat(channelController).isNotNull();
+		setField(channelController, "channelDao", channelDao);
 	}
 
 	private void givenGameRepositoryIsMocked() {
@@ -87,41 +85,40 @@ public class CastControllerIT {
 		when(entityManager.createNamedQuery("Game.findByTitle")).thenReturn(query);
 		gameDao = mock(GameRepository.class);
 		when(gameDao.findByTitle(Mockito.anyString())).thenReturn(game);
-		castController.setGameRepository(gameDao);
 	}
 
 
 	@Test
-	public void when_saving_cast_then_cast_is_persisted() {
+	public void when_saving_channel_then_channel_is_persisted() {
 		givenBeanHasBeenValidated();
-		castController.save(cast, bindingResult, new MockHttpServletRequest(), new ModelAndView());
-		verify(castDao).saveOrUpdate(cast);
+		channelController.save(channel, bindingResult, new MockHttpServletRequest(), new ModelAndView());
+		verify(channelDao).saveOrUpdate(channel);
 	}
 
 	@Test
 	public void when_saving_is_successful_then_admin_homepageview_is_returned() {
 		givenBeanHasBeenValidated();
-		ModelAndView modelAndView = castController.save(cast, bindingResult, new MockHttpServletRequest(), new ModelAndView());
+		ModelAndView modelAndView = channelController.save(channel, bindingResult, new MockHttpServletRequest(), new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
 	}
 
 	@Test
 	public void when_saving_is_unsuccessful_then_homepageview_is_returned() {
 		givenBeanHasBeenInvalidated();
-		ModelAndView modelAndView = castController.save(cast, bindingResult, new MockHttpServletRequest(), new ModelAndView());
-		assertThat(modelAndView.getViewName()).isEqualTo("cast/form");
+		ModelAndView modelAndView = channelController.save(channel, bindingResult, new MockHttpServletRequest(), new ModelAndView());
+		assertThat(modelAndView.getViewName()).isEqualTo("channel/form");
 	}
 
 	private void givenBeanHasBeenInvalidated() {
-		cast = new Cast();
-		bindingResult = new BeanPropertyBindingResult(cast, "castCommand");
-		validator.validate(cast, bindingResult);
+		channel = new Channel();
+		bindingResult = new BeanPropertyBindingResult(channel, "channelCommand");
+		validator.validate(channel, bindingResult);
 		assertThat(bindingResult.getErrorCount()).isGreaterThan(0);
 	}
 
 	private void givenBeanHasBeenValidated() {
-		bindingResult = new BeanPropertyBindingResult(cast, "castCommand");
-		validator.validate(cast, bindingResult);
+		bindingResult = new BeanPropertyBindingResult(channel, "channelCommand");
+		validator.validate(channel, bindingResult);
 		assertThat(bindingResult.getErrorCount()).isEqualTo(0);
 	}
 

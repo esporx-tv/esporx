@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 @Constraint(validatedBy = SupportedLanguageValidator.class)
 public @interface SupportedLanguage {
-	String message() default "{cast.submission.error.language}";
+	String message() default "{channel.submission.error.language}";
 
 	Class<?>[] groups() default {};
 

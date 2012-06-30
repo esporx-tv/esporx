@@ -7,13 +7,13 @@ var Admin = Class.create({
 		
 		var slideContainerId = "showSlides";
 		var slotContainerId = "showSlots";
-		var castContainerId = "showCasts";
+		var channelContainerId = "showChannels";
 		var eventContainerId = "showEvents";
 		
 		var hasErrors = false;
 		hasErrors = sanityChecker.checkIfNotExists('#' + slideContainerId, 'Slide container input')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + slotContainerId, 'Slot container input')|| hasErrors;
-		hasErrors = sanityChecker.checkIfNotExists('#' + castContainerId, 'Cast container input')|| hasErrors;
+		hasErrors = sanityChecker.checkIfNotExists('#' + channelContainerId, 'Channel container input')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + eventContainerId, 'Event container input')|| hasErrors;
 		if (hasErrors) {
 			adminLogger.error('Script initialization failed due to multiple errors');
@@ -28,9 +28,9 @@ var Admin = Class.create({
 				this.display($("slotsContainer"));
 				this.active($(slotContainerId));
 			}.bind(this));
-			$(castContainerId).observe("click", function() {
-				this.display($("castsContainer"));
-				this.active($(castContainerId));
+			$(channelContainerId).observe("click", function() {
+				this.display($("channelsContainer"));
+				this.active($(channelContainerId));
 			}.bind(this));
 			$(eventContainerId).observe("click", function() {
 				this.display($("eventsContainer"));
@@ -49,7 +49,7 @@ var Admin = Class.create({
 	},
 
 	display: function(containerToDisplay) {
-		var ArrayContainer = new Array($("slidesContainer"), $("slotsContainer"), $("castsContainer"), $("eventsContainer"));
+		var ArrayContainer = new Array($("slidesContainer"), $("slotsContainer"), $("channelsContainer"), $("eventsContainer"));
 //		var containerToDisplay = this;
 		ArrayContainer.each(function(container) {
 			if (container == containerToDisplay) {
@@ -62,7 +62,7 @@ var Admin = Class.create({
 	
 	active: function(linkToActive) {
 		console.log('test');
-		var linkContainer = new Array($("showSlides"), $("showSlots"), $("showCasts"), $("showEvents"));
+		var linkContainer = new Array($("showSlides"), $("showSlots"), $("showChannels"), $("showEvents"));
 //		var linkToActive = this;
 		linkContainer.each(function(link) {
 			if (linkToActive == link) {

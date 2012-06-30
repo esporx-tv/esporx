@@ -6,7 +6,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>tv.esporx.domain.front.ConfigurableSlot</class>
 		<class>tv.esporx.domain.Game</class>
-		<class>tv.esporx.domain.Cast</class>
+		<class>tv.esporx.domain.Channel</class>
 		<class>tv.esporx.domain.Event</class>
 		<class>tv.esporx.domain.front.GondolaSlide</class>
 		<class>tv.esporx.domain.front.ConfigurableSlot</class>
@@ -24,7 +24,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>tv.esporx.domain.front.ConfigurableSlot</class>
 		<class>tv.esporx.domain.Game</class>
-		<class>tv.esporx.domain.Cast</class>
+		<class>tv.esporx.domain.Channel</class>
 		<class>tv.esporx.domain.Event</class>
 		<class>tv.esporx.domain.front.GondolaSlide</class>
 		<class>tv.esporx.domain.front.ConfigurableSlot</class>

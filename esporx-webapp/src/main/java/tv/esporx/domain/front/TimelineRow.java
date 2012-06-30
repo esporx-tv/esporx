@@ -14,14 +14,14 @@ public class TimelineRow {
 
 	private final DateTime start;
 	private final DateTime end;
-	private final Multimap<EventSlot, CastSlot> eventSlots = create();
+	private final Multimap<EventSlot, BroadcastSlot> eventSlots = create();
 
 	public TimelineRow(final DateTime start, final DateTime end) {
 		this.start = start;
 		this.end = end;
 	}
 
-	public void putAll(final Multimap<EventSlot, CastSlot> slots) {
+	public void putAll(final Multimap<EventSlot, BroadcastSlot> slots) {
 		this.eventSlots.putAll(slots);
 	}
 
@@ -33,7 +33,7 @@ public class TimelineRow {
 		return end.toDate();
 	}
 
-	public Map<EventSlot, Collection<CastSlot>> getSlots() {
+	public Map<EventSlot, Collection<BroadcastSlot>> getSlots() {
 		return eventSlots.asMap();
 	}
 

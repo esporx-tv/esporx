@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableEvent;
-import tv.esporx.domain.Cast;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 
 @Service
@@ -14,17 +14,16 @@ import tv.esporx.domain.Event;
 public class EventService {
 
 	@Autowired
-	private PersistenceCapableCast castDao;
+	private PersistenceCapableChannel channelDao;
 	@Autowired
 	private PersistenceCapableEvent eventDao;
 
 	@Transactional
-	public void saveOrUpdate(final long castId, final long eventId) {
-		Cast cast = castDao.findById(castId);
+	public void saveOrUpdate(final long channelId, final long eventId) {
+		Channel channel = channelDao.findById(channelId);
 		Event event = eventDao.findById(eventId);
-		cast.setEvent(event);
-		castDao.saveOrUpdate(cast);
-		event.addCast(cast);
+		channelDao.saveOrUpdate(channel);
+		event.addChannel(channel);
 		eventDao.saveOrUpdate(event);
 	}
 }

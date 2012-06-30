@@ -25,47 +25,47 @@ locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml",
 	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
 "classpath:/META-INF/spring/testApplicationContext.xml"})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
-public class CastIT {
+public class ChannelIT {
 
-	private Cast cast;
+	private Channel channel;
 
 	@Autowired
 	private Validator validator;
 
 	@Before
 	public void setup() {
-		cast = new Cast();
+		channel = new Channel();
 	}
 
 	@Test
-	public void when_cast_has_empty_title_then_invalid() {
-		Set<ConstraintViolation<Cast>> violations = validator.validateProperty(cast, "title");
+	public void when_channel_has_empty_title_then_invalid() {
+		Set<ConstraintViolation<Channel>> violations = validator.validateProperty(channel, "title");
 		assertThat(violations).hasSize(1);
 	}
 
 	@Test
-	public void when_cast_has_empty_video_url_then_invalid() {
-		Set<ConstraintViolation<Cast>> violations = validator.validateProperty(cast, "videoUrl");
+	public void when_channel_has_empty_video_url_then_invalid() {
+		Set<ConstraintViolation<Channel>> violations = validator.validateProperty(channel, "videoUrl");
 		assertThat(violations).hasSize(1);
 	}
 
 	@Test
-	public void when_cast_title_has_more_than_255_then_invalid() {
-		cast.setTitle("Toto Roxx");
-		Set<ConstraintViolation<Cast>> violations = validator.validateProperty(cast, "title");
+	public void when_channel_title_has_more_than_255_then_invalid() {
+		channel.setTitle("Toto Roxx");
+		Set<ConstraintViolation<Channel>> violations = validator.validateProperty(channel, "title");
 		assertThat(violations).hasSize(0);
-		cast.setTitle(generateString(256));
-		violations = validator.validateProperty(cast, "title");
+		channel.setTitle(generateString(256));
+		violations = validator.validateProperty(channel, "title");
 		assertThat(violations).hasSize(1);
 	}
 
 	@Test
-	public void when_cast_video_url_as_more_than_1000_then_invalid() {
-		cast.setVideoUrl("http://Toto.coxx");
-		Set<ConstraintViolation<Cast>> violations = validator.validateProperty(cast, "videoUrl");
+	public void when_channel_video_url_as_more_than_1000_then_invalid() {
+		channel.setVideoUrl("http://Toto.coxx");
+		Set<ConstraintViolation<Channel>> violations = validator.validateProperty(channel, "videoUrl");
 		assertThat(violations).hasSize(0);
-		cast.setVideoUrl("http://" + generateString(1000) + ".com");
-		violations = validator.validateProperty(cast, "videoUrl");
+		channel.setVideoUrl("http://" + generateString(1000) + ".com");
+		violations = validator.validateProperty(channel, "videoUrl");
 		assertThat(violations).hasSize(1);
 	}
 

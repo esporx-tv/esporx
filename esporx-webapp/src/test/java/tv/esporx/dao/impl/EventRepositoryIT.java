@@ -18,10 +18,10 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.dao.PersistenceCapableGame;
-import tv.esporx.domain.Cast;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.Game;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
@@ -36,10 +36,10 @@ locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml",
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public class EventRepositoryIT {
 
-	private Cast cast;
+	private Channel channel;
 
 	@Autowired
-	private PersistenceCapableCast castRepository;
+	private PersistenceCapableChannel channelRepository;
 
 	@Autowired
 	private PersistenceCapableEvent eventRepository;
@@ -73,7 +73,7 @@ public class EventRepositoryIT {
 	public void when_calling_findById_then_retrieved_event_is_the_same() {
 		Event event = eventRepository.findById(insertedEvent.getId());
 		assertThat(event).isEqualTo(insertedEvent);
-		assertThat(event.getCasts()).containsOnly(cast);
+		assertThat(event.getChannels()).containsOnly(channel);
 	}
 
 	@Test
@@ -105,32 +105,30 @@ public class EventRepositoryIT {
 	}
 
 	private void givenOneEventIsInserted() {
-		givenOneCastIsInserted();
+		givenOneChannelIsInserted();
 		insertedEvent = new Event();
 		insertedEvent.setStartDate(new Date(100000L));
 		insertedEvent.setTitle("TeH event of your life!");
 		insertedEvent.setDescription("Just read this description and you'll be convinced");
 		insertedEvent.setEndDate(new Date());
-		insertedEvent.addCast(cast);
+		insertedEvent.addChannel(channel);
 		insertedEvent.setHighlighted(false);
 		assertThat(eventRepository).isNotNull();
 		eventRepository.saveOrUpdate(insertedEvent);
 		assertThat(insertedEvent.getId()).isGreaterThan(0L);
 	}
 
-	private void givenOneCastIsInserted() {
+	private void givenOneChannelIsInserted() {
 		givenAtLeastOneGameIsStored();
-		cast = new Cast();
-		cast.setRelatedGame(game);
-		cast.setTitle("TeH cast");
-		cast.setVideoUrl("http://not.what.you.think.of");
-		cast.setBroadcastDate(new Date());
-		cast.setViewerCount(2000000);
-		cast.setDescription("defheuirhgeui");
-		cast.setLanguage("fr");
-		assertThat(castRepository).isNotNull();
-		castRepository.saveOrUpdate(cast);
-		assertThat(cast.getId()).isGreaterThan(0L);
+		channel = new Channel();
+		channel.setTitle("TeH channel");
+		channel.setVideoUrl("http://not.what.you.think.of");
+		channel.setViewerCount(2000000);
+		channel.setDescription("defheuirhgeui");
+		channel.setLanguage("fr");
+		assertThat(channelRepository).isNotNull();
+		channelRepository.saveOrUpdate(channel);
+		assertThat(channel.getId()).isGreaterThan(0L);
 	}
 
 	private void insertDummyGame() {

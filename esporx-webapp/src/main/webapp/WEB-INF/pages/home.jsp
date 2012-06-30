@@ -135,12 +135,12 @@
 							</div>
 						</article>
 						<article class="newsBox">
-							<h5>Most Viewed Casts</h5>
+							<h5>Most Viewed Channels</h5>
 							<div class="newsLinks">
-								<c:forEach var="cast" items="${mostViewedCasts}">
+								<c:forEach var="channel" items="${mostViewedChannels}">
 									<a class="newsLink"
-										href="<c:url value="/cast/watch/${cast.id}" />"><c:out
-											value="${cast.title}" /> </a>
+										href="<c:url value="/channel/watch/${channel.id}" />"><c:out
+											value="${channel.title}" /> </a>
 								</c:forEach>
 							</div>
 						</article>

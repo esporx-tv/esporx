@@ -1,26 +1,21 @@
 package tv.esporx.domain.front;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import tv.esporx.domain.Broadcast;
 
-import java.util.Date;
-
-import tv.esporx.domain.Cast;
-
-public class CastSlot {
+public class BroadcastSlot {
 
 	private final long id;
 	private final String title;
-	private final Date broadcastDate;
 
-	private CastSlot(final long id, final String title, final Date broadcastDate) {
+	private BroadcastSlot(final long id, final String title) {
 		this.id = id;
 		this.title = title;
-		this.broadcastDate = broadcastDate;
 	}
 
-	public static CastSlot from(final Cast cast) {
-		checkNotNull(cast);
-		return new CastSlot(cast.getId(), cast.getTitle(), cast.getBroadcastDate());
+	public static BroadcastSlot from(final Broadcast channel) {
+		checkNotNull(channel);
+		return new BroadcastSlot(channel.getId(), channel.getTitle());
 	}
 
 	public long getId() {
@@ -31,13 +26,9 @@ public class CastSlot {
 		return title;
 	}
 
-	public Date getBroadcastDate() {
-		return broadcastDate;
-	}
-
 	@Override
 	public String toString() {
-		return "CastSlot [id=" + id + ", title=" + title + "]";
+		return "ChannelSlot [id=" + id + ", title=" + title + "]";
 	}
 
 	@Override
@@ -57,7 +48,7 @@ public class CastSlot {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CastSlot other = (CastSlot) obj;
+		BroadcastSlot other = (BroadcastSlot) obj;
 		if (id != other.id)
 			return false;
 		if (title == null) {

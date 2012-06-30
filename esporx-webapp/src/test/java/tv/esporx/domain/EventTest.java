@@ -9,13 +9,13 @@ import org.junit.Test;
 
 public class EventTest {
 
-	private Cast cast;
+	private Channel channel;
 	private Event event;
 
 	@Before
 	public void setup() {
 		event = new Event();
-		cast = new Cast();
+		channel = new Channel();
 	}
 
 	@Test
@@ -26,15 +26,15 @@ public class EventTest {
 	}
 
 	@Test
-	public void when_adding_cast_to_event_then_list_size_is_one() {
-		event.addCast(cast);
-		assertThat(event.getCasts().size()).isEqualTo(1);
+	public void when_adding_channel_to_event_then_list_size_is_one() {
+		event.addChannel(channel);
+		assertThat(event.getChannels().size()).isEqualTo(1);
 	}
 
 	@Test
-	public void when_adding_cast_to_event_then_retrieved_cast_is_the_same() {
-		event.addCast(cast);
-		assertThat(event.getCast(0)).isEqualTo(cast);
+	public void when_adding_channel_to_event_then_retrieved_channel_is_the_same() {
+		event.addChannel(channel);
+		assertThat(event.getChannel(0)).isEqualTo(channel);
 	}
 
 	@Test
@@ -51,8 +51,8 @@ public class EventTest {
 	}
 
 	@Test
-	public void when_creating_event_then_cast_list_is_empty() {
-		assertThat(event.getCasts()).isEmpty();
+	public void when_creating_event_then_channel_list_is_empty() {
+		assertThat(event.getChannels()).isEmpty();
 	}
 
 	@Test

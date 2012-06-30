@@ -37,11 +37,11 @@
 						<blockquote>
                             <c:out escapeXml="false" value="${fn:substring(event.strippedDescription,0,140)} ..." />
                         </blockquote>
-						<c:if test="${not empty event.casts}">
-							<h3>Featured casts</h3>
-							<ul class="casts">
-								<c:forEach var="cast" items="${event.casts}" end="3">
-								    <li><a href="<c:url value="/cast/watch/${cast.id}" />"><c:out value="${cast.title}" /></a></li>
+						<c:if test="${not empty event.channels}">
+							<h3>Featured channels</h3>
+							<ul class="channels">
+								<c:forEach var="channel" items="${event.channels}" end="3">
+								    <li><a href="<c:url value="/channel/watch/${channel.id}" />"><c:out value="${channel.title}" /></a></li>
 								</c:forEach>
 							</ul>
 						</c:if>

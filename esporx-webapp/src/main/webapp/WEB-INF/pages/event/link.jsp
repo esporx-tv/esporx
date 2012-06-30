@@ -34,9 +34,9 @@
 			</h1>
 			<div id="catContent">
 				<form name="linkForm" action="/event/link" method="POST">
-					<select name="cast" >
-					<c:forEach var="cast" items="${casts}">
-							<option value="<c:out value="${cast.id}" />"><c:out value="${cast.title}" /></option>
+					<select name="channel" >
+					<c:forEach var="channel" items="${channels}">
+							<option value="<c:out value="${channel.id}" />"><c:out value="${channel.title}" /></option>
 					</c:forEach>
 					</select>
 					<input type="hidden" value="<c:out value="${event.id}" />" name="relatedEvent" />

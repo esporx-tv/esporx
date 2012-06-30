@@ -111,7 +111,7 @@ public class GondolaSlideController {
 	public ModelAndView delete(@RequestParam final long id, final HttpServletResponse response) {
 		GondolaSlide slide = gondolaDao.findById(id);
 		if (slide == null) {
-			return notFound(response, "cast/notFound");
+			return notFound(response, "channel/notFound");
 		}
 		gondolaDao.delete(slide);
 		return new ModelAndView("redirect:/admin/home");

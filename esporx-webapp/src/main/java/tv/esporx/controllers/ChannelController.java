@@ -10,7 +10,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -35,34 +34,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableEvent;
-import tv.esporx.dao.PersistenceCapableGame;
 import tv.esporx.dao.PersistenceCapableVideoProvider;
 import tv.esporx.dao.exceptions.PersistenceViolationException;
-import tv.esporx.dao.impl.GameRepository;
-import tv.esporx.domain.Cast;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
-import tv.esporx.domain.Game;
 import tv.esporx.framework.EntityConverter;
-import tv.esporx.framework.mvc.RequestUtils;
 
 @Controller
-@RequestMapping("/cast")
-public class CastController {
+@RequestMapping("/channel")
+public class ChannelController {
 
-	private static final String COMMAND = "castCommand";
+	private static final String COMMAND = "channelCommand";
 
 	@Autowired
-	private PersistenceCapableCast castDao;
-	@Autowired
-	private PersistenceCapableGame gameDao;
+	private PersistenceCapableChannel channelDao;
 	@Autowired
 	private PersistenceCapableEvent eventDao;
-
-	@Autowired
-	private RequestUtils requestHelper;
-
 	@Autowired
 	private PersistenceCapableVideoProvider videoProvider;
 
@@ -75,8 +64,8 @@ public class CastController {
 		df.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
 
-		EntityConverter<Cast> castConverter = new EntityConverter<Cast>(castDao, Cast.class);
-		((GenericConversionService) binder.getConversionService()).addConverter(castConverter);
+		EntityConverter<Channel> channelConverter = new EntityConverter<Channel>(channelDao, Channel.class);
+		((GenericConversionService) binder.getConversionService()).addConverter(channelConverter);
 
 		EntityConverter<Event> eventConverter = new EntityConverter<Event>(eventDao, Event.class);
 		((GenericConversionService) binder.getConversionService()).addConverter(eventConverter);
@@ -86,40 +75,38 @@ public class CastController {
 		IllegalArgumentException.class })
 	@ResponseStatus(value = NOT_FOUND)
 	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
-		return new ModelAndView("cast/notFound");
+		return new ModelAndView("channel/notFound");
 	}
 
 
 	@RequestMapping(value = "/remove", method = POST)
 	public ModelAndView delete(@RequestParam final long id, final HttpServletResponse response) {
-		Cast cast = castDao.findById(id);
-		if (cast == null) {
-			return notFound(response, "cast/notFound");
+		Channel channel = channelDao.findById(id);
+		if (channel == null) {
+			return notFound(response, "channel/notFound");
 		}
-		castDao.delete(cast);
+		channelDao.delete(channel);
 		return successfulRedirectionView();
 	}
 
 	@RequestMapping(value = "/watch/{id}", method = GET)
 	public ModelAndView index(@PathVariable final long id, final HttpServletResponse response) {
 		checkArgument(id > 0);
-		Cast cast = castDao.findById(id);
-		if (cast == null) {
-			return notFound(response, "cast/notFound");
+		Channel channel = channelDao.findById(id);
+		if (channel == null) {
+			return notFound(response, "channel/notFound");
 		}
-		ModelMap model = new ModelMap("cast", cast);
-		model.addAttribute("embeddedVideo", videoProvider.getEmbeddedContents(cast.getVideoUrl()));
-		return new ModelAndView("cast/index", model);
+		ModelMap model = new ModelMap("channel", channel);
+		model.addAttribute("embeddedVideo", videoProvider.getEmbeddedContents(channel.getVideoUrl()));
+		return new ModelAndView("channel/index", model);
 	}
 
-	@RequestMapping(value = { "/new", "edit/{castCommand}" }, method = POST)
-	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Cast castCommand, final BindingResult result, final HttpServletRequest request, ModelAndView modelAndView) {
-		Game game = gameDao.findByTitle(requestHelper.currentGame(request));
-		castCommand.setRelatedGame(game);
-		modelAndView = populatedCastForm(modelAndView);
+	@RequestMapping(value = { "/new", "edit/{channelCommand}" }, method = POST)
+	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Channel channelCommand, final BindingResult result, final HttpServletRequest request, ModelAndView modelAndView) {
+		modelAndView = populatedChannelForm(modelAndView);
 		try {
 			if (!result.hasErrors()) {
-				castDao.saveOrUpdate(castCommand);
+				channelDao.saveOrUpdate(channelCommand);
 				modelAndView = successfulRedirectionView();
 			}
 		}
@@ -131,41 +118,30 @@ public class CastController {
 
 	@RequestMapping(value = "/new", method = GET)
 	public ModelAndView creation(final ModelAndView modelAndView) {
-		Cast cast = new Cast();
-		cast.setVideoUrl("http://");
-		return populatedCastForm(modelAndView).addObject(COMMAND, cast);
+		Channel channel = new Channel();
+		channel.setVideoUrl("http://");
+		return populatedChannelForm(modelAndView).addObject(COMMAND, channel);
 	}
 
-	@RequestMapping(value = "/edit/{castCommand}", method = GET)
-	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Cast castCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
-		if (castCommand == null) {
-			return notFound(response, "cast/notFound");
+	@RequestMapping(value = "/edit/{channelCommand}", method = GET)
+	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Channel channelCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
+		if (channelCommand == null) {
+			return notFound(response, "channel/notFound");
 		}
-		return populatedCastForm(modelAndView);
-	}
-
-	public void setCastRepository(final PersistenceCapableCast castDao) {
-		this.castDao = castDao;
+		return populatedChannelForm(modelAndView);
 	}
 
 	private ModelAndView successfulRedirectionView() {
 		return new ModelAndView("redirect:/admin/home");
 	}
 
-	private ModelAndView populatedCastForm(final ModelAndView modelAndView) {
-		List<Event> events = eventDao.findAll();
-		modelAndView.addObject("events", events);
+	private ModelAndView populatedChannelForm(final ModelAndView modelAndView) {
 		modelAndView.addObject("allowedLocales", allowedLocales);
-		modelAndView.setViewName("cast/form");
+		modelAndView.setViewName("channel/form");
 		return modelAndView;
 	}
 
 	public void setVideoProvider(final PersistenceCapableVideoProvider videoProvider) {
 		this.videoProvider = videoProvider;
 	}
-
-	public void setGameRepository(final GameRepository gameDao) {
-		this.gameDao = gameDao;
-	}
-
 }

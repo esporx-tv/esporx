@@ -6,7 +6,7 @@
 
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />" type="text/css" />
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
-	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/cast.css" />" type="text/css" />
+	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/channel.css" />" type="text/css" />
 	
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
 	<script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype-date-extensions.js" />"></script>
@@ -129,7 +129,7 @@
 					
 					<div class="submit">
 						<input type="submit"
-							value="<spring:message code="cast.submission.submit" />" />
+							value="<spring:message code="channel.submission.submit" />" />
 					</div>
 				</form:form>
 			</div>

@@ -48,19 +48,19 @@ public class ConfigurableSlotRepositoryIT {
 	}
 
 	@Test
-	public void when_calling_findAll_then_retrieved_cast_is_the_same() {
+	public void when_calling_findAll_then_retrieved_channel_is_the_same() {
 		List<ConfigurableSlot> slots = configurableSlotRepository.findAll();
 		assertThat(slots).containsOnly(insertedSlot);
 	}
 
 	@Test
-	public void when_calling_findById_then_retrieved_cast_is_the_same() {
+	public void when_calling_findById_then_retrieved_channel_is_the_same() {
 		ConfigurableSlot retrievedSlot = configurableSlotRepository.findById(insertedSlot.getId());
 		assertThat(retrievedSlot).isEqualTo(insertedSlot);
 	}
 
 	@Test
-	public void when_updating_slot_then_retrieved_cast_is_the_same() {
+	public void when_updating_slot_then_retrieved_channel_is_the_same() {
 		long previousId = insertedSlot.getId();
 		String newPicture = "updatePicture.png";
 		insertedSlot.setPicture(newPicture);

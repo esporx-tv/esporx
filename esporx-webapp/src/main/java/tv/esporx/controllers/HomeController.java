@@ -13,13 +13,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableConfigurableSlot;
 import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.dao.PersistenceCapableGame;
 import tv.esporx.dao.PersistenceCapableGondolaSlide;
 import tv.esporx.dao.impl.EventRepository;
-import tv.esporx.domain.Cast;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.Game;
 import tv.esporx.domain.front.ConfigurableSlot;
@@ -31,7 +31,7 @@ import tv.esporx.framework.mvc.RequestUtils;
 public class HomeController {
 
 	@Autowired
-	private PersistenceCapableCast castDao;
+	private PersistenceCapableChannel channelDao;
 	@Autowired
 	private PersistenceCapableEvent eventDao;
 	@Autowired
@@ -46,14 +46,14 @@ public class HomeController {
 
 	@RequestMapping(method = GET)
 	public ModelAndView index(final HttpServletRequest incomingRequest) {
-		List<Cast> mostViewedCasts = castDao.findMostViewed();
+		List<Channel> mostViewedChannels = channelDao.findMostViewed();
 		List<Event> mostViewedEvents = eventDao.findAll();
 		List<Event> upNextEvents = eventDao.findUpNext(new DateTime());
 		String currentLocale = requestHelper.currentLocale(incomingRequest);
 		List<GondolaSlide> slides = gondolaDao.findByLanguage(currentLocale);
 		List<ConfigurableSlot> slots = slotDao.findByLanguage(currentLocale);
 		ModelMap model = new ModelMap("mostViewedEvents", mostViewedEvents);
-		model.addAttribute("mostViewedCasts", mostViewedCasts);
+		model.addAttribute("mostViewedChannels", mostViewedChannels);
 		model.addAttribute("upNextEvents", upNextEvents);
 		model.addAttribute("gondolaSlides", slides);
 		model.addAttribute("slots", slots);
@@ -62,8 +62,8 @@ public class HomeController {
 		return new ModelAndView("home", model);
 	}
 
-	public void setCastRepository(final PersistenceCapableCast castDao) {
-		this.castDao = castDao;
+	public void setChannelRepository(final PersistenceCapableChannel channelDao) {
+		this.channelDao = channelDao;
 	}
 
 	public void setEventRepository(final EventRepository eventDao) {

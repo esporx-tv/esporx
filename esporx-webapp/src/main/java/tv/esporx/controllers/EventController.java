@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-import tv.esporx.dao.PersistenceCapableCast;
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableEvent;
-import tv.esporx.domain.Cast;
+import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 import tv.esporx.framework.EntityConverter;
 import tv.esporx.services.EventService;
@@ -49,7 +49,7 @@ public class EventController {
 	@Autowired
 	private PersistenceCapableEvent eventDao;
 	@Autowired
-	private PersistenceCapableCast castDao;
+	private PersistenceCapableChannel channelDao;
 	@Autowired
 	private EventService eventService;
 
@@ -67,7 +67,7 @@ public class EventController {
 		IllegalArgumentException.class })
 	@ResponseStatus(value = NOT_FOUND)
 	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
-		return new ModelAndView("cast/notFound");
+		return new ModelAndView("channel/notFound");
 	}
 
 	@RequestMapping(value = "/see/{id}", method = GET)
@@ -89,7 +89,7 @@ public class EventController {
 	@RequestMapping(value = "/edit/{eventCommand}", method = GET)
 	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Event eventCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
 		if (eventCommand == null) {
-			return notFound(response, "cast/notFound");
+			return notFound(response, "channel/notFound");
 		}
 		return populatedEventForm(modelAndView);
 	}
@@ -107,7 +107,7 @@ public class EventController {
 	public ModelAndView delete(@RequestParam final long id, final HttpServletResponse response) {
 		Event event = eventDao.findById(id);
 		if (event == null) {
-			return notFound(response, "cast/notFound");
+			return notFound(response, "channel/notFound");
 		}
 		eventDao.delete(event);
 		return successfulRedirectionView();
@@ -118,8 +118,8 @@ public class EventController {
 		ModelMap model = new ModelMap();
 		List<Event> events = eventDao.findAll();
 		for (Event event : events) {
-			List<Cast> casts = event.getCasts();
-			model.addAttribute("casts", casts);
+			List<Channel> channels = event.getChannels();
+			model.addAttribute("channels", channels);
 		}
 		model.addAttribute("events", events);
 		return new ModelAndView("event/list", model);
@@ -128,18 +128,18 @@ public class EventController {
 	@RequestMapping(value = "/link/{id}", method = GET)
 	public ModelAndView link(@PathVariable final long id) {
 		Event event = eventDao.findById(id);
-		List<Cast> casts = castDao.findAll();
+		List<Channel> channels = channelDao.findAll();
 		ModelMap model = new ModelMap();
 		model.addAttribute("event", event);
-		model.addAttribute("casts", casts);
+		model.addAttribute("channels", channels);
 		return new ModelAndView("event/link", model);
 	}
 
 	@RequestMapping(value = "/link", method = POST)
 	public ModelAndView update(final HttpServletRequest request) {
-		long castId = parseLong(request.getParameter("cast"));
+		long channelId = parseLong(request.getParameter("channel"));
 		long eventId = parseLong(request.getParameter("relatedEvent"));
-		eventService.saveOrUpdate(castId, eventId);
+		eventService.saveOrUpdate(channelId, eventId);
 		return successfulRedirectionView();
 	}
 

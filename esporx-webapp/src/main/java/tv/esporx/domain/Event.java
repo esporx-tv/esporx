@@ -58,10 +58,10 @@ public class Event {
 	// TODO: no EAGER, specific JPQL per usecase with fetch instead!
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "related_event")
-	private final List<Cast> casts = new ArrayList<Cast>();
+	private final List<Channel> channels = new ArrayList<Channel>();
 
-	public void addCast(final Cast cast) {
-		casts.add(cast);
+	public void addChannel(final Channel channel) {
+		channels.add(channel);
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class Event {
 		return true;
 	}
 
-	public Cast getCast(final int index) {
-		return casts.get(index);
+	public Channel getChannel(final int index) {
+		return channels.get(index);
 	}
 
-	public List<Cast> getCasts() {
-		return casts;
+	public List<Channel> getChannels() {
+		return channels;
 	}
 
 	public String getDescription() {
