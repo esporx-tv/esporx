@@ -1,7 +1,9 @@
-<%@ include file="./WEB-INF/pages/include/common.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
+<spring:eval expression="@uniquePath" var="u"/>
+<c:set var="staticRoot" value="/s/${u}" />
 <!DOCTYPE html>
 <html>
 	<head>
