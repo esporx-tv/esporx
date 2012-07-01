@@ -10,7 +10,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
     <import resource="/esporx-security.xml" />
 
-
+	<bean id="uniquePath" class="java.lang.System" factory-method="currentTimeMillis" />
     
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 	   <property name="validationMessageSource" ref="messageSource"/>
