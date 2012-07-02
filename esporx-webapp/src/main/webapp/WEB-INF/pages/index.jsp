@@ -1,6 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ include file="./include/common.jsp" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -9,9 +7,9 @@
 		<title>ESPORX.TV - Premium Live Esports Broadcasts</title>
 		<meta name="description" content="ESPORX.TV is TEH Premium Live Esports Broadcasts Service platform. Coming live winter 2011."/>
 		<meta name="keywords" content="ESPORX.TV, Premium, Live, Esports, Broadcasts, Esport, Broadcast, Starcraft, Game, Games, Store, Gamer, Gamers, Gaming, ProGaming, Panda"/>
-		<link rel="stylesheet" media="screen" type="text/css" href="landing.css" />
+		<link rel="stylesheet" media="screen" type="text/css" href="<c:url value="${staticRoot}/landing/landing.css"/>" />
 <!--		<link rel="stylesheet" media="screen" type="text/css" href="animations.css" />  -->
-		<script type="text/javascript" src="prototype.js"></script>
+		<script type="text/javascript" src="<c:url value="${staticRoot}/landing/prototype.js"/> "></script>
 
 		<script type="text/javascript">
 			function drawSquare(logoId, topLeftCornerX, topLeftCornerY, width, height){
@@ -46,7 +44,7 @@
 				</hgroup>
 			</header>
 			<section>
-				<h2 id="LaunchDate"><img src="txtComingSoon.png" alt="Coming Winter 2011" title="" /></h2>			</section>
+				<h2 id="LaunchDate"><img src="${staticRoot}/landing/txtComingSoon.png" alt="Coming 2012" title="" /></h2>			</section>
 			<aside>
 				<ul class="ShareLinks">
 					<li><a class="ShareFB" href="http://www.facebook.com/pages/Esporxtv/148704838534417" rel="external">Share on FACEBOOK</a></li>

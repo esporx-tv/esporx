@@ -10,8 +10,8 @@ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/
 
 	<mvc:default-servlet-handler />
 	<mvc:annotation-driven />
-	<mvc:resources location="/static/" mapping="/s/#{uniquePath}/**" cache-period="31536000"/>
 	<bean id="uniquePath" class="java.lang.System" factory-method="currentTimeMillis" />
+	<mvc:resources location="/static/" mapping="/s/#{uniquePath}/**" cache-period="31536000"/>
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />

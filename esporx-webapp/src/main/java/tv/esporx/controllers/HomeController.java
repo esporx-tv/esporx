@@ -27,7 +27,7 @@ import tv.esporx.domain.front.GondolaSlide;
 import tv.esporx.framework.mvc.RequestUtils;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("")
 public class HomeController {
 
 	@Autowired
@@ -44,7 +44,13 @@ public class HomeController {
 	@Autowired
 	private RequestUtils requestHelper;
 
-	@RequestMapping(method = GET)
+	@RequestMapping({"", "/"})
+	public ModelAndView landing() {
+		return new ModelAndView("index");
+		
+	}
+	
+	@RequestMapping(value="/home", method = GET)
 	public ModelAndView index(final HttpServletRequest incomingRequest) {
 		List<Channel> mostViewedChannels = channelDao.findMostViewed();
 		List<Event> mostViewedEvents = eventDao.findAll();
