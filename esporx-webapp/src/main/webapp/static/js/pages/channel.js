@@ -1,17 +1,19 @@
 /*
  * everything is wrapped in a self-invoked anonymous function to limit variables scope
  */
+"use strict";
 (function() {
 	var channelTitleInputId = "title";
 	var descriptionInputElementId = "description";
 	var formElementId = "channelCommand";
 	var loadingIconId = "loadingIcon";
-
+    var channelSubmitInputId = "submitChannel";
 	var videoUrlInputElementId = "videoUrl";
 
-	var supportedUrlClass = 'supportedUrl';
-	var unsupportedUrlClass = 'unsupportedUrl';
-	var findVideoProviderUrl = '/video/matchProvider';
+    var supportedUrlClass = 'supportedUrl';
+    var unsupportedUrlClass = 'unsupportedUrl';
+
+    var findVideoProviderUrl = '/video/matchProvider';
 
 	document.observe("dom:loaded", function() {
 		var controllerName = 'Channel';
@@ -23,11 +25,13 @@
 		hasErrors = sanityChecker.checkIfNotExists('#' + descriptionInputElementId, 'Description textarea element')	|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + formElementId, 'Form element')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + loadingIconId, 'Loading icon')|| hasErrors;
-		hasErrors = sanityChecker.checkIfNotExists('#' + videoUrlInputElementId, 'Video URL text input') || hasErrors;
+        hasErrors = sanityChecker.checkIfNotExists('#' + videoUrlInputElementId, 'Video URL text input') || hasErrors;
+        hasErrors = sanityChecker.checkIfNotExists('#' + channelSubmitInputId, 'Form submit input') || hasErrors;
 
 			if (hasErrors) {
 				channelLogger.error('Script initialization failed due to multiple errors');
 			} else {
+                $(channelSubmitInputId).disable();
 				$(channelTitleInputId).focus();
 				$$('input.datepicker').each(function(e) {
 					new Control.DatePicker(e, {
@@ -51,17 +55,20 @@
 						new Ajax.Request(findVideoProviderUrl, {
 							method : 'get',
 							parameters : {
-								url : videoUrl,
+								url : videoUrl
 							},
 							onSuccess : function(transport) {
 								var response = transport.responseText;
 								if (!response.empty()) {
-									input.removeClassName(unsupportedUrlClass);
-									input.addClassName(supportedUrlClass);
-									channelLogger.debug('Match found: '+ response);
-								} else {
-									input.removeClassName(supportedUrlClass);
-									input.addClassName(unsupportedUrlClass);
+                                    channelLogger.debug('Match found: '+ response);
+                                    if(response == 'true') {
+                                        $(channelSubmitInputId).enable();
+                                        input.removeClassName(unsupportedUrlClass);
+                                        input.addClassName(supportedUrlClass);
+                                    } else {
+                                        input.removeClassName(supportedUrlClass);
+                                        input.addClassName(unsupportedUrlClass);
+                                    }
 								}
 							},
 							onFailure : function() {
