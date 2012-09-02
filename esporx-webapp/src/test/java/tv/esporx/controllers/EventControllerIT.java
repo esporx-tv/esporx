@@ -55,8 +55,6 @@ public class EventControllerIT {
 		event = new Event();
 		event.setTitle("EventTitle");
 		event.setDescription("Hello woooooooorld");
-		event.setStartDate(new Date(0L));
-		event.setEndDate(new Date());
 		when(eventDao.findById(anyInt())).thenReturn(event);
 		assertThat(eventController).isNotNull();
 		request = mock(HttpServletRequest.class);

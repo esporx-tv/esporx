@@ -95,8 +95,6 @@ public class EventControllerMappingIT {
 		event = new Event();
 		event.setTitle("Zuper event");
 		event.setDescription("Awesome description");
-		event.setStartDate(new Date(100000L));
-		event.setEndDate(new Date());
 		event.setHighlighted(false);
 		assertThat(eventRepository).isNotNull();
 		eventRepository.saveOrUpdate(event);

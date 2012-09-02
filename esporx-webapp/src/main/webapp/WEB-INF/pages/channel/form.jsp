@@ -89,7 +89,7 @@
 					</div>
 
 					<div class="submit">
-						<input type="submit" value="<spring:message code="channel.submission.submit" />" />
+						<input type="submit" id="submitChannel" value="<spring:message code="channel.submission.submit" />" />
 					</div>
 				</form:form>
 			</div>

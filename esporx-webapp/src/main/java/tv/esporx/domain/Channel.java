@@ -4,34 +4,30 @@ import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Collections.unmodifiableList;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.google.common.base.Objects;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 import tv.esporx.framework.validation.SupportedLanguage;
 
-import com.google.inject.internal.Objects;
 
 @Entity
 @Table(name = "channels")
 @NamedQueries({ //
-	/**/@NamedQuery(name = "Channel.findAll", query = "FROM Channel channel ORDER BY channel.title ASC"), //
+/**/@NamedQuery(name = "Channel.findAll", query = "FROM Channel channel ORDER BY channel.title ASC"), //
+    @NamedQuery(name = "Channel.findAllWithFetchedProviders", query = "FROM Channel channel LEFT JOIN FETCH channel.videoProvider ORDER BY channel.title ASC"), //
 	@NamedQuery(name = "Channel.findByTitle", query = "FROM Channel channel WHERE UPPER(channel.title) = :title"), //
 	@NamedQuery(name = "Channel.findMostViewed", query = "FROM Channel channel ORDER BY channel.viewerCount DESC"), //
 	@NamedQuery(name = "Channel.findTimeLine", query = "FROM Channel channel WHERE event IS NOT NULL") //
@@ -64,6 +60,10 @@ public class Channel {
 	@SupportedLanguage
 	@Column(name = "language", nullable = false)
 	private String language = "";
+    @ManyToOne(fetch = LAZY, optional = false)
+    @LazyToOne(LazyToOneOption.PROXY)
+    @JoinColumn(name = "provider", nullable = false)
+    private VideoProvider videoProvider;
 
 	public void addCaster(final User user) {
 		casters.add(user);
@@ -141,10 +141,28 @@ public class Channel {
 		this.live = live;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(language, title, videoUrl);
-	}
+    /**
+     * Get the ID of the channel on the provider side
+     * @return channel ID
+     * @throws NullPointerException if videoProvider not fetched
+     * @throws IllegalArgumentException if videoUrl does not match
+     */
+    public String getChannelName() {
+        return videoProvider.extractChannelName(videoUrl);
+    }
+
+    public VideoProvider getVideoProvider() {
+        return this.videoProvider;
+    }
+
+    public void setVideoProvider(VideoProvider videoProvider) {
+        this.videoProvider = videoProvider;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(language, title, videoUrl);
+    }
 
 	@Override
 	public boolean equals(final Object obj) {
@@ -168,5 +186,4 @@ public class Channel {
 				.add("language", language) //
 				.toString();
 	}
-
 }

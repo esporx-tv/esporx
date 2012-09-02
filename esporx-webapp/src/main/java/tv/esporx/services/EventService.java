@@ -23,7 +23,6 @@ public class EventService {
 		Channel channel = channelDao.findById(channelId);
 		Event event = eventDao.findById(eventId);
 		channelDao.saveOrUpdate(channel);
-		event.addChannel(channel);
 		eventDao.saveOrUpdate(event);
 	}
 }

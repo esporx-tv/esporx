@@ -90,4 +90,10 @@ public class ChannelRepository implements PersistenceCapableChannel {
 		return query.getResultList();
 	}
 
+    @Override
+    public List<Channel> findAllWithFetchedProviders() {
+        TypedQuery<Channel> query = entityManager.createNamedQuery("Channel.findAllWithFetchedProviders", Channel.class);
+        return query.getResultList();
+    }
+
 }

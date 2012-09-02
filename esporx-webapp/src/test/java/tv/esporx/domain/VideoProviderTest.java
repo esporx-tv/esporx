@@ -30,4 +30,14 @@ public class VideoProviderTest {
 	public void when_requesting_embedded_contents_with_matching_url_then_content_is_retrieved() {
 		assertThat(provider.getContents("http://www.dummy.com/?id=26")).isEqualTo("<object>26</object>");
 	}
+
+    @Test
+    public void when_channel_url_and_provider_then_channel_name_is_extracted() {
+        assertThat(provider.extractChannelName("http://www.dummy.com/?id=26")).isEqualTo("26");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void when_channel_url_and_non_matching_provider_then_exception() {
+        provider.extractChannelName("http://www.dummmmmmmmmmmmmmy.com/?id=26");
+    }
 }

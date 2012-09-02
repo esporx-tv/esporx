@@ -144,8 +144,6 @@ public class TimelineServiceTest {
 		Event event = new Event();
 		event.setTitle("Beijing power");
 		event.setDescription("Deskrypsyon");
-		event.addChannel(channel);
-		event.addChannel(channel2);
 		when(channelDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Channel[] { channel, channel2 }));
 
 	}
@@ -160,8 +158,6 @@ public class TimelineServiceTest {
 		Event event2 = new Event();
 		event2.setTitle("Beijing power 2");
 		event2.setDescription("Deskrypsyon bis");
-		event.addChannel(channel);
-		event2.addChannel(channel2);
 		when(channelDao.findTimeLine(any(DateTime.class), any(DateTime.class))).thenReturn(asList(new Channel[] { channel, channel2 }));
 
 	}

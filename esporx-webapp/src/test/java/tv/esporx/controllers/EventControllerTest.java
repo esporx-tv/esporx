@@ -37,7 +37,7 @@ public class EventControllerTest {
 	
 	@Test
 	public void when_accessing_form_page_then_is_retrieved() {
-		ModelAndView modelAndView = eventController.creation(new ModelAndView());
+		ModelAndView modelAndView = eventController.creation();
 		assertThat(modelAndView.getViewName()).isEqualTo("event/form");
 	}
 

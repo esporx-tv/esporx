@@ -5,4 +5,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <include file="rename_cast_to_channel.xml" relativeToChangelogFile="true" />
+    <include file="create_frequency.xml" relativeToChangelogFile="true" />
+    <include file="refactor_event.xml" relativeToChangelogFile="true" />
+    <include file="add_provider_info_to_channels.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

@@ -9,50 +9,17 @@ import org.junit.Test;
 
 public class EventTest {
 
-	private Channel channel;
 	private Event event;
 
 	@Before
 	public void setup() {
 		event = new Event();
-		channel = new Channel();
-	}
-
-	@Test
-	public void when_adding_beginning_date_then_date_is_retrieved() {
-		Date startDate = new Date();
-		event.setStartDate(startDate);
-		assertThat(event.getStartDate()).isEqualTo(startDate);
-	}
-
-	@Test
-	public void when_adding_channel_to_event_then_list_size_is_one() {
-		event.addChannel(channel);
-		assertThat(event.getChannels().size()).isEqualTo(1);
-	}
-
-	@Test
-	public void when_adding_channel_to_event_then_retrieved_channel_is_the_same() {
-		event.addChannel(channel);
-		assertThat(event.getChannel(0)).isEqualTo(channel);
-	}
-
-	@Test
-	public void when_adding_end_date_then_date_is_retrieved() {
-		Date endDate = new Date();
-		event.setEndDate(endDate);
-		assertThat(event.getEndDate()).isEqualTo(endDate);
 	}
 
 	@Test
 	public void when_assigning_description_then_description_is_retrieved() {
 		event.setDescription("This is a description of the event");
 		assertThat(event.getDescription()).isEqualTo("This is a description of the event");
-	}
-
-	@Test
-	public void when_creating_event_then_channel_list_is_empty() {
-		assertThat(event.getChannels()).isEmpty();
 	}
 
 	@Test

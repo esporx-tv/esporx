@@ -37,6 +37,7 @@ import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
+import tv.esporx.domain.front.RawEvent;
 import tv.esporx.framework.EntityConverter;
 import tv.esporx.services.EventService;
 
@@ -82,8 +83,8 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/new", method = GET)
-	public ModelAndView creation(final ModelAndView modelAndView) {
-		return populatedEventForm(modelAndView).addObject(COMMAND, new Event());
+	public ModelAndView creation() {
+		return populatedEventForm(new ModelAndView()).addObject(COMMAND, new RawEvent());
 	}
 
 	@RequestMapping(value = "/edit/{eventCommand}", method = GET)
@@ -117,10 +118,6 @@ public class EventController {
 	public ModelAndView list() {
 		ModelMap model = new ModelMap();
 		List<Event> events = eventDao.findAll();
-		for (Event event : events) {
-			List<Channel> channels = event.getChannels();
-			model.addAttribute("channels", channels);
-		}
 		model.addAttribute("events", events);
 		return new ModelAndView("event/list", model);
 	}

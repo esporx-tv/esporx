@@ -26,4 +26,6 @@ public interface PersistenceCapableChannel {
 
 	List<Channel> findTimeLine(DateTime from, DateTime to);
 
+    List<Channel> findAllWithFetchedProviders();
+
 }

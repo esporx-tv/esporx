@@ -73,7 +73,6 @@ public class EventRepositoryIT {
 	public void when_calling_findById_then_retrieved_event_is_the_same() {
 		Event event = eventRepository.findById(insertedEvent.getId());
 		assertThat(event).isEqualTo(insertedEvent);
-		assertThat(event.getChannels()).containsOnly(channel);
 	}
 
 	@Test
@@ -107,11 +106,8 @@ public class EventRepositoryIT {
 	private void givenOneEventIsInserted() {
 		givenOneChannelIsInserted();
 		insertedEvent = new Event();
-		insertedEvent.setStartDate(new Date(100000L));
 		insertedEvent.setTitle("TeH event of your life!");
 		insertedEvent.setDescription("Just read this description and you'll be convinced");
-		insertedEvent.setEndDate(new Date());
-		insertedEvent.addChannel(channel);
 		insertedEvent.setHighlighted(false);
 		assertThat(eventRepository).isNotNull();
 		eventRepository.saveOrUpdate(insertedEvent);

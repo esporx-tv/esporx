@@ -1,9 +1,11 @@
 package tv.esporx.dao.impl;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.hibernate.Hibernate.isInitialized;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,32 +20,40 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableGame;
+import tv.esporx.dao.PersistenceCapableVideoProvider;
 import tv.esporx.dao.exceptions.PersistenceViolationException;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Game;
+import tv.esporx.domain.VideoProvider;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
-	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
+locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml",
+	"file:src/main/webapp/WEB-INF/applicationContext.xml",
 "classpath:/META-INF/spring/testApplicationContext.xml"})
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 public class ChannelRepositoryIT {
 
-	@Autowired
+    public static final String MOST_VIEWED_CHANNEL_TITLE = "TeH channel";
+    public static final String LEAST_VIEWED_CHANNEL_TITLE = "Pro evolution sucker";
+    @Autowired
 	private PersistenceCapableChannel channelRepository;
 	@Autowired
 	private PersistenceCapableGame gameRepository;
-	private Channel leastViewedChannel;
-	private Channel mostWatchedChannel;
-	private Game relatedGame;
-	private Channel retrievedChannel;
+    @Autowired
+    private PersistenceCapableVideoProvider providerRepository;
+    private Channel leastViewedChannel;
+    private Channel mostWatchedChannel;
+    private Game relatedGame;
+    private Channel retrievedChannel;
+    private VideoProvider videoProvider;
 
-	@Before
+    @Before
 	public void setup() {
+        givenOneVideoProvider();
 		givenAtLeastOneGameIsStored();
 		givenOneChannelIsInserted();
 		givenOneLesserWatchedChannelIsInserted();
@@ -108,6 +118,21 @@ public class ChannelRepositoryIT {
 
 	}
 
+    @Test
+    public void when_retrieving_all_then_two_channels_are_fetched() {
+        List<Channel> channels = channelRepository.findAll();
+        assertThat(channels).hasSize(2).onProperty("title").containsOnly(MOST_VIEWED_CHANNEL_TITLE, LEAST_VIEWED_CHANNEL_TITLE);
+        assertThat(Hibernate.isInitialized(channels.iterator().next().getVideoProvider())).isFalse();
+        assertThat(Hibernate.isInitialized(channels.iterator().next().getVideoProvider())).isFalse();
+    }
+
+    @Test
+    public void when_retrieving_all_then_two_channels_are_fetched_with_video_provider() {
+        List<Channel> channels = channelRepository.findAllWithFetchedProviders();
+        assertThat(channels).hasSize(2).onProperty("title").containsOnly(MOST_VIEWED_CHANNEL_TITLE, LEAST_VIEWED_CHANNEL_TITLE);
+        assertThat(channels).onProperty("videoProvider").onProperty("pattern").containsExactly(".*", ".*");
+    }
+
 	private void assertThatMostWatchedIsPositionedBeforeLeastWatched(final List<Channel> mostViewedChannels) {
 		int i = 0;
 		int leastWatchedChannelIndex = -1;
@@ -133,28 +158,40 @@ public class ChannelRepositoryIT {
 	}
 
 	private void givenOneChannelIsInserted() {
-		mostWatchedChannel = new Channel();
-		mostWatchedChannel.setTitle("TeH channel");
+        mostWatchedChannel = new Channel();
+		mostWatchedChannel.setTitle(MOST_VIEWED_CHANNEL_TITLE);
 		mostWatchedChannel.setVideoUrl("http://not.what.you.think.of");
 		mostWatchedChannel.setViewerCount(2000000);
 		mostWatchedChannel.setDescription("en slip");
 		mostWatchedChannel.setLanguage("fr");
+        mostWatchedChannel.setVideoProvider(videoProvider);
 		assertThat(channelRepository).isNotNull();
 		channelRepository.saveOrUpdate(mostWatchedChannel);
 		assertThat(mostWatchedChannel.getId()).isGreaterThan(0L);
 	}
 
-	private void givenOneLesserWatchedChannelIsInserted() {
+    private void givenOneLesserWatchedChannelIsInserted() {
 		leastViewedChannel = new Channel();
-		leastViewedChannel.setTitle("Pro evolution sucker");
+		leastViewedChannel.setTitle(LEAST_VIEWED_CHANNEL_TITLE);
 		leastViewedChannel.setVideoUrl("http://not.REALLY.what.you.think.of");
 		leastViewedChannel.setViewerCount(5);
 		leastViewedChannel.setDescription("en slip");
 		leastViewedChannel.setLanguage("fr");
+        leastViewedChannel.setVideoProvider(videoProvider);
 		assertThat(channelRepository).isNotNull();
 		channelRepository.saveOrUpdate(leastViewedChannel);
 		assertThat(leastViewedChannel.getId()).isGreaterThan(0L);
 	}
+
+    private void givenOneVideoProvider() {
+        videoProvider = new VideoProvider();
+        videoProvider.setTemplate("whatever");
+        videoProvider.setPattern(".*");
+        assertThat(providerRepository).isNotNull();
+        providerRepository.saveOrUpdate(videoProvider);
+        assertThat(videoProvider.getId()).isGreaterThan(0L);
+    }
+
 
 	private void insertDummyGame() {
 		Game game = new Game();

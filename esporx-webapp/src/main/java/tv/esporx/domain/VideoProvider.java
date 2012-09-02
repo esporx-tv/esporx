@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -52,17 +53,26 @@ public class VideoProvider {
 	}
 
 	public String getContents(final String url) {
-		Pattern compiledPattern = compile(pattern);
-		Matcher matcher = compiledPattern.matcher(url);
-		if (matcher.find()) {
-			String videoId = matcher.group(1);
-			return template.replace("{ID}", videoId);
-		}
-		throw new IllegalArgumentException("No contents found for " + url);
+        return template.replace("{ID}", extractChannelName(url));
 	}
 
 	public long getId() {
 		return id;
 	}
 
+    public String extractChannelName(String url) {
+        Pattern compiledPattern = compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        throw new IllegalArgumentException("No contents found for " + url);
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this) //
+            .add("pattern", pattern) //
+            .toString();
+    }
 }

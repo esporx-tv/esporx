@@ -77,6 +77,7 @@
 		<joda-time.version>2.0</joda-time.version>
 		<usertype-jodatime.version>2.0</usertype-jodatime.version>
 		<liquibase.version>2.0.3</liquibase.version>
+        <quartz.version>2.1.5</quartz.version>
 		<env.file>environments/current-liquibase.properties</env.file>
 		<liquibase.prompt-when-remote>true</liquibase.prompt-when-remote>
 	</properties>
@@ -261,6 +262,11 @@
 				<version>${fest-assert.version}</version>
 				<scope>test</scope>
 			</dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

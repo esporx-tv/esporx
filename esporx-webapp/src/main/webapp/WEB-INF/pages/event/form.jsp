@@ -35,6 +35,19 @@
 			</h1>
 			<div id="catContent">
 				<form:form modelAttribute="eventCommand">
+                    <h2>Event</h2>
+
+                    <div class="input">
+                        <spring:message code="event.submission.highlight.placeholder"
+                                        var="highlightPlaceholder" />
+                        <form:label path="highlighted" title="${highlightPlaceholder}">
+                            <spring:message code="event.submission.highlight.select" />
+                        </form:label>
+                        <form:checkbox class="checkbox" path="highlighted" value="0" />
+                        <form:errors path="highlighted" cssClass="errors" />
+                    </div>
+
+
 					<div class="input">
 						<spring:message code="event.submission.title.placeholder"
 							var="titlePlaceholder" />
@@ -44,39 +57,6 @@
 						<form:input path="title" placeholder="${titlePlaceholder}" />
 						<form:errors path="title" cssClass="errors" />
 					</div>
-
-					<div class="input">
-						<spring:message code="event.submission.startDate.placeholder"
-							var="startDatePlaceholder" />
-						<form:label path="startDate" title="${startDatePlaceholder}">
-							<spring:message code="event.submission.startDate" />
-						</form:label>
-						<fmt:formatDate value='${eventCommand.startDate}' pattern='dd/MM/yyyy HH:mm' var="formattedDate"/>
-						<input type="text" id="startDate" name="startDate" class="datepicker" placeholder="<c:out value="${startDatePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
-						<form:errors path="startDate" cssClass="errors" />
-					</div>
-
-					<div class="input">
-						<spring:message code="event.submission.endDate.placeholder"
-							var="endDatePlaceholder" />
-						<form:label path="endDate" title="${endDatePlaceholder}">
-							<spring:message code="event.submission.endDate" />
-						</form:label>
-					<fmt:formatDate value='${eventCommand.endDate}' pattern='dd/MM/yyyy HH:mm' var="formattedDate"/>
-						<input type="text" id="endDate" name="endDate" class="datepicker" placeholder="<c:out value="${endDatePlaceholder}" />" value="<c:out value="${formattedDate}" />"/>
-						<form:errors path="endDate" cssClass="errors" />
-					</div>
-					
-					
-                    <div class="input">
-                        <spring:message code="event.submission.highlight.placeholder"
-                            var="highlightPlaceholder" />
-                        <form:label path="highlighted" title="${highlightPlaceholder}">
-                            <spring:message code="event.submission.highlight.select" />
-                        </form:label>
-                        <form:checkbox class="checkbox" path="highlighted" value="0" />
-                        <form:errors path="highlighted" cssClass="errors" />
-                    </div>
                     
                     <div class="input">
                         <spring:message code="event.submission.description.placeholder"
@@ -88,10 +68,35 @@
                         <form:errors path="description" cssClass="errors" />
                     </div>
                     
-					
+					<h2>Planning</h2>
+                    <c:forEach items="${event.startDates}" varStatus="loopContext">
+                        <div class="occurrence">
+                            <div class="input">
+                                <form:label path="startDates.${loopContext.index}">Start</form:label>
+                                <form:input path="startDates.${loopContext.index}" cssClass="datepicker" />
+                                <form:errors path="startDates.${loopContext.index}" cssClass="errors" />
+                            </div>
+                            <div class="input">
+                                <form:label path="endDates.${loopContext.index}">End (optional)</form:label>
+                                <form:input path="endDates.${loopContext.index}" cssClass="datepicker" />
+                                <form:errors path="endDates.${loopContext.index}" cssClass="errors" />
+                            </div>
+                            <div class="input">
+                                <form:label path="frequencies.${loopContext.index}">Frequency</form:label>
+                                <form:select path="frequencies.${loopContext.index}">
+                                    <form:option value="">
+                                        select a frequency
+                                    </form:option>
+                                    <form:options items="${frequencies}" />
+                                </form:select>
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                    <span id="add_occurrence">Add a new occurrence</span>
+
 					<div class="submit">
-						<input type="submit"
-							value="<spring:message code="event.submission.submit" />" />
+						<input type="submit" value="<spring:message code="event.submission.submit" />" />
 					</div>
 				</form:form>
 			</div>
