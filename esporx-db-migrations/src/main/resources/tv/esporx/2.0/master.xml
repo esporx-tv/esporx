@@ -9,4 +9,5 @@
     <include file="refactor_event.xml" relativeToChangelogFile="true" />
     <include file="add_provider_info_to_channels.xml" relativeToChangelogFile="true" />
     <include file="fix_twitch_tv_regex.xml" relativeToChangelogFile="true" />
+    <include file="add_video_provider_endpoint.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
