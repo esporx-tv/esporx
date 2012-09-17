@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +44,8 @@ public class EventRepository implements PersistenceCapableEvent {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Event> findUpNext(final DateTime from) {
+	public List<Event> findUpNext() {
 		TypedQuery<Event> query = entityManager.createNamedQuery("Event.findUpNext", Event.class);
-		query.setParameter("date", from);
 		return query.getResultList();
 	}
 

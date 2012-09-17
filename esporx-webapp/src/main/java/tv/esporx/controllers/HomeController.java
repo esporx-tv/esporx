@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -54,7 +53,7 @@ public class HomeController {
 	public ModelAndView index(final HttpServletRequest incomingRequest) {
 		List<Channel> mostViewedChannels = channelDao.findMostViewed();
 		List<Event> mostViewedEvents = eventDao.findAll();
-		List<Event> upNextEvents = eventDao.findUpNext(new DateTime());
+		List<Event> upNextEvents = eventDao.findUpNext();
 		String currentLocale = requestHelper.currentLocale(incomingRequest);
 		List<GondolaSlide> slides = gondolaDao.findByLanguage(currentLocale);
 		List<ConfigurableSlot> slots = slotDao.findByLanguage(currentLocale);

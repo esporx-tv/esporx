@@ -78,10 +78,10 @@ public class EventRepositoryIT {
 	@Test
 	public void when_calling_findUpNext_then_the_inserted_event_is_returned() {
 		DateTime rightNow = new DateTime();
-		List<Event> events = eventRepository.findUpNext(rightNow);
+		List<Event> events = eventRepository.findUpNext();
 		assertThat(events).isEmpty();
 		DateTime beforeEventStartDate = new DateTime(new Date(100000L)).minusHours(1);
-		events = eventRepository.findUpNext(beforeEventStartDate);
+		events = eventRepository.findUpNext();
 		assertThat(events).contains(insertedEvent);
 	}
 

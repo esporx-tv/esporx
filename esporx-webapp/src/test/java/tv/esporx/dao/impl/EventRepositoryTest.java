@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +46,7 @@ public class EventRepositoryTest {
 
 	@Test
 	public void when_calling_find_by_up_next_then_get_query_list_on_entity_manager_invoked() {
-		eventDao.findUpNext(new DateTime());
+		eventDao.findUpNext();
 		verify(query).getResultList();
 	}
 

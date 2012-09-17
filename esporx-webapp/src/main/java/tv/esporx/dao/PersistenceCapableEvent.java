@@ -16,7 +16,7 @@ public interface PersistenceCapableEvent {
 
 	Event findById(long i);
 
-	List<Event> findUpNext(DateTime from);
+	List<Event> findUpNext();
 
 	void saveOrUpdate(Event event);
 

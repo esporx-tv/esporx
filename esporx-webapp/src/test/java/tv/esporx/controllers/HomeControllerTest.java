@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -120,7 +119,7 @@ public class HomeControllerTest {
 	@Test
 	public void when_accessing_page_then_up_next_events_are_retrieved() {
 		homeController.index(null);
-		verify(eventDao).findUpNext(any(DateTime.class));
+		verify(eventDao).findUpNext();
 	}
 
 	@Test
