@@ -80,10 +80,16 @@
         <quartz.version>2.1.5</quartz.version>
 		<env.file>environments/current-liquibase.properties</env.file>
 		<liquibase.prompt-when-remote>true</liquibase.prompt-when-remote>
-	</properties>
+        <jackson.version>1.9.9</jackson.version>
+    </properties>
 
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-lgpl</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>taglibs</groupId>
 				<artifactId>standard</artifactId>
@@ -187,12 +193,6 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>${spring.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-openid</artifactId>
 				<version>${spring.version}</version>
 				<scope>runtime</scope>
 			</dependency>

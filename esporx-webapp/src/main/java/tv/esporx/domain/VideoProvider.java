@@ -1,5 +1,6 @@
 package tv.esporx.domain;
 
+import static com.google.common.base.Objects.toStringHelper;
 import static java.util.regex.Pattern.compile;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -35,6 +36,8 @@ public class VideoProvider {
 	@NotBlank
 	@Column(name = "template")
 	private String template;
+    @Column(name = "endpoint")
+    private String endpoint;
 
 	public void setPattern(final String pattern) {
 		this.pattern = pattern;
@@ -73,9 +76,17 @@ public class VideoProvider {
         return null;
     }
 
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
     @Override
     public String toString() {
-        return Objects.toStringHelper(this) //
+        return toStringHelper(this) //
             .add("pattern", pattern) //
             .toString();
     }

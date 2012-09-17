@@ -60,8 +60,7 @@ public class Channel {
 	@SupportedLanguage
 	@Column(name = "language", nullable = false)
 	private String language = "";
-    @ManyToOne(fetch = LAZY, optional = false)
-    @LazyToOne(LazyToOneOption.PROXY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "provider", nullable = false)
     private VideoProvider videoProvider;
 
@@ -141,15 +140,6 @@ public class Channel {
 		this.live = live;
 	}
 
-    /**
-     * Get the ID of the channel on the provider side
-     * @return channel ID
-     * @throws NullPointerException if videoProvider not fetched
-     * @throws IllegalArgumentException if videoUrl does not match
-     */
-    public String getChannelName() {
-        return videoProvider.extractChannelName(videoUrl);
-    }
 
     public VideoProvider getVideoProvider() {
         return this.videoProvider;
