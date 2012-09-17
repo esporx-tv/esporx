@@ -53,7 +53,11 @@ public class VideoProvider {
 	}
 
 	public String getContents(final String url) {
-        return template.replace("{ID}", extractChannelName(url));
+        String channel = extractChannelName(url);
+        if(channel == null) {
+            return null;
+        }
+        return template.replace("{ID}", channel);
 	}
 
 	public long getId() {
@@ -66,7 +70,7 @@ public class VideoProvider {
         if (matcher.find()) {
             return matcher.group(1);
         }
-        throw new IllegalArgumentException("No contents found for " + url);
+        return null;
     }
 
     @Override

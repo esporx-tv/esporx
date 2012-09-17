@@ -8,7 +8,8 @@
 	var formElementId = "channelCommand";
 	var loadingIconId = "loadingIcon";
     var channelSubmitInputId = "submitChannel";
-	var videoUrlInputElementId = "videoUrl";
+    var videoUrlInputElementId = "videoUrl";
+    var videoProviderInputElementId = "provider";
 
     var supportedUrlClass = 'supportedUrl';
     var unsupportedUrlClass = 'unsupportedUrl';
@@ -26,6 +27,7 @@
 		hasErrors = sanityChecker.checkIfNotExists('#' + formElementId, 'Form element')|| hasErrors;
 		hasErrors = sanityChecker.checkIfNotExists('#' + loadingIconId, 'Loading icon')|| hasErrors;
         hasErrors = sanityChecker.checkIfNotExists('#' + videoUrlInputElementId, 'Video URL text input') || hasErrors;
+        hasErrors = sanityChecker.checkIfNotExists('#' + videoProviderInputElementId, 'Video provider input') || hasErrors;
         hasErrors = sanityChecker.checkIfNotExists('#' + channelSubmitInputId, 'Form submit input') || hasErrors;
 
 			if (hasErrors) {
@@ -77,6 +79,10 @@
 						});
 					};
 				});
-			}
+
+                $(formElementId).observe('submit', function() {
+                    $(videoProviderInputElementId).value = $(videoUrlInputElementId).value;
+                });
+            }
 		});
 }());

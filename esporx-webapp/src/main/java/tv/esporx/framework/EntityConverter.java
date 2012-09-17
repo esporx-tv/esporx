@@ -12,14 +12,27 @@ import org.springframework.core.convert.converter.GenericConverter;
 
 public class EntityConverter<E> implements GenericConverter {
 
-	private final Object repository;
+    private final Object repository;
 
-	private final Class<E> entityClass;
+    private final Class<E> entityClass;
 
-	public EntityConverter(final Object repository, final Class<E> entityClass) {
-		this.repository = repository;
-		this.entityClass = entityClass;
-	}
+    private final String methodName;
+
+    private final Class<?> singleParameterClass;
+
+    public EntityConverter(final Object repository, final Class<E> entityClass) {
+        this.repository = repository;
+        this.entityClass = entityClass;
+        methodName = "findById";
+        singleParameterClass = long.class;
+    }
+
+    public EntityConverter(final Object repository, final Class<E> entityClass, final String methodName, final Class<?> singleParameterClass) {
+        this.repository = repository;
+        this.entityClass = entityClass;
+        this.methodName = methodName;
+        this.singleParameterClass = singleParameterClass;
+    }
 
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
@@ -30,12 +43,11 @@ public class EntityConverter<E> implements GenericConverter {
 	public Object convert(final Object source, final TypeDescriptor sourceType, final TypeDescriptor targetType) {
 		Object result = null;
 		try {
-			String idString = (String) source;
-			long id = Long.valueOf(idString);
-			Method method = findMethod(repository.getClass(), "findById", long.class);
-			result = invokeMethod(method, repository, id);
+			Object param = singleParameterClass.cast((String) source);
+			Method method = findMethod(repository.getClass(), methodName, singleParameterClass);
+			result = invokeMethod(method, repository, param);
 		}
-		catch (NumberFormatException nfe) {
+		catch (RuntimeException nfe) {
 		}
 		return result;
 	}

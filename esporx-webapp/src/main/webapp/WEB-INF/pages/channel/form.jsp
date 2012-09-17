@@ -77,6 +77,7 @@
 							<spring:message code="channel.submission.url" />
 						</form:label>
 						<form:input path="videoUrl" placeholder="${urlPlaceholder}" />
+                        <form:hidden path="videoProvider" id="provider" />
 						<form:errors path="videoUrl" cssClass="errors" />
 					</div>
 

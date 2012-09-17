@@ -40,6 +40,7 @@ import tv.esporx.dao.PersistenceCapableVideoProvider;
 import tv.esporx.dao.exceptions.PersistenceViolationException;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
+import tv.esporx.domain.VideoProvider;
 import tv.esporx.framework.EntityConverter;
 
 @Controller
@@ -53,7 +54,7 @@ public class ChannelController {
 	@Autowired
 	private PersistenceCapableEvent eventDao;
 	@Autowired
-	private PersistenceCapableVideoProvider videoProvider;
+	private PersistenceCapableVideoProvider videoProviderDao;
 
 	@Resource(name = "supportedLanguages")
 	private final Set<String> allowedLocales = new HashSet<String>();
@@ -69,6 +70,9 @@ public class ChannelController {
 
 		EntityConverter<Event> eventConverter = new EntityConverter<Event>(eventDao, Event.class);
 		((GenericConversionService) binder.getConversionService()).addConverter(eventConverter);
+
+        EntityConverter<VideoProvider> videoProviderConverter = new EntityConverter<VideoProvider>(videoProviderDao, VideoProvider.class, "findByUrl", String.class);
+        ((GenericConversionService) binder.getConversionService()).addConverter(videoProviderConverter);
 	}
 
 	@ExceptionHandler({ TypeMismatchException.class,
@@ -97,7 +101,7 @@ public class ChannelController {
 			return notFound(response, "channel/notFound");
 		}
 		ModelMap model = new ModelMap("channel", channel);
-		model.addAttribute("embeddedVideo", videoProvider.getEmbeddedContents(channel.getVideoUrl()));
+		model.addAttribute("embeddedVideo", videoProviderDao.getEmbeddedContents(channel.getVideoUrl()));
 		return new ModelAndView("channel/index", model);
 	}
 
@@ -141,7 +145,7 @@ public class ChannelController {
 		return modelAndView;
 	}
 
-	public void setVideoProvider(final PersistenceCapableVideoProvider videoProvider) {
-		this.videoProvider = videoProvider;
+	public void setVideoProviderDao(final PersistenceCapableVideoProvider videoProviderDao) {
+		this.videoProviderDao = videoProviderDao;
 	}
 }

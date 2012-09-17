@@ -42,7 +42,7 @@ public class ChannelControllerTest {
 		setField(channelController, "channelDao", channelDao);
 		videoProvider = mock(PersistenceCapableVideoProvider.class);
 		when(videoProvider.getEmbeddedContents(anyString())).thenReturn("");
-		channelController.setVideoProvider(videoProvider);
+		channelController.setVideoProviderDao(videoProvider);
 		when(channelDao.findAll()).thenReturn(channels);
 	}
 

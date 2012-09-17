@@ -14,6 +14,8 @@ public interface PersistenceCapableVideoProvider {
 
 	String getEmbeddedContents(String url);
 
-	void saveOrUpdate(VideoProvider videoProvider);
+    void saveOrUpdate(VideoProvider videoProvider);
+
+    VideoProvider findByUrl(String url);
 
 }
