@@ -1,17 +1,16 @@
-<%@ include file="./include/common.jsp" %>
+<%@ include file="include/commonTaglib.jsp" %>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+        <c:import url="./include/commonMeta.jsp" />
+        <title>ESPORX.TV - Premium Live Esports Broadcasts</title>
 		<meta name="robots" content="index,nofollow" />
-		<title>ESPORX.TV - Premium Live Esports Broadcasts</title>
-		<meta name="description" content="ESPORX.TV is TEH Premium Live Esports Broadcasts Service platform. Coming live winter 2011."/>
-		<meta name="keywords" content="ESPORX.TV, Premium, Live, Esports, Broadcasts, Esport, Broadcast, Starcraft, Game, Games, Store, Gamer, Gamers, Gaming, ProGaming, Panda"/>
-		<link rel="stylesheet" media="screen" type="text/css" href="<c:url value="${staticRoot}/landing/landing.css"/>" />
-<!--		<link rel="stylesheet" media="screen" type="text/css" href="animations.css" />  -->
-		<script type="text/javascript" src="<c:url value="${staticRoot}/landing/prototype.js"/> "></script>
 
-		<script type="text/javascript">
+        <link rel="stylesheet" media="screen" type="text/css" href="<c:url value="${staticRoot}/landing/landing.css"/>" />
+        <link rel="stylesheet" media="screen" type="text/css" href="animations.css" />
+
+        <c:import url="./include/commonScript.jsp" />
+        <script type="text/javascript">
 			function drawSquare(logoId, topLeftCornerX, topLeftCornerY, width, height){
 				var canvas = document.getElementById(logoId);
 				var context = canvas.getContext("2d");
@@ -56,19 +55,11 @@
 		
 		<script type="text/javascript">
 		(function() {
-			document.observe('dom:loaded', function() {
-				drawSquare("HTMLogo", 0, 0, 42, 132);
-				drawSquare("HTMLogo", 86, 0, 12, 180);
-				drawSquare("HTMLogo", 102, 72, 36, 36);
-				drawSquare("HTMLogo", 142, 48, 42, 139);
-				
-				$$('a[rel="external"]').each(function(link){
-					if(link.readAttribute('href') != '' && link.readAttribute('href') != '#'){
-						link.writeAttribute('target','_blank');
-					}
-				});
-			});
-		}())
+            drawSquare("HTMLogo", 0, 0, 42, 132);
+            drawSquare("HTMLogo", 86, 0, 12, 180);
+            drawSquare("HTMLogo", 102, 72, 36, 36);
+            drawSquare("HTMLogo", 142, 48, 42, 139);
+		}());
 		</script>
 	</body>
 

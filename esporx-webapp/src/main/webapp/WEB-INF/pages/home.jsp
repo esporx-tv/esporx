@@ -1,45 +1,17 @@
-<%@ include file="./include/common.jsp"%>
+<%@ include file="include/commonTaglib.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title><spring:message code="home.header" /></title>
-    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/home.css" />" type="text/css" />
-    
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/scriptaculous.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/effects.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/carousel.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/sanityChecker.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/domNavigationUtils.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/externalLinkDetector.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/gondola.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/common.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/homepage.js" />"></script>
-
-    <!-- HTML5 Navigators Compatibility Settings -->
-	<style>
-		abbr,article,aside,audio,canvas,datalist,details,figure,dialog,footer,header,hgroup,mark,menu,meter,nav,output,progress,section,time,video {
-			display: block;
-		}
-	</style>
-
-	<!--[if lt IE 9]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<!-- /HTML5 Navigators Compatibility Settings -->
-
-    <link rel="stylesheet/less" type="text/css"	href="<c:url value="${staticRoot}/css/styles.less"/>">
-    <script src="<c:url value="${staticRoot}/js/ext/less.js"/>" type="text/javascript"></script>
+    <c:import url="/WEB-INF/pages/include/commonMeta.jsp" />
+    <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
+    <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
 </head>
-
 <body>
 	<div id="pageContent">
-		<c:import url="/WEB-INF/pages/header.jsp" />
+		<c:import url="/WEB-INF/pages/include/header.jsp" />
 		<div id="homeMain">
 			<section id="homeGondola">
 				<div id="gSlideView">
@@ -158,7 +130,7 @@
 				</section>
 			</section>
 		</div>
-		<c:import url="/WEB-INF/pages/footer.jsp" />
+		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 	</div>
 </body>
 </html>

@@ -1,26 +1,20 @@
-"use strict";
-var Login = Class.create({
-	initialize: function() {
-		var controllerName = 'Login';
-		var loginLogger = new Logger(controllerName);
-		var sanityChecker = new SanityChecker(controllerName);
-		
-		var loginInputId = "j_username";
-		
-		var hasErrors = false;
-		hasErrors = sanityChecker.checkIfNotExists('#' + loginInputId, 'Login input')|| hasErrors;
-		if (hasErrors) {
-			loginLogger.error('Script initialization failed due to multiple errors');
-		}
-		else {
-			loginLogger.debug("Initializing login...");
-			$(loginInputId).focus();
-		}
-		
-	}
-});
+define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
+    "use strict";
+    logger.setCaller('Login');
+    var loginInputId = "j_username";
 
-
-document.observe("dom:loaded",function() {
-	new Login();
+    return {
+        focus: function(loginInputId) {
+            var hasErrors = false;
+            hasErrors = sanityChecker.checkIfNotExists('#' + loginInputId, 'Login input')|| hasErrors;
+            if (hasErrors) {
+                logger.error('Script initialization failed due to multiple errors');
+            }
+            else {
+                logger.debug("Initializing login...");
+                $(loginInputId).focus();
+                logger.debug("... done!");
+            }
+        }
+    }
 });

@@ -1,37 +1,18 @@
-<%@ include file="../include/common.jsp"%><!DOCTYPE html>
+<%@ include file="../include/commonTaglib.jsp"%>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+    <c:import url="/WEB-INF/pages/include/commonMeta.jsp" />
     <title><spring:message code="home.header" /></title>
-    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/common.css" />" type="text/css" />
+
+    <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/timeline.css" />" type="text/css" />
-    
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/prototype.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/logger.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/timeline.js"/>"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/ext/modernizr.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/localStorageChecker.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/domNavigationUtils.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/lib/externalLinkDetector.js" />"></script>
-    <script type="text/javascript" src="<c:url value="${staticRoot}/js/pages/common.js" />"></script>
 
-	<style>
-	abbr,article,aside,audio,canvas,datalist,details,figure,dialog,footer,header,hgroup,mark,menu,meter,nav,output,progress,section,time,video
-	{
-		display: block;
-	}
-	</style>
-	<!--[if lt IE 9]>
-	   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-
-    <link rel="stylesheet/less" type="text/css"	href="<c:url value="${staticRoot}/css/styles.less"/>">
-    <script src="<c:url value="${staticRoot}/js/ext/less.js"/>"	type="text/javascript"></script>
+    <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
 </head>
 <body>
 	<div id="pageContent">
-		<c:import url="/WEB-INF/pages/header.jsp" />
+		<c:import url="/WEB-INF/pages/include/header.jsp" />
 		<div id="catMain">
 			<h1 id="mainTitle">
 				<spring:message code="timeline.prog.header" />
@@ -99,7 +80,7 @@
 				</div>
 			</div>
 		</div>
-		<c:import url="/WEB-INF/pages/footer.jsp" />
+		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 	</div>
 </body>
 </html>

@@ -1,34 +1,39 @@
-"use strict";
-var ExternalLinkDetector = Class.create({
-	scan: function() {
-		$$('a').each(function(element) {
-			if (this.isExternalLink(element.href)) {
-				element.writeAttribute('target', '_blank');
-			}
-		}.bind(this));
-	},
-	
-	isExternalLink: function(url) {
-	    return !(this.getDomain(window.location.href) === this.getDomain(url));
-	},
-	
-	getDomain: function(url) {
-		return url.replace('http://', '').replace('https://', '').split('/')[0];
-	},
+define(["lib/domNavigationUtils", "ext/prototype"], function(domNavigationUtils) {
+    "use strict";
 
-	isContainedInALink: function(element) {
-		return element.tagName.toUpperCase() == 'A' || new DomNavigationUtils().firstAncestorWithTag('a', element) != undefined;
-	},
-	
-	interceptRedirect: function(linkElement) {
-		var destination = linkElement.readAttribute('href');
-		if (!destination.blank() && destination.indexOf('#') != 0) {
-			if(this.isExternalLink(destination)) {
-				window.open(destination);
-			}
-			else {
-				window.location = destination;
-			}
-		}
-	}
+	var isExternalLink = function(url) {
+	    return !(getDomain(window.location.href) === getDomain(url));
+	};
+	var getDomain = function(url) {
+		return url.replace('http://', '').replace('https://', '').split('/')[0];
+	};
+	var isContainedInALink = function(element) {
+		return element.tagName.toUpperCase() == 'A' || domNavigationUtils.firstAncestorWithTag('a', element) != undefined;
+	};
+
+    return {
+        scan : function() {
+            $$('a').each(function(element) {
+                if (isExternalLink(element.href)) {
+                    element.writeAttribute('target', '_blank');
+                }
+            });
+        },
+        
+        isContainedInALink : function(element) {
+            return element.tagName.toUpperCase() == 'A' || domNavigationUtils.firstAncestorWithTag('a', element) != undefined;
+        },
+        
+        interceptRedirect : function(linkElement) {
+            var destination = linkElement.readAttribute('href');
+            if (!destination.blank() && destination.indexOf('#') != 0) {
+                if(isExternalLink(destination)) {
+                    window.open(destination);
+                }
+                else {
+                    window.location = destination;
+                }
+            }
+        }
+    }
 });
