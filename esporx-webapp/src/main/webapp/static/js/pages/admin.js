@@ -1,6 +1,5 @@
 define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
     "use strict";
-    logger.setCaller('Admin');
 
     //TODO: this should be configurable
     var slideContainerId = 'showSlides';
@@ -39,6 +38,7 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
     
     return {
         trigger: function() {
+            logger.setCaller('Admin');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + slideContainerId, 'Slide container input')|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + slotContainerId, 'Slot container input')|| hasErrors;

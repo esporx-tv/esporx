@@ -1,10 +1,10 @@
 define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
     "use strict";
-    logger.setCaller('Login');
     var loginInputId = "j_username";
 
     return {
         focus: function(loginInputId) {
+            logger.setCaller('Login');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + loginInputId, 'Login input')|| hasErrors;
             if (hasErrors) {

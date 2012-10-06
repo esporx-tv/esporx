@@ -1,11 +1,11 @@
 define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
     "use strict";
-    logger.setCaller('Slot');
 
     var slotCheckboxId = "active1";
 
     return {
         trigger: function() {
+            logger.setCaller('Slot');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + slotCheckboxId, 'Slot checkbox')|| hasErrors;
             if (hasErrors) {
