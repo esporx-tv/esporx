@@ -81,6 +81,8 @@
 		<env.file>environments/current-liquibase.properties</env.file>
 		<liquibase.prompt-when-remote>true</liquibase.prompt-when-remote>
         <jackson.version>1.9.9</jackson.version>
+        <cloudbees-maven-plugin.version>1.3.2</cloudbees-maven-plugin.version>
+        <lesscss-maven-plugin.version>1.3.0</lesscss-maven-plugin.version>
     </properties>
 
 	<dependencyManagement>
@@ -313,7 +315,7 @@
 			<plugin>
 				<groupId>com.cloudbees</groupId>
 				<artifactId>bees-maven-plugin</artifactId>
-				<version>1.3.2</version>
+				<version>${cloudbees-maven-plugin.version}</version>
 				<configuration>
 					<port>9998</port>
 				</configuration>
@@ -423,6 +425,22 @@
 						</preloadSources>
 					</configuration>
 				</plugin>
+                <plugin>
+                    <groupId>org.lesscss</groupId>
+                    <artifactId>lesscss-maven-plugin</artifactId>
+                    <version>${lesscss-maven-plugin.version}</version>
+                    <configuration>
+                        <sourceDirectory>${project.basedir}/src/main/webapp/static/less</sourceDirectory>
+                        <outputDirectory>${project.build.directory}/${project.build.finalName}/static/css</outputDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
