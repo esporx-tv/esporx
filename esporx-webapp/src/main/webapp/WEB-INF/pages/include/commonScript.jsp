@@ -10,7 +10,9 @@
         baseUrl : "<c:url value="${staticRoot}/js" />",
         map : {
             '*' : {
-                'text' : 'ext/text'
+                'text' : 'ext/text',
+                'css' : '../css',
+                'tpl' : '../tpl'
             }
         }
     });

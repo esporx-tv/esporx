@@ -1,4 +1,4 @@
-define(["lib/logger", "lib/sanityChecker", "lib/dateUtils"], function(logger, sanityChecker) {
+define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
     "use strict";
     logger.setCaller('Admin');
 

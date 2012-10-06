@@ -6,7 +6,6 @@
     <title><spring:message code="admin.submission.main_header" /></title>
 
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
-    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />" type="text/css" />
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/admin.css" />" type="text/css" />
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />

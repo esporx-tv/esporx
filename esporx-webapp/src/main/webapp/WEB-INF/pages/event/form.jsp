@@ -6,9 +6,8 @@
 	<title><spring:message code="event.submission.header" /></title>
 
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
-	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />" type="text/css" />
+    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />" type="text/css" />
 	<link rel="stylesheet" href="<c:url value="${staticRoot}/css/event.css" />" type="text/css" />
-
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
@@ -39,7 +38,6 @@
                         <form:checkbox class="checkbox" path="highlighted" value="0" />
                         <form:errors path="highlighted" cssClass="errors" />
                     </div>
-
 
 					<div class="input">
 						<spring:message code="event.submission.title.placeholder"

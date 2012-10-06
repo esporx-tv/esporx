@@ -1,4 +1,4 @@
-define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!pages/eventForm.tpl", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker, templateHelper, eventTemplate) {
+define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker, templateHelper, eventTemplate, dateUtils) {
     "use strict";
     logger.setCaller('Event');
 
@@ -15,20 +15,7 @@ define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!pages/e
                logger.error('Script initialization failed due to multiple errors');
            } else {
                $(eventTitleInputId).focus();
-
-               $$('input.datepicker').each(function(e) {
-                   new Control.DatePicker(e, {
-                       'datePicker' : true,
-                       'timePicker' : true,
-                       'timePickerAdjacent' : true,
-                       'icon' : '/static/img/calendar.png',
-                       'iconBgColor' : '#E6E6E6',
-                       'use24hrs' : true,
-                       'dateTimeFormat' : 'dd/MM/yyyy HH:mm'
-                   });
-                   e.writeAttribute('autocomplete', 'off');
-               });
-
+               dateUtils.trigger();
                $(occurrenceCreationId).observe('click', function(event) {
                    logger.debug('cliclicklclick')
                });

@@ -1,4 +1,4 @@
-define(["lib/logger", "lib/sanityChecker", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker) {
+define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker) {
     "use strict";
     logger.setCaller('Channel');
 
@@ -33,18 +33,7 @@ define(["lib/logger", "lib/sanityChecker", "lib/dateUtils", "ext/ckeditor/ckedit
             } else {
                 $(channelSubmitInputId).disable();
                 $(channelTitleInputId).focus();
-                $$('input.datepicker').each(function(e) {
-                    new Control.DatePicker(e, {
-                        'datePicker' : true,
-                        'timePicker' : true,
-                        'timePickerAdjacent' : true,
-                        'icon' : '/static/img/calendar.png',
-                        'iconBgColor' : '#E6E6E6',
-                        'use24hrs' : true,
-                        'dateTimeFormat' : 'dd/MM/yyyy HH:mm'
-                    });
-                    e.writeAttribute('autocomplete', 'off');
-                });
+
                 $(videoUrlInputElementId).observe('blur',function(event) {
                     var input = Event.element(event);
                     var videoUrl = $F(input).stripTags().strip();
