@@ -2,12 +2,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title><spring:message code="home.header" /></title>
-    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/home.css" />" type="text/css" />
     <c:import url="/WEB-INF/pages/include/commonMeta.jsp" />
+    <title><spring:message code="home.header" /></title>
+
+
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
+    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/home.css" />" type="text/css" />
+
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
+    <script type="text/javascript">
+        require(['pages/homepage'], function(home) {
+            document.observe('dom:loaded', function() {
+                home.trigger();
+            });
+        });
+    </script>
 </head>
 <body>
 	<div id="pageContent">
