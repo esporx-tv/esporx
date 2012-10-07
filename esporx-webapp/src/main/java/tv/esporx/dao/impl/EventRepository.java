@@ -36,7 +36,7 @@ public class EventRepository implements PersistenceCapableEvent {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Event findById(final long id) {
+	public Event findById(final Long id) {
 		checkArgument(id > 0);
 		Event event = entityManager.find(Event.class, id);
 		return event;

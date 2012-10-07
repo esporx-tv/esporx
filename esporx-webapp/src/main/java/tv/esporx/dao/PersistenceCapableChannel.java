@@ -12,7 +12,7 @@ public interface PersistenceCapableChannel {
 
 	void delete(Channel channel);
 
-	Channel findById(long i);
+	Channel findById(Long id);
 
 	Channel findByTitle(String string);
 

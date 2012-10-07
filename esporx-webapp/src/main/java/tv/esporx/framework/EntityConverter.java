@@ -24,7 +24,7 @@ public class EntityConverter<E> implements GenericConverter {
         this.repository = repository;
         this.entityClass = entityClass;
         methodName = "findById";
-        singleParameterClass = long.class;
+        singleParameterClass = Long.class;
     }
 
     public EntityConverter(final Object repository, final Class<E> entityClass, final String methodName, final Class<?> singleParameterClass) {
@@ -43,13 +43,22 @@ public class EntityConverter<E> implements GenericConverter {
 	public Object convert(final Object source, final TypeDescriptor sourceType, final TypeDescriptor targetType) {
 		Object result = null;
 		try {
-			Object param = singleParameterClass.cast((String) source);
-			Method method = findMethod(repository.getClass(), methodName, singleParameterClass);
+            Object param = cast(source);
+            Method method = findMethod(repository.getClass(), methodName, singleParameterClass);
 			result = invokeMethod(method, repository, param);
 		}
 		catch (RuntimeException nfe) {
+            String foo = "hello";
 		}
 		return result;
 	}
+
+    private Object cast(Object source) {
+        Method valueOf = findMethod(singleParameterClass, "valueOf", String.class);
+        if (valueOf == null) {
+            return singleParameterClass.cast(source);
+        }
+        return invokeMethod(valueOf, null, (String) source);
+    }
 
 }

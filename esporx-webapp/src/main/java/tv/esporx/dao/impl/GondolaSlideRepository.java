@@ -21,7 +21,7 @@ public class GondolaSlideRepository implements PersistenceCapableGondolaSlide {
 	private EntityManager entityManager;
 
 	@Override
-	public GondolaSlide findById(final long id) {
+	public GondolaSlide findById(final Long id) {
 		Preconditions.checkArgument(id >= 0);
 		return entityManager.find(GondolaSlide.class, id);
 	}

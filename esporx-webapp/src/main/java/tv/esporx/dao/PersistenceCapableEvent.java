@@ -14,7 +14,7 @@ public interface PersistenceCapableEvent {
 
 	List<Event> findAll();
 
-	Event findById(long i);
+	Event findById(Long id);
 
 	List<Event> findUpNext();
 

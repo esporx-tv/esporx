@@ -38,7 +38,7 @@ public class ConfigurableSlotRepository implements PersistenceCapableConfigurabl
 
 	@Override
 	@Transactional(readOnly = true)
-	public ConfigurableSlot findById(final long id) {
+	public ConfigurableSlot findById(final Long id) {
 		checkArgument(id >= 0);
 		return entityManager.find(ConfigurableSlot.class, id);
 	}

@@ -8,7 +8,7 @@ import tv.esporx.domain.front.GondolaSlide;
 
 public interface PersistenceCapableGondolaSlide {
 
-	GondolaSlide findById(long id);
+	GondolaSlide findById(Long id);
 
 	List<GondolaSlide> findByLanguage(String language);
 

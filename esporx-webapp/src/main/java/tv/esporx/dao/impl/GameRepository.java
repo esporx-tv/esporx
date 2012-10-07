@@ -19,7 +19,7 @@ public class GameRepository implements PersistenceCapableGame {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Game findById(final long id) {
+	public Game findById(final Long id) {
 		Game game = entityManager.find(Game.class, id);
 		return game;
 	}

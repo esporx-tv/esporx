@@ -6,7 +6,7 @@ import tv.esporx.domain.Game;
 
 public interface PersistenceCapableGame {
 
-	Game findById(long id);
+	Game findById(Long id);
 
 	Game findByTitle(String title);
 

@@ -12,7 +12,7 @@ public interface PersistenceCapableConfigurableSlot {
 
 	List<ConfigurableSlot> findByLanguage(String language);
 
-	ConfigurableSlot findById(long id);
+	ConfigurableSlot findById(Long id);
 
 	void saveOrUpdate(ConfigurableSlot slot);
 

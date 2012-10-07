@@ -32,7 +32,7 @@ public class ChannelRepository implements PersistenceCapableChannel {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Channel findById(final long id) {
+	public Channel findById(final Long id) {
 		checkArgument(id >= 0);
 		return entityManager.find(Channel.class, id);
 	}

@@ -40,6 +40,7 @@ public class Event {
 	@NotNull
 	@Column(name = "highlight", nullable = false, columnDefinition = "BIT", length = 1)
 	private boolean highlighted;
+
 	public String getDescription() {
 		return description;
 	}
@@ -66,25 +67,25 @@ public class Event {
 		this.title = title;
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Event other = (Event) obj;
-		return equal(description, other.description) //
-		        && equal(title, other.title);
-	}
-
     public boolean isHighlighted() {
         return highlighted;
     }
 
     public void setHighlighted(final boolean highlighted) {
         this.highlighted = highlighted;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Event other = (Event) obj;
+        return equal(description, other.description) //
+                && equal(title, other.title);
     }
 
 	@Override
