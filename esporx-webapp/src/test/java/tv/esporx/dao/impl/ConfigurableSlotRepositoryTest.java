@@ -50,7 +50,7 @@ public class ConfigurableSlotRepositoryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void when_calling_findById_with_a_negative_integer_then_throws_exception() {
-		slotDao.findById(-42);
+		slotDao.findById(-42L);
 	}
 
 	@Test

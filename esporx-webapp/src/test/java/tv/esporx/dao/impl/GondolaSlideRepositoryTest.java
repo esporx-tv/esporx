@@ -42,7 +42,7 @@ public class GondolaSlideRepositoryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void when_calling_findById_with_a_negative_integer_then_throws_exception() {
-		gondolaDao.findById(-42);
+		gondolaDao.findById(-42L);
 	}
 
 	@Test

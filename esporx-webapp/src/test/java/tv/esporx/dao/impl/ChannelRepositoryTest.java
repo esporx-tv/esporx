@@ -53,7 +53,7 @@ public class ChannelRepositoryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void when_calling_find_by_id_with_negative_integer_then_throws_exception() {
-		channelDao.findById(-42);
+		channelDao.findById(-42L);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

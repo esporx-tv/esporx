@@ -59,7 +59,7 @@ public class EventRepositoryTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void when_calling_findById_with_negative_integer_then_throws_exception() {
-		eventDao.findById(-20);
+		eventDao.findById(-20L);
 	}
 
 	@Test

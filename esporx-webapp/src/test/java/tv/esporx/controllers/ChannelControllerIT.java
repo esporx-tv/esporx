@@ -1,15 +1,5 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +14,21 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.ModelAndView;
-
 import tv.esporx.dao.impl.ChannelRepository;
 import tv.esporx.dao.impl.GameRepository;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Game;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
@@ -73,18 +72,18 @@ public class ChannelControllerIT {
 
 	private void givenChannelRepositoryIsMocked() {
 		channelDao = mock(ChannelRepository.class);
-		when(channelDao.findById(anyInt())).thenReturn(channel);
+		when(channelDao.findById(anyLong())).thenReturn(channel);
 		assertThat(channelController).isNotNull();
 		setField(channelController, "channelDao", channelDao);
 	}
 
 	private void givenGameRepositoryIsMocked() {
 		EntityManager entityManager = Mockito.mock(EntityManager.class);
-		Query query = Mockito.mock(Query.class);
-		when(query.setMaxResults(Mockito.anyInt())).thenReturn(query);
+		Query query = mock(Query.class);
+		when(query.setMaxResults(anyInt())).thenReturn(query);
 		when(entityManager.createNamedQuery("Game.findByTitle")).thenReturn(query);
 		gameDao = mock(GameRepository.class);
-		when(gameDao.findByTitle(Mockito.anyString())).thenReturn(game);
+		when(gameDao.findByTitle(anyString())).thenReturn(game);
 	}
 
 
