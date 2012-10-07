@@ -1,12 +1,15 @@
 define(["lib/logger", "ext/modernizr"], function(logger) {
     "use strict";
 	var testDummyKey = "__DUMMY_ESPORX_DATA__";
+    var timestampKey = "__DUMMY_ESPORX_CHECK_TSTAMP__";
 	var maxIterations = 100;
     var localStorage = window.localStorage;
-
-    logger.setCaller("LocalStorageChecker");
     
     var _isLimitReached = function() {
+        if (_hasBeenCheckedRecently()) {
+            return false;
+        }
+        logger.debug("Storage clear check routine: started!");
         var count = 0;
         var limitIsReached = false;
         do {
@@ -23,8 +26,16 @@ define(["lib/logger", "ext/modernizr"], function(logger) {
         }
         while(!limitIsReached && count++ < maxIterations);
         localStorage.removeItem(testDummyKey);
+        localStorage.setItem(timestampKey, new Date().getTime());
+        logger.debug("Storage clear check routine: done!");
         return limitIsReached;
     };
+
+    var _hasBeenCheckedRecently = function() {
+        var previousTimestamp = localStorage.getItem(timestampKey);
+        if (previousTimestamp == null) return false;
+        return new Date().getTime() - previousTimestamp < 5 * 60 * 1000;
+    }
     
     var _clear = function() {
         try {
