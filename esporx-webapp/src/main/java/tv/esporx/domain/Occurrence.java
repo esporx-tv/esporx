@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -26,14 +25,15 @@ public class Occurrence {
     @Column(name="end_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime endDate;
-    @Enumerated(STRING)
-    private FrequencyType frequency;
+    @ManyToOne
+    @JoinColumn(name = "frequency_type", nullable = false)
+    private FrequencyType frequencyType;
 
     public Occurrence(DateTime startDate, FrequencyType frequency) {
         checkNotNull(startDate);
         checkNotNull(frequency);
         this.startDate = startDate;
-        this.frequency = frequency;
+        this.frequencyType = frequency;
     }
 
     public Occurrence(DateTime startDate, DateTime endDate, FrequencyType frequency) {
@@ -49,7 +49,7 @@ public class Occurrence {
     }
 
     public boolean happensAt(DateTime dateTime) {
-        return frequency.matches(startDate, endDate, dateTime);
+        return frequencyType.matches(startDate, endDate, dateTime);
     }
 
     public DateTime getStartDate() {
@@ -60,7 +60,7 @@ public class Occurrence {
         return endDate;
     }
 
-    public FrequencyType getFrequency() {
-        return frequency;
+    public FrequencyType getFrequencyType() {
+        return frequencyType;
     }
 }

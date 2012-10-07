@@ -3,21 +3,46 @@ package tv.esporx.domain;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "frequency_types")
 public enum FrequencyType {
     ONCE, DAILY, WEEKLY, MONTHLY, YEARLY;
 
-    public boolean matches(DateTime start, DateTime end, DateTime actual) {
+    private String value;
+
+    @Id
+    @Column(name = "value")
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        //validates value against the enumerated/allowed values (ie throws exceptions if invalid value)
+        valueOf(value.toUpperCase());
+        this.value = value;
+    }
+
+    public boolean matches(DateTime start, DateTime end, DateTime testDate) {
         start = start.withSecondOfMinute(0).withMillisOfSecond(0);
-        actual = actual.withSecondOfMinute(0).withMillisOfSecond(0);
+        testDate = testDate.withSecondOfMinute(0).withMillisOfSecond(0);
 
         if(end != null) {
             end = end.withSecondOfMinute(0).withMillisOfSecond(0);
-            if(actual.isAfter(end)) {
+            if(testDate.isAfter(end)) {
                 return false;
             }
         }
 
-        switch(this) {
+        return matches(start, testDate);
+    }
+
+    private boolean matches(DateTime start, DateTime actual) {
+        switch(valueOf(value.toUpperCase())) {
             case ONCE:
                 return start.isEqual(actual);
             case DAILY:

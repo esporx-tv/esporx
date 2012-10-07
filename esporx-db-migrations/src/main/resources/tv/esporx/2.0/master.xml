@@ -12,4 +12,6 @@
     <include file="add_video_provider_endpoint.xml" relativeToChangelogFile="true" />
     <include file="fix_video_provider_id_type.xml" relativeToChangelogFile="true" />
     <include file="fix_frequency_id_type.xml" relativeToChangelogFile="true" />
+    <include file="rename_cast_to_channel_for_casters.xml" relativeToChangelogFile="true" />
+    <include file="fix_fk_types_in_event_occurrence.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

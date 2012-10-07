@@ -31,7 +31,7 @@ public class Event {
 	@Column(name = "description", nullable = false)
 	private String description = "";
 	@ManyToMany
-    @JoinTable(name = "event_occurrence")
+    @JoinTable(name = "event_occurrence", joinColumns = { @JoinColumn(name = "eventId") }, inverseJoinColumns = { @JoinColumn(name = "occurrenceId") } )
     private Set<Occurrence> occurrences = newHashSet();
     @NotBlank
 	@Length(max = 255)
