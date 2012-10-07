@@ -1,6 +1,5 @@
 define(["lib/logger", "ext/prototype"], function(logger) {
     "use strict";
-    logger.setCaller("SanityChecker");
 
     return {
         checkIfNotExists : function(elementIdOrClass, errorMessage) {

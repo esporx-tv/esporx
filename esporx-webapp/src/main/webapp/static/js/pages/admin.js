@@ -1,4 +1,4 @@
-define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
+define(["lib/logger", "lib/sanityChecker", "ext/prototype"], function(logger, sanityChecker) {
     "use strict";
 
     //TODO: this should be configurable
@@ -35,10 +35,9 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
             }
         });
     };
-    
+
     return {
         trigger: function() {
-            logger.setCaller('Admin');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + slideContainerId, 'Slide container input')|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + slotContainerId, 'Slot container input')|| hasErrors;
@@ -48,7 +47,7 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
                 logger.error('Script initialization failed due to multiple errors');
             }
             else {
-                logger.debug('Initialize admin js');
+                logger.debug('Initializing admin homepage ...');
                 $(slideContainerId).observe('click', function () {
                     display($('slidesContainer'));
                     active($(slideContainerId));
@@ -65,7 +64,6 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
                     display($('eventsContainer'));
                     active($(eventContainerId));
                 });
-
                 $$('.gondolaRemove').each(function(element) {
                     element.observe('click', function(event) {
                         if(!window.confirm('Do you really want to delete this slide?')) {
@@ -73,7 +71,6 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
                         }
                     });
                 });
-
                 $$('.send').each(function(element) {
                     element.observe('click', function(event) {
                         if(!window.confirm('Confirm deletion?')) {
@@ -81,6 +78,7 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
                         }
                     });
                 });
+                logger.debug('... done !');
             }
 
         }

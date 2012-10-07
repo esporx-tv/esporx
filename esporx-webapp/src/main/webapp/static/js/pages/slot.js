@@ -5,7 +5,6 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
 
     return {
         trigger: function() {
-            logger.setCaller('Slot');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + slotCheckboxId, 'Slot checkbox')|| hasErrors;
             if (hasErrors) {

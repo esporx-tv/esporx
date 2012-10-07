@@ -6,7 +6,6 @@ define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eve
 
     return {
        trigger: function() {
-           logger.setCaller('Event');
            var hasErrors = false;
            hasErrors = sanityChecker.checkIfNotExists('#'+ eventTitleInputId, 'Event title input') || hasErrors;
            hasErrors = sanityChecker.checkIfNotExists('#'+ occurrenceCreationId, 'Occurrence creation button') || hasErrors;
@@ -14,11 +13,13 @@ define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eve
            if (hasErrors) {
                logger.error('Script initialization failed due to multiple errors');
            } else {
-               $(eventTitleInputId).focus();
+               logger.debug('Initializing event form ...');
                dateUtils.trigger();
+               $(eventTitleInputId).focus();
                $(occurrenceCreationId).observe('click', function(event) {
                    logger.debug('cliclicklclick')
                });
+               logger.debug('... done!');
            };
        }
     }

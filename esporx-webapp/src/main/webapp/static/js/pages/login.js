@@ -4,7 +4,6 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
 
     return {
         focus: function(loginInputId) {
-            logger.setCaller('Login');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + loginInputId, 'Login input')|| hasErrors;
             if (hasErrors) {

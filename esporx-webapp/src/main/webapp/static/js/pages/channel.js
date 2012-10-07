@@ -18,7 +18,6 @@ define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], funct
 	return {
         //TODO: I'm too fat! make me slim!
         trigger : function() {
-            logger.setCaller('Channel');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + channelTitleInputId, 'Channel title input')|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + descriptionInputElementId, 'Description textarea element')	|| hasErrors;

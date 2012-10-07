@@ -6,7 +6,6 @@ define(["lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/extern
 
     return {
         trigger : function() {
-            logger.setCaller('Homepage');
             var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + highLightsContainerId, 'Highlights container area')|| hasErrors;
             if (hasErrors) {
