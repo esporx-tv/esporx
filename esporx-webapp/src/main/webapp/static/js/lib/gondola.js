@@ -1,4 +1,4 @@
-define(["ext/prototype"], function() {
+define(["ext/prototype", "ext/effects", "ext/carousel"], function() {
     "use strict";
     
 	var gondolaSlideSelector = 'article.gFrame';

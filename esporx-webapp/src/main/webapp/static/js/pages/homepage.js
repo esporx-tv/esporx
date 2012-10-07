@@ -18,7 +18,6 @@ define(["lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/extern
                 eventBoxes.each(function(element) {
                     element.observe('click', function(event) {
                         var el = Event.element(event);
-                        console.log(el, externalLinkDetector.isContainedInALink(el));
                         if (!externalLinkDetector.isContainedInALink(el)) {
                             var eventBoxRoot = domNavigationUtils.firstAncestorWithClass(el, eventBoxClassName);
                             var link = domNavigationUtils.firstDescendantWithTag('a', eventBoxRoot);
