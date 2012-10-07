@@ -38,7 +38,7 @@ public class Event {
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
 	@NotNull
-	@Column(name = "highlight", nullable = false)
+	@Column(name = "highlight", nullable = false, columnDefinition = "BIT", length = 1)
 	private boolean highlighted;
 	public String getDescription() {
 		return description;

@@ -18,7 +18,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="persistenceUnitName" value="eSporxPersistenceUnit" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="true" />
+				<property name="generateDdl" value="false" />
 				<property name="showSql" value="true" />
 				<property name="databasePlatform" value="${database.dialect}" />
 			</bean>

@@ -37,7 +37,7 @@ public class Channel {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", nullable = false)
 	private long id;
-	@Column(name = "is_live", nullable = false)
+	@Column(name = "is_live", nullable = false, columnDefinition = "BIT", length = 1)
 	private boolean live;
 	@ManyToMany
 	@JoinTable(name = "channel_casters", joinColumns = { @JoinColumn(name = "channelId") }, inverseJoinColumns = { @JoinColumn(name = "casterId") })

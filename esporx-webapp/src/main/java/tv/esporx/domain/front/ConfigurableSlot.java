@@ -38,9 +38,9 @@ public class ConfigurableSlot {
 	private String title = "";
 	@NotNull
 	@Column(name = "position", nullable = false)
-	private int position;
+	private long position;
 	@NotNull
-	@Column(name = "is_active", nullable = false)
+	@Column(name = "is_active", nullable = false, columnDefinition = "BIT", length = 1)
 	private boolean active;
 	@Column(name = "language", nullable = false)
 	private String language;
@@ -103,7 +103,7 @@ public class ConfigurableSlot {
 		return title;
 	}
 
-	public int getPosition() {
+	public long getPosition() {
 		return position;
 	}
 
@@ -151,7 +151,7 @@ public class ConfigurableSlot {
 		this.title = title;
 	}
 
-	public void setPosition(final int position) {
+	public void setPosition(final long position) {
 		this.position = position;
 	}
 
