@@ -1,24 +1,30 @@
+/*global $: true
+ $F: true
+ Event: true
+ Ajax: true*/
 define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker) {
     "use strict";
 
     //TODO: this should be configurable
-	var channelTitleInputId = "title";
-	var descriptionInputElementId = "description";
-	var formElementId = "channelCommand";
-	var loadingIconId = "loadingIcon";
-    var channelSubmitInputId = "submitChannel";
-    var videoUrlInputElementId = "videoUrl";
-    var videoProviderInputElementId = "provider";
-
-    var supportedUrlClass = 'supportedUrl';
-    var unsupportedUrlClass = 'unsupportedUrl';
-
-    var findVideoProviderUrl = '/video/matchProvider';
+	var channelTitleInputId = "title",
+        descriptionInputElementId = "description",
+        formElementId = "channelCommand",
+        loadingIconId = "loadingIcon",
+        channelSubmitInputId = "submitChannel",
+        videoUrlInputElementId = "videoUrl",
+        videoProviderInputElementId = "provider",
+        supportedUrlClass = 'supportedUrl',
+        unsupportedUrlClass = 'unsupportedUrl',
+        findVideoProviderUrl = '/video/matchProvider',
+        hasErrors = false,
+        input,
+        videoUrl,
+        request,
+        response;
 
 	return {
         //TODO: I'm too fat! make me slim!
         trigger : function() {
-            var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + channelTitleInputId, 'Channel title input')|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + descriptionInputElementId, 'Description textarea element')	|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + formElementId, 'Form element')|| hasErrors;
@@ -34,22 +40,22 @@ define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], funct
                 $(channelTitleInputId).focus();
 
                 $(videoUrlInputElementId).observe('blur',function(event) {
-                    var input = Event.element(event);
-                    var videoUrl = $F(input).stripTags().strip();
+                    input = Event.element(event);
+                    videoUrl = $F(input).stripTags().strip();
                     if (videoUrl.empty()) {
                         input.removeClassName(unsupportedUrlClass);
                         input.removeClassName(supportedUrlClass);
                     } else {
-                        new Ajax.Request(findVideoProviderUrl, {
+                        request = new Ajax.Request(findVideoProviderUrl, {
                             method : 'get',
                             parameters : {
                                 url : videoUrl
                             },
                             onSuccess : function(transport) {
-                                var response = transport.responseText;
+                                response = transport.responseText;
                                 if (!response.empty()) {
                                     logger.debug('Match found: '+ response);
-                                    if(response == 'true') {
+                                    if(response === 'true') {
                                         $(channelSubmitInputId).enable();
                                         input.removeClassName(unsupportedUrlClass);
                                         input.addClassName(supportedUrlClass);
@@ -63,7 +69,7 @@ define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], funct
                                 logger.debug('Request failed - could not find any matching video provider');
                             }
                         });
-                    };
+                    }
                 });
 
                 $(formElementId).observe('submit', function() {
@@ -71,5 +77,5 @@ define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], funct
                 });
             }
         }
-    }
+    };
 });

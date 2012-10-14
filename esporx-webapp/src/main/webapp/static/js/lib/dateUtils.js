@@ -1,9 +1,11 @@
-define(["ext/prototype", "ext/scriptaculous", "ext/datepicker", "ext/prototype-date-extensions", "ext/effects"], function() {
+/*global Control: true
+$$: true*/
+define(["ext/datepicker"], function() {
     "use strict";
 
     var datePickerize = function() {
         $$('input.datepicker').each(function(input) {
-            new Control.DatePicker(input, {
+            var datepicker = new Control.DatePicker(input, {
                 'datePicker' : true,
                 'timePicker' : true,
                 'timePickerAdjacent' : true,
@@ -15,11 +17,11 @@ define(["ext/prototype", "ext/scriptaculous", "ext/datepicker", "ext/prototype-d
             input.writeAttribute('autocomplete', 'off');
             input.setStyle({'cursor':'pointer'});
         });
-    }
+    };
 
     return {
         trigger: function() {
             datePickerize();
         }
-    }
+    };
 });

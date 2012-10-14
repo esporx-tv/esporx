@@ -83,6 +83,7 @@
         <jackson.version>1.9.9</jackson.version>
         <cloudbees-maven-plugin.version>1.3.2</cloudbees-maven-plugin.version>
         <lesscss-maven-plugin.version>1.3.0</lesscss-maven-plugin.version>
+        <jslint-maven-plugin.version>1.0.1</jslint-maven-plugin.version>
     </properties>
 
 	<dependencyManagement>
@@ -418,7 +419,6 @@
 						</sourceExcludes>
 						<preloadSources>
 							<source>ext/prototype.js</source>
-							<source>ext/modernizr.js</source>
 							<source>lib/logger.js</source>
 							<source>lib/sanityChecker.js</source>
 							<source>ext/simulate.js</source>
@@ -437,6 +437,29 @@
                         <execution>
                             <goals>
                                 <goal>compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jslint-maven-plugin</artifactId>
+                    <version>${jslint-maven-plugin.version}</version>
+                    <configuration>
+                        <assumeABrowser>true</assumeABrowser>
+                        <sourceJsFolder>src/main/webapp/static/js/</sourceJsFolder>
+                        <excludes>
+                            <exclude>ext/</exclude>
+                        </excludes>
+                        <predefinedVars>require,define,console,alert,window</predefinedVars>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>jslint</id>
+                            <inherited>true</inherited>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>jslint</goal>
                             </goals>
                         </execution>
                     </executions>

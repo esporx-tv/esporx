@@ -7,5 +7,5 @@ define(["lib/logger", "lib/dateUtils"], function(logger, dateUtils) {
             dateUtils.trigger();
             logger.debug("... done!");
         }
-    }
+    };
 });

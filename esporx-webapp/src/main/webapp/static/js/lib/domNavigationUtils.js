@@ -1,4 +1,3 @@
-"use strict";
 define(["ext/prototype"], function() {
     "use strict";
 
@@ -8,7 +7,7 @@ define(["ext/prototype"], function() {
          */
         firstAncestorWithTag : function(tag, startElement) {
             return startElement.ancestors().find(function(ancestor) {
-                return ancestor.tagName.toUpperCase() == tag.toUpperCase();
+                return ancestor.tagName.toUpperCase() === tag.toUpperCase();
             });
         },
         /*
@@ -28,9 +27,9 @@ define(["ext/prototype"], function() {
 
         firstDescendantWithTag : function(tag, startElement) {
             return startElement.descendants().find(function(descendant) {
-                return descendant.tagName.toUpperCase() == tag.toUpperCase();
+                return descendant.tagName.toUpperCase() === tag.toUpperCase();
             });
         }
-    }
+    };
 
 });

@@ -1,11 +1,13 @@
+/*global $: true
+ Event: true*/
 define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
     "use strict";
 
-    var slotCheckboxId = "active1";
+    var slotCheckboxId = "active1",
+        hasErrors = false;
 
     return {
         trigger: function() {
-            var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + slotCheckboxId, 'Slot checkbox')|| hasErrors;
             if (hasErrors) {
                 logger.error('Script initialization failed due to multiple errors');
@@ -21,5 +23,5 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
                 logger.debug("... done!");
             }
         }
-    }
+    };
 });

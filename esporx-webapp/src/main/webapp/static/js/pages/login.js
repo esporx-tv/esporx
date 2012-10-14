@@ -1,3 +1,4 @@
+/*global $: true*/
 define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
     "use strict";
     var loginInputId = "j_username";
@@ -15,5 +16,5 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
                 logger.debug("... done!");
             }
         }
-    }
+    };
 });

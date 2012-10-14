@@ -1,14 +1,19 @@
-define(["lib/domNavigationUtils", "ext/prototype"], function(domNavigationUtils) {
+/*global $$: true*/
+define(["lib/domNavigationUtils","ext/prototype"], function(domNavigationUtils) {
     "use strict";
 
-	var isExternalLink = function(url) {
-	    return !(getDomain(window.location.href) === getDomain(url));
+    var getDomain,
+        isExternalLink,
+        isContainedInALink;
+
+    getDomain = function(url) {
+        return url.replace('http://', '').replace('https://', '').split('/')[0];
+    };
+	isExternalLink = function(url) {
+	    return (getDomain(window.location.href) !== getDomain(url));
 	};
-	var getDomain = function(url) {
-		return url.replace('http://', '').replace('https://', '').split('/')[0];
-	};
-	var isContainedInALink = function(element) {
-		return element.tagName.toUpperCase() == 'A' || domNavigationUtils.firstAncestorWithTag('a', element) != undefined;
+	isContainedInALink = function(element) {
+		return element.tagName.toUpperCase() === 'A' || domNavigationUtils.firstAncestorWithTag('a', element) !== undefined;
 	};
 
     return {
@@ -21,12 +26,12 @@ define(["lib/domNavigationUtils", "ext/prototype"], function(domNavigationUtils)
         },
         
         isContainedInALink : function(element) {
-            return element.tagName.toUpperCase() == 'A' || domNavigationUtils.firstAncestorWithTag('a', element) != undefined;
+            return element.tagName.toUpperCase() === 'A' || domNavigationUtils.firstAncestorWithTag('a', element) !== undefined;
         },
         
         interceptRedirect : function(linkElement) {
             var destination = linkElement.readAttribute('href');
-            if (!destination.blank() && destination.indexOf('#') != 0) {
+            if (!destination.blank() && destination.indexOf('#') !== 0) {
                 if(isExternalLink(destination)) {
                     window.open(destination);
                 }
@@ -35,5 +40,5 @@ define(["lib/domNavigationUtils", "ext/prototype"], function(domNavigationUtils)
                 }
             }
         }
-    }
+    };
 });

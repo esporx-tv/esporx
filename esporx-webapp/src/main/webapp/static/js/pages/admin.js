@@ -1,28 +1,40 @@
+/*global $: true
+ $$: true
+ Event: true*/
 define(["lib/logger", "lib/sanityChecker", "ext/prototype"], function(logger, sanityChecker) {
     "use strict";
 
     //TODO: this should be configurable
-    var slideContainerId = 'showSlides';
-    var slotContainerId = 'showSlots';
-    var channelContainerId = 'showChannels';
-    var eventContainerId = 'showEvents';
+    var slideContainerId = 'showSlides',
+        slotContainerId = 'showSlots',
+        channelContainerId = 'showChannels',
+        eventContainerId = 'showEvents',
+        display,
+            arrayContainer,
+        active,
+            linkContainer,
+        hasErrors = false;
 
 
-    var display = function(containerToDisplay) {
-        var arrayContainer = new Array($('slidesContainer'), $('slotsContainer'), $('channelsContainer'), $('eventsContainer'));
+    display = function(containerToDisplay) {
+        arrayContainer = [$('slidesContainer'), $('slotsContainer'), $('channelsContainer'), $('eventsContainer')];
         arrayContainer.each(function(container) {
-            if (container == containerToDisplay) {
-                if (containerToDisplay.hasClassName('displayNone')) containerToDisplay.removeClassName('displayNone');
+            if (container === containerToDisplay) {
+                if (containerToDisplay.hasClassName('displayNone')) {
+                    containerToDisplay.removeClassName('displayNone');
+                }
             } else {
-                if (!container.hasClassName('displayNone')) container.addClassName('displayNone');
+                if (!container.hasClassName('displayNone')) {
+                    container.addClassName('displayNone');
+                }
             }
         });
     };
 
-    var active = function(linkToMakeActive) {
-        var linkContainer = new Array($('showSlides'), $('showSlots'), $('showChannels'), $('showEvents'));
+    active = function(linkToMakeActive) {
+        linkContainer = [$('showSlides'), $('showSlots'), $('showChannels'), $('showEvents')];
         linkContainer.each(function(link) {
-            if (linkToMakeActive == link) {
+            if (linkToMakeActive === link) {
                 if (!linkToMakeActive.hasClassName('containerSelected'))  {
                     linkToMakeActive.removeClassName('adminName');
                     linkToMakeActive.addClassName('containerSelected');
@@ -38,7 +50,6 @@ define(["lib/logger", "lib/sanityChecker", "ext/prototype"], function(logger, sa
 
     return {
         trigger: function() {
-            var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + slideContainerId, 'Slide container input')|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + slotContainerId, 'Slot container input')|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + channelContainerId, 'Channel container input')|| hasErrors;
@@ -82,5 +93,5 @@ define(["lib/logger", "lib/sanityChecker", "ext/prototype"], function(logger, sa
             }
 
         }
-    }
+    };
 });

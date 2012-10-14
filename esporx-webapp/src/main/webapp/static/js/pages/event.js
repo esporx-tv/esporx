@@ -1,12 +1,14 @@
+/*global $: true
+ Event: true*/
 define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker, templateHelper, eventTemplate, dateUtils) {
     "use strict";
 
-    var eventTitleInputId = "title";
-    var occurrenceCreationId = "add_occurrence";
+    var eventTitleInputId = "title",
+        occurrenceCreationId = "add_occurrence",
+        hasErrors = false;
 
     return {
        trigger: function() {
-           var hasErrors = false;
            hasErrors = sanityChecker.checkIfNotExists('#'+ eventTitleInputId, 'Event title input') || hasErrors;
            hasErrors = sanityChecker.checkIfNotExists('#'+ occurrenceCreationId, 'Occurrence creation button') || hasErrors;
 
@@ -17,10 +19,10 @@ define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eve
                dateUtils.trigger();
                $(eventTitleInputId).focus();
                $(occurrenceCreationId).observe('click', function(event) {
-                   logger.debug('cliclicklclick')
+                   logger.debug('cliclicklclick');
                });
                logger.debug('... done!');
-           };
+           }
        }
-    }
+    };
 });

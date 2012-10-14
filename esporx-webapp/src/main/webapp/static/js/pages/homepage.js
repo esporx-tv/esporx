@@ -1,26 +1,32 @@
+/*global $$: true
+  Event: true*/
 define(["lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/externalLinkDetector", "lib/gondola"], function(logger, sanityChecker, domNavigationUtils, externalLinkDetector, gondola) {
     "use strict";
 
-    var highLightsContainerId = 'homeHilits';
-    var eventBoxClassName = 'evBox';
+    var highLightsContainerId = 'homeHilits',
+        eventBoxClassName = 'evBox',
+        hasErrors = false,
+        eventBoxes,
+        clickedElement,
+        eventBoxRoot,
+        link;
 
     return {
         trigger : function() {
-            var hasErrors = false;
             hasErrors = sanityChecker.checkIfNotExists('#' + highLightsContainerId, 'Highlights container area')|| hasErrors;
             if (hasErrors) {
                 logger.error('Script initialization failed due to multiple errors');
             }
             else {
                 logger.debug('Initializing homepage ...');
-                var eventBoxes = $$('#' + highLightsContainerId + ' article.' + eventBoxClassName);
+                eventBoxes = $$('#' + highLightsContainerId + ' article.' + eventBoxClassName);
                 eventBoxes.each(function(element) {
                     element.observe('click', function(event) {
-                        var el = Event.element(event);
-                        if (!externalLinkDetector.isContainedInALink(el)) {
-                            var eventBoxRoot = domNavigationUtils.firstAncestorWithClass(el, eventBoxClassName);
-                            var link = domNavigationUtils.firstDescendantWithTag('a', eventBoxRoot);
-                            if(link != undefined) {
+                        clickedElement = Event.element(event);
+                        if (!externalLinkDetector.isContainedInALink(clickedElement)) {
+                            eventBoxRoot = domNavigationUtils.firstAncestorWithClass(clickedElement, eventBoxClassName);
+                            link = domNavigationUtils.firstDescendantWithTag('a', eventBoxRoot);
+                            if(link !== undefined) {
                                 externalLinkDetector.interceptRedirect(link);
                             }
                         }
@@ -30,5 +36,5 @@ define(["lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/extern
                 logger.debug('... done!');
             }
         }
-    }
+    };
 });

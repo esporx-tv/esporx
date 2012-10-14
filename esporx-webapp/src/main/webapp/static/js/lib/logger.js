@@ -1,4 +1,4 @@
-define([], function() {
+define(function() {
     "use strict";
 	var _debugActive = true;
     
@@ -18,5 +18,5 @@ define([], function() {
                 alert('[error] ' + text);
             }
         }
-    }
+    };
 });
