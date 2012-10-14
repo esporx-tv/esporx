@@ -11,8 +11,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['pages/event'], function(event) {
-            document.observe('dom:loaded', function() {
+        require(['jquery', 'pages/event', 'jqueryui'], function($, event) {
+            $(document).ready(function() {
                 event.trigger();
             });
         });

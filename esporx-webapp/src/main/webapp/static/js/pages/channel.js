@@ -1,8 +1,4 @@
-/*global $: true
- $F: true
- Event: true
- Ajax: true*/
-define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker) {
+define(["jquery", "lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker) {
     "use strict";
 
     //TODO: this should be configurable
@@ -36,44 +32,42 @@ define(["lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], funct
             if (hasErrors) {
                 logger.error('Script initialization failed due to multiple errors');
             } else {
-                $(channelSubmitInputId).disable();
-                $(channelTitleInputId).focus();
+                $('#' + channelSubmitInputId).disable();
+                $('#' + channelTitleInputId).focus();
 
-                $(videoUrlInputElementId).observe('blur',function(event) {
-                    input = Event.element(event);
-                    videoUrl = $F(input).stripTags().strip();
-                    if (videoUrl.empty()) {
-                        input.removeClassName(unsupportedUrlClass);
-                        input.removeClassName(supportedUrlClass);
+                $('#' + videoUrlInputElementId).blur(function(event) {
+                    input = $(this);
+                    videoUrl = $(input).text();
+                    if (videoUrl.is(':empty')) {
+                        input.removeClass(unsupportedUrlClass);
+                        input.removeClass(supportedUrlClass);
                     } else {
-                        request = new Ajax.Request(findVideoProviderUrl, {
-                            method : 'get',
-                            parameters : {
+                        request = $.ajax({
+                            url: findVideoProviderUrl,
+                            type : 'GET',
+                            data : {
                                 url : videoUrl
-                            },
-                            onSuccess : function(transport) {
-                                response = transport.responseText;
-                                if (!response.empty()) {
-                                    logger.debug('Match found: '+ response);
-                                    if(response === 'true') {
-                                        $(channelSubmitInputId).enable();
-                                        input.removeClassName(unsupportedUrlClass);
-                                        input.addClassName(supportedUrlClass);
-                                    } else {
-                                        input.removeClassName(supportedUrlClass);
-                                        input.addClassName(unsupportedUrlClass);
-                                    }
-                                }
-                            },
-                            onFailure : function() {
-                                logger.debug('Request failed - could not find any matching video provider');
                             }
+                        }).done(function(response) {
+                            if ($.trim(response) !== "") {
+                                logger.debug('Match found: '+ response);
+                                if(response === 'true') {
+                                    $('#' + channelSubmitInputId).enable();
+                                    input.removeClass(unsupportedUrlClass);
+                                    input.addClass(supportedUrlClass);
+                                } else {
+                                    input.removeClass(supportedUrlClass);
+                                    input.addClass(unsupportedUrlClass);
+                                }
+                            }
+                        }).fail(function() {
+                            logger.debug('Request failed - could not find any matching video provider');
                         });
                     }
                 });
 
-                $(formElementId).observe('submit', function() {
-                    $(videoProviderInputElementId).value = $(videoUrlInputElementId).value;
+                $('#' + formElementId).submit(function() {
+                    $('#' + videoProviderInputElementId).val($('#' + videoUrlInputElementId).val());
                 });
             }
         }

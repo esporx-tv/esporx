@@ -1,5 +1,5 @@
-require(["lib/externalLinkDetector", "ext/prototype"], function(externalLinkDetector, localStorageChecker) {
-    document.observe('dom:loaded', function() {
+require(["jquery", "lib/externalLinkDetector"], function($, externalLinkDetector) {
+    $(document).ready(function() {
         externalLinkDetector.scan();
     });
 });

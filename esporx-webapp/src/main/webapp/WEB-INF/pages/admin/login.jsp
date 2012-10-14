@@ -11,8 +11,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['pages/login'], function(login) {
-            document.observe('dom:loaded', function() {
+        require(['jquery', 'pages/login'], function($, login) {
+            $(document).ready(function() {
                 login.focus("j_username");
             });
         });

@@ -10,8 +10,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['pages/admin'], function(admin) {
-            document.observe('dom:loaded', function() {
+        require(['jquery', 'pages/admin', 'jqueryui'], function($, admin) {
+            $(document).ready(function() {
                 admin.trigger();
             });
         });
@@ -26,14 +26,14 @@
 			</h1>
 			<div id="catContent">
 				<div class="adminItem">
-					<ul class="adminNav">
-						<li id="showSlides" class="adminName containerSelected">Gondola Slide</li>
-						<li id="showSlots" class="adminName">Configurable Slot</li>
-						<li id="showEvents" class="adminName">Event</li>
-						<li id="showChannels" class="adminName">Channel</li>
-					</ul>
-					<div class="adminContent">
-						<div id="slidesContainer">
+                    <div id="tabulations" class="adminContent">
+                        <ul class="adminNav">
+                            <li class="adminName"><a href="#showSlides">Gondola Slide</a></li>
+                            <li class="adminName"><a href="#showSlots">Configurable Slot</a></li>
+                            <li class="adminName"><a href="#showEvents">Event</a></li>
+                            <li class="adminName"><a href="#showChannels">Channel</a></li>
+                        </ul>
+						<div id="showSlides">
 							<div class="adminInfos">
 								<a href="/admin/slide/new">Add a new slide</a>
 								<div id="slidesList">
@@ -54,7 +54,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="slotsContainer" class="displayNone">
+						<div id="showSlots">
 							<div class="adminInfos">
 								<a href="<c:url value="/admin/slot/new" />">Add a new
 									configurable slot</a>
@@ -74,7 +74,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="eventsContainer" class="displayNone">
+						<div id="showEvents">
 							<div class="adminInfos">
 								<a href="<c:url value="/event/new" />">Add an event</a>
 								<div id="eventsList">
@@ -92,7 +92,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="channelsContainer" class="displayNone">
+						<div id="showChannels">
 							<div class="adminInfos">
 								<a href="/channel/new">Add a channel</a>
 								<div id="channelsList" >

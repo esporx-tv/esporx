@@ -1,6 +1,4 @@
-/*global $: true
- Event: true*/
-define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function(logger, sanityChecker, templateHelper, eventTemplate, dateUtils) {
+define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils) {
     "use strict";
 
     var eventTitleInputId = "title",
@@ -17,8 +15,8 @@ define(["lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eve
            } else {
                logger.debug('Initializing event form ...');
                dateUtils.trigger();
-               $(eventTitleInputId).focus();
-               $(occurrenceCreationId).observe('click', function(event) {
+               $('#' + eventTitleInputId).focus();
+               $('#' + occurrenceCreationId).click(function(event) {
                    logger.debug('cliclicklclick');
                });
                logger.debug('... done!');

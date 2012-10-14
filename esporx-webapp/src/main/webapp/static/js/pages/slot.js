@@ -1,6 +1,4 @@
-/*global $: true
- Event: true*/
-define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
+define(["jquery", "lib/logger", "lib/sanityChecker"], function($, logger, sanityChecker) {
     "use strict";
 
     var slotCheckboxId = "active1",
@@ -14,10 +12,9 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
             }
             else {
                 logger.debug("Initializing script...");
-                $(slotCheckboxId).observe("click", function(event) {
-                    var element = Event.element(event);
-                    if(element.checked && !window.confirm("Activating this slot will disable all other slots in the same language and position. Confirm your action ?")) {
-                        Event.stop(event);
+                $('#' + slotCheckboxId).click(function(event) {
+                    if($(this).is(':checked') && !window.confirm("Activating this slot will disable all other slots in the same language and position. Confirm your action ?")) {
+                        event.stopPropagation();
                     }
                 });
                 logger.debug("... done!");

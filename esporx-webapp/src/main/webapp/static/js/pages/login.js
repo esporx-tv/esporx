@@ -1,6 +1,6 @@
-/*global $: true*/
-define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
+define(["jquery", "lib/logger", "lib/sanityChecker"], function($, logger, sanityChecker) {
     "use strict";
+
     var loginInputId = "j_username";
 
     return {
@@ -12,7 +12,7 @@ define(["lib/logger", "lib/sanityChecker"], function(logger, sanityChecker) {
             }
             else {
                 logger.debug("Initializing login...");
-                $(loginInputId).focus();
+                $('#' + loginInputId).focus();
                 logger.debug("... done!");
             }
         }

@@ -1,9 +1,10 @@
-/*global $$: true
-  Event: true*/
-define(["lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/externalLinkDetector", "lib/gondola"], function(logger, sanityChecker, domNavigationUtils, externalLinkDetector, gondola) {
+/*global $: true*/
+define(["jquery", "lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/externalLinkDetector", "lib/gondola"], function($, logger, sanityChecker, domNavigationUtils, externalLinkDetector, gondola) {
     "use strict";
 
-    var highLightsContainerId = 'homeHilits',
+    var slideContainerId = '#homeGondola',
+        slideSelector = '.bjqs-slide',
+        highLightsContainerId = 'homeHilits',
         eventBoxClassName = 'evBox',
         hasErrors = false,
         eventBoxes,
@@ -13,16 +14,17 @@ define(["lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/extern
 
     return {
         trigger : function() {
+            hasErrors = sanityChecker.checkIfNotExists('#' + slideContainerId, 'Slide container')|| hasErrors;
             hasErrors = sanityChecker.checkIfNotExists('#' + highLightsContainerId, 'Highlights container area')|| hasErrors;
             if (hasErrors) {
                 logger.error('Script initialization failed due to multiple errors');
             }
             else {
                 logger.debug('Initializing homepage ...');
-                eventBoxes = $$('#' + highLightsContainerId + ' article.' + eventBoxClassName);
-                eventBoxes.each(function(element) {
-                    element.observe('click', function(event) {
-                        clickedElement = Event.element(event);
+                eventBoxes = $('#' + highLightsContainerId + ' article.' + eventBoxClassName);
+                eventBoxes.each(function(index) {
+                    $(this).click(function(event) {
+                        clickedElement = $(this);
                         if (!externalLinkDetector.isContainedInALink(clickedElement)) {
                             eventBoxRoot = domNavigationUtils.firstAncestorWithClass(clickedElement, eventBoxClassName);
                             link = domNavigationUtils.firstDescendantWithTag('a', eventBoxRoot);
@@ -30,9 +32,9 @@ define(["lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/extern
                                 externalLinkDetector.interceptRedirect(link);
                             }
                         }
-                    }.bind(this));
-                }.bind(this));
-                gondola.trigger();
+                    });
+                });
+                gondola.trigger(slideContainerId, slideSelector);
                 logger.debug('... done!');
             }
         }

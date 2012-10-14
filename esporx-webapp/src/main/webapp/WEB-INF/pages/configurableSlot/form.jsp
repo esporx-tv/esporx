@@ -8,8 +8,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['pages/slot'], function(slot) {
-            document.observe('dom:loaded', function() {
+        require(['jquery', 'pages/slot'], function($, slot) {
+            $(document).ready(function() {
                 slot.trigger();
             });
         });

@@ -1,4 +1,4 @@
-define(["ext/prototype"], function() {
+define(["jquery"], function($) {
     "use strict";
 
     return {
@@ -6,8 +6,8 @@ define(["ext/prototype"], function() {
          * returns the first provided tag name matching parent or undefined if none found
          */
         firstAncestorWithTag : function(tag, startElement) {
-            return startElement.ancestors().find(function(ancestor) {
-                return ancestor.tagName.toUpperCase() === tag.toUpperCase();
+            return startElement.parents().filter(function(index) {
+                return $(this).tagName.toUpperCase() === tag.toUpperCase();
             });
         },
         /*
@@ -15,19 +15,19 @@ define(["ext/prototype"], function() {
          */
         firstAncestorWithClass : function(startElement, className) {
             var result;
-            if (startElement.hasClassName(className)) {
+            if (startElement.hasClass(className)) {
                 result = startElement;
             } else {
-                result = startElement.ancestors().find(function(capturedElement) {
-                    return capturedElement.hasClassName(className);
+                result = startElement.parents().filter(function(index) {
+                    return $(this).hasClass(className);
                 });
             }
             return result;
         },
 
         firstDescendantWithTag : function(tag, startElement) {
-            return startElement.descendants().find(function(descendant) {
-                return descendant.tagName.toUpperCase() === tag.toUpperCase();
+            return startElement.children().filter(function(index) {
+                return $(this).tagName.toUpperCase() === tag.toUpperCase();
             });
         }
     };

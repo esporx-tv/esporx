@@ -10,8 +10,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['pages/slideAdmin'], function(slideAdmin) {
-            document.observe('dom:loaded', function() {
+        require(['jquery', 'pages/slideAdmin', 'jqueryui'], function($, slideAdmin) {
+            $(document).ready(function() {
                 slideAdmin.trigger();
             });
         });

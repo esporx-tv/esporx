@@ -11,8 +11,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['pages/homepage'], function(home) {
-            document.observe('dom:loaded', function() {
+        require(['jquery', 'pages/homepage'], function($, home) {
+            $(document).ready(function() {
                 home.trigger();
             });
         });
@@ -24,36 +24,60 @@
 		<div id="homeMain">
 			<section id="homeGondola">
 				<div id="gSlideView">
-					<div id="gSlide">
+					<ul class="bjqs">
 						<c:forEach var="slide" items="${gondolaSlides}" varStatus="loop">
-							<article class="gFrame">
-								<a class="gLink" href="<c:url value="${slide.link}" />"> 
-								    <img class="gFImg" src="${slide.picture}" />
-									<div class="fText">
-										<section class="fInfos">
-											<h2 class="fTitle">${slide.title}</h2>
-											<p class="fTagline">${slide.tagLine}</p>
-											<p class="fDesc"><c:out value="${slide.description}" escapeXml="false" /></p>
-										</section>
-										<section class="fDetails">
-											<ul class="dList">
-												<li class="dLang"><span>Lang: </span><span>${slide.language}</span>
-												</li>
-												<li class="dPrice"><span>Prize: </span><span>${slide.prize}</span>
-												</li>
-												<li class="dDate"><span>Date: </span><span><fmt:formatDate
-															pattern=" dd MMMM yyyy" value="${slide.date}" /> </span></li>
-											</ul>
-										</section>
-									</div> </a>
-							</article>
+                            <li class="bjqs-slide">
+                                <a href="<c:url value="${slide.link}" />" class="slideLink">
+                                    <img src="${slide.picture}" />
+                                </a>
+                                <div class="slide-caption">
+                                    <div class='fText'>
+                                        <section class='fInfos'>
+                                            <h2 class='fTitle'>${slide.title}</h2>
+                                            <p class='fTagline'>${slide.tagLine}</p>
+                                            <p class='fDesc'><c:out value='${slide.description}' escapeXml='false' /></p>
+                                        </section>
+                                        <section class='fDetails'>
+                                            <ul class='dList'>
+                                                <li class='dLang'><span>Lang: </span><span>${slide.language}</span>
+                                                </li>
+                                                <li class='dPrice'><span>Prize: </span><span>${slide.prize}</span>
+                                                </li>
+                                                <li class='dDate'><span>Date: </span><span><fmt:formatDate
+                                                        pattern=' dd MMMM yyyy' value='${slide.date}' /> </span></li>
+                                            </ul>
+                                        </section>
+                                    </div>
+                                </div>
+                            </li>
+                                <%--<article class="gFrame">--%>
+								<%--<a class="gLink " href="<c:url value="${slide.link}" />">--%>
+								    <%--<img class="gFImg" src="${slide.picture}" />--%>
+									<%--<div class="fText">--%>
+										<%--<section class="fInfos">--%>
+											<%--<h2 class="fTitle">${slide.title}</h2>--%>
+											<%--<p class="fTagline">${slide.tagLine}</p>--%>
+											<%--<p class="fDesc"><c:out value="${slide.description}" escapeXml="false" /></p>--%>
+										<%--</section>--%>
+										<%--<section class="fDetails">--%>
+											<%--<ul class="dList">--%>
+												<%--<li class="dLang"><span>Lang: </span><span>${slide.language}</span>--%>
+												<%--</li>--%>
+												<%--<li class="dPrice"><span>Prize: </span><span>${slide.prize}</span>--%>
+												<%--</li>--%>
+												<%--<li class="dDate"><span>Date: </span><span><fmt:formatDate--%>
+															<%--pattern=" dd MMMM yyyy" value="${slide.date}" /> </span></li>--%>
+											<%--</ul>--%>
+										<%--</section>--%>
+									<%--</div> </a>--%>
+							<%--</article>--%>
 						</c:forEach>
-						<a href="#" class="carousel-control" id="arrowLeft" rel="prev">
-							<p>Previous</p>
-						</a>
-						<a href="#" class="carousel-control" id="arrowRight" rel="next">
-							<p>Next</p>
-						</a>
+						<%--<a href="#" class="carousel-control" id="arrowLeft" rel="prev">--%>
+							<%--<p>Previous</p>--%>
+						<%--</a>--%>
+						<%--<a href="#" class="carousel-control" id="arrowRight" rel="next">--%>
+							<%--<p>Next</p>--%>
+						<%--</a>--%>
 					</div>
 				</div>
 			</section>

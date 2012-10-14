@@ -10,8 +10,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['pages/channel'], function(channel) {
-            document.observe('dom:loaded', function() {
+        require(['jquery', 'pages/channel'], function($, channel) {
+            $(document).ready(function() {
                 channel.trigger();
             });
         });

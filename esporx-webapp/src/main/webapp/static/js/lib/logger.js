@@ -1,3 +1,4 @@
+/*global console:true*/
 define(function() {
     "use strict";
 	var _debugActive = true;

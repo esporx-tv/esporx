@@ -451,7 +451,7 @@
                         <excludes>
                             <exclude>ext/</exclude>
                         </excludes>
-                        <predefinedVars>require,define,console,alert,window</predefinedVars>
+                        <predefinedVars>require,define,alert,window</predefinedVars>
                     </configuration>
                     <executions>
                         <execution>
