@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 @Entity
 @Table(name = "video_providers")
-@NamedQueries({ @NamedQuery(name = "VideoProvider.findAll", query = "FROM VideoProvider") })
+@NamedQueries({ @NamedQuery(name = "VideoProvider.findAll", query = "FROM VideoProvider ORDER BY id ASC") })
 public class VideoProvider {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
