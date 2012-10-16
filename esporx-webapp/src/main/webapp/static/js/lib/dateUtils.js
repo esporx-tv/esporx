@@ -4,27 +4,33 @@ define(["jquery", "text!css/jquery-ui.css", "text!css/datepicker.css", "jqueryui
     "use strict";
 
     var replaceImgPaths = function(css, pathPattern, pathReplacement) {
-        return css.replace(pathPattern, pathReplacement);
-    };
+            return css.replace(pathPattern, pathReplacement);
+        },
+        observeOne = function(inputId) {
+            var input = $(inputId);
+            input.datetimepicker({
+                showButtonPanel : true,
+                showWeek: true,
+                dateFormat : 'dd/mm/yy',
+                timeFormat : 'hh:mm',
+                hourGrid: 4,
+                minuteGrid: 10,
+                ampm: true
+            });
+            input.addClass('hasDatepicker');
+            input.attr('autocomplete', 'off');
+            input.css({'cursor':'pointer'});
+        };
 
     return {
-        trigger: function() {
+        'init': function() {
             var processedCss = replaceImgPaths(baseCss, /url\(images\//g, 'url(' + $.withBaseImgUrl(''));
             $('head').append('<style>'+ processedCss + '</style>');
             $('head').append('<style>'+ timeCss + '</style>');
-
-            $('input.datepicker').each(function(index) {
-                $(this).datetimepicker({
-                    showButtonPanel : true,
-                    showWeek: true,
-                    dateFormat : 'dd/mm/yy',
-                    timeFormat : 'hh:mm',
-                    hourGrid: 4,
-                    minuteGrid: 10,
-                    ampm: true
-                });
-                $(this).attr('autocomplete', 'off');
-                $(this).css({'cursor':'pointer'});
+        },
+        'observeAll': function() {
+            $('input.datepicker').not('.hasDatepicker').each(function(index) {
+                observeOne($(this));
             });
         }
     };

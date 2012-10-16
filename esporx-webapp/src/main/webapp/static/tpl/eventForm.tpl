@@ -1,21 +1,22 @@
-<div class='occurrence'>
+<fieldset class='occurrence'>
+    <legend>Occurrence n°<span class="loop">{{#plusOne loop}}{{/plusOne}}</span></legend>
     <div class='input'>
-        <form:label path='startDates.{{loop}}'>Start</form:label>
-        <form:input path="startDates.{{loop}}" cssClass="datepicker" />
-        <form:errors path="startDates.{{loop}}" cssClass="errors" />
+        <label for='startDates_{{loop}}'>Start</label>
+        <input id="startDates_{{loop}}" name="startDates_{{loop}}[]" class="datepicker" />
+        <!--<errors path="startDates.{{loop}}" class="errors" />-->
     </div>
     <div class="input">
-        <form:label path="endDates.{{loop}}">End (optional)</form:label>
-        <form:input path="endDates.{{loop}}" cssClass="datepicker" />
-        <form:errors path="endDates.{{loop}}" cssClass="errors" />
+        <label for="endDates_{{loop}}">End (optional)</label>
+        <input id="endDates_{{loop}}" name="endDates_{{loop}}[]" class="datepicker" />
+        <!--<errors path="endDates.{{loop}}" class="errors" />-->
     </div>
     <div class="input">
-        <form:label path="frequencies.{{loop}}">Frequency</form:label>
-        <form:select path="frequencies.{{loop}}">
-            <form:option value="">
+        <label for="frequencies_{{loop}}">Frequency</label>
+        <select id="frequencies_{{loop}}" name="frequencies_{{loop}}[]">
+            <option value="">
            select a frequency
-            </form:option>
-            <form:options items="{{frequencies}}" />
-        </form:select>
+            </option>
+            {{#options frequencies}}{{value}}{{/options}}
+        </select>
     </div>
-</div>
+</fieldset>

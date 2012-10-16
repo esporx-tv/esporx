@@ -4,7 +4,8 @@ define(["lib/logger", "lib/dateUtils"], function(logger, dateUtils) {
     return {
         trigger : function() {
             logger.debug("Initializing gondola slide ...");
-            dateUtils.trigger();
+            dateUtils.init();
+            dateUtils.observeAll();
             logger.debug("... done!");
         }
     };
