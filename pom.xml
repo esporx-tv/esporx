@@ -450,6 +450,7 @@
                         <sourceJsFolder>src/main/webapp/static/js/</sourceJsFolder>
                         <excludes>
                             <exclude>ext/</exclude>
+                            <exclude>ext\</exclude>
                         </excludes>
                         <predefinedVars>require,define,alert,window</predefinedVars>
                     </configuration>
