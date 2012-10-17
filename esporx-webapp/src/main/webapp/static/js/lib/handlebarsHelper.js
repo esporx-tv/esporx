@@ -3,8 +3,8 @@ define(["ext/handlebars"], function() {
     "use strict";
 
     Handlebars.registerHelper('options', function(items, options) {
-        var out = '', i = 0, l, item;
-        for (l=items.length; i < l; i++) {
+        var out = '', i, l, item;
+        for (i = 0, l = items.length; i < l; i++) {
             item = items[i];
             out += "<option value='" + item.value + "'>" + options.fn(item) + "</li>";
         }

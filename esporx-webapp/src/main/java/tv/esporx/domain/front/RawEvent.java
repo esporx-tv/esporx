@@ -5,8 +5,6 @@ import tv.esporx.domain.FrequencyType;
 
 import java.util.Collection;
 
-import static java.util.Collections.emptyList;
-
 public class RawEvent {
     private String title = "";
     private boolean highlighted;

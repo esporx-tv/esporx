@@ -8,9 +8,15 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         occurrenceContainerClass = ".occurrence",
         hasErrors = false,
         frequencyTypes = [],
-        frequencyUrl = '',
+        frequencyUrl = '/frequencyTypes',
         retrieveFrequencyTypes = function() {
-            //$.ajax();
+            var result = [], i, length;
+            $.getJSON(frequencyUrl, function(data) {
+                for(i = 0, length = data.length; i < length; i++) {
+                    result.push({value: data[i]});
+                }
+            });
+            return result;
         };
 
     return {
@@ -24,6 +30,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
            } else {
                logger.debug('Initializing event form ...');
                dateUtils.init();
+               frequencyTypes = retrieveFrequencyTypes();
                submitInput = $(submitInputId);
                $(eventTitleInputId).focus();
                $(occurrenceCreationId).click(function(event) {

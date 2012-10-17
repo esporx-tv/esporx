@@ -4,73 +4,73 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static tv.esporx.domain.FrequencyType.*;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.*;
 
 public class OccurrenceTest {
 
     @Test
     public void should_match_exact_start_date() {
-        Occurrence occurrence = new Occurrence(new DateTime(10000000), ONCE);
+        Occurrence occurrence = new Occurrence(new DateTime(10000000), new FrequencyType(ONCE));
         assertThat(occurrence.happensAt(new DateTime(10000000))).isTrue();
     }
 
     @Test
     public void should_not_match_after_end_date() {
-        Occurrence occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), ONCE);
+        Occurrence occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), new FrequencyType(ONCE));
         assertThat(occurrence.happensAt(new DateTime(30000000))).isFalse();
 
-        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), DAILY);
+        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), new FrequencyType(DAILY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusDays(20))).isFalse();
 
-        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), WEEKLY);
+        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), new FrequencyType(WEEKLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusWeeks(20))).isFalse();
 
-        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), MONTHLY);
+        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), new FrequencyType(MONTHLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusMonths(20))).isFalse();
 
-        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), YEARLY);
+        occurrence = new Occurrence(new DateTime(10000000), new DateTime(20000000), new FrequencyType(YEARLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusYears(20))).isFalse();
     }
 
     @Test
     public void should_match_start_date_regardless_seconds() {
-        Occurrence occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), ONCE);
+        Occurrence occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), new FrequencyType(ONCE));
         assertThat(occurrence.happensAt(new DateTime(10000000))).isTrue();
     }
 
     @Test
     public void should_match_one_daily_occurrence() {
-        Occurrence occurrence = new Occurrence(new DateTime(10000000), DAILY);
+        Occurrence occurrence = new Occurrence(new DateTime(10000000), new FrequencyType(DAILY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusDays(3))).isTrue();
 
-        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), DAILY);
+        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), new FrequencyType(DAILY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusDays(3))).isTrue();
     }
 
     @Test
     public void should_match_one_weekly_occurrence() {
-        Occurrence occurrence = new Occurrence(new DateTime(10000000), WEEKLY);
+        Occurrence occurrence = new Occurrence(new DateTime(10000000), new FrequencyType(WEEKLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusWeeks(3))).isTrue();
 
-        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), WEEKLY);
+        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), new FrequencyType(WEEKLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusWeeks(3))).isTrue();
     }
 
     @Test
     public void should_match_one_monthly_occurrence() {
-        Occurrence occurrence = new Occurrence(new DateTime(10000000), MONTHLY);
+        Occurrence occurrence = new Occurrence(new DateTime(10000000), new FrequencyType(MONTHLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusMonths(3))).isTrue();
 
-        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), MONTHLY);
+        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), new FrequencyType(MONTHLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusMonths(3))).isTrue();
     }
 
     @Test
     public void should_match_one_yearly_occurrence() {
-        Occurrence occurrence = new Occurrence(new DateTime(10000000), YEARLY);
+        Occurrence occurrence = new Occurrence(new DateTime(10000000), new FrequencyType(YEARLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusYears(3))).isTrue();
 
-        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), YEARLY);
+        occurrence = new Occurrence(new DateTime(10000000).plusSeconds(3), new FrequencyType(YEARLY));
         assertThat(occurrence.happensAt(new DateTime(10000000).plusYears(3))).isTrue();
     }
 }
