@@ -1,7 +1,9 @@
-<fieldset class='occurrence'>
+<fieldset class='occurrence' id="occurrence_{{loop}}">
+    <div class="close"><img src="{{icon}}" /></div>
     <legend>Occurrence n°<span class="loop">{{#plusOne loop}}{{/plusOne}}</span></legend>
     <div class='input'>
         <label for='startDates_{{loop}}'>Start</label>
+        <input id="occurrence_{{loop}}_ID" hidden />
         <input id="startDates_{{loop}}" name="startDates_{{loop}}[]" class="datepicker" />
         <!--<errors path="startDates.{{loop}}" class="errors" />-->
     </div>

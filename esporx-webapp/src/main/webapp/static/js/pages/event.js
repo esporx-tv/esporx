@@ -6,12 +6,22 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         submitInputId = "#submit",
         submitInput,
         occurrenceContainerClass = ".occurrence",
+        closeButtonClass = ".close",
+        observeCloseButtonClass = ".closeObserved",
         hasErrors = false,
         frequencyTypes = [],
         frequencyUrl = '/frequencyTypes',
         retrieveFrequencyTypes = function() {
             $.getJSON(frequencyUrl, function(data) {
                 frequencyTypes = _.map(data, function(item) {return {value: item};});
+            });
+        },
+        observeClose = function() {
+            _.each($(closeButtonClass).not(observeCloseButtonClass), function(element) {
+                $(element).addClass(observeCloseButtonClass.substring(1));
+                $(element).click(function() {
+                    logger.debug("DELETE TODO: if ID, http DELETE, else reorder elements");
+                });
             });
         };
 
@@ -34,10 +44,12 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                    logger.debug('adding 1 occurrence...');
                    submitInput.before(
                        templateHelper.template(eventTemplate, {
+                           icon : $.withBaseImgUrl("close-icon.gif"),
                            loop : loop,
                            frequencies : frequencyTypes
                        })
                    );
+                   observeClose();
                    dateUtils.observeAll();
                    logger.debug('... done!');
                });

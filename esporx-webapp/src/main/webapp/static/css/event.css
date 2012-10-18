@@ -23,4 +23,6 @@ a { cursor:pointer; text-decoration:none; color: #DDD;}
 ul.channels { padding: 0 0 10px;}
 
 /** event form **/
+/*REMOVEME*/#catContent { overflow:hidden;}
 .occurrence { opacity:0.7; margin:2em 1em; padding:0.7em; background-color:rgba(238,238,238,0.2);}
+.close { position: relative; left: 40.3em; top: -1.8em;}
