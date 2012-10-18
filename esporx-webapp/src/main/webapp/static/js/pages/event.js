@@ -1,4 +1,4 @@
-define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils) {
+define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "underscore", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils, _) {
     "use strict";
 
     var eventTitleInputId = "#title",
@@ -10,13 +10,9 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         frequencyTypes = [],
         frequencyUrl = '/frequencyTypes',
         retrieveFrequencyTypes = function() {
-            var result = [], i, length;
             $.getJSON(frequencyUrl, function(data) {
-                for(i = 0, length = data.length; i < length; i++) {
-                    result.push({value: data[i]});
-                }
+                frequencyTypes = _.map(data, function(item) {return {value: item};});
             });
-            return result;
         };
 
     return {
@@ -30,10 +26,10 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
            } else {
                logger.debug('Initializing event form ...');
                dateUtils.init();
-               frequencyTypes = retrieveFrequencyTypes();
+               retrieveFrequencyTypes();
                submitInput = $(submitInputId);
                $(eventTitleInputId).focus();
-               $(occurrenceCreationId).click(function(event) {
+               $(occurrenceCreationId).click(function() {
                    var loop = $(occurrenceContainerClass).length;
                    logger.debug('adding 1 occurrence...');
                    submitInput.before(

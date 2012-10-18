@@ -1,17 +1,12 @@
 /*global Handlebars: true*/
-define(["ext/handlebars"], function() {
+define(["underscore", "ext/handlebars"], function(_) {
     "use strict";
 
     Handlebars.registerHelper('options', function(items, options) {
-        var out = '', i, l, item;
-        for (i = 0, l = items.length; i < l; i++) {
-            item = items[i];
-            out += "<option value='" + item.value + "'>" + options.fn(item) + "</li>";
-        }
-        return out;
+        return _.reduce(items,function(prev,current) { return prev + "<option value='" + current.value + "'>" + options.fn(current) + "</option>"; },"");
     });
 
-    Handlebars.registerHelper('plusOne', function(item, options) {
+    Handlebars.registerHelper('plusOne', function(item) {
         return 1 + parseInt(item, 10);
     });
 

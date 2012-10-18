@@ -23,7 +23,8 @@
             }
         },
         paths : {
-            jqueryui: 'ext/jquery-ui-custom'
+            jqueryui: 'ext/jquery-ui-custom',
+            underscore: 'ext/underscore'
         }
     });
 </script>
