@@ -15,7 +15,7 @@ define(["jquery", "text!css/jquery-ui.css", "text!css/datepicker.css", "jqueryui
                 timeFormat : 'hh:mm',
                 hourGrid: 4,
                 minuteGrid: 10,
-                ampm: true
+                ampm: false
             });
             input.addClass('hasDatepicker');
             input.attr('autocomplete', 'off');
