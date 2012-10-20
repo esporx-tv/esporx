@@ -21,9 +21,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
+import org.joda.time.DateTime;
 
 import tv.esporx.framework.validation.SupportedLanguage;
 
@@ -45,8 +47,9 @@ public class Channel {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", nullable = false)
 	private long id;
-	@Column(name = "is_live", nullable = false, columnDefinition = "BIT", length = 1)
-	private boolean live;
+	@Column(name = "viewer_count_timestamp", nullable = true)
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime viewerCountTimestamp;
 	@ManyToMany
 	@JoinTable(name = "channel_casters", joinColumns = { @JoinColumn(name = "channelId") }, inverseJoinColumns = { @JoinColumn(name = "casterId") })
 	private final List<User> casters = new ArrayList<User>();
@@ -140,12 +143,12 @@ public class Channel {
 		this.id = id;
 	}
 
-	public boolean isLive() {
-		return live;
+	public DateTime getViewerCountTimestamp() {
+		return viewerCountTimestamp;
 	}
 
-	public void setLive(final boolean live) {
-		this.live = live;
+	public void setViewerCountTimestamp(DateTime viewerCountTimestamp) {
+		this.viewerCountTimestamp = viewerCountTimestamp;
 	}
 
 
