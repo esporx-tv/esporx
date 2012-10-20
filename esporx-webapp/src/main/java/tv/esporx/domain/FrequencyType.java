@@ -1,15 +1,23 @@
 package tv.esporx.domain;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonMethod;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import javax.persistence.*;
 
+import static org.codehaus.jackson.annotate.JsonMethod.CREATOR;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.valueOf;
+
 @Entity
 @Table(name = "frequency_types")
-@NamedQueries(
-        @NamedQuery(name = "FrequencyType.findAll", query = "FROM FrequencyType ORDER BY value ASC")
-)
+@NamedQueries({
+        @NamedQuery(name = "FrequencyType.findAll", query = "FROM FrequencyType ORDER BY value ASC"),
+        @NamedQuery(name = "FrequencyType.findByValue", query = "FROM FrequencyType WHERE UPPER(value) = :value")
+})
 public class FrequencyType {
 
     public enum FrequencyTypeValues {
@@ -18,7 +26,9 @@ public class FrequencyType {
 
     private String value;
 
+    /*JPA*/
     public FrequencyType() {}
+
     public FrequencyType(FrequencyTypeValues value) {
         this.value = value.name();
     }
@@ -31,7 +41,7 @@ public class FrequencyType {
 
     public void setValue(String value) {
         //validates value against the enumerated/allowed values (ie throws exceptions if invalid value)
-        FrequencyTypeValues.valueOf(value.toUpperCase());
+        valueOf(value.toUpperCase());
         this.value = value;
     }
 
@@ -50,7 +60,7 @@ public class FrequencyType {
     }
 
     private boolean matches(DateTime start, DateTime actual) {
-        switch(FrequencyTypeValues.valueOf(value.toUpperCase())) {
+        switch(valueOf(value.toUpperCase())) {
             case ONCE:
                 return start.isEqual(actual);
             case DAILY:

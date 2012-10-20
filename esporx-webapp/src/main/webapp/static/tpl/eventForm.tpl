@@ -3,18 +3,18 @@
     <legend>Occurrence n°<span class="loop">{{#plusOne loop}}{{/plusOne}}</span></legend>
     <div class='input'>
         <label for='startDates_{{loop}}'>Start</label>
-        <input id="occurrence_{{loop}}_ID" hidden />
-        <input id="startDates_{{loop}}" name="startDates_{{loop}}[]" class="datepicker" />
+        <input id="occurrence_{{loop}}_ID" class="eventId" hidden />
+        <input id="startDates_{{loop}}" name="startDates_{{loop}}[]" class="datepicker startDate" />
         <!--<errors path="startDates.{{loop}}" class="errors" />-->
     </div>
     <div class="input">
         <label for="endDates_{{loop}}">End (optional)</label>
-        <input id="endDates_{{loop}}" name="endDates_{{loop}}[]" class="datepicker" />
+        <input id="endDates_{{loop}}" name="endDates_{{loop}}[]" class="datepicker endDate" />
         <!--<errors path="endDates.{{loop}}" class="errors" />-->
     </div>
     <div class="input">
         <label for="frequencies_{{loop}}">Frequency</label>
-        <select id="frequencies_{{loop}}" name="frequencies_{{loop}}[]">
+        <select id="frequencies_{{loop}}" name="frequencies_{{loop}}[]" class="frequency">
             <option value="">
            select a frequency
             </option>

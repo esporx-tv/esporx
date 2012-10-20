@@ -19,7 +19,11 @@ public class FrequencyTypeRepository implements PersistenceCapableFrequencyType 
     @Transactional(readOnly = true)
     @Override
     public List<FrequencyType> findAll() {
-        TypedQuery<FrequencyType> query = entityManager.createNamedQuery("FrequencyType.findAll", FrequencyType.class);
-        return query.getResultList();
+        return entityManager.createNamedQuery("FrequencyType.findAll", FrequencyType.class).getResultList();
+    }
+
+    @Override
+    public FrequencyType findByValue(String value) {
+        return entityManager.createNamedQuery("FrequencyType.findByValue", FrequencyType.class).setParameter("value", value).getSingleResult();
     }
 }

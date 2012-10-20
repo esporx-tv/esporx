@@ -1,18 +1,23 @@
 package tv.esporx.domain;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonMethod;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import tv.esporx.framework.validation.CrossDateConstraints;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static javax.persistence.GenerationType.IDENTITY;
+import static org.codehaus.jackson.annotate.JsonMethod.SETTER;
 
 @Entity
 @Table(name = "occurrences")
-@CrossDateConstraints
+@CrossDateConstraints(nullableColumns = {"endDate"})
 public class Occurrence {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -29,6 +34,9 @@ public class Occurrence {
     @JoinColumn(name = "frequency_type", nullable = false)
     private FrequencyType frequencyType;
 
+    /*JPA*/
+    public Occurrence() {}
+
     public Occurrence(DateTime startDate, FrequencyType frequency) {
         checkNotNull(startDate);
         checkNotNull(frequency);
@@ -36,12 +44,12 @@ public class Occurrence {
         this.frequencyType = frequency;
     }
 
-    public Occurrence(DateTime startDate, DateTime endDate, FrequencyType frequency) {
-        this(startDate, frequency);
-        this.endDate = endDate;
-        if(endDate.isBefore(startDate)) {
+    public Occurrence(DateTime startDate, DateTime endDate, FrequencyType frequencyType) {
+        this(startDate, frequencyType);
+        if(endDate != null && endDate.isBefore(startDate)) {
             throw new IllegalStateException("End must be after start");
         }
+        this.endDate = endDate;
     }
 
     public long getId() {

@@ -1,26 +1,17 @@
 package tv.esporx.domain;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.Collections.unmodifiableList;
-import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.IDENTITY;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-
 import com.google.common.base.Objects;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
-
 import tv.esporx.framework.validation.SupportedLanguage;
+
+import javax.persistence.*;
+
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+import static com.google.common.base.Preconditions.checkArgument;
+import static javax.persistence.GenerationType.IDENTITY;
 
 
 @Entity
@@ -39,9 +30,6 @@ public class Channel {
 	private long id;
 	@Column(name = "is_live", nullable = false, columnDefinition = "BIT", length = 1)
 	private boolean live;
-	@ManyToMany
-	@JoinTable(name = "channel_casters", joinColumns = { @JoinColumn(name = "channelId") }, inverseJoinColumns = { @JoinColumn(name = "casterId") })
-	private final List<User> casters = new ArrayList<User>();
 	@NotBlank
 	@Length(max = 255)
 	@Column(name = "title", nullable = false, unique = true)
@@ -64,28 +52,12 @@ public class Channel {
     @JoinColumn(name = "provider", nullable = false)
     private VideoProvider videoProvider;
 
-	public void addCaster(final User user) {
-		casters.add(user);
-	}
-
-	public User getCaster(final int index) {
-		return casters.get(index);
-	}
-
-	public List<User> getCasters() {
-		return unmodifiableList(casters);
-	}
-
 	public long getId() {
 		return id;
 	}
 
 	public String getTitle() {
 		return title;
-	}
-
-	public List<User> getUsers() {
-		return casters;
 	}
 
 	public String getVideoUrl() {

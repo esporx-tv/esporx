@@ -1,4 +1,5 @@
-define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "underscore", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils, _) {
+/*global JSON:false*/
+define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "underscore", "ext/ckeditor/ckeditor_basic", "ext/json2"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils, _) {
     "use strict";
 
     var eventTitleInputId = "#title",
@@ -7,7 +8,6 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         submitInput,
         occurrenceContainerClass = ".occurrence",
         closeButtonClass = ".close",
-        observeCloseButtonClass = ".closeObserved",
         hasErrors = false,
         frequencyTypes = [],
         frequencyUrl = '/frequencyTypes',
@@ -16,12 +16,28 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                 frequencyTypes = _.map(data, function(item) {return {value: item};});
             });
         },
-        observeClose = function() {
-            _.each($(closeButtonClass).not(observeCloseButtonClass), function(element) {
-                $(element).addClass(observeCloseButtonClass.substring(1));
-                $(element).click(function() {
-                    logger.debug("DELETE TODO: if ID, http DELETE, else reorder elements");
+        observeClose = function(element) {
+            $(element).click(function() {
+                //$(element).
+                logger.debug("DELETE TODO: if ID, http DELETE, else reorder elements");
+            });
+        },
+        observeSubmit = function() {
+            $('#eventCommand').submit(function(event) {
+                _.each($(occurrenceContainerClass), function(item) {
+                    var startDate, endDate, frequency, id;
+                    startDate = $('.startDate', item).first().val();
+                    endDate = $('.endDate', item).first().val();
+                    frequency = $('.frequency', item).first().val();
+                    id = $('.eventId', item).first().val();
+                    $.post('/occurrence', {
+                        data: {id:id,startDate:startDate, endDate:endDate, frequencyType:frequency}
+                    }).done(function (result){
+                        logger.debug('RESULT :  ' + result);
+                    });
                 });
+                event.stopPropagation();
+                return false;
             });
         };
 
@@ -49,10 +65,11 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                            frequencies : frequencyTypes
                        })
                    );
-                   observeClose();
+                   observeClose($(closeButtonClass).last());
                    dateUtils.observeAll();
                    logger.debug('... done!');
                });
+               observeSubmit();
                logger.debug('... done!');
            }
        }
