@@ -15,7 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**

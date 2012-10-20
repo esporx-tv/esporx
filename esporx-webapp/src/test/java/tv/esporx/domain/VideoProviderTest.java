@@ -36,8 +36,8 @@ public class VideoProviderTest {
         assertThat(provider.extractChannelName("http://www.dummy.com/?id=26")).isEqualTo("26");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void when_channel_url_and_non_matching_provider_then_exception() {
-        provider.extractChannelName("http://www.dummmmmmmmmmmmmmy.com/?id=26");
+    @Test
+    public void when_channel_url_and_non_matching_provider_then_channel_is_null() {
+        assertThat(provider.extractChannelName("http://www.dummmmmmmmmmmmmmy.com/?id=26")).isEqualTo(null);
     }
 }

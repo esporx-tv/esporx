@@ -1,11 +1,9 @@
 package tv.esporx.dao.impl;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.hibernate.Hibernate.isInitialized;
 
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -122,8 +120,6 @@ public class ChannelRepositoryIT {
     public void when_retrieving_all_then_two_channels_are_fetched() {
         List<Channel> channels = channelRepository.findAll();
         assertThat(channels).hasSize(2).onProperty("title").containsOnly(MOST_VIEWED_CHANNEL_TITLE, LEAST_VIEWED_CHANNEL_TITLE);
-        assertThat(Hibernate.isInitialized(channels.iterator().next().getVideoProvider())).isFalse();
-        assertThat(Hibernate.isInitialized(channels.iterator().next().getVideoProvider())).isFalse();
     }
 
     @Test

@@ -96,4 +96,10 @@ public class ChannelRepository implements PersistenceCapableChannel {
         return query.getResultList();
     }
 
+	@Override
+	public List<Channel> findAllGroupByProvider() {
+		TypedQuery<Channel> query = entityManager.createNamedQuery("Channel.findAllGroupByProvider", Channel.class);
+        return query.getResultList();
+	}
+
 }

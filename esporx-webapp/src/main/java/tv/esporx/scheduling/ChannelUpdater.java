@@ -1,7 +1,22 @@
 package tv.esporx.scheduling;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newLinkedList;
+import static com.google.common.collect.Multimaps.index;
+import static java.lang.Integer.parseInt;
+import static java.util.Arrays.asList;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -9,41 +24,44 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.VideoProvider;
+import tv.esporx.domain.remote.ChannelResponse;
 import tv.esporx.domain.remote.TwitchTVChannelResponse;
+import tv.esporx.framework.Tuple;
 import tv.esporx.services.ChannelByVideoProviderIndexer;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Multimaps.index;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 @Component
 public class ChannelUpdater {
 
-    private final JdbcTemplate jdbcTemplate;
+    private HashMap<String, Class<? extends ChannelResponse[]>> matchEndPointWithClass;
+	
+	private PersistenceCapableChannel channelDao;
 
+	private JdbcTemplate jdbcTemplate;
+    
     @Autowired
-    public ChannelUpdater(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public ChannelUpdater(DataSource dataSource, PersistenceCapableChannel channelDao) {
+    	jdbcTemplate = new JdbcTemplate(dataSource);
+    	this.channelDao = channelDao;
+    	matchEndPointWithClass = new HashMap<String, Class<? extends ChannelResponse[]>>();
+    	matchEndPointWithClass.put("http://api.justin.tv/api/stream/list.json?channel={ID}", TwitchTVChannelResponse[].class);
     }
 
 
     public static void main(String... args) {
-        //ApplicationContext applicationContext = new FileSystemXmlApplicationContext("file:**/applicationContext.xml");
-        //applicationContext.getBean(ChannelUpdater.class);
-        //TODO: rewrite this as a proper integration test !!
-
+    	ApplicationContext applicationContext = new FileSystemXmlApplicationContext("file:**/applicationContext.xml");
+        applicationContext.getBean(ChannelUpdater.class);
     }
 
     @PostConstruct
@@ -51,9 +69,11 @@ public class ChannelUpdater {
         Map<VideoProvider, Collection<Channel>> channelsPerProvider = fetchAllChannels();
         for (Map.Entry<VideoProvider, Collection<Channel>> channelsWithProvider : channelsPerProvider.entrySet()) {
             VideoProvider provider = channelsWithProvider.getKey();
-            String channelNames = getCombinedChannelNames(provider, channelsWithProvider.getValue());
+            List<Tuple<String,String>> titleUrlCouples = getTitleUrlCouples(provider, channelsWithProvider.getValue());
+            String channelNames = getCombinedChannelNames(titleUrlCouples);
             if(!channelNames.isEmpty()) {
-                RestTemplate template = new RestTemplate();
+
+            	RestTemplate template = new RestTemplate();
 
                 List<HttpMessageConverter<?>> messageConverters = template.getMessageConverters();
                 List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>(messageConverters);
@@ -63,35 +83,70 @@ public class ChannelUpdater {
                 converters.add(new StringHttpMessageConverter());
                 converters.add(jsonConverter);
                 template.setMessageConverters(converters);
-
-                TwitchTVChannelResponse[] twitchTVChannelResponse;
+                
+                Class<? extends ChannelResponse[]> channelResponseClass = matchEndPointWithClass.get(provider.getEndpoint());
 
                 String endpointTemplate = provider.getEndpoint();
                 System.out.println("About to query : " + endpointTemplate + " with: "+channelNames);
 
-                twitchTVChannelResponse = template.getForObject(endpointTemplate, TwitchTVChannelResponse[].class, channelNames);
-
-                for (TwitchTVChannelResponse response : twitchTVChannelResponse) {
-                    System.out.println(response.getViewerCount());
-                    System.out.println(response.getChannelName().getChannelName());
-                }
+                ChannelResponse[] responses = template.getForObject(endpointTemplate, channelResponseClass, channelNames);
+                
+                
+                final List<Tuple<String,Integer>> urlAndViewerCountTuples = getVideoUrlAndViewerCountTuples(asList(responses), titleUrlCouples);
+                jdbcTemplate.batchUpdate("UPDATE channels SET viewer_count = ? WHERE video_url = ?",
+                	new BatchPreparedStatementSetter() {
+						@Override
+						public void setValues(PreparedStatement ps, int i) throws SQLException {
+							ps.setInt(1, urlAndViewerCountTuples.get(i).getRight());
+							ps.setString(2, urlAndViewerCountTuples.get(i).getLeft());
+						}
+						@Override
+						public int getBatchSize() {
+							return urlAndViewerCountTuples.size();
+						}
+					});
             }
         }
     }
+    
+    private List<Tuple<String, String>> getTitleUrlCouples(final VideoProvider provider, final Collection<Channel> channels) {
+    	return newLinkedList(transform(channels, new Function<Channel, Tuple<String, String>>() {
+            @Override
+            public Tuple<String, String> apply(Channel channel) {
+                String videoUrl = channel.getVideoUrl();
+				return new Tuple<String, String>(provider.extractChannelName(videoUrl), videoUrl);
+            }
+        }));
+    }
+    
+    private List<Tuple<String, Integer>> getVideoUrlAndViewerCountTuples(final List<ChannelResponse> responses,final List<Tuple<String, String>> titleUrlCouples) {
+		return Lists.transform(responses, new Function<ChannelResponse, Tuple<String, Integer>>(){
 
-    private String getCombinedChannelNames(final VideoProvider provider, final Collection<Channel> channels) {
-        return provider == null ? "" : Joiner.on(',').skipNulls().join(
-            transform(channels, new Function<Channel, String>() {
+			@Override
+			public Tuple<String, Integer> apply(ChannelResponse response) {
+				return new Tuple<String, Integer>(//
+						Tuple.<String, String>findFirstRight(titleUrlCouples, response.getChannelName()), //
+						parseInt(response.getViewerCount())
+				);
+			}
+		
+		});
+    	
+    }
+
+    private String getCombinedChannelNames(List<Tuple<String, String>> urlTitleCouples) {
+        return Joiner.on(',').skipNulls().join(
+            transform(urlTitleCouples, new Function<Tuple<String, String>, String>() {
                 @Override
-                public String apply(Channel channel) {
-                    return provider.extractChannelName(channel.getVideoUrl());
+                public String apply(Tuple<String, String> couple) {
+                    return couple.getLeft();
                 }
             })
         );
     }
 
     private Map<VideoProvider, Collection<Channel>> fetchAllChannels() {
-        List<Channel> channels = jdbcTemplate.query("SELECT * FROM video_providers GROUP BY provider", new BeanPropertyRowMapper<Channel>(Channel.class));
+        List<Channel> channels = channelDao.findAllGroupByProvider();
         return index(channels, new ChannelByVideoProviderIndexer()).asMap();
     }
 //

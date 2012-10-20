@@ -1,19 +1,19 @@
 package tv.esporx.domain.remote;
 
-/*
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-*/
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
-public class TwitchTVChannelResponse {
 
-    //@JsonProperty("channel_count")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class TwitchTVChannelResponse implements ChannelResponse {
+
+    @JsonProperty("channel_count")
     private String viewerCount;
 
-    //@JsonProperty
+    @JsonProperty
     private TwitchTVChannel channel;
 
+    @Override
     public String getViewerCount() {
         return viewerCount;
     }
@@ -22,8 +22,9 @@ public class TwitchTVChannelResponse {
         this.viewerCount = channelCount;
     }
 
-    public TwitchTVChannel getChannelName() {
-        return channel;
+    @Override
+    public String getChannelName() {
+        return channel.getChannelName();
     }
 
     public void setChannelName(TwitchTVChannel channelName) {

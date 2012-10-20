@@ -28,4 +28,6 @@ public interface PersistenceCapableChannel {
 
     List<Channel> findAllWithFetchedProviders();
 
+	List<Channel> findAllGroupByProvider();
+
 }
