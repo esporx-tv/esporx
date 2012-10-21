@@ -12,7 +12,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         frequencyTypes = [],
         frequencyUrl = '/frequencyTypes',
         channels = [],
-        maxLoop = 1,
+        maxLoop = 0,
         channelUrl = '/channel/all',
         eventOccurrencesUrl = '/event/{ID}/occurrences',
         deleteOccurrenceUrl = '/occurrence/{ID}',
@@ -87,7 +87,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
 				$(occurrenceContainerClass).remove();
 				if (eventId !== '') {
 					$.getJSON(url, function(data) {
-						maxLoop = 1;
+						maxLoop = 0;
 						for(i = 0; i < data.length; i++) {
 							occurrence = data[i];
 							insertOccurrence(maxLoop++, frequencyTypes, channels, occurrence.frequencyType, _.map(occurrence.channels, simplifyChannel), occurrence.startDate, occurrence.endDate, occurrence.id);
