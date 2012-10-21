@@ -3,16 +3,17 @@ package tv.esporx.domain;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.collect.Sets.newHashSet;
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.Date;
-import java.util.Set;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.google.common.collect.Sets;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -30,10 +31,7 @@ public class Event {
 	@Length(max = 1000)
 	@Column(name = "description", nullable = false)
 	private String description = "";
-	@ManyToMany
-    @JoinTable(name = "event_occurrence", joinColumns = { @JoinColumn(name = "eventId") }, inverseJoinColumns = { @JoinColumn(name = "occurrenceId") } )
-    private Set<Occurrence> occurrences = newHashSet();
-    @NotBlank
+	@NotBlank
 	@Length(max = 255)
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
@@ -104,5 +102,5 @@ public class Event {
 				.add("title", title) //
 				.toString();
 	}
-
+	
 }

@@ -3,13 +3,13 @@
     <legend>Occurrence n°<span class="loop">{{#plusOne loop}}{{/plusOne}}</span></legend>
     <div class='input'>
         <label for='startDates_{{loop}}'>Start</label>
-        <input class="occurrenceId" hidden />
-        <input id="startDates_{{loop}}" class="datepicker startDate" />
+        <input class="occurrenceId" hidden value="{{id}}" />
+        <input id="startDates_{{loop}}" class="datepicker startDate" value="{{startDate}}" />
         <!--<errors path="startDates.{{loop}}" class="errors" />-->
     </div>
     <div class="input">
         <label for="endDates_{{loop}}">End (optional)</label>
-        <input id="endDates_{{loop}}" class="datepicker endDate" />
+        <input id="endDates_{{loop}}" class="datepicker endDate" value="{{endDate}}"  />
     </div>
     <div class="input">
         <label for="frequencies_{{loop}}">Frequency</label>

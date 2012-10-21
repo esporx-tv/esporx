@@ -9,6 +9,7 @@ import static tv.esporx.framework.mvc.ControllerUtils.notFound;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -30,14 +31,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableEvent;
+import tv.esporx.dao.PersistenceCapableOccurrence;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
-import tv.esporx.domain.front.RawEvent;
+import tv.esporx.domain.Occurrence;
 import tv.esporx.framework.EntityConverter;
 import tv.esporx.services.EventService;
 
@@ -51,6 +54,8 @@ public class EventController {
 	private PersistenceCapableEvent eventDao;
 	@Autowired
 	private PersistenceCapableChannel channelDao;
+	@Autowired
+	private PersistenceCapableOccurrence occurrenceDao;
 	@Autowired
 	private EventService eventService;
 
@@ -84,7 +89,7 @@ public class EventController {
 
 	@RequestMapping(value = "/new", method = GET)
 	public ModelAndView creation() {
-		return populatedEventForm(new ModelAndView()).addObject(COMMAND, new RawEvent());
+		return populatedEventForm(new ModelAndView()).addObject(COMMAND, new Event());
 	}
 
 	@RequestMapping(value = "/edit/{eventCommand}", method = GET)
@@ -139,7 +144,14 @@ public class EventController {
 		eventService.saveOrUpdate(channelId, eventId);
 		return successfulRedirectionView();
 	}
-
+	
+	@RequestMapping(value = "/{id}/occurrences", method = GET)
+	@ResponseBody
+	public Collection<Occurrence> getOccurrences(@PathVariable("id") Long id) {
+		checkArgument(id > 0, "Not a valid id");
+		return occurrenceDao.findByEventId(id);
+	}
+	
 	public void setEventRepository(final PersistenceCapableEvent eventDao) {
 		this.eventDao = eventDao;
 	}

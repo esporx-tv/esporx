@@ -1,6 +1,8 @@
 package tv.esporx.scheduling;
 
-import org.quartz.*;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 public class ChannelUpdaterJob implements Job {
 

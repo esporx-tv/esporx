@@ -1,6 +1,6 @@
 /*global Control: true
   console: true*/
-define(["jquery", "text!css/jquery-ui.css", "text!css/datepicker.css", "jqueryui", "ext/jquery-timepicker-addon"], function($, baseCss, timeCss) {
+define(["jquery", "text!css/jquery-ui.css", "text!css/datepicker.css", "jqueryui", "ext/jquery-timepicker-addon", "ext/jquery-dateformat"], function($, baseCss, timeCss) {
     "use strict";
 
     var replaceImgPaths = function(css, pathPattern, pathReplacement) {
@@ -32,6 +32,14 @@ define(["jquery", "text!css/jquery-ui.css", "text!css/datepicker.css", "jqueryui
             $('input.datepicker').not('.hasDatepicker').each(function(index) {
                 observeOne($(this));
             });
+        },
+        'formatDate': function(date, format) {
+            if (date === null || date === undefined || $.trim(date) === '') {
+                return '';
+            }
+            var offsetDate = new Date(date);
+            //offsetDate.getUTCFullYear(),offsetDate.getUTCMonth(), offsetDate.getUTCDate(), offsetDate.getUTCHours(), offsetDate.getUTCMinutes(), offsetDate.getUTCSeconds())
+            return $.format.date(new Date(date), format);
         }
     };
 });

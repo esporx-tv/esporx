@@ -1,10 +1,17 @@
 package tv.esporx.scheduling;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Multimaps.index;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -13,20 +20,14 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.VideoProvider;
 import tv.esporx.domain.remote.TwitchTVChannelResponse;
 import tv.esporx.services.ChannelByVideoProviderIndexer;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Multimaps.index;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 
 @Component
 public class ChannelUpdater {

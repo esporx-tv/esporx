@@ -1,7 +1,6 @@
 package tv.esporx.dao.impl;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.hibernate.Hibernate.isInitialized;
 
 import java.util.List;
 

@@ -1,14 +1,15 @@
 package tv.esporx.dao.impl;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import tv.esporx.dao.PersistenceCapableFrequencyType;
-import tv.esporx.domain.FrequencyType;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import tv.esporx.dao.PersistenceCapableFrequencyType;
+import tv.esporx.domain.FrequencyType;
 
 @Repository
 public class FrequencyTypeRepository implements PersistenceCapableFrequencyType {

@@ -1,10 +1,14 @@
 package tv.esporx.domain;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.DAILY;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.MONTHLY;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.ONCE;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.WEEKLY;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.YEARLY;
+
 import org.joda.time.DateTime;
 import org.junit.Test;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.*;
 
 public class OccurrenceTest {
 

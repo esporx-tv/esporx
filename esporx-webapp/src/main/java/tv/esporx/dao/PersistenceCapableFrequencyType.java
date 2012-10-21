@@ -1,8 +1,8 @@
 package tv.esporx.dao;
 
-import tv.esporx.domain.FrequencyType;
-
 import java.util.List;
+
+import tv.esporx.domain.FrequencyType;
 
 public interface PersistenceCapableFrequencyType {
 

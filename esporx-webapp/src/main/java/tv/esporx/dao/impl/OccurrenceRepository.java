@@ -1,19 +1,25 @@
 package tv.esporx.dao.impl;
 
+import static com.google.common.collect.Sets.newLinkedHashSet;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import tv.esporx.dao.PersistenceCapableOccurrence;
 import tv.esporx.domain.Occurrence;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
 
 @Repository
 @Transactional
@@ -36,32 +42,30 @@ public class OccurrenceRepository implements PersistenceCapableOccurrence {
     }
 
     @Override
-    public Long saveOrUpdate(Occurrence occurrence, List<Long> channelIds, Long eventId) {
-        boolean alreadyPersisted = (occurrence.getId() != null);
+    public Long saveOrUpdate(Occurrence occurrence, List<Long> channelIds) {
         entityManager.persist(occurrence);
         long occurrenceId = occurrence.getId();
 
-        executeEventInsert(occurrenceId, eventId, alreadyPersisted);
         executeBatchChannelInsert(occurrenceId, channelIds);
         return occurrenceId;
     }
-
-    private void executeEventInsert(long occurrenceId, Long eventId, boolean alreadyPersisted) {
-        if(!alreadyPersisted) {
-            jdbcTemplate.update(
-                    "INSERT INTO event_occurrence(event_id, occurrence_id) VALUES(?,?)",
-                    new Long[] {eventId, occurrenceId}
-            );
-        }
-    }
+    
+	@Override
+	public Collection<Occurrence> findByEventId(Long eventId) {
+		TypedQuery<Occurrence> query = entityManager.createNamedQuery("Occurrence.findByEventId", Occurrence.class);
+		query.setParameter("eventId", eventId);
+		//FIXME
+		return newLinkedHashSet(query.getResultList());
+		
+	}
 
     private void executeBatchChannelInsert(final long occurrenceId, final List<Long> channelIds) {
         jdbcTemplate.update("DELETE FROM occurrences_channels WHERE occurrence_id = ?", occurrenceId);
         jdbcTemplate.batchUpdate("INSERT INTO occurrences_channels(occurrence_id, channel_id) VALUES (?, ?)", new BatchPreparedStatementSetter() {
             @Override
-            public void setValues(PreparedStatement ps, int id) throws SQLException {
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setLong(1, occurrenceId);
-                ps.setLong(2, channelIds.get(id));
+                ps.setLong(2, channelIds.get(i));
             }
 
             @Override
@@ -71,4 +75,9 @@ public class OccurrenceRepository implements PersistenceCapableOccurrence {
         });
     }
 
+
+	@Override
+	public void delete(Occurrence occurrence) {
+		entityManager.remove(occurrence);
+	}
 }

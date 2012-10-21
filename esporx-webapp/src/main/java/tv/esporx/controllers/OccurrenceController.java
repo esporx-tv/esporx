@@ -1,41 +1,39 @@
 package tv.esporx.controllers;
 
-import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.core.convert.support.GenericConversionService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import tv.esporx.dao.PersistenceCapableChannel;
-import tv.esporx.dao.PersistenceCapableEvent;
-import tv.esporx.dao.PersistenceCapableFrequencyType;
-import tv.esporx.dao.PersistenceCapableOccurrence;
-import tv.esporx.domain.FrequencyType;
-import tv.esporx.domain.Occurrence;
-import tv.esporx.framework.EntityConverter;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.transform;
+import static java.lang.Long.parseLong;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
-import javax.annotation.Nullable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.transform;
-import static java.lang.Long.parseLong;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import tv.esporx.dao.PersistenceCapableChannel;
+import tv.esporx.dao.PersistenceCapableEvent;
+import tv.esporx.dao.PersistenceCapableFrequencyType;
+import tv.esporx.dao.PersistenceCapableOccurrence;
+import tv.esporx.domain.Event;
+import tv.esporx.domain.FrequencyType;
+import tv.esporx.domain.Occurrence;
+
+import com.google.common.base.Function;
+import com.google.common.base.Splitter;
 
 @Controller
 @RequestMapping("/occurrence")
@@ -71,7 +69,6 @@ public class OccurrenceController {
             Occurrence occurrence;
             String rawEventId = String.valueOf(rawOccurrence.get("data[eventId]"));
             checkNotNull(rawEventId);
-            Long eventId = Long.valueOf(rawEventId);
             String rawId = String.valueOf(rawOccurrence.get("data[id]"));
             Long id = (rawId.isEmpty()) ? null : Long.valueOf(rawId);
             Date startDate = df.parse(String.valueOf(rawOccurrence.get("data[startDate]")));
@@ -86,21 +83,35 @@ public class OccurrenceController {
                         }
                     }
             );
-            FrequencyType frequencyType = frequencyTypeDao.findByValue(String.valueOf(rawOccurrence.get("data[frequencyType]")));
             if (id != null) {
                 //beware this can become a security flaw if not everyone is allowed to modify occurrences
                 occurrence = occurrenceDao.findById(id);
             } else {
                 occurrence = new Occurrence();
             }
+            Event event = eventDao.findById(Long.valueOf(rawEventId));
+            occurrence.setEvent(event);
             occurrence.setStartDate(startDate);
             occurrence.setEndDate(endDate);
+            FrequencyType frequencyType = frequencyTypeDao.findByValue(String.valueOf(rawOccurrence.get("data[frequencyType]")));
             occurrence.setFrequencyType(frequencyType);
-            return occurrenceDao.saveOrUpdate(occurrence, channelIds, eventId).toString();
+            return occurrenceDao.saveOrUpdate(occurrence, channelIds).toString();
 
         } catch (ParseException e) {
             return e.getMessage();
         }
+    }
+    
+    @RequestMapping(value = "/{id}", method = DELETE)
+    @ResponseBody
+    public String delete(@PathVariable long id) {
+    	Occurrence occurrence = occurrenceDao.findById(id);
+    	if (occurrence == null) {
+    		return "KO";
+    	}
+    	occurrenceDao.delete(occurrence);
+    	return "OK";
+    	
     }
 
     @RequestMapping(value = "/new", method = GET)

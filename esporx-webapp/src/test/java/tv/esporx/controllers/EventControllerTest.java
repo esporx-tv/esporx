@@ -1,18 +1,20 @@
 package tv.esporx.controllers;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
-import tv.esporx.dao.impl.EventRepository;
-import tv.esporx.domain.Event;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.web.servlet.ModelAndView;
+
+import tv.esporx.dao.impl.EventRepository;
+import tv.esporx.domain.Event;
 
 public class EventControllerTest {
 

@@ -1,14 +1,21 @@
 package tv.esporx.domain;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static com.google.common.base.Objects.toStringHelper;
 import static java.util.regex.Pattern.compile;
 import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Supplies a video representation (usually HTML code) against a URI, so long as

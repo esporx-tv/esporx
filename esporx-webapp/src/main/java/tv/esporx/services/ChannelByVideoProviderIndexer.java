@@ -1,8 +1,9 @@
 package tv.esporx.services;
 
-import com.google.common.base.Function;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.VideoProvider;
+
+import com.google.common.base.Function;
 
 public class ChannelByVideoProviderIndexer implements Function<Channel, VideoProvider> {
 

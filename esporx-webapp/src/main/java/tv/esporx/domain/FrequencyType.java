@@ -1,16 +1,18 @@
 package tv.esporx.domain;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonMethod;
-import org.codehaus.jackson.annotate.JsonProperty;
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.valueOf;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-
-import javax.persistence.*;
-
-import static org.codehaus.jackson.annotate.JsonMethod.CREATOR;
-import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.valueOf;
 
 @Entity
 @Table(name = "frequency_types")
@@ -57,7 +59,34 @@ public class FrequencyType {
         }
 
         return matches(start, testDate);
+    }	
+    
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FrequencyType other = (FrequencyType) obj;
+        return equal(value, other.value);
     }
+    
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return toStringHelper(this) //
+				.add("value", value) //
+				.toString();
+	}
 
     private boolean matches(DateTime start, DateTime actual) {
         switch(valueOf(value.toUpperCase())) {

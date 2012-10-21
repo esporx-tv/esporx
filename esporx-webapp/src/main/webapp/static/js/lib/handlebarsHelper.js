@@ -3,7 +3,15 @@ define(["underscore", "ext/handlebars"], function(_) {
     "use strict";
 
     Handlebars.registerHelper('options', function(items, options) {
-        return _.reduce(items,function(prev,current) { return prev + "<option value='" + current.value + "'>" + options.fn(current) + "</option>"; },"");
+        var selectedValues = _.map(items.__selected__, function(item) {return item.value;});
+		return _.reduce(items,
+		function(prev,current) {
+			var selectedString = '';
+			if (_.contains(selectedValues, current.value)) {
+				selectedString = 'selected="selected"';
+			}
+			return prev + "<option value='" + current.value + "' "+selectedString+">" + options.fn(current) + "</option>"; 
+		},"");
     });
 
     Handlebars.registerHelper('plusOne', function(item) {

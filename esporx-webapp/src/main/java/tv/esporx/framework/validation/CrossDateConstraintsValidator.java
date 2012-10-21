@@ -1,5 +1,7 @@
 package tv.esporx.framework.validation;
 
+import static java.util.Arrays.asList;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -10,8 +12,6 @@ import java.util.List;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import static java.util.Arrays.asList;
 
 public class CrossDateConstraintsValidator implements ConstraintValidator<CrossDateConstraints, Object> {
 

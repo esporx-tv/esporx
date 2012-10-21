@@ -1,19 +1,19 @@
 package tv.esporx.controllers;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import static com.google.common.collect.Lists.transform;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import tv.esporx.dao.PersistenceCapableFrequencyType;
 import tv.esporx.domain.FrequencyType;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-import static com.google.common.collect.Lists.transform;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import com.google.common.base.Function;
 
 @Controller
 @RequestMapping(value = "/frequencyTypes")

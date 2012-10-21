@@ -1,5 +1,13 @@
 package tv.esporx.controllers;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,15 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.ModelAndView;
+
 import tv.esporx.dao.impl.EventRepository;
 import tv.esporx.domain.Event;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 

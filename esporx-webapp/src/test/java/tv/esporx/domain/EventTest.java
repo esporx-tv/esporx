@@ -2,8 +2,6 @@ package tv.esporx.domain;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 
