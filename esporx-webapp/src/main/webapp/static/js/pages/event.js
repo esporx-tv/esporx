@@ -1,24 +1,18 @@
-define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/eventForm.tpl", "lib/dateUtils", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils) {
+define(["jquery", "lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker) {
     "use strict";
 
-    var eventTitleInputId = "title",
-        occurrenceCreationId = "add_occurrence",
+    var eventTitleInputId = "#title",
         hasErrors = false;
 
     return {
        trigger: function() {
-           hasErrors = sanityChecker.checkIfNotExists('#'+ eventTitleInputId, 'Event title input') || hasErrors;
-           hasErrors = sanityChecker.checkIfNotExists('#'+ occurrenceCreationId, 'Occurrence creation button') || hasErrors;
+           hasErrors = sanityChecker.checkIfNotExists(eventTitleInputId, 'Event title input') || hasErrors;
 
            if (hasErrors) {
                logger.error('Script initialization failed due to multiple errors');
            } else {
                logger.debug('Initializing event form ...');
-               dateUtils.trigger();
-               $('#' + eventTitleInputId).focus();
-               $('#' + occurrenceCreationId).click(function(event) {
-                   logger.debug('cliclicklclick');
-               });
+               $(eventTitleInputId).focus();
                logger.debug('... done!');
            }
        }

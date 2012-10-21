@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import org.joda.time.DateTime;
-
 import tv.esporx.domain.Event;
 
 public interface PersistenceCapableEvent {

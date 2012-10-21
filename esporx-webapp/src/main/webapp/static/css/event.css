@@ -21,3 +21,6 @@ a { cursor:pointer; text-decoration:none; color: #DDD;}
 .eventBox .eventTitle { font-size: .85em; line-height: 2em; padding-left: 40px; position: relative;}
 .eventBox .eventTitle a { font-size: 15px; color: #DCDCF0; font-weight: normal; display: block;}
 ul.channels { padding: 0 0 10px;}
+
+/** event form **/
+/*REMOVEME*/#catContent { overflow:hidden;}

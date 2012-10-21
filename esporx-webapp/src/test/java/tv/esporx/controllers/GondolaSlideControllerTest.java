@@ -1,19 +1,22 @@
 package tv.esporx.controllers;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
+
 import tv.esporx.dao.PersistenceCapableGondolaSlide;
 import tv.esporx.dao.impl.GondolaSlideRepository;
 import tv.esporx.domain.front.GondolaSlide;
-
-import javax.servlet.http.HttpServletResponse;
-
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.*;
 
 public class GondolaSlideControllerTest {
 

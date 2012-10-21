@@ -32,6 +32,7 @@
                             <li class="adminName"><a href="#showSlots">Configurable Slot</a></li>
                             <li class="adminName"><a href="#showEvents">Event</a></li>
                             <li class="adminName"><a href="#showChannels">Channel</a></li>
+
                         </ul>
 						<div id="showSlides">
 							<div class="adminInfos">
@@ -76,7 +77,10 @@
 						</div>
 						<div id="showEvents">
 							<div class="adminInfos">
-								<a href="<c:url value="/event/new" />">Add an event</a>
+                                <ul>
+                                    <li><a href="<c:url value="/occurrence/new" />">Plan an event</a></li>
+                                    <li><a href="<c:url value="/event/new" />">Add an event</a></li>
+                                </ul>
 								<div id="eventsList">
 									<c:forEach var="event" items="${events}">
 										<div class="eventBox">
@@ -86,7 +90,6 @@
 												<input class="send" name="send" type="submit" value="Remove" />
 											</form>
 											<a href="<c:url value="/event/edit/${event.id}" />">Edit</a>
-											<a href="<c:url value="/event/link/${event.id}" />">Link channel to this event</a>
 										</div>
 									</c:forEach>
 								</div>

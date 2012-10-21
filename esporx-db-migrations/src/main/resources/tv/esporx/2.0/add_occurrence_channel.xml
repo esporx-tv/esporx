@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="add_occurrence_channel" author="esporx_dev">
+	    <sql endDelimiter=";">
+	    ALTER TABLE occurrences ENGINE = InnoDB;
+	    ALTER TABLE channels ENGINE = InnoDB;
+		CREATE TABLE `occurrences_channels` (
+		  `occurrence_id` bigint(20) NOT NULL,
+		  `channel_id` bigint(20) NOT NULL,
+		  PRIMARY KEY (`occurrence_id`, `channel_id`),
+		  FOREIGN KEY (`occurrence_id`) REFERENCES occurrences(`id`) ON DELETE CASCADE,
+		  FOREIGN KEY (`channel_id`) REFERENCES channels(`id`) ON DELETE CASCADE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	    </sql>
+    </changeSet>
+</databaseChangeLog>

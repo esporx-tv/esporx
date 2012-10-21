@@ -18,11 +18,15 @@ public @interface CrossDateConstraints {
 
 	String message() default "{crossdate.validation.error}";
 
+    /* mandatory */
 	Class<?>[] groups() default {};
 
+    /* mandatory */
 	Class<? extends Payload>[] payload() default {};
 
 	String startDateFieldName() default "startDate";
 
 	String endDateFieldName() default "endDate";
+
+    String[] nullableColumns() default {};
 }

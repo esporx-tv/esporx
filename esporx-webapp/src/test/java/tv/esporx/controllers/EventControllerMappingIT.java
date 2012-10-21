@@ -7,8 +7,6 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.s
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
 
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

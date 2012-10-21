@@ -69,7 +69,9 @@ public class ChannelUpdaterJob implements Job {
             String channelNames = getCombinedChannelNames(titleUrlCouples);
             if(!channelNames.isEmpty()) {
             	ChannelResponse[] responses = getChannelResponsesPerProvider(provider, channelNames);
-                doBatchUpdate(jdbcTemplate, responses, titleUrlCouples);
+            	if (responses.length > 0) {
+                	doBatchUpdate(jdbcTemplate, responses, titleUrlCouples);
+            	}
             }
         }
     }
@@ -94,6 +96,7 @@ public class ChannelUpdaterJob implements Job {
     }
     
     private ChannelResponse[] getChannelResponsesPerProvider(VideoProvider provider, String channelNames) {
+    	ChannelResponse[] responses = new ChannelResponse[]{};
     	RestTemplate template = new RestTemplate();
 
         List<HttpMessageConverter<?>> messageConverters = template.getMessageConverters();
@@ -107,10 +110,13 @@ public class ChannelUpdaterJob implements Job {
         
         Class<? extends ChannelResponse[]> channelResponseClass = matchEndPointWithClass.get(provider.getEndpoint());
 
-        String endpointTemplate = provider.getEndpoint();
-        logger.info("About to query : " + endpointTemplate + " with: "+channelNames);
-
-        ChannelResponse[] responses = template.getForObject(endpointTemplate, channelResponseClass, channelNames);
+		if(channelResponseClass != null) {
+	        String endpointTemplate = provider.getEndpoint();
+	        logger.info("About to query : " + endpointTemplate + " with: "+channelNames);
+	
+	        responses = template.getForObject(endpointTemplate, channelResponseClass, channelNames);
+		}
+		
         return responses;
     }
     

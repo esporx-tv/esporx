@@ -11,7 +11,7 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['jquery', 'pages/event', 'jqueryui'], function($, event) {
+        require(['jquery', 'pages/event'], function($, event) {
             $(document).ready(function() {
                 event.trigger();
             });
@@ -58,35 +58,8 @@
                         <form:textarea path="description"  cssClass="ckeditor" />
                         <form:errors path="description" cssClass="errors" />
                     </div>
-                    
-					<h2>Planning</h2>
-                    <c:forEach items="${event.startDates}" varStatus="loopContext">
-                        <div class="occurrence">
-                            <div class="input">
-                                <form:label path="startDates.${loopContext.index}">Start</form:label>
-                                <form:input path="startDates.${loopContext.index}" cssClass="datepicker" />
-                                <form:errors path="startDates.${loopContext.index}" cssClass="errors" />
-                            </div>
-                            <div class="input">
-                                <form:label path="endDates.${loopContext.index}">End (optional)</form:label>
-                                <form:input path="endDates.${loopContext.index}" cssClass="datepicker" />
-                                <form:errors path="endDates.${loopContext.index}" cssClass="errors" />
-                            </div>
-                            <div class="input">
-                                <form:label path="frequencies.${loopContext.index}">Frequency</form:label>
-                                <form:select path="frequencies.${loopContext.index}">
-                                    <form:option value="">
-                                        select a frequency
-                                    </form:option>
-                                    <form:options items="${frequencies}" />
-                                </form:select>
-                            </div>
-                        </div>
-                    </c:forEach>
 
-                    <span id="add_occurrence">Add a new occurrence</span>
-
-					<div class="submit">
+					<div id="submit" class="submit">
 						<input type="submit" value="<spring:message code="event.submission.submit" />" />
 					</div>
 				</form:form>

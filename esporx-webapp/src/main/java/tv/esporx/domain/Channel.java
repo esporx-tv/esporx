@@ -3,19 +3,13 @@ package tv.esporx.domain;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.Collections.unmodifiableList;
 import static javax.persistence.GenerationType.IDENTITY;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -50,9 +44,6 @@ public class Channel {
 	@Column(name = "viewer_count_timestamp", nullable = true)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime viewerCountTimestamp;
-	@ManyToMany
-	@JoinTable(name = "channel_casters", joinColumns = { @JoinColumn(name = "channelId") }, inverseJoinColumns = { @JoinColumn(name = "casterId") })
-	private final List<User> casters = new ArrayList<User>();
 	@NotBlank
 	@Length(max = 255)
 	@Column(name = "title", nullable = false, unique = true)
@@ -75,28 +66,12 @@ public class Channel {
     @JoinColumn(name = "provider", nullable = false)
     private VideoProvider videoProvider;
 
-	public void addCaster(final User user) {
-		casters.add(user);
-	}
-
-	public User getCaster(final int index) {
-		return casters.get(index);
-	}
-
-	public List<User> getCasters() {
-		return unmodifiableList(casters);
-	}
-
 	public long getId() {
 		return id;
 	}
 
 	public String getTitle() {
 		return title;
-	}
-
-	public List<User> getUsers() {
-		return casters;
 	}
 
 	public String getVideoUrl() {

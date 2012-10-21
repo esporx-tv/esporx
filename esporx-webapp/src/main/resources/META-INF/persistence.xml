@@ -10,7 +10,6 @@
 		<class>tv.esporx.domain.Event</class>
 		<class>tv.esporx.domain.front.GondolaSlide</class>
 		<class>tv.esporx.domain.front.ConfigurableSlot</class>
-		<class>tv.esporx.domain.User</class>
 		<class>tv.esporx.domain.VideoProvider</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
@@ -28,7 +27,6 @@
 		<class>tv.esporx.domain.Event</class>
 		<class>tv.esporx.domain.front.GondolaSlide</class>
 		<class>tv.esporx.domain.front.ConfigurableSlot</class>
-		<class>tv.esporx.domain.User</class>
 		<class>tv.esporx.domain.VideoProvider</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
