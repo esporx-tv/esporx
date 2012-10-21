@@ -367,7 +367,6 @@
 					<version>${jetty-plugin.version}</version>
 					<configuration>
 						<contextPath>/</contextPath>
-						<reload>manual</reload>
 						<connectors>
 							<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
 								<port>9999</port>
