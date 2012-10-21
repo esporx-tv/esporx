@@ -11,7 +11,7 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['jquery', 'pages/event', 'jqueryui'], function($, event) {
+        require(['jquery', 'pages/event'], function($, event) {
             $(document).ready(function() {
                 event.trigger();
             });
@@ -58,9 +58,6 @@
                         <form:textarea path="description"  cssClass="ckeditor" />
                         <form:errors path="description" cssClass="errors" />
                     </div>
-                    
-					<h2>Planning</h2>
-                    <span id="add_occurrence">Add a new occurrence</span>
 
 					<div id="submit" class="submit">
 						<input type="submit" value="<spring:message code="event.submission.submit" />" />

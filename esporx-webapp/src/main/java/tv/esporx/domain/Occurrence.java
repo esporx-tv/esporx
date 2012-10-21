@@ -22,7 +22,7 @@ public class Occurrence {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
     @NotNull
     @Column(name = "start_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -52,7 +52,7 @@ public class Occurrence {
         this.endDate = endDate;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -60,15 +60,31 @@ public class Occurrence {
         return frequencyType.matches(startDate, endDate, dateTime);
     }
 
-    public DateTime getStartDate() {
-        return startDate;
+    public Date getStartDate() {
+        return startDate.toDate();
     }
 
-    public DateTime getEndDate() {
-        return endDate;
+    public Date getEndDate() {
+        return (endDate == null) ? null : endDate.toDate();
     }
 
     public FrequencyType getFrequencyType() {
         return frequencyType;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = new DateTime(startDate);
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate == null ? null : new DateTime(endDate);
+    }
+
+    public void setFrequencyType(FrequencyType frequencyType) {
+        this.frequencyType = frequencyType;
     }
 }

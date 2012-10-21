@@ -2,7 +2,8 @@ define(["jquery", "lib/sanityChecker", "lib/logger", "jqueryui"], function($, sa
     "use strict";
 
     var hasErrors = false,
-        tabulationContainerId = '#tabulations';
+        tabulationContainerId = '#tabulations',
+        removeButtonClass = '.send';
 
     return {
         trigger: function() {
@@ -14,6 +15,9 @@ define(["jquery", "lib/sanityChecker", "lib/logger", "jqueryui"], function($, sa
                 logger.debug('Initializing admin homepage...');
                 //TODO: use the ajax capabilities of the plugin
                 $(tabulationContainerId).tabs();
+                $(removeButtonClass).click(function() {
+                    return window.confirm('Do you rilly want to rimove this ?');
+                });
                 logger.debug('... done!');
             }
         }
