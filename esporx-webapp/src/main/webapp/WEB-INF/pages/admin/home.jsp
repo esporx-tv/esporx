@@ -78,7 +78,7 @@
 						<div id="showEvents">
 							<div class="adminInfos">
                                 <ul>
-                                    <li><a href="<c:url value="/occurrence/new" />">Plan an event</a></li>
+                                    <li><a href="<c:url value="/occurrence/manage" />">Plan an event</a></li>
                                     <li><a href="<c:url value="/event/new" />">Add an event</a></li>
                                 </ul>
 								<div id="eventsList">

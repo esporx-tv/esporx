@@ -60,6 +60,13 @@ public class OccurrenceController {
         ((GenericConversionService) binder.getConversionService()).addConverter(frequencyTypeEntityConverter);
     }*/
 
+    @RequestMapping(value = "/manage", method = GET)
+    public ModelAndView showForm() {
+        ModelMap model = new ModelMap();
+        model.addAttribute("events", eventDao.findAll());
+        return new ModelAndView("occurrence/form", model);
+    }
+
     @RequestMapping(value = "", method = POST)
     @ResponseBody
     public String saveOccurrence(@RequestParam HashMap<String, Object> rawOccurrence) {
@@ -112,12 +119,5 @@ public class OccurrenceController {
     	occurrenceDao.delete(occurrence);
     	return "OK";
     	
-    }
-
-    @RequestMapping(value = "/new", method = GET)
-    public ModelAndView showForm() {
-        ModelMap model = new ModelMap();
-        model.addAttribute("events", eventDao.findAll());
-        return new ModelAndView("occurrence/form", model);
     }
 }

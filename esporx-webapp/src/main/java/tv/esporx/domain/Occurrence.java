@@ -32,7 +32,7 @@ import tv.esporx.framework.validation.CrossDateConstraints;
 @CrossDateConstraints(nullableColumns = {"endDate"})
 @NamedQueries({ //
 	@NamedQuery(name = "Occurrence.findByEventId", 
-				query = "SELECT occ FROM Occurrence occ " + //
+				query = "SELECT DISTINCT occ FROM Occurrence occ " + //
 						"LEFT JOIN FETCH occ.channels cha " + //
 						"WHERE occ.event.id = :eventId")
 })
@@ -54,7 +54,7 @@ public class Occurrence {
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(name = "occurrences_channels", //
     	joinColumns = {@JoinColumn(name="occurrence_id", referencedColumnName="id")},
     	inverseJoinColumns = {@JoinColumn(name="channel_id", referencedColumnName="id")})

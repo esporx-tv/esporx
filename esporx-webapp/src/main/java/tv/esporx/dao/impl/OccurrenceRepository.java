@@ -25,24 +25,27 @@ import tv.esporx.domain.Occurrence;
 @Transactional
 public class OccurrenceRepository implements PersistenceCapableOccurrence {
 
+    private static final String DELETE_OCCURRENCE_CHANNEL_GIVEN_OCCURRENCE = "DELETE FROM occurrences_channels WHERE occurrence_id = ?";
+    private static final String INSERT_OCCURRENCE_CHANNEL = "INSERT INTO occurrences_channels(occurrence_id, channel_id) VALUES (?, ?)";
+
     @PersistenceContext
     private EntityManager entityManager;
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public OccurrenceRepository(DataSource dataSource) {
+    public OccurrenceRepository(final DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     @Override
     @Transactional(readOnly = true)
-    public Occurrence findById(Long id) {
+    public Occurrence findById(final Long id) {
         return entityManager.find(Occurrence.class, id);
     }
 
     @Override
-    public Long saveOrUpdate(Occurrence occurrence, List<Long> channelIds) {
+    public Long saveOrUpdate(final Occurrence occurrence, final List<Long> channelIds) {
         entityManager.persist(occurrence);
         long occurrenceId = occurrence.getId();
 
@@ -51,17 +54,21 @@ public class OccurrenceRepository implements PersistenceCapableOccurrence {
     }
     
 	@Override
-	public Collection<Occurrence> findByEventId(Long eventId) {
+	public Collection<Occurrence> findByEventId(final Long eventId) {
 		TypedQuery<Occurrence> query = entityManager.createNamedQuery("Occurrence.findByEventId", Occurrence.class);
-		query.setParameter("eventId", eventId);
-		//FIXME
-		return newLinkedHashSet(query.getResultList());
+        query.setParameter("eventId", eventId);
+		return query.getResultList();
 		
 	}
 
+    @Override
+    public void delete(final Occurrence occurrence) {
+        entityManager.remove(occurrence);
+    }
+
     private void executeBatchChannelInsert(final long occurrenceId, final List<Long> channelIds) {
-        jdbcTemplate.update("DELETE FROM occurrences_channels WHERE occurrence_id = ?", occurrenceId);
-        jdbcTemplate.batchUpdate("INSERT INTO occurrences_channels(occurrence_id, channel_id) VALUES (?, ?)", new BatchPreparedStatementSetter() {
+        jdbcTemplate.update(DELETE_OCCURRENCE_CHANNEL_GIVEN_OCCURRENCE, occurrenceId);
+        jdbcTemplate.batchUpdate(INSERT_OCCURRENCE_CHANNEL, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setLong(1, occurrenceId);
@@ -74,10 +81,4 @@ public class OccurrenceRepository implements PersistenceCapableOccurrence {
             }
         });
     }
-
-
-	@Override
-	public void delete(Occurrence occurrence) {
-		entityManager.remove(occurrence);
-	}
 }
