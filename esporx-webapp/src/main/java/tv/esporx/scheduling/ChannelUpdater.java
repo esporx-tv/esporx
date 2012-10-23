@@ -57,6 +57,7 @@ public class ChannelUpdater {
 		logger.info(">>> Update job start time: " + trigger.getStartTime());
 	}
 
+    //FIXME: this shouldn't be done like that!
 	private JobDataMap createJobDataMap() {
 		JobDataMap jobDataMap = new JobDataMap();
 		jobDataMap.put("dataSource", dataSource);
