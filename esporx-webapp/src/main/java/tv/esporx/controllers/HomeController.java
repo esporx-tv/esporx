@@ -1,22 +1,11 @@
 package tv.esporx.controllers;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import tv.esporx.dao.PersistenceCapableChannel;
-import tv.esporx.dao.PersistenceCapableConfigurableSlot;
-import tv.esporx.dao.PersistenceCapableEvent;
-import tv.esporx.dao.PersistenceCapableGame;
-import tv.esporx.dao.PersistenceCapableGondolaSlide;
+import tv.esporx.dao.*;
 import tv.esporx.dao.impl.EventRepository;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
@@ -24,6 +13,11 @@ import tv.esporx.domain.Game;
 import tv.esporx.domain.front.ConfigurableSlot;
 import tv.esporx.domain.front.GondolaSlide;
 import tv.esporx.framework.mvc.RequestUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 @RequestMapping("")

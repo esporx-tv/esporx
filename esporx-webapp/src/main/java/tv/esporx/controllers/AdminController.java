@@ -1,16 +1,10 @@
 package tv.esporx.controllers;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-import java.security.Principal;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.dao.PersistenceCapableConfigurableSlot;
 import tv.esporx.dao.PersistenceCapableEvent;
@@ -19,6 +13,11 @@ import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.front.ConfigurableSlot;
 import tv.esporx.domain.front.GondolaSlide;
+
+import java.security.Principal;
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 @RequestMapping(value = "/admin")

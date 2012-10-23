@@ -1,4 +1,4 @@
-package tv.esporx.framework;
+package tv.esporx.framework.collection;
 
 import static com.google.common.collect.Iterables.find;
 

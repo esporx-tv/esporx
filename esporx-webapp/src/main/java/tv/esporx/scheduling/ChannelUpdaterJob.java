@@ -1,23 +1,8 @@
 package tv.esporx.scheduling;
 
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Lists.newLinkedList;
-import static com.google.common.collect.Multimaps.index;
-import static java.lang.Integer.parseInt;
-import static java.util.Arrays.asList;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -32,18 +17,26 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import tv.esporx.dao.PersistenceCapableChannel;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.VideoProvider;
 import tv.esporx.domain.remote.ChannelResponse;
 import tv.esporx.domain.remote.TwitchTVChannelResponse;
-import tv.esporx.framework.Tuple;
+import tv.esporx.framework.collection.Tuple;
 import tv.esporx.services.ChannelByVideoProviderIndexer;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
+import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.*;
+
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newLinkedList;
+import static com.google.common.collect.Multimaps.index;
+import static java.lang.Integer.parseInt;
+import static java.util.Arrays.asList;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
 public class ChannelUpdaterJob implements Job {
