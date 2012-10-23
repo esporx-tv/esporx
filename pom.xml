@@ -22,7 +22,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 			<name>Springframework Maven SNAPSHOT Repository</name>
-			<url>http://maven.springframework.org/snapshot</url>
+                <url>http://maven.springframework.org/snapshot</url>
 		</repository>
 	</repositories>
 
@@ -69,7 +69,7 @@
 		<fest-assert.version>1.4</fest-assert.version>
 		<hamcrest.version>1.1</hamcrest.version>
 		<h2.version>1.3.164</h2.version>
-		<spring.version>3.1.0.RELEASE</spring.version>
+		<spring.version>3.1.2.RELEASE</spring.version>
 		<spring.test-mvc.version>1.0.0.BUILD-SNAPSHOT</spring.test-mvc.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<validation-api.version>1.0.0.GA</validation-api.version>
@@ -419,23 +419,6 @@
 					</executions>
 					<configuration>
 						<jsSrcDir>src/main/webapp/static/js</jsSrcDir>
-						<sourceIncludes>
-							<include>ext/simulate.js</include>
-							<include>ext/prototype.js</include>
-							<include>lib/*.js</include>
-							<include>pages/*.js</include>
-						</sourceIncludes>
-						<sourceExcludes>
-							<exclude>ext/*.js</exclude>
-							<exclude>ext/ckeditor/*.js</exclude>
-							<exclude>ext/ckeditor/**/*.js</exclude>
-						</sourceExcludes>
-						<preloadSources>
-							<source>ext/prototype.js</source>
-							<source>lib/logger.js</source>
-							<source>lib/sanityChecker.js</source>
-							<source>ext/simulate.js</source>
-						</preloadSources>
 					</configuration>
 				</plugin>
                 <plugin>
