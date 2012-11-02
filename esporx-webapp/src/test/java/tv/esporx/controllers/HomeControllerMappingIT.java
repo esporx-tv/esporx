@@ -1,12 +1,5 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
-import static tv.esporx.filters.GameFilter.GAME_PARAMETER_NAME;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +13,16 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import tv.esporx.dao.PersistenceCapableGame;
 import tv.esporx.domain.Game;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+import tv.esporx.repositories.GameRepository;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
+import static tv.esporx.filters.GameFilter.GAME_PARAMETER_NAME;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
@@ -35,7 +34,7 @@ public class HomeControllerMappingIT {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	@Autowired
-	private PersistenceCapableGame gameRepository;
+	private GameRepository gameRepository;
 	private Game game;
 
 	@Before
@@ -53,7 +52,7 @@ public class HomeControllerMappingIT {
 		game = new Game();
 		game.setTitle("Angry nerds");
 		game.setDescription("Birds are REALLY angry this time");
-		gameRepository.saveOrUpdate(game);
+		gameRepository.save(game);
 		assertThat(game.getId()).isGreaterThan(0L);
 	}
 }

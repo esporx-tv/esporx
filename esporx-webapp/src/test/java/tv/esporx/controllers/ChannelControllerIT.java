@@ -1,17 +1,5 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,12 +14,21 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.ModelAndView;
-
-import tv.esporx.dao.impl.ChannelRepository;
-import tv.esporx.dao.impl.GameRepository;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Game;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.repositories.GameRepository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
@@ -40,17 +37,16 @@ locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml",
 "classpath:/META-INF/spring/testApplicationContext.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 public class ChannelControllerIT {
+
+	private GameRepository gameRepository;
+	private ChannelRepository channelRepository;
 	private BindingResult bindingResult;
 	private Channel channel;
-
-	@Autowired
-	private ChannelController channelController;
-	private ChannelRepository channelDao;
-	private GameRepository gameDao;
-
+	private Game game;
 	@Autowired
 	private Validator validator;
-	private Game game;
+	@Autowired
+	private ChannelController channelController;
 
 	@Before
 	public void setup() {
@@ -74,40 +70,36 @@ public class ChannelControllerIT {
 	}
 
 	private void givenChannelRepositoryIsMocked() {
-		channelDao = mock(ChannelRepository.class);
-		when(channelDao.findById(anyLong())).thenReturn(channel);
+		channelRepository = mock(ChannelRepository.class);
+		when(channelRepository.findOne(anyLong())).thenReturn(channel);
 		assertThat(channelController).isNotNull();
-		setField(channelController, "channelDao", channelDao);
+		setField(channelController, "channelRepository", channelRepository);
 	}
 
 	private void givenGameRepositoryIsMocked() {
-		EntityManager entityManager = Mockito.mock(EntityManager.class);
-		Query query = mock(Query.class);
-		when(query.setMaxResults(anyInt())).thenReturn(query);
-		when(entityManager.createNamedQuery("Game.findByTitle")).thenReturn(query);
-		gameDao = mock(GameRepository.class);
-		when(gameDao.findByTitle(anyString())).thenReturn(game);
+		gameRepository = mock(GameRepository.class);
+		when(gameRepository.findByTitle(anyString())).thenReturn(game);
 	}
 
 
 	@Test
 	public void when_saving_channel_then_channel_is_persisted() {
 		givenBeanHasBeenValidated();
-		channelController.save(channel, bindingResult, new MockHttpServletRequest(), new ModelAndView());
-		verify(channelDao).saveOrUpdate(channel);
+		channelController.save(channel, bindingResult, new ModelAndView());
+		verify(channelRepository).save(channel);
 	}
 
 	@Test
 	public void when_saving_is_successful_then_admin_homepageview_is_returned() {
 		givenBeanHasBeenValidated();
-		ModelAndView modelAndView = channelController.save(channel, bindingResult, new MockHttpServletRequest(), new ModelAndView());
+		ModelAndView modelAndView = channelController.save(channel, bindingResult, new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
 	}
 
 	@Test
 	public void when_saving_is_unsuccessful_then_homepageview_is_returned() {
 		givenBeanHasBeenInvalidated();
-		ModelAndView modelAndView = channelController.save(channel, bindingResult, new MockHttpServletRequest(), new ModelAndView());
+		ModelAndView modelAndView = channelController.save(channel, bindingResult, new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("channel/form");
 	}
 

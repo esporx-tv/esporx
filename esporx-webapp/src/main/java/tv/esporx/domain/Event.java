@@ -1,27 +1,19 @@
 package tv.esporx.domain;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import tv.esporx.framework.string.MarkupKiller;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
 import static javax.persistence.GenerationType.IDENTITY;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-
-import tv.esporx.framework.string.MarkupKiller;
-
 @Entity
 @Table(name = "events")
-@NamedQueries({ @NamedQuery(name = "Event.findUpNext", query = "FROM Event"), @NamedQuery(name = "Event.findAll", query = "FROM Event") })
 public class Event {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

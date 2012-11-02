@@ -1,19 +1,17 @@
 package tv.esporx.framework.mvc;
 
-import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
-import static org.springframework.web.servlet.support.RequestContextUtils.getLocaleResolver;
-import static tv.esporx.filters.GameFilter.GAME_PARAMETER_NAME;
-
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
-
 import tv.esporx.framework.validation.SupportedLanguageValidator;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
+
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
+import static org.springframework.web.servlet.support.RequestContextUtils.getLocaleResolver;
+import static tv.esporx.filters.GameFilter.GAME_PARAMETER_NAME;
 
 @Component
 @Scope(SCOPE_PROTOTYPE)

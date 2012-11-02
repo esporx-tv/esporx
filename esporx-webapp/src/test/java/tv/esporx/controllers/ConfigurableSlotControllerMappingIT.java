@@ -1,12 +1,5 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +13,16 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import tv.esporx.dao.PersistenceCapableConfigurableSlot;
-import tv.esporx.domain.front.ConfigurableSlot;
+import tv.esporx.domain.ConfigurableSlot;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+import tv.esporx.repositories.ConfigurableSlotRepository;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
@@ -39,7 +38,7 @@ public class ConfigurableSlotControllerMappingIT {
 	private ConfigurableSlot slot;
 
 	@Autowired
-	private PersistenceCapableConfigurableSlot slotDao;
+	private ConfigurableSlotRepository repository;
 
 	@Before
 	public void setup() {
@@ -75,8 +74,8 @@ public class ConfigurableSlotControllerMappingIT {
 		slot.setPicture("myface.jpg");
 		slot.setLanguage("en");
 		slot.setBoxTitle("Box Title");
-		assertThat(slotDao).isNotNull();
-		slotDao.saveOrUpdate(slot);
+		assertThat(repository).isNotNull();
+		repository.save(slot);
 		assertThat(slot.getId()).isGreaterThan(0L);
 	}
 }

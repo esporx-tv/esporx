@@ -6,18 +6,23 @@ public class MarkupKiller {
 		StringBuilder sb = new StringBuilder(input.length());
 		boolean skipping = false;
 		for (char c : input.toCharArray()) {
-			if (skipping) {
-				if (c == '>') {
-					skipping = false;
-				}
-			} else {
-				if (c == '<') {
-					skipping = true;
-				} else {
-					sb.append(c);
-				}
-			}
-		}
+            skipping = skipOrAppend(sb, skipping, c);
+        }
 		return sb.toString();
 	}
+
+    private boolean skipOrAppend(StringBuilder sb, boolean skipping, char c) {
+        if (skipping) {
+            if (c == '>') {
+                skipping = false;
+            }
+        } else {
+            if (c == '<') {
+                skipping = true;
+            } else {
+                sb.append(c);
+            }
+        }
+        return skipping;
+    }
 }

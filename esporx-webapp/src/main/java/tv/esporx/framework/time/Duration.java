@@ -1,8 +1,8 @@
 package tv.esporx.framework.time;
 
-import java.util.concurrent.TimeUnit;
-
 import org.joda.time.DateTime;
+
+import java.util.concurrent.TimeUnit;
 
 public class Duration implements Comparable<Duration> {
 

@@ -1,53 +1,40 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.data.repository.support.DomainClassConverter;
+import org.springframework.web.servlet.ModelAndView;
+import tv.esporx.domain.Channel;
+import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.repositories.EventRepository;
+import tv.esporx.repositories.VideoProviderRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
-
-import tv.esporx.dao.PersistenceCapableEvent;
-import tv.esporx.dao.PersistenceCapableVideoProvider;
-import tv.esporx.dao.impl.ChannelRepository;
-import tv.esporx.domain.Channel;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class ChannelControllerTest {
 
 	private Channel channel;
 	private ChannelController channelController;
-	private ChannelRepository channelDao;
-	private PersistenceCapableVideoProvider videoProvider;
+	private ChannelRepository channelRepository;
+	private VideoProviderRepository videoProviderRepository;
 	private List<Channel> channels;
 
 	@Before
 	public void setup() {
-		channelController = new ChannelController();
-		setField(channelController, "eventDao", mock(PersistenceCapableEvent.class));
-		channelDao = mock(ChannelRepository.class);
-		channel = new Channel();
-		channel.setTitle("Channel Title");
-		channel.setVideoUrl("http://site.com");
-		when(channelDao.findById(anyLong())).thenReturn(channel);
-		setField(channelController, "channelDao", channelDao);
-		videoProvider = mock(PersistenceCapableVideoProvider.class);
-		when(videoProvider.getEmbeddedContents(anyString())).thenReturn("");
-		channelController.setVideoProviderDao(videoProvider);
-		when(channelDao.findAll()).thenReturn(channels);
+        dummyChannel();
+        mockedChannelRepository();
+        mockedEventRepository();
+		channelController = new ChannelController(channelRepository, videoProviderRepository, mock(DomainClassConverter.class));
 	}
 
-
-	@Test
+    @Test
 	public void when_accessing_channel_form_page_then_related_view_is_retrieved() {
 		ModelAndView modelAndView = channelController.creation(new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("channel/form");
@@ -56,7 +43,7 @@ public class ChannelControllerTest {
 	@Test
 	public void when_accessing_channel_index_page_then_channel_is_retrieved() {
 		channelController.index(10L, mock(HttpServletResponse.class));
-		verify(channelDao).findById(anyLong());
+		verify(channelRepository).findOne(anyLong());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -83,5 +70,21 @@ public class ChannelControllerTest {
 		assertThat(modelMap.get("channel")).isEqualTo(channel);
 	}
 
+    private void mockedEventRepository() {
+        videoProviderRepository = mock(VideoProviderRepository.class);
+        when(videoProviderRepository.getEmbeddedContents(anyString())).thenReturn("");
+    }
+
+    private void mockedChannelRepository() {
+        channelRepository = mock(ChannelRepository.class);
+        when(channelRepository.findOne(anyLong())).thenReturn(channel);
+        when(channelRepository.findAll()).thenReturn(channels);
+    }
+
+    private void dummyChannel() {
+        channel = new Channel();
+        channel.setTitle("Channel Title");
+        channel.setVideoUrl("http://site.com");
+    }
 
 }

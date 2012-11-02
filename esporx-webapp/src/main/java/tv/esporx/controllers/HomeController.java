@@ -5,39 +5,41 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import tv.esporx.dao.*;
-import tv.esporx.dao.impl.EventRepository;
-import tv.esporx.domain.Channel;
-import tv.esporx.domain.Event;
-import tv.esporx.domain.Game;
-import tv.esporx.domain.front.ConfigurableSlot;
-import tv.esporx.domain.front.GondolaSlide;
 import tv.esporx.framework.mvc.RequestUtils;
+import tv.esporx.repositories.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
-@RequestMapping("")
 public class HomeController {
 
-	@Autowired
-	private PersistenceCapableChannel channelDao;
-	@Autowired
-	private PersistenceCapableEvent eventDao;
-	@Autowired
-	private PersistenceCapableGame gameDao;
-	@Autowired
-	private PersistenceCapableGondolaSlide gondolaDao;
-	@Autowired
-	private PersistenceCapableConfigurableSlot slotDao;
+	private final ChannelRepository channelRepository;
+	private final EventRepository eventRepository;
+	private final GameRepository gameRepository;
+	private final GondolaSlideRepository gondolaRepository;
+	private final ConfigurableSlotRepository slotRepository;
+	private final RequestUtils requestHelper;
 
-	@Autowired
-	private RequestUtils requestHelper;
+    @Autowired
+    public HomeController(ChannelRepository channelRepository,
+                          EventRepository eventRepository,
+                          GameRepository gameRepository,
+                          GondolaSlideRepository gondolaRepository,
+                          ConfigurableSlotRepository slotRepository,
+                          RequestUtils requestHelper) {
 
-	@RequestMapping({"", "/"})
+        this.channelRepository = channelRepository;
+        this.eventRepository = eventRepository;
+        this.gameRepository = gameRepository;
+        this.gondolaRepository = gondolaRepository;
+        this.slotRepository = slotRepository;
+        this.requestHelper = requestHelper;
+    }
+
+
+    @RequestMapping({"", "/"})
 	public ModelAndView landing() {
 		return new ModelAndView("index");
 		
@@ -45,43 +47,13 @@ public class HomeController {
 	
 	@RequestMapping(value="/home", method = GET)
 	public ModelAndView index(final HttpServletRequest incomingRequest) {
-		List<Channel> mostViewedChannels = channelDao.findMostViewed();
-		List<Event> mostViewedEvents = eventDao.findAll();
-		List<Event> upNextEvents = eventDao.findUpNext();
-		String currentLocale = requestHelper.currentLocale(incomingRequest);
-		List<GondolaSlide> slides = gondolaDao.findByLanguage(currentLocale);
-		List<ConfigurableSlot> slots = slotDao.findByLanguage(currentLocale);
-		ModelMap model = new ModelMap("mostViewedEvents", mostViewedEvents);
-		model.addAttribute("mostViewedChannels", mostViewedChannels);
-		model.addAttribute("upNextEvents", upNextEvents);
-		model.addAttribute("gondolaSlides", slides);
-		model.addAttribute("slots", slots);
-		Game game = gameDao.findByTitle(requestHelper.currentGame(incomingRequest));
-		model.addAttribute("game", game);
+        String currentLocale = requestHelper.currentLocale(incomingRequest);
+        ModelMap model = new ModelMap("mostViewedEvents", eventRepository.findAll());
+		model.addAttribute("mostViewedChannels", channelRepository.findMostViewed());
+		model.addAttribute("upNextEvents", eventRepository.findUpNext());
+		model.addAttribute("gondolaSlides", gondolaRepository.findByLanguage(currentLocale));
+		model.addAttribute("slots", slotRepository.findByLanguage(currentLocale));
+        model.addAttribute("game", gameRepository.findByTitle(requestHelper.currentGame(incomingRequest)));
 		return new ModelAndView("home", model);
-	}
-
-	public void setChannelRepository(final PersistenceCapableChannel channelDao) {
-		this.channelDao = channelDao;
-	}
-
-	public void setEventRepository(final EventRepository eventDao) {
-		this.eventDao = eventDao;
-	}
-
-	public void setGameRepository(final PersistenceCapableGame gameDao) {
-		this.gameDao = gameDao;
-	}
-
-	public void setGondolaRepository(final PersistenceCapableGondolaSlide gondolaDao) {
-		this.gondolaDao = gondolaDao;
-	}
-
-	public void setSlotRepository(final PersistenceCapableConfigurableSlot slotDao) {
-		this.slotDao = slotDao;
-	}
-
-	public void setRequestHelper(final RequestUtils requestHelper) {
-		this.requestHelper = requestHelper;
 	}
 }

@@ -1,11 +1,12 @@
 package tv.esporx.domain.front;
 
-import static org.fest.assertions.Assertions.assertThat;
+import org.junit.Before;
+import org.junit.Test;
+import tv.esporx.domain.GondolaSlide;
 
 import java.util.Date;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class GondolaSlideTest {
 

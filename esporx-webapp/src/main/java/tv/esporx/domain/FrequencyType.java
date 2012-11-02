@@ -1,25 +1,19 @@
 package tv.esporx.domain;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.valueOf;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.valueOf;
 
 @Entity
 @Table(name = "frequency_types")
-@NamedQueries({
-        @NamedQuery(name = "FrequencyType.findAll", query = "FROM FrequencyType ORDER BY value ASC"),
-        @NamedQuery(name = "FrequencyType.findByValue", query = "FROM FrequencyType WHERE UPPER(value) = :value")
-})
 public class FrequencyType {
 
     public enum FrequencyTypeValues {

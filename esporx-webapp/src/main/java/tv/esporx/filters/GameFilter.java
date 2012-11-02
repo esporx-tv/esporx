@@ -1,24 +1,17 @@
 package tv.esporx.filters;
 
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 public class GameFilter implements Filter {
 
-	private static final String DEFAULT_GAME = "starcraft2";
 	public static final String GAME_PARAMETER_NAME = "currentGame";
+	private static final String DEFAULT_GAME = "starcraft2";
 
 	@Override
-	public void init(final FilterConfig filterConfig) throws ServletException {
-	}
+	public void init(final FilterConfig filterConfig) throws ServletException {}
 
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
@@ -32,7 +25,6 @@ public class GameFilter implements Filter {
 	}
 
 	@Override
-	public void destroy() {
-	}
+	public void destroy() {}
 
 }

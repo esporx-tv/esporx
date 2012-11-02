@@ -1,52 +1,38 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
-
-import tv.esporx.dao.PersistenceCapableChannel;
-import tv.esporx.dao.impl.ChannelRepository;
-import tv.esporx.dao.impl.ConfigurableSlotRepository;
-import tv.esporx.dao.impl.EventRepository;
-import tv.esporx.dao.impl.GameRepository;
-import tv.esporx.dao.impl.GondolaSlideRepository;
 import tv.esporx.framework.mvc.RequestUtils;
+import tv.esporx.repositories.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class HomeControllerTest {
 
-	private PersistenceCapableChannel channelDao;
-	private EventRepository eventDao;
-	private GameRepository gameDao;
-	private GondolaSlideRepository gondolaDao;
+	private ChannelRepository channelRepository;
+	private EventRepository eventRepository;
+	private GameRepository gameRepository;
+	private GondolaSlideRepository gondolaRepository;
 	private HomeController homeController;
-	private ConfigurableSlotRepository slotDao;
+	private ConfigurableSlotRepository slotRepository;
 	private RequestUtils requestUtils;
 
 	@Before
 	public void setup() {
-		homeController = new HomeController();
-		channelDao = mock(ChannelRepository.class);
-		homeController.setChannelRepository(channelDao);
-		eventDao = mock(EventRepository.class);
-		homeController.setEventRepository(eventDao);
-		gondolaDao = mock(GondolaSlideRepository.class);
-		homeController.setGondolaRepository(gondolaDao);
-		slotDao = mock(ConfigurableSlotRepository.class);
-		homeController.setSlotRepository(slotDao);
-		gameDao = mock(GameRepository.class);
-		homeController.setGameRepository(gameDao);
+		channelRepository = mock(ChannelRepository.class);
+		eventRepository = mock(EventRepository.class);
+		gondolaRepository = mock(GondolaSlideRepository.class);
+		slotRepository = mock(ConfigurableSlotRepository.class);
+		gameRepository = mock(GameRepository.class);
 		requestUtils = mock(RequestUtils.class);
-		givenFrenchIsTheCurrentLanguage();
-		homeController.setRequestHelper(requestUtils);
+        givenFrenchIsTheCurrentLanguage();
+        homeController = new HomeController(channelRepository, eventRepository, gameRepository, gondolaRepository, slotRepository, requestUtils);
 	}
 
 	@Test
@@ -58,7 +44,7 @@ public class HomeControllerTest {
 	@Test
 	public void when_accessing_index_page_then_configurable_slots_are_retrieved() {
 		homeController.index(mock(HttpServletRequest.class));
-		verify(slotDao).findByLanguage("fr");
+		verify(slotRepository).findByLanguage("fr");
 	}
 
 	@Test
@@ -88,19 +74,19 @@ public class HomeControllerTest {
 	@Test
 	public void when_accessing_page_then_gondola_slides_are_retrieved() {
 		homeController.index(mock(HttpServletRequest.class));
-		verify(gondolaDao).findByLanguage("fr");
+		verify(gondolaRepository).findByLanguage("fr");
 	}
 
 	@Test
 	public void when_accessing_page_then_most_viewed_channels_are_retrieved() {
 		homeController.index(null);
-		verify(channelDao).findMostViewed();
+		verify(channelRepository).findMostViewed();
 	}
 
 	@Test
 	public void when_accessing_page_then_most_viewed_events_are_retrieved() {
 		homeController.index(null);
-		verify(eventDao).findAll();
+		verify(eventRepository).findAll();
 	}
 
 	@Test
@@ -113,13 +99,13 @@ public class HomeControllerTest {
 	public void when_accessing_page_then_related_game_is_retrieved() {
 		givenTotoIsTheCurrentGame();
 		homeController.index(null);
-		verify(gameDao).findByTitle("toto");
+		verify(gameRepository).findByTitle("toto");
 	}
 
 	@Test
 	public void when_accessing_page_then_up_next_events_are_retrieved() {
 		homeController.index(null);
-		verify(eventDao).findUpNext();
+		verify(eventRepository).findUpNext();
 	}
 
 	@Test

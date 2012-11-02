@@ -1,13 +1,5 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.ModelAndView;
-
-import tv.esporx.dao.impl.EventRepository;
 import tv.esporx.domain.Event;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+import tv.esporx.repositories.EventRepository;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
@@ -40,44 +36,37 @@ public class EventControllerIT {
 	private BeanPropertyBindingResult bindingResult;
 	private Event event;
 	@Autowired
-	private EventController eventController;
-	private EventRepository eventDao;
-
-	@Autowired
 	private Validator validator;
-	private HttpServletRequest request;
+    @Autowired
+	private EventController eventController;
+	private EventRepository repository;
 
 	@Before
 	public void setup() {
-		eventDao = mock(EventRepository.class);
-		event = new Event();
-		event.setTitle("EventTitle");
-		event.setDescription("Hello woooooooorld");
-		when(eventDao.findById(anyLong())).thenReturn(event);
-		assertThat(eventController).isNotNull();
-		request = mock(HttpServletRequest.class);
-		eventController.setEventRepository(eventDao);
+        givenDummyEvent();
+        givenMockedEventRepository();
+        setField(eventController, "eventRepository", repository);
 	}
 
-	@Test
+    @Test
 	public void when_saving_is_successful_then_homepage_view_is_returned() {
 		givenBeanHasBeenValidated();
-		ModelAndView modelAndView = eventController.save(event, bindingResult, request, new ModelAndView() );
+		ModelAndView modelAndView = eventController.save(event, bindingResult, new ModelAndView() );
 		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
 	}
 
 	@Test
 	public void when_saving_is_unsuccessful_then_edition_page_is_returned() {
 		givenBeanHasBeenInvalidated();
-		ModelAndView modelAndView = eventController.save(event, bindingResult, request, new ModelAndView());
+		ModelAndView modelAndView = eventController.save(event, bindingResult, new ModelAndView());
 		assertThat(modelAndView.getViewName()).isEqualTo("event/form");
 	}
 
 	@Test
 	public void when_saving_then_is_persisted() {
 		givenBeanHasBeenValidated();
-		eventController.save(event, bindingResult, request, new ModelAndView());
-		verify(eventDao).saveOrUpdate(event);
+		eventController.save(event, bindingResult, new ModelAndView());
+		verify(repository).save(event);
 	}
 
 	private void givenBeanHasBeenInvalidated() {
@@ -91,4 +80,14 @@ public class EventControllerIT {
 		validator.validate(event, bindingResult);
 	}
 
+    private void givenMockedEventRepository() {
+        repository = mock(EventRepository.class);
+        when(repository.findOne(anyLong())).thenReturn(event);
+    }
+
+    private void givenDummyEvent() {
+        event = new Event();
+        event.setTitle("EventTitle");
+        event.setDescription("Hello woooooooorld");
+    }
 }

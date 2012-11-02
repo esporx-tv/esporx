@@ -1,16 +1,5 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
-
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +13,18 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import tv.esporx.dao.PersistenceCapableGondolaSlide;
-import tv.esporx.domain.front.GondolaSlide;
+import tv.esporx.domain.GondolaSlide;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+import tv.esporx.repositories.GondolaSlideRepository;
+
+import java.util.Date;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
@@ -39,7 +36,7 @@ public class GondolaSlideControllerMappingIT {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	@Autowired
-	private PersistenceCapableGondolaSlide slideDao;
+	private GondolaSlideRepository slideRepositoryDao;
 	private GondolaSlide slide;
 
 	@Before
@@ -96,8 +93,8 @@ public class GondolaSlideControllerMappingIT {
 		slide.setPrize("$10");
 		slide.setTagLine("Incredible!");
 		slide.setTitle("Oh yeah title");
-		assertThat(slideDao).isNotNull();
-		slideDao.saveOrUpdate(slide);
+		assertThat(slideRepositoryDao).isNotNull();
+		slideRepositoryDao.save(slide);
 		assertThat(slide.getId()).isGreaterThan(0L);
 	}
 }

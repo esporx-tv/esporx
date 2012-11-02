@@ -1,41 +1,23 @@
 package tv.esporx.domain;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import tv.esporx.framework.validation.CrossDateConstraints;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.Set;
+
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.unmodifiableSet;
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.Date;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-
-import tv.esporx.framework.validation.CrossDateConstraints;
-
 @Entity
 @Table(name = "occurrences")
 @CrossDateConstraints(nullableColumns = {"endDate"})
-@NamedQueries({ //
-	@NamedQuery(name = "Occurrence.findByEventId", 
-				query = "SELECT DISTINCT occ FROM Occurrence occ " + //
-						"LEFT JOIN FETCH occ.channels cha " + //
-						"WHERE occ.event.id = :eventId")
-})
 public class Occurrence {
     @Id
     @GeneratedValue(strategy = IDENTITY)

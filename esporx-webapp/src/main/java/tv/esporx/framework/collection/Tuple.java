@@ -1,12 +1,16 @@
 package tv.esporx.framework.collection;
 
-import static com.google.common.collect.Iterables.find;
+import com.google.common.base.Predicate;
 
 import java.util.List;
 
-import com.google.common.base.Predicate;
+import static com.google.common.collect.Iterables.find;
 
-
+/**
+ * Basic class representing a Tuple of values
+ * @param <L> Left type
+ * @param <R> Right type
+ */
 public class Tuple<L, R> {
 	
 	private L left;
@@ -25,7 +29,15 @@ public class Tuple<L, R> {
 		return left;
 	}
 
-	public static <L,R> R findFirstRight(final List<Tuple<L, R>> tuples, final L left) {
+    /**
+     * Find the first Right value matching the given Left value
+     * @param tuples
+     * @param left
+     * @param <L> Left type
+     * @param <R> Right type
+     * @return
+     */
+	public static <L, R> R findFirstRight(final List<Tuple<L, R>> tuples, final L left) {
 		return find(tuples, new Predicate<Tuple<L, R>>() {
 
 			@Override

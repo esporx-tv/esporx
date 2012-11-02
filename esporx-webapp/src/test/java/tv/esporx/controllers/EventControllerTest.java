@@ -1,41 +1,45 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.data.repository.support.DomainClassConverter;
+import org.springframework.web.servlet.ModelAndView;
+import tv.esporx.domain.Event;
+import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.repositories.EventRepository;
+import tv.esporx.repositories.OccurrenceRepository;
+import tv.esporx.services.EventService;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
-
-import tv.esporx.dao.impl.EventRepository;
-import tv.esporx.domain.Event;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.*;
 
 public class EventControllerTest {
 
 	private Event event;
 	private EventController eventController;
-	private EventRepository eventDao;
+	private EventRepository repository;
 	private HttpServletResponse response;
 
 	@Before
 	public void setup() {
 		response = mock(HttpServletResponse.class);
-		eventController = new EventController();
-		eventDao = mock(EventRepository.class);
-		event = new Event();
-		event.setTitle("EventTitle");
-		event.setDescription("description");
-		when(eventDao.findById(anyLong())).thenReturn(event);
-		eventController.setEventRepository(eventDao);
+        givenDummyEvent();
+        givenMockedEventRepository();
+		eventController = new EventController(
+            mock(OccurrenceRepository.class),
+            mock(ChannelRepository.class),
+            repository,
+            mock(EventService.class),
+            mock(DomainClassConverter.class)
+        );
 	}
-	
-	@Test
+
+
+    @Test
 	public void when_accessing_form_page_then_is_retrieved() {
 		ModelAndView modelAndView = eventController.creation();
 		assertThat(modelAndView.getViewName()).isEqualTo("event/form");
@@ -50,7 +54,7 @@ public class EventControllerTest {
 	@Test
 	public void when_accessing_index_page_then_is_retrieved() {
 		eventController.index(1L, response);
-		verify(eventDao).findById(anyLong());
+		verify(repository).findOne(anyLong());
 	}
 
 	@Test
@@ -59,4 +63,14 @@ public class EventControllerTest {
 		assertTrue(modelAndView.getModelMap().containsKey("event"));
 	}
 
+    private void givenMockedEventRepository() {
+        repository = mock(EventRepository.class);
+        when(repository.findOne(anyLong())).thenReturn(event);
+    }
+
+    private void givenDummyEvent() {
+        event = new Event();
+        event.setTitle("EventTitle");
+        event.setDescription("description");
+    }
 }

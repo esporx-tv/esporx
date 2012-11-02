@@ -1,14 +1,13 @@
 package tv.esporx.framework.validation;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
 @Target(FIELD)
@@ -17,8 +16,10 @@ import javax.validation.Payload;
 public @interface SupportedLanguage {
 	String message() default "{channel.submission.error.language}";
 
+    /* mandatory */
 	Class<?>[] groups() default {};
 
+    /* mandatory */
 	Class<? extends Payload>[] payload() default {};
 
 	String value() default "";

@@ -1,21 +1,15 @@
 package tv.esporx.domain;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "games")
-@NamedQuery(name = "Game.findByTitle", query = "FROM Game game WHERE UPPER(game.title) = :title")
 public class Game {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

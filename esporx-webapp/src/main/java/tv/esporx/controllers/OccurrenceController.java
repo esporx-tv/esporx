@@ -3,6 +3,7 @@ package tv.esporx.controllers;
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import tv.esporx.dao.PersistenceCapableChannel;
-import tv.esporx.dao.PersistenceCapableEvent;
-import tv.esporx.dao.PersistenceCapableFrequencyType;
-import tv.esporx.dao.PersistenceCapableOccurrence;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
+import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.repositories.EventRepository;
+import tv.esporx.repositories.FrequencyTypeRepository;
+import tv.esporx.repositories.OccurrenceRepository;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -36,30 +37,33 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 //FIXME: this controller totally sucks
 public class OccurrenceController {
 
-    @Autowired
-    private PersistenceCapableOccurrence occurrenceDao;
-    @Autowired
-    private PersistenceCapableEvent eventDao;
-    @Autowired
-    private PersistenceCapableChannel channelDao;
+    private final OccurrenceRepository repository;
+    private final EventRepository eventRepository;
+    private final FrequencyTypeRepository frequencyTypeRepository;
+    private final DomainClassConverter<?> entityConverter;
 
     @Autowired
-    private PersistenceCapableFrequencyType frequencyTypeDao;
+    public OccurrenceController(OccurrenceRepository repository,
+                                EventRepository eventRepository,
+                                FrequencyTypeRepository frequencyTypeRepository,
+                                DomainClassConverter<?> entityConverter) {
+
+        this.repository = repository;
+        this.eventRepository = eventRepository;
+        this.frequencyTypeRepository = frequencyTypeRepository;
+        this.entityConverter = entityConverter;
+    }
 
     /*@InitBinder
     public void customizeConversions(final WebDataBinder binder) {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        df.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
-
-        EntityConverter<FrequencyType> frequencyTypeEntityConverter = new EntityConverter<FrequencyType>(frequencyTypeDao, FrequencyType.class, "findByValue", String.class);
-        ((GenericConversionService) binder.getConversionService()).addConverter(frequencyTypeEntityConverter);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(getDefaultDateFormat(), true));
+        ((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
     }*/
 
     @RequestMapping(value = "/manage", method = GET)
     public ModelAndView showForm() {
         ModelMap model = new ModelMap();
-        model.addAttribute("events", eventDao.findAll());
+        model.addAttribute("events", eventRepository.findAll());
         return new ModelAndView("occurrence/form", model);
     }
 
@@ -88,17 +92,17 @@ public class OccurrenceController {
             );
             if (id != null) {
                 //beware this can become a security flaw if not everyone is allowed to modify occurrences
-                occurrence = occurrenceDao.findById(id);
+                occurrence = repository.findOne(id);
             } else {
                 occurrence = new Occurrence();
             }
-            Event event = eventDao.findById(Long.valueOf(rawEventId));
+            Event event = eventRepository.findOne(Long.valueOf(rawEventId));
             occurrence.setEvent(event);
             occurrence.setStartDate(startDate);
             occurrence.setEndDate(endDate);
-            FrequencyType frequencyType = frequencyTypeDao.findByValue(String.valueOf(rawOccurrence.get("data[frequencyType]")));
+            FrequencyType frequencyType = frequencyTypeRepository.findOne(String.valueOf(rawOccurrence.get("data[frequencyType]")));
             occurrence.setFrequencyType(frequencyType);
-            return occurrenceDao.saveOrUpdate(occurrence, channelIds).toString();
+            return repository.saveWithAssociations(occurrence, channelIds).toString();
 
         } catch (ParseException e) {
             return e.getMessage();
@@ -108,11 +112,11 @@ public class OccurrenceController {
     @RequestMapping(value = "/{id}", method = DELETE)
     @ResponseBody
     public String delete(@PathVariable long id) {
-    	Occurrence occurrence = occurrenceDao.findById(id);
+    	Occurrence occurrence = repository.findOne(id);
     	if (occurrence == null) {
     		return "KO";
     	}
-    	occurrenceDao.delete(occurrence);
+    	repository.delete(occurrence);
     	return "OK";
     	
     }

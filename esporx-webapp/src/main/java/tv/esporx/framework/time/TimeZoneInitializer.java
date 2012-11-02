@@ -1,9 +1,9 @@
 package tv.esporx.framework.time;
 
-import javax.annotation.PostConstruct;
-
 import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 @Component
 public class TimeZoneInitializer {

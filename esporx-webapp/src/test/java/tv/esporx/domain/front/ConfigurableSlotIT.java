@@ -1,13 +1,5 @@
 package tv.esporx.domain.front;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static tv.esporx.framework.StringGeneratorUtils.generateString;
-
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +8,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
+import tv.esporx.domain.ConfigurableSlot;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.Set;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static tv.esporx.framework.StringGeneratorUtils.generateString;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 

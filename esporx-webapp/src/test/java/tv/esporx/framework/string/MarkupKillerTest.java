@@ -1,10 +1,10 @@
 package tv.esporx.framework.string;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class MarkupKillerTest {
 

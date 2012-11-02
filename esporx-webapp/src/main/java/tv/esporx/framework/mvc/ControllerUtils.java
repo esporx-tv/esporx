@@ -1,10 +1,10 @@
 package tv.esporx.framework.mvc;
 
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.servlet.ModelAndView;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 public class ControllerUtils {
 

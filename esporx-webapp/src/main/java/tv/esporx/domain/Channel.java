@@ -1,41 +1,23 @@
 package tv.esporx.domain;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.base.Preconditions.checkArgument;
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
+import com.google.common.base.Objects;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.joda.time.DateTime;
-
 import tv.esporx.framework.validation.SupportedLanguage;
 
-import com.google.common.base.Objects;
+import javax.persistence.*;
+
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+import static com.google.common.base.Preconditions.checkArgument;
+import static javax.persistence.GenerationType.IDENTITY;
 
 
 @Entity
 @Table(name = "channels")
-@NamedQueries({ //
-/**/@NamedQuery(name = "Channel.findAll", query = "FROM Channel channel ORDER BY channel.title ASC"), //
-	@NamedQuery(name = "Channel.findAllGroupByProvider", query = "FROM Channel channel WHERE channel.videoProvider IS NOT NULL ORDER BY channel.videoProvider"), //
-    @NamedQuery(name = "Channel.findAllWithFetchedProviders", query = "FROM Channel channel LEFT JOIN FETCH channel.videoProvider ORDER BY channel.title ASC"), //
-	@NamedQuery(name = "Channel.findByTitle", query = "FROM Channel channel WHERE UPPER(channel.title) = :title"), //
-	@NamedQuery(name = "Channel.findMostViewed", query = "FROM Channel channel ORDER BY channel.viewerCount DESC"), //
-	@NamedQuery(name = "Channel.findTimeLine", query = "FROM Channel channel WHERE event IS NOT NULL") //
-})
 public class Channel {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

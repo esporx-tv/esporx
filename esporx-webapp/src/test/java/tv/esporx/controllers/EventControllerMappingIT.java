@@ -1,12 +1,5 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +13,16 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.test.web.server.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import tv.esporx.dao.PersistenceCapableEvent;
 import tv.esporx.domain.Event;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
+import tv.esporx.repositories.EventRepository;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.server.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
@@ -36,7 +35,7 @@ public class EventControllerMappingIT {
 	private MockMvc mvc;
 	private Event event;
 	@Autowired
-	private PersistenceCapableEvent eventRepository;
+	private EventRepository eventRepository;
 
 	@Before
 	public void setup() {
@@ -95,7 +94,7 @@ public class EventControllerMappingIT {
 		event.setDescription("Awesome description");
 		event.setHighlighted(false);
 		assertThat(eventRepository).isNotNull();
-		eventRepository.saveOrUpdate(event);
+		eventRepository.save(event);
 		assertThat(event.getId()).isGreaterThan(0L);
 	}
 

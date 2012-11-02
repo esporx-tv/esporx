@@ -1,10 +1,15 @@
 package tv.esporx.controllers;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
+import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.repositories.ConfigurableSlotRepository;
+import tv.esporx.repositories.EventRepository;
+import tv.esporx.repositories.GondolaSlideRepository;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class AdminControllerTest {
 
@@ -12,7 +17,12 @@ public class AdminControllerTest {
 
 	@Before
 	public void setup() {
-		adminController = new AdminController();
+		adminController = new AdminController(          //
+            mock(GondolaSlideRepository.class),         //
+            mock(ConfigurableSlotRepository.class),     //
+            mock(ChannelRepository.class),      //
+            mock(EventRepository.class)         //
+        );
 	}
 
 	@Test

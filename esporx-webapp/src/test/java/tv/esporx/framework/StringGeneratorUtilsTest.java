@@ -1,9 +1,9 @@
 package tv.esporx.framework;
 
+import org.junit.Test;
+
 import static org.fest.assertions.Assertions.assertThat;
 import static tv.esporx.framework.StringGeneratorUtils.generateString;
-
-import org.junit.Test;
 
 public class StringGeneratorUtilsTest {
 
