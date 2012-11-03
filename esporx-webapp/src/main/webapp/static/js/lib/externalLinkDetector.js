@@ -22,7 +22,7 @@ define(["jquery", "lib/domNavigationUtils"], function($, domNavigationUtils) {
         },
         
         isContainedInALink : function(element) {
-            return element.tagName.toUpperCase() === 'A' || domNavigationUtils.firstAncestorWithTag('a', element) !== undefined;
+            return element.nodeName.toUpperCase() === 'A' || domNavigationUtils.firstAncestorWithTag('a', element) !== undefined;
         },
         
         interceptRedirect : function(linkElement) {
