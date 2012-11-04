@@ -10,8 +10,6 @@ import tv.esporx.repositories.VideoProviderRepository;
 import java.util.Set;
 
 import static java.util.Collections.singleton;
-import static org.springframework.util.ReflectionUtils.findMethod;
-import static org.springframework.util.ReflectionUtils.invokeMethod;
 
 public class VideoProviderConverter implements GenericConverter {
     private static Logger LOGGER = LoggerFactory.getLogger(VideoProviderConverter.class);

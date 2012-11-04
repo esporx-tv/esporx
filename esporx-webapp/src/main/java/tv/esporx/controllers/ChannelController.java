@@ -12,9 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import tv.esporx.conversion.VideoProviderConverter;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.remote.JsonChannel;
-import tv.esporx.conversion.VideoProviderConverter;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.VideoProviderRepository;
 

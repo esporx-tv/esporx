@@ -6,7 +6,6 @@ import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.domain.Channel;
 import tv.esporx.repositories.ChannelRepository;
-import tv.esporx.repositories.EventRepository;
 import tv.esporx.repositories.VideoProviderRepository;
 
 import javax.servlet.http.HttpServletResponse;

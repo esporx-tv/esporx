@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
-import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.EventRepository;
 import tv.esporx.repositories.FrequencyTypeRepository;
 import tv.esporx.repositories.OccurrenceRepository;

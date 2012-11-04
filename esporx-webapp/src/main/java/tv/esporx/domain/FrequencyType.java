@@ -10,13 +10,13 @@ import javax.persistence.Table;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
-import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.valueOf;
+import static tv.esporx.domain.FrequencyType.FrequencyTypes.valueOf;
 
 @Entity
 @Table(name = "frequency_types")
 public class FrequencyType {
 
-    public enum FrequencyTypeValues {
+    public enum FrequencyTypes {
         ONCE, DAILY, WEEKLY, MONTHLY, YEARLY;
     }
 
@@ -25,7 +25,7 @@ public class FrequencyType {
     /*JPA*/
     public FrequencyType() {}
 
-    public FrequencyType(FrequencyTypeValues value) {
+    public FrequencyType(FrequencyTypes value) {
         this.value = value.name();
     }
 
@@ -35,10 +35,11 @@ public class FrequencyType {
         return value;
     }
 
-    public void setValue(String value) {
+    public FrequencyType setValue(String value) {
         //validates value against the enumerated/allowed values (ie throws exceptions if invalid value)
         valueOf(value.toUpperCase());
         this.value = value;
+        return this;
     }
 
     public boolean matches(DateTime start, DateTime end, DateTime testDate) {
@@ -77,8 +78,8 @@ public class FrequencyType {
 
 	@Override
 	public String toString() {
-		return toStringHelper(this) //
-				.add("value", value) //
+		return toStringHelper(this)         //
+				.add("value", value)        //
 				.toString();
 	}
 

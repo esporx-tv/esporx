@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static tv.esporx.domain.FrequencyType.FrequencyTypeValues.*;
+import static tv.esporx.domain.FrequencyType.FrequencyTypes.*;
 
 public class OccurrenceTest {
 

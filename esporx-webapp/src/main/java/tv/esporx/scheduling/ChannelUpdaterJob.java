@@ -16,12 +16,12 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import tv.esporx.collections.ByVideoProviderIndexer;
+import tv.esporx.collections.ByVideoProviderChannelIndexer;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.VideoProvider;
-import tv.esporx.scheduling.wrappers.TwitchTVChannelResponse;
 import tv.esporx.framework.collection.Tuple;
 import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.scheduling.wrappers.TwitchTVChannelResponse;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -170,6 +170,6 @@ public class ChannelUpdaterJob implements Job {
 
     private Map<VideoProvider, Collection<Channel>> fetchAllChannels(ChannelRepository channelRepository) {
         Iterable<Channel> channels = channelRepository.findAllGroupedByProvider();
-        return index(channels, new ByVideoProviderIndexer()).asMap();
+        return index(channels, new ByVideoProviderChannelIndexer()).asMap();
     }
 }

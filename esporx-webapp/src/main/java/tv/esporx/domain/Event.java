@@ -47,10 +47,14 @@ public class Event {
 		return new MarkupKiller().stripTags(description);
 	}
 
-	public void setDescription(final String description) {
-		checkArgument(description != null);
-		this.description = description;
-	}
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setDescription(final String description) {
+        checkArgument(description != null);
+        this.description = description;
+    }
 
 	public void setTitle(final String title) {
 		checkArgument(title != null);

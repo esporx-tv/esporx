@@ -3,9 +3,7 @@ package tv.esporx.controllers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,11 +18,7 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.GameRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
