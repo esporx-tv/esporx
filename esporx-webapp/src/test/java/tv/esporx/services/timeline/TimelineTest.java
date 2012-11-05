@@ -16,8 +16,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.ONCE;
-import static tv.esporx.framework.time.DateTimeUtils.toEndDay;
-import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
 
 public class TimelineTest {
 
@@ -40,10 +38,10 @@ public class TimelineTest {
 
         timeline.update(firstStartTime, secondStartTime);
 
-        assertThat(timeline.getAll()).isEmpty();
+        assertThat(timeline.allOccurrences()).isEmpty();
         verify(occurrenceRepository).findAllInRange(
-                toStartDay(firstStartTime).toDate(),
-                toEndDay(secondStartTime).toDate()
+            firstStartTime,
+            secondStartTime
         );
     }
 
@@ -52,14 +50,14 @@ public class TimelineTest {
         givenTwoOccurrencesOccurringOnceInTheSameTimeSlot();
         timeline.update(firstStartTime, secondStartTime);
 
-        assertThat(timeline.getAll()).hasSize(2);
-        assertThat(timeline.get(firstStartTime)).containsOnly(
+        assertThat(timeline.allOccurrences()).hasSize(2);
+        assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(
             occurrenceStartingOnlyOnceAt(firstStartTime),
             occurrenceStartingOnlyOnceAt(secondStartTime)
         );
         verify(occurrenceRepository).findAllInRange(
-            toStartDay(firstStartTime).toDate(),
-            toEndDay(secondStartTime).toDate()
+            firstStartTime,
+            secondStartTime
         );
     }
 
@@ -68,21 +66,21 @@ public class TimelineTest {
         givenTwoOccurrencesWithADailyOne();
         timeline.update(firstStartTime, secondStartTime.plusDays(1));
 
-        assertThat(timeline.getAll()).hasSize(3);
+        assertThat(timeline.allOccurrences()).hasSize(3);
 
-        assertThat(timeline.get(firstStartTime)).containsOnly(
+        assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(
             occurrenceStartingAt(firstStartTime, DAILY),
             occurrenceStartingOnlyOnceAt(secondStartTime)
         );
 
         DateTime nextDayOccurrenceStart = firstStartTime.plusDays(1);
-        assertThat(timeline.get(nextDayOccurrenceStart)).containsOnly(
+        assertThat(timeline.occurrencesAt(nextDayOccurrenceStart)).containsOnly(
             // "same" occurrence, one day later
             occurrenceStartingAt(nextDayOccurrenceStart, DAILY)
         );
         verify(occurrenceRepository).findAllInRange(
-                toStartDay(firstStartTime).toDate(),
-                toEndDay(secondStartTime.plusDays(1)).toDate()
+            firstStartTime,
+            secondStartTime.plusDays(1)
         );
     }
 
@@ -91,16 +89,16 @@ public class TimelineTest {
         givenTwoOccurrencesWithADailyOne();
         timeline.update(firstStartTime, firstStartTime.plusHours(23));
 
-        assertThat(timeline.getAll()).hasSize(2);
+        assertThat(timeline.allOccurrences()).hasSize(2);
 
-        assertThat(timeline.get(firstStartTime)).containsOnly(
-                occurrenceStartingAt(firstStartTime, DAILY),
-                occurrenceStartingOnlyOnceAt(secondStartTime)
+        assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(
+            occurrenceStartingAt(firstStartTime, DAILY),
+            occurrenceStartingOnlyOnceAt(secondStartTime)
         );
 
         verify(occurrenceRepository).findAllInRange(
-                toStartDay(firstStartTime).toDate(),
-                toEndDay(firstStartTime.plusHours(23)).toDate()
+            firstStartTime,
+            firstStartTime.plusHours(23)
         );
     }
 
@@ -112,8 +110,8 @@ public class TimelineTest {
         Occurrence firstOccurrence = occurrenceStartingOnlyOnceAt(firstStartTime);
         Occurrence secondOccurrence = occurrenceStartingOnlyOnceAt(secondStartTime);
         whenRepositoryInvokedWithTruncatedDates().thenReturn(newArrayList(
-                firstOccurrence,
-                secondOccurrence
+            firstOccurrence,
+            secondOccurrence
         ));
     }
 
@@ -122,12 +120,17 @@ public class TimelineTest {
         Occurrence secondOccurrence = occurrenceStartingOnlyOnceAt(secondStartTime);
 
         List<Occurrence> occurrences = newArrayList(            //
-                firstOccurrence,                                //
-                secondOccurrence                                //
+            firstOccurrence,                                    //
+            secondOccurrence                                    //
         );
         when(occurrenceRepository.findAllInRange(               //
-            toStartDay(firstStartTime).toDate(),                //
-            toEndDay(secondStartTime.plusDays(1)).toDate()      //
+            firstStartTime,                                     //
+            secondStartTime.plusDays(1)                         //
+        ))                                                      //
+        .thenReturn(occurrences);
+        when(occurrenceRepository.findAllInRange(               //
+            firstStartTime,                                     //
+            firstStartTime.plusHours(23)                        //
         ))                                                      //
         .thenReturn(occurrences);
     }
@@ -147,8 +150,8 @@ public class TimelineTest {
 
     protected OngoingStubbing<List<Occurrence>> whenRepositoryInvokedWithTruncatedDates() {
         return when(occurrenceRepository.findAllInRange(
-            toStartDay(firstStartTime).toDate(),
-            toEndDay(secondStartTime).toDate()
+            firstStartTime,
+            secondStartTime
         ));
     }
 }

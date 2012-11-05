@@ -10,8 +10,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.MONTHLY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.WEEKLY;
-import static tv.esporx.framework.time.DateTimeUtils.toEndDay;
-import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
 
 public class TimelineMonthlyTest extends TimelineTest {
     @Test
@@ -19,41 +17,41 @@ public class TimelineMonthlyTest extends TimelineTest {
         givenTwoOccurrencesWithAMonthlyOne();
         timeline.update(firstStartTime, secondStartTime.plusMonths(1));
 
-        assertThat(timeline.getAll()).hasSize(3);
+        assertThat(timeline.allOccurrences()).hasSize(3);
 
-        assertThat(timeline.get(firstStartTime)).containsOnly(          //
+        assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(          //
             occurrenceStartingAt(firstStartTime, MONTHLY),              //
             occurrenceStartingOnlyOnceAt(secondStartTime)               //
         );
         DateTime nextStart = firstStartTime.plusMonths(1);
-        assertThat(timeline.get(nextStart)).containsOnly(               //
+        assertThat(timeline.occurrencesAt(nextStart)).containsOnly(               //
             // "same" occurrence, one month later                       //
             occurrenceStartingAt(nextStart, MONTHLY)                    //
         );
         verify(occurrenceRepository).findAllInRange(                    //
-            toStartDay(firstStartTime).toDate(),                        //
-            toEndDay(secondStartTime.plusMonths(1)).toDate()            //
+            firstStartTime,                                             //
+            secondStartTime.plusMonths(1)                               //
         );
     }
 
     @Test
     public void should_have_one_slot_when_one_occurrence_repeats_OUT_OF_the_timeline_range() {
         givenTwoOccurrencesWithAMonthlyOne();
-        timeline.update(firstStartTime,                                 //
-                firstStartTime.plusWeeks(3).plusDays(6)                 //
-                        .plusHours(23));
+        timeline.update(
+                firstStartTime,                                         //
+                firstStartTime.plusWeeks(3).plusDays(6).plusHours(23)   //
+        );
 
-        assertThat(timeline.getAll()).hasSize(2);
+        assertThat(timeline.allOccurrences()).hasSize(2);
 
-        assertThat(timeline.get(firstStartTime)).containsOnly(          //
+        assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(          //
             occurrenceStartingAt(firstStartTime, MONTHLY),              //
             occurrenceStartingOnlyOnceAt(secondStartTime)               //
         );
 
         verify(occurrenceRepository).findAllInRange(                    //
-            toStartDay(firstStartTime).toDate(),                        //
-            toEndDay(firstStartTime.plusWeeks(3).plusDays(6)            //
-                    .plusHours(23)).toDate()                            //
+            firstStartTime,                                 //
+            firstStartTime.plusWeeks(3).plusDays(6).plusHours(23)                                     //
         );
     }
 
@@ -62,23 +60,23 @@ public class TimelineMonthlyTest extends TimelineTest {
         givenAWeeklyOccurrence();
         timeline.update(firstStartTime, secondStartTime.plusMonths(1));
 
-        assertThat(timeline.getAll()).hasSize(5);
+        assertThat(timeline.allOccurrences()).hasSize(5);
         DateTime nextStart = firstStartTime;
         for (int i = 0; i < 5; i++) {
-            assertThat(timeline.get(nextStart)).containsOnly(occurrenceStartingAt(nextStart, WEEKLY));
+            assertThat(timeline.occurrencesAt(nextStart)).containsOnly(occurrenceStartingAt(nextStart, WEEKLY));
             nextStart = nextStart.plusWeeks(1);
         }
         verify(occurrenceRepository).findAllInRange(                    //
-                toStartDay(firstStartTime).toDate(),                    //
-                toEndDay(secondStartTime.plusMonths(1)).toDate()        //
+                firstStartTime,                                         //
+                secondStartTime.plusMonths(1)                           //
         );
     }
 
     private void givenAWeeklyOccurrence() {
         Occurrence firstOccurrence = occurrenceStartingAt(firstStartTime, WEEKLY);
         when(occurrenceRepository.findAllInRange(                       //
-            toStartDay(firstStartTime).toDate(),                        //
-            toEndDay(secondStartTime.plusMonths(1)).toDate()             //
+            firstStartTime,                                             //
+            secondStartTime.plusMonths(1)                               //
         ))                                                              //
         .thenReturn(newArrayList(                                       //
             firstOccurrence                                             //
@@ -90,8 +88,8 @@ public class TimelineMonthlyTest extends TimelineTest {
         Occurrence secondOccurrence = occurrenceStartingOnlyOnceAt(secondStartTime);
 
         when(occurrenceRepository.findAllInRange(                       //
-            toStartDay(firstStartTime).toDate(),                        //
-            toEndDay(secondStartTime.plusMonths(1)).toDate()            //
+            firstStartTime,                                             //
+            secondStartTime.plusMonths(1)                               //
         ))                                                              //
         .thenReturn(newArrayList(                                       //
             firstOccurrence,                                            //
@@ -99,9 +97,9 @@ public class TimelineMonthlyTest extends TimelineTest {
         ));
 
         when(occurrenceRepository.findAllInRange(                       //
-            toStartDay(firstStartTime).toDate(),                        //
-            toEndDay(secondStartTime.plusWeeks(3)                       //
-                    .plusDays(6).plusHours(23)).toDate()                //
+            firstStartTime,                                             //
+            firstStartTime.plusWeeks(3)                                 //
+                    .plusDays(6).plusHours(23)                          //
         ))                                                              //
         .thenReturn(newArrayList(                                       //
             firstOccurrence,                                            //

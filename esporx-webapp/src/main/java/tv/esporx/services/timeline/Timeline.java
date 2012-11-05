@@ -23,7 +23,7 @@ import static tv.esporx.framework.time.DateTimeUtils.*;
 @Component
 public class Timeline {
 
-    public static final int MAX_MONTHS_AROUND_TODAY = 2;
+    private int maxMonthsAroundToday = 2;
 
     static class Contents {
         private ConcurrentMap<DateTime, Collection<Occurrence>> contents = new MapMaker().weakValues().makeMap();
@@ -68,17 +68,24 @@ public class Timeline {
         contents = new Contents();
     }
 
-    public void update(DateTime startDay, DateTime endDay) {
-        checkSanity(startDay, endDay);
-
-        contents.initialize(occurrenceRepository.findAllInRange(toStartDay(startDay), toEndDay(endDay)), startDay, endDay);
+    public void update(DateTime start, DateTime end) {
+        checkSanity(start, end);
+        contents.initialize(occurrenceRepository.findAllInRange(start, end), start, end);
     }
 
-    public Set<Occurrence> get(DateTime hour) {
+    public Set<Occurrence> occurrencesAt(DateTime hour) {
         return sorted(contents.asMap().get(toStartHour(hour)));
     }
 
-    Set<Occurrence> getAll() {
+    public int getMaxMonthsAroundToday() {
+        return maxMonthsAroundToday;
+    }
+
+    void setMaxMonthsAroundToday(int maxMonthsAroundToday) {
+        this.maxMonthsAroundToday = maxMonthsAroundToday;
+    }
+
+    Set<Occurrence> allOccurrences() {
         return sorted(concat(contents.asMap().values()));
     }
 
@@ -95,9 +102,13 @@ public class Timeline {
         checkRange(startDay, endDay);
     }
 
-    private static void checkRange(DateTime startDay, DateTime endDay) {
+    private void checkRange(DateTime startDay, DateTime endDay) {
         DateTime now = new DateTime();
-        checkArgument(diffInMonths(startDay, now) < MAX_MONTHS_AROUND_TODAY);
-        checkArgument(diffInMonths(endDay, now) < MAX_MONTHS_AROUND_TODAY);
+        checkArgument(diffInMonths(startDay, toStartDay(now)) < maxMonthsAroundToday,
+                "Start ["+startDay+"] should be at most " + maxMonthsAroundToday+
+                        " before today at 00:00:00:000000");
+        checkArgument(diffInMonths(endDay, toEndDay(now)) < maxMonthsAroundToday,
+                "End ["+startDay+"] should be at most " + maxMonthsAroundToday+
+                        " after today, 23:59:59:999999");
     }
 }

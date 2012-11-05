@@ -52,7 +52,7 @@ public class TimelineIT {
     @Test
     public void should_be_only_occurrence_happening_once() {
         timeline.update(timelineStart, timelineStart.plusYears(2));
-        Iterable<Occurrence> occurrencesHappeningOnce = filter(timeline.getAll(), new RepeatingOccurrencePredicate(FrequencyTypes.ONCE));
+        Iterable<Occurrence> occurrencesHappeningOnce = filter(timeline.allOccurrences(), new RepeatingOccurrencePredicate(FrequencyTypes.ONCE));
         assertThat(occurrencesHappeningOnce).hasSize(1);
         assertThat(occurrencesHappeningOnce.iterator().next()).isEqualTo(occurrence(timelineStart.withTime(22, 11, 0, 0), FrequencyTypes.ONCE));
     }

@@ -10,8 +10,6 @@ import tv.esporx.services.timeline.Timeline;
 
 import javax.annotation.PostConstruct;
 
-import static tv.esporx.services.timeline.Timeline.MAX_MONTHS_AROUND_TODAY;
-
 @Component
 @Lazy(false)
 public class TimelineService {
@@ -27,8 +25,9 @@ public class TimelineService {
     @PostConstruct
     public void buildCache() {
         DateTime midnightToday = new DateTime().withTimeAtStartOfDay();
-        DateTime start = midnightToday.minusMonths(MAX_MONTHS_AROUND_TODAY).plusDays(1);
-        DateTime end = midnightToday.plusMonths(MAX_MONTHS_AROUND_TODAY).minusMillis(1);
+        int maxOffset = this.timeline.getMaxMonthsAroundToday();
+        DateTime start = midnightToday.minusMonths(maxOffset).plusMillis(1);
+        DateTime end = midnightToday.plusMonths(maxOffset).minusMillis(1);
         LOGGER.info("Building timeline cache between ["+ start +"] and [" + end + "].");
         this.timeline.update(start, end);
     }

@@ -32,24 +32,46 @@ public class DateTimeUtils {
     }
 
 
+    /**
+     * Computes the absolute value of immediate inferior integer of number of days between two dates
+     */
     public static int diffInDays(DateTime start, DateTime end) {
-        return daysBetween(start, end).getDays();
+        return Math.abs(daysBetween(start, end).getDays());
     }
 
+
+    /**
+     * Computes the absolute value of immediate inferior integer of number of weeks between two dates
+     */
     public static int diffInWeeks(DateTime start, DateTime end) {
-        return weeksBetween(start, end).getWeeks();
+        return Math.abs(weeksBetween(start, end).getWeeks());
     }
 
+
+    /**
+     * Computes the absolute value of immediate inferior integer of number of months between two dates
+     */
     public static int diffInMonths(DateTime start, DateTime end) {
-        return monthsBetween(start, end).getMonths();
+        return Math.abs(monthsBetween(start, end).getMonths());
     }
 
+
+    /**
+     * Computes the absolute value of immediate inferior integer of number of years between two dates
+     */
     public static int diffInYears(DateTime start, DateTime end) {
-        return yearsBetween(start, end).getYears();
+        return Math.abs(yearsBetween(start, end).getYears());
     }
 
-    public static DateTime earliest(DateTime one, DateTime two) {
-        checkArgument((one != null) ^ (two != null));
+
+    /**
+     * Computes the earliest of the two end dates.
+     * Either of them can be null, but not both.
+     * In this case, the non-null date is considered the earliest end.
+     * @throws IllegalArgumentException if both dates are null
+     */
+    public static DateTime earliestEnd(DateTime one, DateTime two) {
+        checkMaxOneDateNull(one, two);
 
         DateTime first;
         if(one == null) {
@@ -62,5 +84,31 @@ public class DateTimeUtils {
             first = (one.isBefore(two)) ? one : two;
         }
         return first;
+    }
+
+    /**
+     * Computes the latest of the two beginning dates.
+     * Either of them can be null, but not both.
+     * In this case, the non-null date is considered the latest beginning.
+     * @throws IllegalArgumentException if both dates are null
+     */
+    public static DateTime latestBeginning(DateTime one, DateTime two) {
+        checkMaxOneDateNull(one, two);
+
+        DateTime last;
+        if(one == null) {
+            last = two;
+        }
+        else if(two == null) {
+            last = one;
+        }
+        else {
+            last = (one.isAfter(two)) ? one : two;
+        }
+        return last;
+    }
+
+    private static void checkMaxOneDateNull(DateTime one, DateTime two) {
+        checkArgument(!((one == null) && (two == null)), "Only one date can be null!");
     }
 }
