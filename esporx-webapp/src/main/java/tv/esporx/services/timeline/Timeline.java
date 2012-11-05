@@ -1,8 +1,8 @@
 package tv.esporx.services.timeline;
 
-import com.google.common.base.Predicate;
+import com.google.common.base.Function;
 import com.google.common.collect.MapMaker;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,16 +11,17 @@ import tv.esporx.collections.FilterCachedOccurrencesPredicate;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.OccurrenceRepository;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.ArrayListMultimap.create;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.filterKeys;
+import static com.google.common.collect.Maps.transformValues;
 import static com.google.common.collect.Multimaps.index;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.Occurrence.BY_ASCENDING_START_DATE;
@@ -91,6 +92,34 @@ public class Timeline {
         return sorted(contents.asMap().get(toStartHour(hour)));
     }
 
+    public Map<DateTime, Map<DateTime, Collection<Occurrence>>> occurrencesPerDaysAt(DateTime start, DateTime end) {
+        checkSanity(start, end);
+        DateTime current = start;
+
+        Map<DateTime, Multimap<DateTime, Occurrence>> result = new TreeMap<DateTime, Multimap<DateTime, Occurrence>>();
+        do {
+            DateTime startDayCurrent = toStartDay(current);
+
+            Multimap<DateTime, Occurrence> occurrenceMultimap = result.get(startDayCurrent);
+            Multimap<DateTime, Occurrence> multimap = hourOccurrencesAsMultimap(current);
+            if (occurrenceMultimap == null) {
+                result.put(startDayCurrent, multimap);
+            } else if (!multimap.isEmpty()) {
+                occurrenceMultimap.putAll(multimap);
+                result.put(startDayCurrent, occurrenceMultimap);
+            }
+
+            current = current.plusHours(1);
+        } while (current.isBefore(end.plusMillis(1)));
+
+        return transformValues(result, new Function<Multimap<DateTime, Occurrence>, Map<DateTime, Collection<Occurrence>>>() {
+            @Override
+            public Map<DateTime, Collection<Occurrence>> apply(Multimap<DateTime, Occurrence> occurrencesPerHour) {
+                return occurrencesPerHour.asMap();
+            }
+        });
+    }
+
     public int getMaxMonthsAroundToday() {
         return maxMonthsAroundToday;
     }
@@ -105,7 +134,9 @@ public class Timeline {
 
     private Set<Occurrence> sorted(Iterable<Occurrence> rawOccurrences) {
         Set<Occurrence> occurrences = new TreeSet<Occurrence>(BY_ASCENDING_START_DATE);
-        occurrences.addAll(newArrayList(rawOccurrences));
+        if(rawOccurrences != null) {
+            occurrences.addAll(newArrayList(rawOccurrences));
+        }
         return occurrences;
     }
 
@@ -120,9 +151,15 @@ public class Timeline {
         DateTime now = new DateTime();
         checkArgument(diffInMonths(startDay, toStartDay(now)) < maxMonthsAroundToday,
                 "Start ["+startDay+"] should be at most " + maxMonthsAroundToday+
-                        " before today at 00:00:00:000000");
+                        " months before today at 00:00:00:000000");
         checkArgument(diffInMonths(endDay, toEndDay(now)) < maxMonthsAroundToday,
                 "End ["+startDay+"] should be at most " + maxMonthsAroundToday+
-                        " after today, 23:59:59:999999");
+                        " months after today, 23:59:59:999999");
+    }
+
+    private Multimap<DateTime, Occurrence> hourOccurrencesAsMultimap(DateTime current) {
+        Multimap<DateTime, Occurrence> occurrencesPerHour = create();
+        occurrencesPerHour.putAll(toStartHour(current), occurrencesAt(current));
+        return occurrencesPerHour;
     }
 }

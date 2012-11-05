@@ -23,8 +23,8 @@ public class Occurrence {
 
     public static Comparator<Occurrence> BY_ASCENDING_START_DATE = new Comparator<Occurrence>() {
         @Override
-        public int compare(Occurrence occurrence, Occurrence occurrence1) {
-            return occurrence.getStartDate().compareTo(occurrence1.getStartDate());
+        public int compare(Occurrence occurrence, Occurrence other) {
+        return occurrence.getStartDate().compareTo(other.getStartDate());
         }
     };
 
