@@ -10,6 +10,7 @@ import tv.esporx.repositories.OccurrenceRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;

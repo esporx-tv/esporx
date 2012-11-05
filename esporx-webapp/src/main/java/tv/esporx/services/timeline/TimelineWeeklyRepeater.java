@@ -12,14 +12,14 @@ class TimelineWeeklyRepeater extends TimelineRepeater {
         super(contents, WEEKLY);
     }
 
-    protected final void addCopies(Occurrence occurrence, DateTime end, DateTime occurrenceStart) {
-        if (end.isAfter(occurrenceStart) && isReplicationNeeded(occurrenceStart, end)) {
+    protected final void addCopies(Occurrence occurrence, DateTime start, DateTime end) {
+        if (end.isAfter(start) && isReplicationNeeded(start, end)) {
             int weeksFromOriginal = 1;
             do {
-                occurrenceStart = occurrenceStart.plusWeeks(1);
+                start = start.plusWeeks(1);
                 this.contents.add(occurrence.copyPlusWeeks(weeksFromOriginal++));
             }
-            while(occurrenceStart.plusWeeks(1).isBefore(end));
+            while(start.plusWeeks(1).isBefore(end));
         }
     }
 

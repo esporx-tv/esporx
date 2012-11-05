@@ -13,14 +13,14 @@ class TimelineMonthlyRepeater extends TimelineRepeater {
         super(contents, MONTHLY);
     }
 
-    protected final void addCopies(Occurrence occurrence, DateTime end, DateTime occurrenceStart) {
-        if (end.isAfter(occurrenceStart) && isReplicationNeeded(occurrenceStart, end)) {
+    protected final void addCopies(Occurrence occurrence, DateTime start, DateTime end) {
+        if (end.isAfter(start) && isReplicationNeeded(start, end)) {
             int monthsFromOriginal = 1;
             do {
-                occurrenceStart = occurrenceStart.plusMonths(1);
+                start = start.plusMonths(1);
                 this.contents.add(occurrence.copyPlusMonths(monthsFromOriginal++));
             }
-            while(occurrenceStart.plusMonths(1).isBefore(end));
+            while(start.plusMonths(1).isBefore(end));
         }
     }
 

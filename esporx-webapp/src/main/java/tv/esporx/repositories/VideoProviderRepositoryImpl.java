@@ -14,7 +14,8 @@ import java.util.List;
  */
 class VideoProviderRepositoryImpl implements VideoProviderRepositoryCustom {
 
-    public static final String FIND_ALL = "FROM VideoProvider ORDER BY id ASC";
+    private static final String FIND_ALL = "FROM VideoProvider ORDER BY id ASC";
+
     @PersistenceContext
     private EntityManager entityManager;
 

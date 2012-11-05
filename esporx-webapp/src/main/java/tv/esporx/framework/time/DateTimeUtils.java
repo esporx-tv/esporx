@@ -1,9 +1,11 @@
 package tv.esporx.framework.time;
 
 import org.joda.time.DateTime;
+import org.joda.time.Hours;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.joda.time.Days.daysBetween;
+import static org.joda.time.Hours.hoursBetween;
 import static org.joda.time.Months.monthsBetween;
 import static org.joda.time.Weeks.weeksBetween;
 import static org.joda.time.Years.yearsBetween;
@@ -29,6 +31,14 @@ public class DateTimeUtils {
      */
     public static DateTime toStartHour(DateTime dateTime) {
         return dateTime.withTime(dateTime.getHourOfDay(), 0, 0, 0);
+    }
+
+
+    /**
+     * Computes the *signed* value of immediate inferior integer of number of days between two dates
+     */
+    public static int signedDiffInHours(DateTime start, DateTime end) {
+        return hoursBetween(start, end).getHours();
     }
 
 

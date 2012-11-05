@@ -1,12 +1,12 @@
 package tv.esporx.services.timeline;
 
-import com.google.common.base.Preconditions;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tv.esporx.collections.RepeatingOccurrencePredicate;
 import tv.esporx.domain.Occurrence;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Iterables.filter;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes;
 import static tv.esporx.framework.time.DateTimeUtils.earliestEnd;
@@ -24,7 +24,7 @@ abstract class TimelineRepeater {
     protected FrequencyTypes frequency;
 
     public TimelineRepeater(Timeline.Contents contents, FrequencyTypes frequency) {
-        Preconditions.checkArgument(frequency != FrequencyTypes.ONCE, "ONCE is not allowed");
+        checkArgument(frequency != FrequencyTypes.ONCE, "ONCE is not allowed");
         this.frequency = frequency;
         this.contents = contents;
     }
@@ -33,20 +33,20 @@ abstract class TimelineRepeater {
         if (isReplicationNeeded(timelineStart, timelineEnd)) {
             LOGGER.info("Replicating "+ frequency.name() +" occurrences");
             for (Occurrence occurrence : filter(occurrences, new RepeatingOccurrencePredicate(frequency))) {
-                replicateOccurrence(timelineStart, timelineEnd, occurrence);
+                replicateOccurrence(occurrence, timelineStart, timelineEnd);
             }
         }
     }
 
-    private void replicateOccurrence(DateTime timelineStart, DateTime timelineEnd, Occurrence occurrence) {
+    private void replicateOccurrence(Occurrence occurrence, DateTime timelineStart, DateTime timelineEnd) {
         DateTime end = earliestEnd(occurrence.getEndDateTime(), timelineEnd);
-        DateTime occurrenceStart = latestBeginning(timelineStart, occurrence.getStartDateTime());
-        if (end.isAfter(occurrenceStart) && isReplicationNeeded(occurrenceStart, end)) {
-            addCopies(occurrence, end, occurrenceStart);
+        DateTime start = latestBeginning(timelineStart, occurrence.getStartDateTime());
+        if (end.isAfter(start) && isReplicationNeeded(start, end)) {
+            addCopies(occurrence, start, end);
         }
     }
 
-    protected abstract void addCopies(Occurrence occurrence, DateTime end, DateTime occurrenceStart);
+    protected abstract void addCopies(Occurrence occurrence, DateTime start, DateTime end);
 
     protected abstract boolean isReplicationNeeded(DateTime start, DateTime end);
 }

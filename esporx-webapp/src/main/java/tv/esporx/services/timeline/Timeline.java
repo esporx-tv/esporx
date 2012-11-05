@@ -1,20 +1,26 @@
 package tv.esporx.services.timeline;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.MapMaker;
+import com.google.common.collect.Maps;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tv.esporx.collections.ByHourOccurrenceIndexer;
+import tv.esporx.collections.FilterCachedOccurrencesPredicate;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.OccurrenceRepository;
 
+import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.filterKeys;
 import static com.google.common.collect.Multimaps.index;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.Occurrence.BY_ASCENDING_START_DATE;
@@ -32,10 +38,18 @@ public class Timeline {
             return unmodifiableMap(contents);
         }
 
+        /**
+         *
+         */
         void initialize(List<Occurrence> occurrences, DateTime timelineStart, DateTime timelineEnd) {
             contents.clear();
             contents.putAll(index(occurrences, new ByHourOccurrenceIndexer()).asMap());
             replicateRepeatingOccurrences(occurrences, timelineStart, timelineEnd);
+            removePastOriginOccurrences(timelineStart);
+        }
+
+        private void removePastOriginOccurrences(final DateTime timelineStart) {
+            contents = new ConcurrentHashMap<DateTime, Collection<Occurrence>>(filterKeys(contents, new FilterCachedOccurrencesPredicate(timelineStart)));
         }
 
         void add(Occurrence occurrence) {

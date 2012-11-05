@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static tv.esporx.framework.time.DateTimeUtils.signedDiffInHours;
 
 public class DateTimeUtilsTest {
 
@@ -105,5 +106,22 @@ public class DateTimeUtilsTest {
     @Test(expected = IllegalArgumentException.class)
     public void should_latest_beginning_fail_if_both_dates_are_null() {
         DateTimeUtils.latestBeginning(null, null);
+    }
+
+    @Test
+    public void should_compute_signed_difference_in_hours() {
+        DateTime first = new DateTime().withTime(22, 22, 0, 0);
+        DateTime second = new DateTime().plusDays(1).withTime(0, 0, 0, 0);
+
+        assertThat(signedDiffInHours(first, second)).isEqualTo(1);
+        assertThat(signedDiffInHours(second, first)).isEqualTo(-1);
+    }
+
+    @Test
+    public void should_compute_zero_when_less_than_one_hour_of_offset() {
+        DateTime first = new DateTime().withTime(22, 22, 0, 0);
+        DateTime second = new DateTime().withTime(22, 0, 0, 0);
+
+        assertThat(signedDiffInHours(first, second)).isZero();
     }
 }

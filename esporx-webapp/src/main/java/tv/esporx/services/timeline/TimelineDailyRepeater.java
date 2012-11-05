@@ -12,13 +12,13 @@ class TimelineDailyRepeater extends TimelineRepeater {
         super(contents, DAILY);
     }
 
-    protected final void addCopies(Occurrence occurrence, DateTime end, DateTime occurrenceStart) {
+    protected final void addCopies(Occurrence occurrence, DateTime start, DateTime end) {
         int daysFromOriginal = 1;
         do {
-            occurrenceStart = occurrenceStart.plusDays(1);
+            start = start.plusDays(1);
             this.contents.add(occurrence.copyPlusDays(daysFromOriginal++));
         }
-        while(occurrenceStart.plusDays(1).isBefore(end));
+        while(start.plusDays(1).isBefore(end));
     }
 
     protected final boolean isReplicationNeeded(DateTime start, DateTime end) {

@@ -12,14 +12,14 @@ class TimelineYearlyRepeater extends TimelineRepeater {
         super(contents, YEARLY);
     }
 
-    protected final void addCopies(Occurrence occurrence, DateTime end, DateTime occurrenceStart) {
-        if (end.isAfter(occurrenceStart) && isReplicationNeeded(occurrenceStart, end)) {
+    protected final void addCopies(Occurrence occurrence, DateTime start, DateTime end) {
+        if (end.isAfter(start) && isReplicationNeeded(start, end)) {
             int plusYears = 1;
             do {
-                occurrenceStart = occurrenceStart.plusYears(1);
+                start = start.plusYears(1);
                 this.contents.add(occurrence.copyPlusYears(plusYears++));
             }
-            while(occurrenceStart.plusYears(1).isBefore(end));
+            while(start.plusYears(1).isBefore(end));
         }
     }
 

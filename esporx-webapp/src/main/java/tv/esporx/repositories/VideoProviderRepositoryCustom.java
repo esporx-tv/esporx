@@ -19,6 +19,5 @@ interface VideoProviderRepositoryCustom {
      */
     String getEmbeddedContents(String url);
 
-    @Transactional(readOnly = true)
     VideoProvider findByUrl(String url);
 }
