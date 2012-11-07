@@ -139,7 +139,7 @@ public class Timeline {
         this.maxMonthsAroundToday = maxMonthsAroundToday;
     }
 
-    public Set<Occurrence> allOccurrences() {
+    Set<Occurrence> allOccurrences() {
         return sorted(concat(contents.asMap().values()));
     }
 

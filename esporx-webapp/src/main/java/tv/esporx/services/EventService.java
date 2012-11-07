@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,13 +42,20 @@ public class EventService {
 		eventRepository.save(event);
 	}
     
+    /**
+     * A live event is an event whose at least one currently ongoing (=in the current hour slot) occurrence is on a live channel.
+	 * Hottest are those sorted by the maximum viewer count of all their channels (remember an event can be broadcast to several channels).
+     */
     public Set<Event> findMostViewed() {
 		return findMostViewed(DEFAULT_HOTTEST_EVENT_COUNT);
 	}
 	
+    /**
+     * @see EventService#findMostViewed()
+     */
     public Set<Event> findMostViewed(int limit) {
         Timeline cache = timeline.getTimeline();
-        Set<Occurrence> occurrences = cache.allOccurrences();
+        Set<Occurrence> occurrences = cache.occurrencesAt(new DateTime());
         Set<Occurrence> sortedOccurrences = new TreeSet<Occurrence>(new Comparator<Occurrence>() {
 			
         	@Override
