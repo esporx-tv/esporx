@@ -1,20 +1,5 @@
 package tv.esporx.services.timeline;
 
-import com.google.common.base.Function;
-import com.google.common.collect.MapMaker;
-import com.google.common.collect.Multimap;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import tv.esporx.collections.ByHourOccurrenceIndexer;
-import tv.esporx.collections.FilterCachedOccurrencesPredicate;
-import tv.esporx.domain.Occurrence;
-import tv.esporx.repositories.OccurrenceRepository;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ArrayListMultimap.create;
@@ -25,7 +10,33 @@ import static com.google.common.collect.Maps.transformValues;
 import static com.google.common.collect.Multimaps.index;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.Occurrence.BY_ASCENDING_START_DATE;
-import static tv.esporx.framework.time.DateTimeUtils.*;
+import static tv.esporx.framework.time.DateTimeUtils.diffInMonths;
+import static tv.esporx.framework.time.DateTimeUtils.toEndDay;
+import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
+import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import tv.esporx.collections.ByHourOccurrenceIndexer;
+import tv.esporx.collections.FilterCachedOccurrencesPredicate;
+import tv.esporx.domain.Occurrence;
+import tv.esporx.repositories.OccurrenceRepository;
+
+import com.google.common.base.Function;
+import com.google.common.collect.MapMaker;
+import com.google.common.collect.Multimap;
 
 @Component
 public class Timeline {
@@ -128,7 +139,7 @@ public class Timeline {
         this.maxMonthsAroundToday = maxMonthsAroundToday;
     }
 
-    Set<Occurrence> allOccurrences() {
+    public Set<Occurrence> allOccurrences() {
         return sorted(concat(contents.asMap().values()));
     }
 

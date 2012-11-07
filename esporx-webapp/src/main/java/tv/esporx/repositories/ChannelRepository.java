@@ -1,17 +1,18 @@
 package tv.esporx.repositories;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import tv.esporx.domain.Channel;
 
-import java.util.List;
+import tv.esporx.domain.Channel;
 
 public interface ChannelRepository extends CrudRepository<Channel,Long> {
 
 	Channel findByTitle(String title);
 
-    @Query( "FROM Channel channel " +                  //
+    @Query( "FROM Channel channel WHERE channel.viewerCount IS NOT NULL " +                  //
             "ORDER BY channel.viewerCount DESC")
     List<Channel> findMostViewed();
 

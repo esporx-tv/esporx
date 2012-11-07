@@ -1,16 +1,19 @@
 package tv.esporx.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import tv.esporx.domain.Occurrence;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
+import tv.esporx.domain.Occurrence;
 
 /**
  * This a custom hook to built-in JPA methods provided by SpringData.
@@ -30,11 +33,10 @@ class OccurrenceRepositoryImpl implements OccurrenceRepositoryCustom {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    @Transactional
     @Override
     public Long saveWithAssociations(final Occurrence occurrence, final List<Long> channelIds) {
-        entityManager.persist(occurrence);
         long occurrenceId = occurrence.getId();
-
         executeBatchChannelInsert(occurrenceId, channelIds);
         return occurrenceId;
     }

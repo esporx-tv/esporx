@@ -1,17 +1,25 @@
 package tv.esporx.controllers;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
-import tv.esporx.framework.mvc.RequestUtils;
-import tv.esporx.repositories.*;
-
-import javax.servlet.http.HttpServletRequest;
-
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.web.servlet.ModelAndView;
+
+import tv.esporx.framework.mvc.RequestUtils;
+import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.repositories.ConfigurableSlotRepository;
+import tv.esporx.repositories.EventRepository;
+import tv.esporx.repositories.GameRepository;
+import tv.esporx.repositories.GondolaSlideRepository;
+import tv.esporx.services.EventService;
 
 public class HomeControllerTest {
 
@@ -22,6 +30,7 @@ public class HomeControllerTest {
 	private HomeController homeController;
 	private ConfigurableSlotRepository slotRepository;
 	private RequestUtils requestUtils;
+	private EventService eventService;
 
 	@Before
 	public void setup() {
@@ -30,9 +39,10 @@ public class HomeControllerTest {
 		gondolaRepository = mock(GondolaSlideRepository.class);
 		slotRepository = mock(ConfigurableSlotRepository.class);
 		gameRepository = mock(GameRepository.class);
+		eventService = mock(EventService.class);
 		requestUtils = mock(RequestUtils.class);
         givenFrenchIsTheCurrentLanguage();
-        homeController = new HomeController(channelRepository, eventRepository, gameRepository, gondolaRepository, slotRepository, requestUtils);
+        homeController = new HomeController(channelRepository, eventRepository, gameRepository, gondolaRepository, slotRepository, requestUtils, eventService);
 	}
 
 	@Test

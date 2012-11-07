@@ -1,7 +1,20 @@
 package tv.esporx.controllers;
 
-import com.google.common.base.Function;
-import com.google.common.base.Splitter;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.transform;
+import static java.lang.Long.parseLong;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.stereotype.Controller;
@@ -11,25 +24,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import tv.esporx.domain.Event;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.EventRepository;
 import tv.esporx.repositories.FrequencyTypeRepository;
 import tv.esporx.repositories.OccurrenceRepository;
+import tv.esporx.services.OccurrenceService;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.transform;
-import static java.lang.Long.parseLong;
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import com.google.common.base.Function;
+import com.google.common.base.Splitter;
 
 @Controller
 @RequestMapping("/occurrence")
@@ -39,17 +44,20 @@ public class OccurrenceController {
     private final OccurrenceRepository repository;
     private final EventRepository eventRepository;
     private final FrequencyTypeRepository frequencyTypeRepository;
+    private final OccurrenceService occurrenceService;
     private final DomainClassConverter<?> entityConverter;
 
     @Autowired
     public OccurrenceController(OccurrenceRepository repository,
                                 EventRepository eventRepository,
                                 FrequencyTypeRepository frequencyTypeRepository,
+                                OccurrenceService occurrenceService,
                                 DomainClassConverter<?> entityConverter) {
 
         this.repository = repository;
         this.eventRepository = eventRepository;
         this.frequencyTypeRepository = frequencyTypeRepository;
+		this.occurrenceService = occurrenceService;
         this.entityConverter = entityConverter;
     }
 
@@ -101,7 +109,7 @@ public class OccurrenceController {
             occurrence.setEndDate(endDate);
             FrequencyType frequencyType = frequencyTypeRepository.findOne(String.valueOf(rawOccurrence.get("data[frequencyType]")));
             occurrence.setFrequencyType(frequencyType);
-            return repository.saveWithAssociations(occurrence, channelIds).toString();
+            return occurrenceService.saveWithAssociations(occurrence, channelIds).toString();
 
         } catch (ParseException e) {
             return e.getMessage();

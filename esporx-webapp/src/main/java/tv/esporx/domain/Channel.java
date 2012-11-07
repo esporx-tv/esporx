@@ -1,19 +1,30 @@
 package tv.esporx.domain;
 
-import com.google.common.base.Objects;
+import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.toStringHelper;
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.lang.Integer.valueOf;
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.Comparator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.joda.time.DateTime;
+
 import tv.esporx.framework.validation.SupportedLanguage;
 
-import javax.persistence.*;
-
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.toStringHelper;
-import static com.google.common.base.Preconditions.checkArgument;
-import static javax.persistence.GenerationType.IDENTITY;
+import com.google.common.base.Objects;
 
 
 @Entity
@@ -47,6 +58,14 @@ public class Channel {
     @ManyToOne(optional = false)
     @JoinColumn(name = "provider", nullable = false)
     private VideoProvider videoProvider;
+    
+    public static final Comparator<Channel> COMPARATOR_BY_MAX_VIEWER_COUNT = new Comparator<Channel>() {
+		@Override
+		public int compare(Channel channel1, Channel channel2) {
+			return valueOf(channel2.getViewerCount()).compareTo(valueOf(channel1.getViewerCount()));
+		}
+    	
+    };
 
 	public long getId() {
 		return id;

@@ -1,16 +1,22 @@
 package tv.esporx.controllers;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import tv.esporx.framework.mvc.RequestUtils;
-import tv.esporx.repositories.*;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.repositories.ConfigurableSlotRepository;
+import tv.esporx.repositories.EventRepository;
+import tv.esporx.repositories.GameRepository;
+import tv.esporx.repositories.GondolaSlideRepository;
+import tv.esporx.services.EventService;
 
 @Controller
 public class HomeController {
@@ -21,6 +27,7 @@ public class HomeController {
 	private final GondolaSlideRepository gondolaRepository;
 	private final ConfigurableSlotRepository slotRepository;
 	private final RequestUtils requestHelper;
+	private final EventService eventService;
 
     @Autowired
     public HomeController(ChannelRepository channelRepository,
@@ -28,7 +35,8 @@ public class HomeController {
                           GameRepository gameRepository,
                           GondolaSlideRepository gondolaRepository,
                           ConfigurableSlotRepository slotRepository,
-                          RequestUtils requestHelper) {
+                          RequestUtils requestHelper,
+                          EventService eventService) {
 
         this.channelRepository = channelRepository;
         this.eventRepository = eventRepository;
@@ -36,6 +44,7 @@ public class HomeController {
         this.gondolaRepository = gondolaRepository;
         this.slotRepository = slotRepository;
         this.requestHelper = requestHelper;
+        this.eventService = eventService;
     }
 
 
@@ -48,7 +57,8 @@ public class HomeController {
 	@RequestMapping(value="/home", method = GET)
 	public ModelAndView index(final HttpServletRequest incomingRequest) {
         String currentLocale = requestHelper.currentLocale(incomingRequest);
-        ModelMap model = new ModelMap("mostViewedEvents", eventRepository.findAll());
+        ModelMap model = new ModelMap("mostViewedEvents", eventService.findMostViewed());
+        
 		model.addAttribute("mostViewedChannels", channelRepository.findMostViewed());
 		model.addAttribute("upNextEvents", eventRepository.findUpNext());
 		model.addAttribute("gondolaSlides", gondolaRepository.findByLanguage(currentLocale));
@@ -56,4 +66,6 @@ public class HomeController {
         model.addAttribute("game", gameRepository.findByTitle(requestHelper.currentGame(incomingRequest)));
 		return new ModelAndView("home", model);
 	}
+	
+	
 }
