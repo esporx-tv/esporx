@@ -22,14 +22,6 @@
 						<blockquote>
                             <c:out escapeXml="false" value="${fn:substring(event.strippedDescription,0,140)} ..." />
                         </blockquote>
-						<c:if test="${not empty event.channels}">
-							<h3>Featured channels</h3>
-							<ul class="channels">
-								<c:forEach var="channel" items="${event.channels}" end="3">
-								    <li><a href="<c:url value="/channel/watch/${channel.id}" />"><c:out value="${channel.title}" /></a></li>
-								</c:forEach>
-							</ul>
-						</c:if>
 					</div>
 				</c:forEach>
 	        </div>
