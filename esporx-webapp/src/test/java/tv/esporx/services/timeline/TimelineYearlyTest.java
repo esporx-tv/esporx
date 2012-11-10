@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.MONTHLY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.YEARLY;
 
-public class TimelineYearlyTest extends TimelineBaseTest {
+public class TimelineYearlyTest extends TimelineTestBase {
 
     @Before
     public void setUp() {

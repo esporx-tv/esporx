@@ -1,24 +1,17 @@
 package tv.esporx.services.timeline;
 
 import org.joda.time.DateTime;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
-import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
-import tv.esporx.repositories.OccurrenceRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
-import static tv.esporx.domain.FrequencyType.FrequencyTypes.ONCE;
 
-public class TimelineTest extends TimelineBaseTest {
+public class TimelineTest extends TimelineTestBase {
 
     @Test
     public void should_be_empty_when_no_occurrences() {
@@ -40,8 +33,8 @@ public class TimelineTest extends TimelineBaseTest {
 
         assertThat(timeline.allOccurrences()).hasSize(2);
         assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(
-            occurrenceStartingOnlyOnceAt(firstStartTime),
-            occurrenceStartingOnlyOnceAt(secondStartTime)
+                occurrenceStartingOnlyOnceAt(firstStartTime),
+                occurrenceStartingOnlyOnceAt(secondStartTime)
         );
         verify(occurrenceRepository).findAllInRange(
             firstStartTime,
@@ -127,5 +120,50 @@ public class TimelineTest extends TimelineBaseTest {
                 firstStartTime,
                 firstStartTime.plusHours(23)
         );
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void should_throw_error_if_occurrence_to_delete_is_null() {
+        timeline.delete(null);
+    }
+
+    @Test
+    public void should_delete_single_occurrence() {
+        DateTime now = new DateTime();
+        timeline.getContents().initialize(
+            newArrayList(
+                occurrenceStartingOnlyOnceAt(now),
+                occurrenceStartingAt(now.plusSeconds(5), DAILY)
+            ),
+            now.minusHours(2), now.plusDays(2)
+        );
+        assertThat(timeline.allOccurrences()).hasSize(3);
+
+        timeline.delete(occurrenceStartingOnlyOnceAt(now));
+        assertThat(timeline.allOccurrences())                                   //
+            .hasSize(2)                                                         //
+            .containsOnly(                                                      //
+                occurrenceStartingAt(now.plusSeconds(5), DAILY),                //
+                occurrenceStartingAt(now.plusSeconds(5).plusDays(1), DAILY)     //
+        );
+    }
+
+    @Test
+    public void should_delete_repeated_occurrence() {
+        DateTime now = new DateTime();
+        timeline.getContents().initialize(                                      //
+                newArrayList(                                                   //
+                    occurrenceStartingOnlyOnceAt(now),                          //
+                    occurrenceStartingAt(now.plusSeconds(5), DAILY)             //
+                ),                                                              //
+                now.minusHours(2), now.plusDays(2)                              //
+        );
+        assertThat(timeline.allOccurrences()).hasSize(3);
+
+        timeline.delete(occurrenceStartingAt(now.plusSeconds(5), DAILY));
+        assertThat(timeline.allOccurrences()).hasSize(1);
+        assertThat(timeline.allOccurrences())                                   //
+            .hasSize(1)                                                         //
+            .containsOnly(occurrenceStartingOnlyOnceAt(now));
     }
 }

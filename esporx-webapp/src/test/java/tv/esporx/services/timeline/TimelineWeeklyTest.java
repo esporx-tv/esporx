@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.WEEKLY;
 
-public class TimelineWeeklyTest extends TimelineBaseTest {
+public class TimelineWeeklyTest extends TimelineTestBase {
     
     @Test
     public void should_have_two_slots_when_one_occurrence_repeats_within_the_timeline_range() {

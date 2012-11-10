@@ -123,7 +123,7 @@ public class OccurrenceController {
     	if (occurrence == null) {
     		return "KO";
     	}
-    	repository.delete(occurrence);
+        occurrenceService.delete(occurrence);
     	return "OK";
     	
     }

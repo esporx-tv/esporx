@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.ONCE;
 
-public class TimelineBaseTest {
+public class TimelineTestBase {
 
     protected OccurrenceRepository occurrenceRepository;
     protected Timeline timeline;

@@ -7,7 +7,7 @@ import tv.esporx.domain.Occurrence;
 
 import java.util.Set;
 
-public class LiveOccurrencesFilter implements Predicate<Occurrence> {
+public class IsLiveOccurrenceFilter implements Predicate<Occurrence> {
 
 	private static final int OFFLINE_CHANNEL_THRESHOLD = 50;
 

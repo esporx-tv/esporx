@@ -15,11 +15,19 @@ public class OccurrenceService {
 
 	@Autowired
 	private OccurrenceRepository occurrenceRepository;
-	
-	@Transactional
+    @Autowired
+    private TimelineService timeline;
+
+    @Transactional
 	public Long saveWithAssociations(final Occurrence occurrence, final List<Long> channelIds) {
 		occurrenceRepository.save(occurrence);
 		occurrenceRepository.saveWithAssociations(occurrence, channelIds);
 		return occurrence.getId();
 	}
+
+    @Transactional
+    public void delete(final Occurrence occurrence) {
+        occurrenceRepository.delete(occurrence);
+        timeline.getTimeline().delete(occurrence);
+    }
 }

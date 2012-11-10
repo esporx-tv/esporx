@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
 
-public class TimelineDailyTest extends TimelineBaseTest {
+public class TimelineDailyTest extends TimelineTestBase {
 
     @Test
     public void should_have_two_slots_when_one_occurrence_repeats_within_the_timeline_range() {

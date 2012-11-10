@@ -1,68 +1,56 @@
 package tv.esporx.services.timeline;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.MapMaker;
+import com.google.common.collect.Multimap;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import tv.esporx.collections.functions.ByHourOccurrenceIndexer;
+import tv.esporx.collections.predicates.IsAfterStartHourFilter;
+import tv.esporx.collections.predicates.IsDerivedOccurrenceFilter;
+import tv.esporx.domain.Occurrence;
+import tv.esporx.repositories.OccurrenceRepository;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.ArrayListMultimap.create;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.filterKeys;
 import static com.google.common.collect.Maps.transformValues;
+import static com.google.common.collect.Multimaps.filterValues;
 import static com.google.common.collect.Multimaps.index;
 import static com.google.common.collect.Sets.newLinkedHashSet;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.Occurrence.BY_ASCENDING_START_DATE;
 import static tv.esporx.framework.time.DateTimeUtils.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import tv.esporx.collections.functions.ByHourOccurrenceIndexer;
-import tv.esporx.collections.predicates.CachedOccurrencesFilter;
-import tv.esporx.domain.Occurrence;
-import tv.esporx.repositories.OccurrenceRepository;
-
-import com.google.common.base.Function;
-import com.google.common.collect.MapMaker;
-import com.google.common.collect.Multimap;
-
 @Component
 public class Timeline {
 
     private int maxMonthsAroundToday = 2;
 
+
     static class Contents {
+
         private ConcurrentMap<DateTime, Collection<Occurrence>> contents = new MapMaker().weakValues().makeMap();
 
-        Map<DateTime, Collection<Occurrence>> asMap() {
-            return unmodifiableMap(contents);
-        }
-
-        /**
-         *
-         */
         void initialize(List<Occurrence> occurrences, DateTime timelineStart, DateTime timelineEnd) {
-            contents.clear();
-            contents.putAll(index(occurrences, new ByHourOccurrenceIndexer()).asMap());
+            reinitializeCache(index(occurrences, new ByHourOccurrenceIndexer()).asMap());
             replicateRepeatingOccurrences(occurrences, timelineStart, timelineEnd);
             removePastOriginOccurrences(timelineStart);
         }
 
-        private void removePastOriginOccurrences(final DateTime timelineStart) {
-            contents = new ConcurrentHashMap<DateTime, Collection<Occurrence>>(filterKeys(contents, new CachedOccurrencesFilter(timelineStart)));
-        }
-
         void add(Occurrence occurrence) {
+            checkNotNull(occurrence);
             DateTime matchingSlotTime = toStartHour(new DateTime(occurrence.getStartDate()));
             Collection<Occurrence> occurrences = contents.get(matchingSlotTime);
             if (occurrences == null) {
@@ -70,6 +58,32 @@ public class Timeline {
                 contents.put(matchingSlotTime, occurrences);
             }
             occurrences.add(occurrence);
+        }
+
+        void delete(Occurrence occurrence) {
+            checkNotNull(occurrence);
+            reinitializeCache(filterValues(asMultimap(contents), not(new IsDerivedOccurrenceFilter(occurrence))).asMap());
+        }
+
+        private void reinitializeCache(Map<DateTime, Collection<Occurrence>> values) {
+            contents.clear();
+            contents.putAll(values);
+        }
+
+        Map<DateTime, Collection<Occurrence>> asMap() {
+            return unmodifiableMap(contents);
+        }
+
+        private Multimap<DateTime, Occurrence> asMultimap(Map<DateTime, Collection<Occurrence>> contents) {
+            Multimap<DateTime, Occurrence> unfiltered = ArrayListMultimap.create();
+            for(DateTime key : contents.keySet()) {
+                unfiltered.putAll(key, contents.get(key));
+            }
+            return unfiltered;
+        }
+
+        private void removePastOriginOccurrences(final DateTime timelineStart) {
+            contents = new ConcurrentHashMap<DateTime, Collection<Occurrence>>(filterKeys(contents, new IsAfterStartHourFilter(timelineStart)));
         }
 
         /**
@@ -81,6 +95,7 @@ public class Timeline {
             new TimelineMonthlyRepeater(this).replicate(occurrences, timelineStart, timelineEnd);
             new TimelineYearlyRepeater(this).replicate(occurrences, timelineStart, timelineEnd);
         }
+
     }
 
     private final OccurrenceRepository occurrenceRepository;
@@ -95,6 +110,10 @@ public class Timeline {
     public void update(DateTime start, DateTime end) {
         checkSanity(start, end);
         contents.initialize(occurrenceRepository.findAllInRange(start, end), start, end);
+    }
+
+    public void delete(Occurrence occurrence) {
+        contents.delete(occurrence);
     }
 
     public Set<Occurrence> occurrencesAt(DateTime hour) {
@@ -142,8 +161,12 @@ public class Timeline {
         this.maxMonthsAroundToday = maxMonthsAroundToday;
     }
 
-    Set<Occurrence> allOccurrences() {
+    /*test-only*/ Set<Occurrence> allOccurrences() {
         return sorted(concat(contents.asMap().values()));
+    }
+
+    /*test-only*/ Contents getContents() {
+        return contents;
     }
 
     private Set<Occurrence> iterate(DateTime start, DateTime end) {

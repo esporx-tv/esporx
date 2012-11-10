@@ -5,11 +5,11 @@ import org.joda.time.DateTime;
 
 import static tv.esporx.framework.time.DateTimeUtils.signedDiffInHours;
 
-public class CachedOccurrencesFilter implements Predicate<DateTime> {
+public class IsAfterStartHourFilter implements Predicate<DateTime> {
 
     private final DateTime timelineStart;
 
-    public CachedOccurrencesFilter(DateTime timelineStart) {
+    public IsAfterStartHourFilter(DateTime timelineStart) {
         this.timelineStart = timelineStart;
     }
 

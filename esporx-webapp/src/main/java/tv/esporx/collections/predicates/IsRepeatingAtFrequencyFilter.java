@@ -6,11 +6,11 @@ import tv.esporx.domain.Occurrence;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes;
 
 
-public class RepeatingOccurrence implements Predicate<Occurrence> {
+public class IsRepeatingAtFrequencyFilter implements Predicate<Occurrence> {
 
     private final FrequencyTypes frequency;
 
-    public RepeatingOccurrence(FrequencyTypes frequency) {
+    public IsRepeatingAtFrequencyFilter(FrequencyTypes frequency) {
         this.frequency = frequency;
     }
 
