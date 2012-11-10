@@ -459,7 +459,22 @@
 						</execution>
 					</executions>
 					<configuration>
-						<jsSrcDir>src/main/webapp/static/js</jsSrcDir>
+                        <jsSrcDir>src/main/webapp/static/js</jsSrcDir>
+                        <sourceIncludes>
+                            <include>ext/require-jquery.js</include>
+                            <include>lib/*.js</include>
+                            <include>pages/*.js</include>
+                        </sourceIncludes>
+                        <sourceExcludes>
+                            <exclude>ext/*.js</exclude>
+                            <exclude>ext/ckeditor/*.js</exclude>
+                            <exclude>ext/ckeditor/**/*.js</exclude>
+                        </sourceExcludes>
+                        <preloadSources>
+                            <source>ext/require-jquery.js</source>
+                            <source>lib/logger.js</source>
+                            <source>lib/sanityChecker.js</source>
+                        </preloadSources>
 					</configuration>
 				</plugin>
                 <plugin>
