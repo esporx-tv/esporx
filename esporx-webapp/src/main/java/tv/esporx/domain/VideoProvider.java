@@ -20,7 +20,7 @@ public class VideoProvider {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id")
-	private long id;
+	private Long id;
 	@NotBlank
 	@Column(name = "pattern", unique = true)
 	private String pattern;
@@ -54,9 +54,13 @@ public class VideoProvider {
         return template.replace("{ID}", channel);
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String extractChannelName(String url) {
         Pattern compiledPattern = compile(pattern);

@@ -13,6 +13,7 @@ import java.util.Set;
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Sets.newHashSet;
 import static java.util.Collections.unmodifiableSet;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -49,7 +50,7 @@ public class Occurrence {
     @JoinTable(name = "occurrences_channels", //
     	joinColumns = {@JoinColumn(name="occurrence_id", referencedColumnName="id")},
     	inverseJoinColumns = {@JoinColumn(name="channel_id", referencedColumnName="id")})
-    private Set<Channel> channels;
+    private Set<Channel> channels = newHashSet();
     @Transient
     private Occurrence origin = null;
 

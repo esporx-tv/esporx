@@ -1,5 +1,9 @@
 package tv.esporx.controllers;
 
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.destination.DataSourceDestination;
+import com.ninja_squad.dbsetup.operation.Operation;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +21,13 @@ import tv.esporx.domain.GondolaSlide;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
 import tv.esporx.repositories.GondolaSlideRepository;
 
-import java.util.Date;
+import javax.sql.DataSource;
 
-import static org.fest.assertions.Assertions.assertThat;
+import java.sql.Date;
+
+import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
+import static com.ninja_squad.dbsetup.Operations.insertInto;
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
@@ -27,7 +35,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.*
 import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
+@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "classpath:esporx-servlet.xml", "classpath:applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
@@ -38,11 +46,27 @@ public class GondolaSlideControllerMappingIT {
 	@Autowired
 	private GondolaSlideRepository slideRepositoryDao;
 	private GondolaSlide slide;
+    @Autowired
+    private DataSource dataSource;
+
+    private static final Operation DELETE_GONDOLA_SLIDES =
+            deleteAllFrom("gondola_slides");
+    public static final long ID = 1L;
+    private static final Operation INSERT_GONDOLA_SLIDE =
+            sequenceOf(
+                DELETE_GONDOLA_SLIDES,
+                insertInto("gondola_slides")
+                        .columns("id", "date", "description", "language", "link", "picture", "prize", "tag_line", "title")
+                        .values(ID, new Date(new DateTime().getMillis()), "blablablabla", "fr", "esporx.kr", "inyourface.gif", "$10", "Incredible", "Oh yeah title")
+                        .build()
+            );
 
 	@Before
 	public void setup() {
-		givenOneSlideHasBeenInserted();
-		mvc = webApplicationContextSetup(webApplicationContext).build();
+        DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), INSERT_GONDOLA_SLIDE);
+        dbSetup.launch();
+        slide = slideRepositoryDao.findOne(ID);
+        mvc = webApplicationContextSetup(webApplicationContext).build();
 	}
 
 	@Test
@@ -69,7 +93,7 @@ public class GondolaSlideControllerMappingIT {
 	}
 
 	@Test
-	public void when_requesting_valid_gondola_slide_edition_page_then_routed_to_not_found() throws Exception {
+	public void when_requesting_valid_gondola_slide_edition_page_then_routed_to_edition_page() throws Exception {
 		mvc.perform(get("/admin/slide/edit/" + slide.getId())).andExpect(status().isOk()).andExpect(view().name("slide/form"));
 	}
 
@@ -78,23 +102,4 @@ public class GondolaSlideControllerMappingIT {
 		mvc.perform(get("/admin/slide/edit/" + (slide.getId() + 1000L))).andExpect(status().isNotFound()).andExpect(view().name("slide/notFound"));
 	}
 
-	@Test
-	public void when_requesting_gondola_slides_then_routed_to_list_page() throws Exception {
-		mvc.perform(get("/admin/slide/browse")).andExpect(status().isOk()).andExpect(view().name("slide/list"));
-	}
-
-	private void givenOneSlideHasBeenInserted() {
-		slide = new GondolaSlide();
-		slide.setDate(new Date());
-		slide.setDescription("blablablabla");
-		slide.setLanguage("fr");
-		slide.setLink("http://www.esporx.kr");
-		slide.setPicture("inyourface.gif");
-		slide.setPrize("$10");
-		slide.setTagLine("Incredible!");
-		slide.setTitle("Oh yeah title");
-		assertThat(slideRepositoryDao).isNotNull();
-		slideRepositoryDao.save(slide);
-		assertThat(slide.getId()).isGreaterThan(0L);
-	}
 }

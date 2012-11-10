@@ -19,8 +19,8 @@ import static tv.esporx.framework.StringGeneratorUtils.generateString;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
-	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
+locations = { "classpath:esporx-servlet.xml",
+	"classpath:applicationContext.xml",
 "classpath:/META-INF/spring/testApplicationContext.xml"})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 public class GameIT {

@@ -8,7 +8,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
 
 public class TimelineTest extends TimelineTestBase {

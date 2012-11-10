@@ -25,8 +25,8 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
-	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
+locations = { "classpath:esporx-servlet.xml",
+	"classpath*:applicationContext.xml",
 "classpath:/META-INF/spring/testApplicationContext.xml"})
 @Transactional
 @TransactionConfiguration(defaultRollback = true)

@@ -1,9 +1,15 @@
 package tv.esporx.controllers;
 
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.destination.DataSourceDestination;
+import com.ninja_squad.dbsetup.operation.Operation;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,6 +24,13 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.GameRepository;
 
+import javax.sql.DataSource;
+
+import java.sql.Date;
+
+import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
+import static com.ninja_squad.dbsetup.Operations.insertInto;
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -26,13 +39,15 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, 
-locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", 
-	"file:src/main/webapp/WEB-INF/applicationContext.xml", 
+locations = { "classpath:esporx-servlet.xml",
+	"classpath:applicationContext.xml",
 "classpath:/META-INF/spring/testApplicationContext.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 public class ChannelControllerIT {
 
+    @Autowired
 	private GameRepository gameRepository;
+    @Autowired
 	private ChannelRepository channelRepository;
 	private BindingResult bindingResult;
 	private Channel channel;
@@ -41,47 +56,39 @@ public class ChannelControllerIT {
 	private Validator validator;
 	@Autowired
 	private ChannelController channelController;
+    @Autowired
+    private DataSource dataSource;
+
+    private static final long ID = 1L;
+    private static final Operation DELETE_CHANNELS =
+            deleteAllFrom("games", "channels", "video_providers");
+    private static final Operation INSERT_GAME =
+            insertInto("games")
+                    .columns("id", "description", "title")
+                    .values(ID, "starcraft2", "Birds are REALLY angry this time")
+                    .build();
+    private static final Operation INSERT_PROVIDER =
+            insertInto("video_providers")
+                    .columns("id", "pattern", "template", "endpoint")
+                    .values(ID, " ^(?:(?:https?)://)?(?:www.)?youtube.com/watch?(?:.*)v=([A-Za-z0-9._%-]{11}).*", "<iframe width=\"425\" height=\"349\" src=\"https://www.youtube.com/embed/{ID}\" frameborder=\"0\" allowfullscreen></iframe>", null)
+                    .build();
+    private static final Operation INSERT_CHANNELS =
+            sequenceOf(
+                    DELETE_CHANNELS,
+                    INSERT_GAME,
+                    INSERT_PROVIDER,
+                    insertInto("channels")
+                            .columns("id", "description", "language", "title", "video_url", "viewer_count", "provider", "viewer_count_timestamp")
+                            .values(ID, "tatata", "en", "TeH channel", "http://not.what.you.think.of", 1337, ID, new Date(new DateTime().getMillis()))
+                            .build()
+            );
 
 	@Before
 	public void setup() {
-		givenOneGame();
-		givenGameRepositoryIsMocked();
-		givenOneChannel();
-		givenChannelRepositoryIsMocked();
-	}
+        new DbSetup(new DataSourceDestination(dataSource), INSERT_CHANNELS).launch();
+        channel = channelRepository.findOne(ID);
+    }
 
-	private void givenOneChannel() {
-		channel = new Channel();
-		channel.setTitle("Channel Title");
-		channel.setVideoUrl("http://site.com");
-		channel.setDescription("Zuper description");
-		channel.setLanguage("fr");
-	}
-
-	private void givenOneGame() {
-		game = new Game();
-		game.setTitle("starcraft2");
-	}
-
-	private void givenChannelRepositoryIsMocked() {
-		channelRepository = mock(ChannelRepository.class);
-		when(channelRepository.findOne(anyLong())).thenReturn(channel);
-		assertThat(channelController).isNotNull();
-		setField(channelController, "channelRepository", channelRepository);
-	}
-
-	private void givenGameRepositoryIsMocked() {
-		gameRepository = mock(GameRepository.class);
-		when(gameRepository.findByTitle(anyString())).thenReturn(game);
-	}
-
-
-	@Test
-	public void when_saving_channel_then_channel_is_persisted() {
-		givenBeanHasBeenValidated();
-		channelController.save(channel, bindingResult, new ModelAndView());
-		verify(channelRepository).save(channel);
-	}
 
 	@Test
 	public void when_saving_is_successful_then_admin_homepageview_is_returned() {

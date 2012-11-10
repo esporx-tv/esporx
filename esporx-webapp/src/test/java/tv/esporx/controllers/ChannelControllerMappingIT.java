@@ -1,5 +1,9 @@
 package tv.esporx.controllers;
 
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.destination.DataSourceDestination;
+import com.ninja_squad.dbsetup.operation.Operation;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Game;
+import tv.esporx.domain.VideoProvider;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.GameRepository;
+import tv.esporx.repositories.VideoProviderRepository;
 
+import javax.sql.DataSource;
+import java.sql.Date;
+
+import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
+import static com.ninja_squad.dbsetup.Operations.insertInto;
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
@@ -27,7 +39,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.v
 import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
+@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "classpath:esporx-servlet.xml", "classpath*:applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
@@ -37,18 +49,49 @@ public class ChannelControllerMappingIT {
 	private ChannelRepository channelRepository;
 	@Autowired
 	private GameRepository gameRepository;
+    @Autowired
+    private VideoProviderRepository providerRepository;
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+    @Autowired
+    private DataSource dataSource;
 
 	private Channel channel;
 	private Game game;
 	private MockMvc mvc;
 
-	@Before
+    public static final long ID = 1L;
+    private static final Operation DELETE_CHANNELS =
+            deleteAllFrom("games", "channels", "video_providers");
+    private static final Operation INSERT_GAME =
+            insertInto("games")
+                    .columns("id", "description", "title")
+                    .values(ID, "starcraft2", "Birds are REALLY angry this time")
+                    .build();
+    private static final Operation INSERT_PROVIDER =
+            insertInto("video_providers")
+                .columns("id", "pattern", "template", "endpoint")
+                .values(ID, " ^(?:(?:https?)://)?(?:www.)?youtube.com/watch?(?:.*)v=([A-Za-z0-9._%-]{11}).*", "<iframe width=\"425\" height=\"349\" src=\"https://www.youtube.com/embed/{ID}\" frameborder=\"0\" allowfullscreen></iframe>", null)
+                .build();
+    private static final Operation INSERT_CHANNELS =
+            sequenceOf(
+                    DELETE_CHANNELS,
+                    INSERT_GAME,
+                    INSERT_PROVIDER,
+                    insertInto("channels")
+                            .columns("id", "description", "language", "title", "video_url", "viewer_count", "provider", "viewer_count_timestamp")
+                            .values(ID, "tatata", "en", "TeH channel", "http://not.what.you.think.of", 1337, ID, new Date(new DateTime().getMillis()))
+                            .build()
+            );
+    private VideoProvider videoProvider;
+
+    @Before
 	public void setup() {
-		givenAtLeastOneGameIsStored();
-		givenOneChannelIsInserted();
-		mvc = webApplicationContextSetup(webApplicationContext).build();
+        new DbSetup(new DataSourceDestination(dataSource), INSERT_CHANNELS).launch();
+        channel = channelRepository.findOne(ID);
+        game = gameRepository.findOne(ID);
+        videoProvider = providerRepository.findOne(ID);
+        mvc = webApplicationContextSetup(webApplicationContext).build();
 	}
 
 	@Test
@@ -98,7 +141,14 @@ public class ChannelControllerMappingIT {
 
 	@Test
 	public void when_saving_valid_channel_then_routed_to_home() throws Exception {
-		mvc.perform(post("/channel/new").sessionAttr("currentGame", game.getTitle()).param("title", "Channel Title").param("language", "fr").param("videoUrl", "http://www.site.com").param("broadcastDate", "28/03/2015 12:13").param("description", "You forgot description for channels").param("relatedGame.id", "" + game.getId())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/channel/new").sessionAttr("currentGame", game.getTitle())
+                .param("description", "You forgot description for channels")
+                .param("language", "fr")
+                .param("title", "Channel Title")
+                .param("videoUrl", "http://www.site.com")
+                .param("viewerCount", "131325")
+                .param("videoProvider.id", videoProvider.getId().toString()))
+                .andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
 	}
 
 	@Test
@@ -111,23 +161,4 @@ public class ChannelControllerMappingIT {
 		mvc.perform(post("/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle()).param("title", "Channel Title Bis").param("videoUrl", "http://www.site.com").param("broadcastDate", "28/03/2015 12:13").param("description", "Same here")).andExpect(view().name("redirect:/admin/home"));
 	}
 
-	private void givenAtLeastOneGameIsStored() {
-		game = new Game();
-		game.setTitle("starcraft2");
-		game.setDescription("Birds are REALLY angry this time");
-		gameRepository.save(game);
-		assertThat(game.getId()).isGreaterThan(0L);
-	}
-
-	private void givenOneChannelIsInserted() {
-		channel = new Channel();
-		channel.setTitle("TeH channel");
-		channel.setVideoUrl("http://not.what.you.think.of");
-		channel.setDescription("tatatatata");
-		channel.setViewerCount(2000000);
-		channel.setLanguage("fr");
-		assertThat(channelRepository).isNotNull();
-		channelRepository.save(channel);
-		assertThat(channel.getId()).isGreaterThan(0L);
-	}
 }

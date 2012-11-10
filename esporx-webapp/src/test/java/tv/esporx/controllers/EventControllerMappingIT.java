@@ -1,5 +1,9 @@
 package tv.esporx.controllers;
 
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.destination.DataSourceDestination;
+import com.ninja_squad.dbsetup.operation.Operation;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +21,11 @@ import tv.esporx.domain.Event;
 import tv.esporx.framework.TestGenericWebXmlContextLoader;
 import tv.esporx.repositories.EventRepository;
 
+import javax.sql.DataSource;
+
+import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
+import static com.ninja_squad.dbsetup.Operations.insertInto;
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
@@ -25,7 +34,7 @@ import static org.springframework.test.web.server.result.MockMvcResultMatchers.v
 import static org.springframework.test.web.server.setup.MockMvcBuilders.webApplicationContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
+@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "classpath:esporx-servlet.xml", "classpath:applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
@@ -36,10 +45,26 @@ public class EventControllerMappingIT {
 	private Event event;
 	@Autowired
 	private EventRepository eventRepository;
+    @Autowired
+    private DataSource dataSource;
+
+    private static final long ID = 1L;
+    private static final Operation DELETE_EVENTS =
+            deleteAllFrom("events");
+    private static final Operation INSERT_EVENT =
+            sequenceOf(
+                DELETE_EVENTS,
+                insertInto("events")
+                        .columns("id", "description", "title", "highlight")
+                        .values(ID, "blablablabla", "Oh yeah title", false)
+                     .build()
+            );
 
 	@Before
 	public void setup() {
-		givenOneEventIsInserted();
+        DbSetup dbSetup = new DbSetup(new DataSourceDestination(dataSource), INSERT_EVENT);
+        dbSetup.launch();
+        event = eventRepository.findOne(ID);
 		mvc = webApplicationContextSetup(webApplicationContext).build();
 	}
 
@@ -95,7 +120,6 @@ public class EventControllerMappingIT {
 		event.setHighlighted(false);
 		assertThat(eventRepository).isNotNull();
 		eventRepository.save(event);
-		assertThat(event.getId()).isGreaterThan(0L);
 	}
 
 }

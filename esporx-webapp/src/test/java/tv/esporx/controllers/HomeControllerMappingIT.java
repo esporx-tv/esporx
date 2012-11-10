@@ -25,7 +25,7 @@ import static org.springframework.test.web.server.setup.MockMvcBuilders.webAppli
 import static tv.esporx.filters.GameFilter.GAME_PARAMETER_NAME;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "file:src/main/webapp/WEB-INF/esporx-servlet.xml", "file:src/main/webapp/WEB-INF/applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
+@ContextConfiguration(loader = TestGenericWebXmlContextLoader.class, locations = { "classpath:esporx-servlet.xml", "classpath*:applicationContext.xml", "classpath:/META-INF/spring/testApplicationContext.xml" })
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
@@ -36,6 +36,8 @@ public class HomeControllerMappingIT {
 	@Autowired
 	private GameRepository gameRepository;
 	private Game game;
+
+
 
 	@Before
 	public void setup() {
@@ -53,6 +55,5 @@ public class HomeControllerMappingIT {
 		game.setTitle("Angry nerds");
 		game.setDescription("Birds are REALLY angry this time");
 		gameRepository.save(game);
-		assertThat(game.getId()).isGreaterThan(0L);
 	}
 }
