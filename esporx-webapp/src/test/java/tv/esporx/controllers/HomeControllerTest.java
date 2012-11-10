@@ -96,7 +96,7 @@ public class HomeControllerTest {
 	@Test
 	public void when_accessing_page_then_most_viewed_events_are_retrieved() {
 		homeController.index(null);
-		verify(eventRepository).findAll();
+		verify(eventService).findMostViewed();
 	}
 
 	@Test
