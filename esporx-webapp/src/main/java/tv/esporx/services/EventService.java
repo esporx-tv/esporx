@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import tv.esporx.collections.LiveOccurrencesFilterPredicate;
+import tv.esporx.collections.comparators.OccurrenceByMaxViewerComparator;
+import tv.esporx.collections.predicates.LiveOccurrencesFilter;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.Occurrence;
+import tv.esporx.framework.time.DateTimeUtils;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.EventRepository;
 import tv.esporx.services.timeline.Timeline;
@@ -43,7 +45,7 @@ public class EventService {
 	}
     
     /**
-     * A live event is an event whose at least one currently ongoing (=in the current hour slot) occurrence is on a live channel.
+     * A live event is an event whose at least one currently ongoing (=in the current day slot) occurrence is on a live channel.
 	 * Hottest are those sorted by the maximum viewer count of all their channels (remember an event can be broadcast to several channels).
      */
     public Set<Event> findMostViewed() {
@@ -53,38 +55,35 @@ public class EventService {
     /**
      * @see EventService#findMostViewed()
      */
-    public Set<Event> findMostViewed(int limit) {
-        Timeline cache = timeline.getTimeline();
-        Set<Occurrence> occurrences = cache.occurrencesAt(new DateTime());
-        Set<Occurrence> sortedOccurrences = new TreeSet<Occurrence>(new Comparator<Occurrence>() {
-			
-        	@Override
-			public int compare(Occurrence occ1, Occurrence occ2) {
-				Integer firstMaxViewerCount = getMaxViewerCount(occ1);
-				Integer secondMaxViewerCount = getMaxViewerCount(occ2);
-				return firstMaxViewerCount.compareTo(secondMaxViewerCount);
-			}
+    public Set<Event> findMostViewed(int nFirst) {
+        Set<Occurrence> filteredOccurrences = filter(           //
+            sortByViewerCountDesc(occurrencesTillEndOfDay()),   //
+            new LiveOccurrencesFilter()                         //
+        );
+        return transformToEvents(filteredOccurrences, nFirst);
+	}
 
-			private Integer getMaxViewerCount(Occurrence occ1) {
-				Set<Channel> sortedChannels = newTreeSet(Channel.COMPARATOR_BY_MAX_VIEWER_COUNT);
-				sortedChannels.addAll(occ1.getChannels()); 
-				return Integer.valueOf(sortedChannels.iterator().next().getViewerCount());
-			}
-        	
-        });
+    private Set<Occurrence> occurrencesTillEndOfDay() {
+        DateTime start = new DateTime();
+        DateTime end = DateTimeUtils.toEndDay(start);
+        return timeline.getTimeline().occurrencesBetween(start, end);
+    }
+
+    private Set<Occurrence> sortByViewerCountDesc(Set<Occurrence> occurrences) {
+        Set<Occurrence> sortedOccurrences = new TreeSet<Occurrence>(new OccurrenceByMaxViewerComparator());
         sortedOccurrences.addAll(occurrences);
-        Set<Occurrence> filteredOccurrences = filter(sortedOccurrences, new LiveOccurrencesFilterPredicate());
-        
-        LinkedHashSet<Event> sortedLiveEvents = new LinkedHashSet<Event>();
+        return sortedOccurrences;
+    }
 
+    private Set<Event> transformToEvents(Set<Occurrence> filteredOccurrences, int limit) {
+        LinkedHashSet<Event> sortedLiveEvents = new LinkedHashSet<Event>();
         int loop = 0;
         for (Occurrence occurrence : filteredOccurrences) {
-        	if(loop++ > limit) {
-        		break;
-        	}
-        	sortedLiveEvents.add(occurrence.getEvent());
+            if(loop++ > limit) {
+                break;
+            }
+            sortedLiveEvents.add(occurrence.getEvent());
         }
-        
         return sortedLiveEvents;
-	}
+    }
 }

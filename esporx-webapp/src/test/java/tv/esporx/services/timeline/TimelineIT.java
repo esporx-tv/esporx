@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import tv.esporx.collections.RepeatingOccurrencePredicate;
+import tv.esporx.collections.predicates.RepeatingOccurrence;
 import tv.esporx.domain.Event;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
@@ -52,7 +52,7 @@ public class TimelineIT {
     @Test
     public void should_be_only_occurrence_happening_once() {
         timeline.update(timelineStart, timelineStart.plusYears(2));
-        Iterable<Occurrence> occurrencesHappeningOnce = filter(timeline.allOccurrences(), new RepeatingOccurrencePredicate(FrequencyTypes.ONCE));
+        Iterable<Occurrence> occurrencesHappeningOnce = filter(timeline.allOccurrences(), new RepeatingOccurrence(FrequencyTypes.ONCE));
         assertThat(occurrencesHappeningOnce).hasSize(1);
         assertThat(occurrencesHappeningOnce.iterator().next()).isEqualTo(occurrence(timelineStart.withTime(22, 11, 0, 0), FrequencyTypes.ONCE));
     }

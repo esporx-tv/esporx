@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import tv.esporx.collections.ByVideoProviderChannelIndexer;
+import tv.esporx.collections.functions.ByVideoProviderChannelIndexer;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.VideoProvider;
 import tv.esporx.framework.collection.Tuple;

@@ -59,14 +59,6 @@ public class Channel {
     @JoinColumn(name = "provider", nullable = false)
     private VideoProvider videoProvider;
     
-    public static final Comparator<Channel> COMPARATOR_BY_MAX_VIEWER_COUNT = new Comparator<Channel>() {
-		@Override
-		public int compare(Channel channel1, Channel channel2) {
-			return valueOf(channel2.getViewerCount()).compareTo(valueOf(channel1.getViewerCount()));
-		}
-    	
-    };
-
 	public long getId() {
 		return id;
 	}

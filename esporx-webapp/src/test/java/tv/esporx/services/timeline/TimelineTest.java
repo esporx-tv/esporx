@@ -18,20 +18,7 @@ import static org.mockito.Mockito.*;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.ONCE;
 
-public class TimelineTest {
-
-    protected OccurrenceRepository occurrenceRepository;
-    protected Timeline timeline;
-    protected DateTime firstStartTime;
-    protected DateTime secondStartTime;
-
-    @Before
-    public void setUp() {
-        occurrenceRepository = mock(OccurrenceRepository.class);
-        timeline = new Timeline(occurrenceRepository);
-        firstStartTime = new DateTime().withTime(22, 22, 0, 0);
-        secondStartTime = firstStartTime.plusMinutes(20);
-    }
+public class TimelineTest extends TimelineBaseTest {
 
     @Test
     public void should_be_empty_when_no_occurrences() {
@@ -103,56 +90,42 @@ public class TimelineTest {
         );
     }
 
-    protected void givenNoFoundOccurrences() {
-        whenRepositoryInvokedWithTruncatedDates().thenReturn(new ArrayList<Occurrence>());
+    @Test(expected = NullPointerException.class)
+    public void should_throw_error_if_null_start() {
+        timeline.occurrencesBetween(null, new DateTime());
     }
 
-    protected void givenTwoOccurrencesOccurringOnceInTheSameTimeSlot() {
-        Occurrence firstOccurrence = occurrenceStartingOnlyOnceAt(firstStartTime);
-        Occurrence secondOccurrence = occurrenceStartingOnlyOnceAt(secondStartTime);
-        whenRepositoryInvokedWithTruncatedDates().thenReturn(newArrayList(
-            firstOccurrence,
-            secondOccurrence
-        ));
+    @Test(expected = NullPointerException.class)
+    public void should_throw_error_if_null_end() {
+        timeline.occurrencesBetween(null, new DateTime());
     }
 
-    protected void givenTwoOccurrencesWithADailyOne() {
-        Occurrence firstOccurrence = occurrenceStartingAt(firstStartTime, DAILY);
-        Occurrence secondOccurrence = occurrenceStartingOnlyOnceAt(secondStartTime);
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_error_if_start_after_end() {
+        timeline.occurrencesBetween(new DateTime().plusDays(2), new DateTime());
+    }
 
-        List<Occurrence> occurrences = newArrayList(            //
-            firstOccurrence,                                    //
-            secondOccurrence                                    //
+    @Test(expected = IllegalArgumentException.class)
+    public void should_throw_error_if_interval_is_too_broad() {
+        timeline.occurrencesBetween(new DateTime().minusMonths(3), new DateTime());
+    }
+
+    @Test
+    public void should_find_matching_occurrences_in_interval() {
+        givenTwoOccurrencesWithADailyOne();
+        timeline.update(firstStartTime, firstStartTime.plusHours(23));
+
+        Set<Occurrence> occurrences = timeline.occurrencesBetween(firstStartTime.minusHours(1), firstStartTime.plusHours(2));
+
+        assertThat(occurrences).hasSize(2);
+        assertThat(occurrences).containsOnly(
+            occurrenceStartingAt(firstStartTime, DAILY),
+            occurrenceStartingOnlyOnceAt(secondStartTime)
         );
-        when(occurrenceRepository.findAllInRange(               //
-            firstStartTime,                                     //
-            secondStartTime.plusDays(1)                         //
-        ))                                                      //
-        .thenReturn(occurrences);
-        when(occurrenceRepository.findAllInRange(               //
-            firstStartTime,                                     //
-            firstStartTime.plusHours(23)                        //
-        ))                                                      //
-        .thenReturn(occurrences);
-    }
 
-    protected Occurrence occurrenceStartingAt(DateTime start, FrequencyType.FrequencyTypes value) {
-        Occurrence firstOccurrence = occurrenceStartingOnlyOnceAt(start);
-        firstOccurrence.setFrequencyType(new FrequencyType().setValue(value.name()));
-        return firstOccurrence;
-    }
-
-    protected Occurrence occurrenceStartingOnlyOnceAt(DateTime baseDateTime) {
-        Occurrence occurrence = new Occurrence();
-        occurrence.setFrequencyType(new FrequencyType().setValue(ONCE.name()));
-        occurrence.setStartDate(baseDateTime.toDate());
-        return occurrence;
-    }
-
-    protected OngoingStubbing<List<Occurrence>> whenRepositoryInvokedWithTruncatedDates() {
-        return when(occurrenceRepository.findAllInRange(
-            firstStartTime,
-            secondStartTime
-        ));
+        verify(occurrenceRepository).findAllInRange(
+                firstStartTime,
+                firstStartTime.plusHours(23)
+        );
     }
 }
