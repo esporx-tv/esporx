@@ -3,7 +3,7 @@ package tv.esporx.services.timeline;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tv.esporx.collections.RepeatingOccurrencePredicate;
+import tv.esporx.collections.predicates.RepeatingOccurrence;
 import tv.esporx.domain.Occurrence;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -32,7 +32,7 @@ abstract class TimelineRepeater {
     public final void replicate(Iterable<Occurrence> occurrences, DateTime timelineStart, DateTime timelineEnd) {
         if (isReplicationNeeded(timelineStart, timelineEnd)) {
             LOGGER.info("Replicating "+ frequency.name() +" occurrences");
-            for (Occurrence occurrence : filter(occurrences, new RepeatingOccurrencePredicate(frequency))) {
+            for (Occurrence occurrence : filter(occurrences, new RepeatingOccurrence(frequency))) {
                 replicateOccurrence(occurrence, timelineStart, timelineEnd);
             }
         }

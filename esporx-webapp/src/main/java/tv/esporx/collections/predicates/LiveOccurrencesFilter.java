@@ -1,15 +1,13 @@
-package tv.esporx.collections;
+package tv.esporx.collections.predicates;
 
-import java.util.Set;
-
+import com.google.common.base.Predicate;
 import org.joda.time.DateTime;
-
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Occurrence;
 
-import com.google.common.base.Predicate;
+import java.util.Set;
 
-public class LiveOccurrencesFilterPredicate implements Predicate<Occurrence> {
+public class LiveOccurrencesFilter implements Predicate<Occurrence> {
 
 	private static final int OFFLINE_CHANNEL_THRESHOLD = 50;
 

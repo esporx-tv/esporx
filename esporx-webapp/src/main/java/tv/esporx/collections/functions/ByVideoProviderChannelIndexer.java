@@ -1,4 +1,4 @@
-package tv.esporx.collections;
+package tv.esporx.collections.functions;
 
 import com.google.common.base.Function;
 import tv.esporx.domain.Channel;

@@ -1,4 +1,4 @@
-package tv.esporx.collections;
+package tv.esporx.collections.predicates;
 
 import com.google.common.base.Predicate;
 import tv.esporx.domain.Occurrence;
@@ -6,11 +6,11 @@ import tv.esporx.domain.Occurrence;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes;
 
 
-public class RepeatingOccurrencePredicate implements Predicate<Occurrence> {
+public class RepeatingOccurrence implements Predicate<Occurrence> {
 
     private final FrequencyTypes frequency;
 
-    public RepeatingOccurrencePredicate(FrequencyTypes frequency) {
+    public RepeatingOccurrence(FrequencyTypes frequency) {
         this.frequency = frequency;
     }
 

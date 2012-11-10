@@ -1,17 +1,15 @@
-package tv.esporx.collections;
+package tv.esporx.collections.predicates;
 
 import com.google.common.base.Predicate;
 import org.joda.time.DateTime;
 
-import javax.annotation.Nullable;
-
 import static tv.esporx.framework.time.DateTimeUtils.signedDiffInHours;
 
-public class FilterCachedOccurrencesPredicate implements Predicate<DateTime> {
+public class CachedOccurrencesFilter implements Predicate<DateTime> {
 
     private final DateTime timelineStart;
 
-    public FilterCachedOccurrencesPredicate(DateTime timelineStart) {
+    public CachedOccurrencesFilter(DateTime timelineStart) {
         this.timelineStart = timelineStart;
     }
 

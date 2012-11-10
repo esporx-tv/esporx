@@ -8,12 +8,10 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.filterKeys;
 import static com.google.common.collect.Maps.transformValues;
 import static com.google.common.collect.Multimaps.index;
+import static com.google.common.collect.Sets.newLinkedHashSet;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.Occurrence.BY_ASCENDING_START_DATE;
-import static tv.esporx.framework.time.DateTimeUtils.diffInMonths;
-import static tv.esporx.framework.time.DateTimeUtils.toEndDay;
-import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
-import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
+import static tv.esporx.framework.time.DateTimeUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,8 +27,8 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import tv.esporx.collections.ByHourOccurrenceIndexer;
-import tv.esporx.collections.FilterCachedOccurrencesPredicate;
+import tv.esporx.collections.functions.ByHourOccurrenceIndexer;
+import tv.esporx.collections.predicates.CachedOccurrencesFilter;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.OccurrenceRepository;
 
@@ -61,7 +59,7 @@ public class Timeline {
         }
 
         private void removePastOriginOccurrences(final DateTime timelineStart) {
-            contents = new ConcurrentHashMap<DateTime, Collection<Occurrence>>(filterKeys(contents, new FilterCachedOccurrencesPredicate(timelineStart)));
+            contents = new ConcurrentHashMap<DateTime, Collection<Occurrence>>(filterKeys(contents, new CachedOccurrencesFilter(timelineStart)));
         }
 
         void add(Occurrence occurrence) {
@@ -103,6 +101,11 @@ public class Timeline {
         return sorted(contents.asMap().get(toStartHour(hour)));
     }
 
+    public Set<Occurrence> occurrencesBetween(DateTime start, DateTime end) {
+        checkSanity(start, end);
+        return (signedDiffInHours(start, end) == 0) ? occurrencesAt(start) : iterate(start, end);
+    }
+
     public Map<DateTime, Map<DateTime, Collection<Occurrence>>> occurrencesPerDaysAt(DateTime start, DateTime end) {
         checkSanity(start, end);
         DateTime current = start;
@@ -141,6 +144,16 @@ public class Timeline {
 
     Set<Occurrence> allOccurrences() {
         return sorted(concat(contents.asMap().values()));
+    }
+
+    private Set<Occurrence> iterate(DateTime start, DateTime end) {
+        Set<Occurrence> occurrences = newLinkedHashSet();
+        DateTime current = start;
+        while (current.isBefore(end)) {
+            occurrences.addAll(occurrencesAt(current));
+            current = current.plusHours(1);
+        }
+        return occurrences;
     }
 
     private Set<Occurrence> sorted(Iterable<Occurrence> rawOccurrences) {
