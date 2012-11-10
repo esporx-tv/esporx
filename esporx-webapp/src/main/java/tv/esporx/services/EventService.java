@@ -64,7 +64,7 @@ public class EventService {
 	}
 
     private Set<Occurrence> occurrencesTillEndOfDay() {
-        DateTime start = new DateTime();
+        DateTime start = DateTimeUtils.toStartDay(new DateTime());
         DateTime end = DateTimeUtils.toEndDay(start);
         return timeline.getTimeline().occurrencesBetween(start, end);
     }
