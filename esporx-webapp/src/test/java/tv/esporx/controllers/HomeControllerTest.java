@@ -115,7 +115,7 @@ public class HomeControllerTest {
 	@Test
 	public void when_accessing_page_then_up_next_events_are_retrieved() {
 		homeController.index(null);
-		verify(eventRepository).findUpNext();
+		verify(eventService).findUpNext();
 	}
 
 	@Test

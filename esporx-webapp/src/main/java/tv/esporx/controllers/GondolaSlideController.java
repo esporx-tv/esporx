@@ -98,6 +98,7 @@ public class GondolaSlideController {
     }
 
 	private ModelAndView populateModelAndView(final ModelAndView modelAndView) {
+        modelAndView.addObject("disableAnalytics", true);
 		modelAndView.addObject("allowedLocales", allowedLocales);
 		modelAndView.setViewName("slide/form");
 		return modelAndView;

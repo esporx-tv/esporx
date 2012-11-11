@@ -92,7 +92,8 @@ public class ConfigurableSlotController {
 
 	private ModelAndView populatedConfigurableSlotForm(final ModelAndView modelAndView) {
 		modelAndView.addObject("allowedLocales", allowedLocales);
-		modelAndView.setViewName("configurableSlot/form");
+        modelAndView.addObject("disableAnalytics", true);
+        modelAndView.setViewName("configurableSlot/form");
 		return modelAndView;
 	}
 

@@ -60,7 +60,7 @@ public class HomeController {
         ModelMap model = new ModelMap("mostViewedEvents", eventService.findMostViewed());
         model.addAttribute("liveNowEvents", eventService.findLiveNow());
 		model.addAttribute("mostViewedChannels", channelRepository.findMostViewed());
-		model.addAttribute("upNextEvents", eventRepository.findUpNext());
+		model.addAttribute("upNextEvents", eventService.findUpNext());
 		model.addAttribute("gondolaSlides", gondolaRepository.findByLanguage(currentLocale));
 		model.addAttribute("slots", slotRepository.findByLanguage(currentLocale));
         model.addAttribute("game", gameRepository.findByTitle(requestHelper.currentGame(incomingRequest)));

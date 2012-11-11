@@ -130,16 +130,6 @@
 					<h4>Also on esporx.tv</h4>
 					<div id="alsoBoxes">
 						<article class="newsBox">
-							<h5>Hottest Live Events</h5>
-							<div class="newsLinks">
-								<c:forEach var="event" items="${mostViewedEvents}">
-									<a class="newsLink"
-										href="<c:url value="/event/see/${event.id}" />"><c:out
-											value="${event.title}" /> </a>
-								</c:forEach>
-							</div>
-						</article>
-						<article class="newsBox">
 						    <h5>Live Now</h5>
 						    <div class="newsLink">
 						    	<c:forEach var="occurrencesPerHour" items="${liveNowEvents}">
@@ -151,6 +141,9 @@
 												<joda:format value="${occurrencesPerHour.key}" pattern="HH:mm" />
 											</span>
 											<h3>${event.title}</h3>
+											<c:forEach var="channel" items="${channels}" end="0">
+											    <span><a href="${channel.videoUrl}">Watch now =></a></span>
+											</c:forEach>
 										</div>
 										<table class="channelsList">
 							    			<c:forEach var="channel" items="${channels}">
@@ -166,25 +159,27 @@
 						    </div>
 						</article>
 						<article class="newsBox">
-							<h5>Most Viewed Channels</h5>
+							<h5>Up next</h5>
 							<div class="newsLinks">
-								<c:forEach var="channel" items="${mostViewedChannels}">
+								<c:forEach var="occurrence" items="${upNextEvents}">
+								    <c:set var="event" value="${occurrence.event}" />
+								    <p><pretty:format date="${occurrence.startDateTime}" /></p>
 									<a class="newsLink"
-										href="<c:url value="/channel/watch/${channel.id}" />"><c:out
-											value="${channel.title}" /> </a>
+										href="<c:url value="/event/see/${event.id}" />"><c:out
+											value="${event.title}" /> </a>
 								</c:forEach>
 							</div>
 						</article>
 						<article class="newsBox">
-							<h5>Up next</h5>
-							<div class="newsLinks">
-								<c:forEach var="upNext" items="${upNextEvents}">
-									<a class="newsLink"
-										href="<c:url value="/event/see/${upNext.id}" />"><c:out
-											value="${upNext.title}" /> </a>
-								</c:forEach>
-							</div>
-						</article>
+                            <h5>Hottest Live Events</h5>
+                            <div class="newsLinks">
+                                <c:forEach var="event" items="${mostViewedEvents}">
+                                    <a class="newsLink"
+                                        href="<c:url value="/event/see/${event.id}" />"><c:out
+                                            value="${event.title}" /> </a>
+                                </c:forEach>
+                            </div>
+                        </article>
 					</div>
 				</section>
 			</section>

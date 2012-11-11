@@ -45,13 +45,14 @@ public class AdminController {
 			model.addAttribute("slots", slotRepository.findAll());
 			model.addAttribute("channels", channelRepository.findAll());
 			model.addAttribute("events", eventRepository.findAll());
+            model.addAttribute("disableAnalytics", true);
 		}
 		return new ModelAndView("admin/home", model);
 	}
 
 	@RequestMapping(value = "/login", method = GET)
 	public ModelAndView login() {
-		return new ModelAndView("admin/login");
+		return new ModelAndView("admin/login", new ModelMap("disableAnalytics", true));
 	}
 
 	private boolean hasName(final Principal principal) {
