@@ -12,6 +12,7 @@ import static com.google.common.collect.Multimaps.filterValues;
 import static com.google.common.collect.Multimaps.index;
 import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newLinkedHashSet;
+import static com.google.common.collect.Sets.newTreeSet;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.Occurrence.BY_ASCENDING_START_DATE;
 import static tv.esporx.framework.time.DateTimeUtils.diffInMonths;
@@ -20,16 +21,11 @@ import static tv.esporx.framework.time.DateTimeUtils.toEndDay;
 import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
 import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.google.common.collect.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,9 +40,6 @@ import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.OccurrenceRepository;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.MapMaker;
-import com.google.common.collect.Multimap;
 
 @Component
 public class Timeline {
@@ -140,23 +133,36 @@ public class Timeline {
         return (signedDiffInHours(start, end) == 0) ? occurrencesAt(start) : iterate(start, end);
     }
 
-    public Map<DateTime, Collection<Occurrence>> occurrencesPerHoursAt(DateTime start, DateTime end) {
+    public Map<DateTime, Collection<Occurrence>> occurrencesPerHoursAt(DateTime start, DateTime end, int limit) {
     	checkSanity(start, end);
-        DateTime current = start;
-        Map<DateTime, Collection<Occurrence>> result = new TreeMap<DateTime, Collection<Occurrence>>();
+        int inserted = 0;
+        Multimap<DateTime, Occurrence> sortedOccurrences = TreeMultimap.<DateTime, Occurrence>create();
+        DateTime current = toStartHour(start);
         do {
-        	Multimap<DateTime, Occurrence> sortedOccurrences = hourFilteredOccurrencesAsMultimap(current);
+            SortedSet<Occurrence> filtered = hourFilteredOccurrences(current);
+            if (filtered.size() > limit - inserted) {
+                filtered = subset(filtered, limit - inserted);
+            }
+            inserted = filtered.size();
+            sortedOccurrences.putAll(current, filtered);
         	current = current.plusHours(1);
-        	if (!sortedOccurrences.isEmpty()) {
-        		result.putAll(sortedOccurrences.asMap());
-        	}
-        } while (current.isBefore(end.plusMillis(1)));
-        	
-        return result;
+        } while (inserted <= limit && current.isBefore(end.plusMillis(1)));
+
+
+        return sortedOccurrences.asMap();
     }
-    
-  
-	public Map<DateTime, Map<DateTime, Collection<Occurrence>>> occurrencesPerDaysAt(DateTime start, DateTime end) {
+
+    private SortedSet<Occurrence> subset(SortedSet<Occurrence> filtered, int nFirst) {
+        SortedSet<Occurrence> occurrences = newTreeSet();
+        Iterator<Occurrence> iterator = filtered.iterator();
+        for(int i = 0; i < nFirst && iterator.hasNext(); i++) {
+            occurrences.add(iterator.next());
+        }
+        return occurrences;
+    }
+
+
+    public Map<DateTime, Map<DateTime, Collection<Occurrence>>> occurrencesPerDaysAt(DateTime start, DateTime end) {
         checkSanity(start, end);
         DateTime current = start;
 
@@ -179,7 +185,7 @@ public class Timeline {
         return transformValues(result, new Function<Multimap<DateTime, Occurrence>, Map<DateTime, Collection<Occurrence>>>() {
             @Override
             public Map<DateTime, Collection<Occurrence>> apply(Multimap<DateTime, Occurrence> occurrencesPerHour) {
-                return occurrencesPerHour.asMap();
+            return occurrencesPerHour.asMap();
             }
         });
     }
@@ -188,7 +194,7 @@ public class Timeline {
         return maxMonthsAroundToday;
     }
 
-    void setMaxMonthsAroundToday(int maxMonthsAroundToday) {
+    /*test-only*/ void setMaxMonthsAroundToday(int maxMonthsAroundToday) {
         this.maxMonthsAroundToday = maxMonthsAroundToday;
     }
 
@@ -228,7 +234,7 @@ public class Timeline {
     private void checkRange(DateTime startDay, DateTime endDay) {
         DateTime now = new DateTime();
         checkArgument(diffInMonths(startDay, toStartDay(now)) < maxMonthsAroundToday,
-                "Start ["+startDay+"] should be at most " + maxMonthsAroundToday+
+                "Start [" + startDay + "] should be at most " + maxMonthsAroundToday +
                         " months before today at 00:00:00:000000");
         checkArgument(diffInMonths(endDay, toEndDay(now)) < maxMonthsAroundToday,
                 "End ["+startDay+"] should be at most " + maxMonthsAroundToday+
@@ -242,31 +248,29 @@ public class Timeline {
     }
     
     /**
-     *  Return a multimap of occurrences at the start of the hour
-     *  
+     *  Return occurrences at the start of the hour
      */
-    private Multimap<DateTime, Occurrence> hourFilteredOccurrencesAsMultimap(
-			DateTime current) {
-    	Multimap<DateTime, Occurrence> occurrencesPerHour = create();
-    	Set<Occurrence> filteredLiveOccurrences = filteredLiveOccurrence(occurrencesAt(current));
-    	// We order channels of an occurrence by viewer count DESC
-    	for (Occurrence occurrence : filteredLiveOccurrences) {
-    		Set<Channel> sortedChannels = new TreeSet<Channel>(new ChannelByMaxViewerComparator());
-    		sortedChannels.addAll(occurrence.getChannels());
-    		// I don't really how to sort a Set of an object, but this work for now.
-    		occurrence.setChannels(sortedChannels);
-    	}
-    	occurrencesPerHour.putAll(toStartHour(current), filteredLiveOccurrences);
-		return occurrencesPerHour;
+    private SortedSet<Occurrence> hourFilteredOccurrences(DateTime current) {
+    	SortedSet<Occurrence> filteredLiveOccurrences = filteredLiveOccurrence(occurrencesAt(current));
+        sortChannelsByViewerCountDesc(filteredLiveOccurrences);
+        return filteredLiveOccurrences;
 	}
-    
+
+    private void sortChannelsByViewerCountDesc(Set<Occurrence> filteredLiveOccurrences) {
+        for (Occurrence occurrence : filteredLiveOccurrences) {
+            Set<Channel> sortedChannels = new TreeSet<Channel>(new ChannelByMaxViewerComparator());
+            sortedChannels.addAll(occurrence.getChannels());
+            occurrence.setChannels(sortedChannels);
+        }
+    }
+
     /**
-     * Return filtered set of live occurrences and ordered Set<Channel> for each occurrence
+     * Return filtered set of live occurrences and ordered channels for each occurrence
      */
-    private Set<Occurrence> filteredLiveOccurrence(Set<Occurrence> occurrences) {
-        return filter(occurrences,   //
-                new IsLiveOccurrenceFilter()                         //
-         );
+    private SortedSet<Occurrence> filteredLiveOccurrence(Set<Occurrence> occurrences) {
+        return newTreeSet(filter(occurrences,                                   //
+                new IsLiveOccurrenceFilter()                                    //
+        ));
     }
 
 }

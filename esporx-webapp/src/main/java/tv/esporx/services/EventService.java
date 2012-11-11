@@ -26,6 +26,7 @@ import tv.esporx.repositories.EventRepository;
 @Transactional
 public class EventService {
 
+    private static final int DEFAULT_LIVE_NOW_EVENT_COUNT = 10;
 	private static final int DEFAULT_HOTTEST_EVENT_COUNT = 5;
 	
 	@Autowired
@@ -59,10 +60,28 @@ public class EventService {
         return transformToEvents(filteredOccurrences, nFirst);
 	}
 
+    /**
+     * @return {limit} live occurrences per hour
+     */
+    public Map<DateTime, Collection<Occurrence>> findLiveNow() {
+    	 return findLiveNow(DEFAULT_LIVE_NOW_EVENT_COUNT);
+    }
+
+    /**
+     * @return {limit} live occurrences per hour
+     */
+    public Map<DateTime, Collection<Occurrence>> findLiveNow(int limit) {
+    	 return timeline.getTimeline().occurrencesPerHoursAt(   //
+                 new DateTime().minusHours(1),                  //
+                 new DateTime().plusHours(2),                   //
+                 limit                                          //
+         );
+    }
+
     private Set<Occurrence> filteredLiveOccurrenceByViewerCount() {
-        return filter(           //
+        return filter(                                              //
                 sortByViewerCountDesc(occurrencesTillEndOfDay()),   //
-                new IsLiveOccurrenceFilter()                         //
+                new IsLiveOccurrenceFilter()                        //
             );
     }
 
@@ -90,12 +109,6 @@ public class EventService {
         return sortedLiveEvents;
     }
 
-    /**
-     * Get a list of live occurrences per hours
-     */
-    public Map<DateTime, Collection<Occurrence>> findLiveNow() {
-    	 return timeline.getTimeline().occurrencesPerHoursAt(new DateTime().minus(1), new DateTime().plusHours(2));
-    }
 
 	
 }

@@ -1,25 +1,22 @@
 package tv.esporx.collections.predicates;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Occurrence;
 
 import java.util.Set;
 
-public class IsLiveOccurrenceFilter implements Predicate<Occurrence> {
+import static com.google.common.collect.Sets.filter;
 
-	private static final int OFFLINE_CHANNEL_THRESHOLD = 50;
+public class IsLiveOccurrenceFilter implements Predicate<Occurrence> {
 
 	@Override
 	public boolean apply(Occurrence occ) {
-		Set<Channel> channels = occ.getChannels();
-		for (Channel channel : channels) {
-			if (channel.getViewerCount() > OFFLINE_CHANNEL_THRESHOLD && channel.getViewerCountTimestamp().isAfter(new DateTime().minusMinutes(5))) {
-				return true;
-			}
-		}
-		return false;
+        Set<Channel> filter = filter(occ.getChannels(), new IsLiveChannelFilter());
+        occ.setChannels(filter);
+        return filter.size() > 0;
 	}
 
 }

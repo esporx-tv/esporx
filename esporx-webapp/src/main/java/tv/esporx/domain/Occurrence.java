@@ -31,7 +31,7 @@ import tv.esporx.framework.validation.CrossDateConstraints;
 @Entity
 @Table(name = "occurrences")
 @CrossDateConstraints(nullableColumns = {"endDate"})
-public class Occurrence {
+public class Occurrence implements Comparable<Occurrence> {
 
     public static Comparator<Occurrence> BY_ASCENDING_START_DATE = new Comparator<Occurrence>() {
         @Override
@@ -174,7 +174,12 @@ public class Occurrence {
 	public void setChannels(Set<Channel> channels) {
 		this.channels = channels;
 	}
-	
+
+    @Override
+    public int compareTo(Occurrence occurrence) {
+        return this.equals(occurrence) ? 0 : startDate.compareTo(occurrence.getStartDateTime());
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj)
@@ -189,7 +194,7 @@ public class Occurrence {
                 && equal(frequencyType, other.frequencyType)    //
                 && equal(channels, other.channels);
     }
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -219,4 +224,5 @@ public class Occurrence {
         occurrence.origin = this;
         return occurrence;
     }
+
 }
