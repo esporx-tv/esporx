@@ -58,7 +58,7 @@ public class HomeController {
 	public ModelAndView index(final HttpServletRequest incomingRequest) {
         String currentLocale = requestHelper.currentLocale(incomingRequest);
         ModelMap model = new ModelMap("mostViewedEvents", eventService.findMostViewed());
-        
+        model.addAttribute("liveNowEvents", eventService.findLiveNow());
 		model.addAttribute("mostViewedChannels", channelRepository.findMostViewed());
 		model.addAttribute("upNextEvents", eventRepository.findUpNext());
 		model.addAttribute("gondolaSlides", gondolaRepository.findByLanguage(currentLocale));

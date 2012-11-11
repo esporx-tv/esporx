@@ -140,6 +140,32 @@
 							</div>
 						</article>
 						<article class="newsBox">
+						    <h5>Live Now</h5>
+						    <div class="newsLink">
+						    	<c:forEach var="occurrencesPerHour" items="${liveNowEvents}">
+									<c:forEach var="occurrence" items="${occurrencesPerHour.value}">
+										<c:set var="event" value="${occurrence.event}" />
+										<c:set var="channels" value="${occurrence.channels}" />
+										<div>
+											<span class="time">
+												<joda:format value="${occurrencesPerHour.key}" pattern="HH:mm" />
+											</span>
+											<h3>${event.title}</h3>
+										</div>
+										<table class="channelsList">
+							    			<c:forEach var="channel" items="${channels}">
+							    				<tr>
+							    					<td><a href="${channel.videoUrl}">${channel.title}</a></td>
+								    				<td>${channel.viewerCount} viewers</td>
+								    				<td>[${channel.language}]</td>
+							    				</tr>
+							    			</c:forEach>
+						    			</table>
+									</c:forEach>
+						    	</c:forEach>
+						    </div>
+						</article>
+						<article class="newsBox">
 							<h5>Most Viewed Channels</h5>
 							<div class="newsLinks">
 								<c:forEach var="channel" items="${mostViewedChannels}">
