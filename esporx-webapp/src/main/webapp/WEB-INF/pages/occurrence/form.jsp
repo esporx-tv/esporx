@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <c:import url="/WEB-INF/pages/include/commonMeta.jsp" />
+
     <title><spring:message code="event.submission.header" /></title>
 
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
@@ -11,7 +12,7 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['jquery', 'pages/occurrence', 'jqueryui'], function($, occurrence) {
+        require(['jquery', 'pages/occurrence', 'jqueryui', "ext/noty/jquery.noty"], function($, occurrence) {
             $(document).ready(function() {
                 occurrence.trigger();
             });

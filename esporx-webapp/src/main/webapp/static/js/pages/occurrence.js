@@ -1,5 +1,7 @@
-/*global JSON:false*/
-define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/occurrenceForm.tpl", "lib/dateUtils", "underscore", "ext/json2"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils, _) {
+/*global JSON:false
+noty:false*/
+
+define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "text!tpl/occurrenceForm.tpl", "lib/dateUtils", "underscore", "ext/json2", "lib/notyHelper"], function($, logger, sanityChecker, templateHelper, eventTemplate, dateUtils, _) {
     "use strict";
 
     var eventSelectId = "#event",
@@ -16,6 +18,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         channelUrl = '/channel/all',
         eventOccurrencesUrl = '/event/{ID}/occurrences',
         deleteOccurrenceUrl = '/occurrence/{ID}',
+
         retrieveFrequencyTypes = function() {
             $.getJSON(frequencyUrl, function(data) {
                 frequencyTypes = _.map(data, function(item) {return {value: item};});
@@ -34,17 +37,32 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                 var parent = $(element).parent(occurrenceContainerClass),
                     occurrenceId = $('.occurrenceId', parent).val();
                 if (occurrenceId !== null && occurrenceId !== '') {
-                     if(window.confirm("Do you REALLY want to delete this occurrence ?")) {
-	                    deleteOccurrenceUrl = deleteOccurrenceUrl.replace('{ID}', occurrenceId);
-	                    $.ajax(deleteOccurrenceUrl, {
-	                        type: 'DELETE'
-	                    })
-	                    .done(function(data) {
-	                        if (data === "OK") {
-	                            $(parent).remove();
-	                        }
-	                    });
-                     }
+                     noty({text: 'Do you really want to delete this occurrence', type: 'confirm', theme: 'defaultTheme', layout: 'center', dismissQueue: false,
+                     buttons: [
+                         {addClass: 'btn btn-primary', text: 'Ok', onClick: function($noty) {
+                            deleteOccurrenceUrl = deleteOccurrenceUrl.replace('{ID}', occurrenceId);
+                            $.ajax(deleteOccurrenceUrl, {
+                                type: 'DELETE'
+                            })
+                            .done(function(data) {
+                                if (data === "OK") {
+                                    $(parent).remove();
+                                    $noty.close();
+                                    noty({text: 'Deleted occurrence with ID :' + occurrenceId, type: 'success', theme: 'defaultTheme', layout: 'center'});
+                                }
+                                else {
+                                    $noty.close();
+                                    noty({text: 'Problem occurred while trying to delete occurrence with ID :' + occurrenceId, type: 'error', theme: 'defaultTheme', layout: 'center'});
+                                }
+                            });
+                           }
+                         },
+                         {addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
+                             $noty.close();
+                           }
+                         }
+                       ]
+                     });
                 } else {
                     $(parent).remove();
                 }
@@ -125,6 +143,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                         }).done(function (result) {
                             var id = parseInt(result, 10);
                             if(!isNaN(id)) {
+                                noty({text: 'Saved occurrence with ID :' + id, theme: 'defaultTheme', layout: 'bottomRight'});
                                 $('.occurrenceId', item).first().val(id);
                             }
                         });
