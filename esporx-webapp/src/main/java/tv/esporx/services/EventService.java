@@ -1,12 +1,10 @@
 package tv.esporx.services;
 
 import static com.google.common.collect.Sets.filter;
+import static com.google.common.collect.Sets.newLinkedHashSet;
+import static com.google.common.collect.Sets.newTreeSet;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,10 @@ import tv.esporx.repositories.EventRepository;
 public class EventService {
 
     private static final int DEFAULT_LIVE_NOW_EVENT_COUNT = 10;
-	private static final int DEFAULT_HOTTEST_EVENT_COUNT = 5;
-	
-	@Autowired
+    private static final int DEFAULT_HOTTEST_EVENT_COUNT = 5;
+    public static final int DEFAULT_UP_NEXT_EVENT_COUNT = 5;
+
+    @Autowired
 	private ChannelRepository channelRepository;
 	@Autowired
 	private EventRepository eventRepository;
@@ -110,5 +109,16 @@ public class EventService {
     }
 
 
-	
+    public Set<Occurrence> findUpNext() {
+       return findUpNext(DEFAULT_UP_NEXT_EVENT_COUNT);
+    }
+
+    public Set<Occurrence> findUpNext(int limit) {
+        Set<Occurrence> occurrences = newLinkedHashSet();
+        Iterator<Occurrence> iterator = timeline.getTimeline().occurrencesBetween(new DateTime().plusHours(1), new DateTime().plusHours(8)).iterator();
+        for(int i = 0; i < limit && iterator.hasNext(); i++) {
+            occurrences.add(iterator.next());
+        }
+        return occurrences;
+    }
 }

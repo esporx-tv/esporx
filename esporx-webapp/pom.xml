@@ -176,6 +176,14 @@
             <groupId>com.ninja-squad</groupId>
             <artifactId>DbSetup</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ocpsoft</groupId>
+            <artifactId>ocpsoft-pretty-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+        </dependency>
     </dependencies>
 
 	<build>

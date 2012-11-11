@@ -85,6 +85,7 @@
         <quartz.version>2.1.5</quartz.version>
         <jackson.version>1.9.9</jackson.version>
         <slf4j.version>1.7.2</slf4j.version>
+        <ocpsoft-pretty-time.version>1.0.7</ocpsoft-pretty-time.version>
 
         <!-- test -->
         <junit.version>4.10</junit.version>
@@ -94,6 +95,7 @@
         <spring.test-mvc.version>1.0.0.BUILD-SNAPSHOT</spring.test-mvc.version>
         <maven-enforcer-plugin.version>1.1.1</maven-enforcer-plugin.version>
         <dbsetup.version>1.0-RC1</dbsetup.version>
+        <jsp-api.version>2.0</jsp-api.version>
     </properties>
 
 	<dependencyManagement>
@@ -268,6 +270,17 @@
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>${slf4j.version}</version>
                 <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ocpsoft</groupId>
+                <artifactId>ocpsoft-pretty-time</artifactId>
+                <version>${ocpsoft-pretty-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>${jsp-api.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- tests -->
