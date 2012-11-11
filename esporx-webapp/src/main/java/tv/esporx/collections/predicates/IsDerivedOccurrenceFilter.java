@@ -3,6 +3,9 @@ package tv.esporx.collections.predicates;
 import com.google.common.base.Predicate;
 import tv.esporx.domain.Occurrence;
 
+import static com.google.common.base.Objects.firstNonNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Checks that an occurrence is either the provided occurrence or
  * an echo of it.
@@ -18,6 +21,12 @@ public class IsDerivedOccurrenceFilter implements Predicate<Occurrence> {
     @Override
     public boolean apply(Occurrence input) {
         Occurrence actualOrigin = input.getOrigin();
-        return origin.equals(input) || actualOrigin != null && actualOrigin.equals(origin);
+        Long expectedId = origin.getId();
+        if (expectedId == null) {
+            return origin.equals(input) || origin.equals(actualOrigin);
+        }
+        else {
+            return expectedId.equals(input.getId()) || (actualOrigin != null && expectedId.equals(expectedId));
+        }
     }
 }

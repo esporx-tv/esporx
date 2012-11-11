@@ -59,6 +59,7 @@ public class Timeline {
 
         void add(Occurrence occurrence) {
             checkNotNull(occurrence);
+            delete(occurrence);
             DateTime matchingSlotTime = toStartHour(new DateTime(occurrence.getStartDate()));
             Collection<Occurrence> occurrences = contents.get(matchingSlotTime);
             if (occurrences == null) {
@@ -118,6 +119,10 @@ public class Timeline {
     public void update(DateTime start, DateTime end) {
         checkSanity(start, end);
         contents.initialize(occurrenceRepository.findAllInRange(start, end), start, end);
+    }
+
+    public void addOrUpdate(Occurrence occurrence) {
+        contents.add(occurrence);
     }
 
     public void delete(Occurrence occurrence) {

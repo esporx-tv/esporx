@@ -22,6 +22,7 @@ public class OccurrenceService {
 	public Long saveWithAssociations(final Occurrence occurrence, final List<Long> channelIds) {
 		occurrenceRepository.save(occurrence);
 		occurrenceRepository.saveWithAssociations(occurrence, channelIds);
+        timeline.getTimeline().addOrUpdate(occurrence);
 		return occurrence.getId();
 	}
 
