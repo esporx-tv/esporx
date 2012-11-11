@@ -132,7 +132,8 @@ public class EventController {
 	}
 
 	private ModelAndView populatedEventForm(final ModelAndView modelAndView) {
-		modelAndView.setViewName("event/form");
+        modelAndView.addObject("disableAnalytics", true);
+        modelAndView.setViewName("event/form");
 		return modelAndView;
 	}
 

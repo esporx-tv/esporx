@@ -144,6 +144,7 @@ public class ChannelController {
 
 	private ModelAndView populatedChannelForm(final ModelAndView modelAndView) {
 		modelAndView.addObject("allowedLocales", allowedLocales);
+        modelAndView.addObject("disableAnalytics", true);
 		modelAndView.setViewName("channel/form");
 		return modelAndView;
 	}
