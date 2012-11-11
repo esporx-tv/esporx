@@ -1,9 +1,10 @@
 package tv.esporx.services;
 
 import static com.google.common.collect.Sets.filter;
-import static com.google.common.collect.Sets.newTreeSet;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -54,12 +55,16 @@ public class EventService {
      * @see EventService#findMostViewed()
      */
     public Set<Event> findMostViewed(int nFirst) {
-        Set<Occurrence> filteredOccurrences = filter(           //
-            sortByViewerCountDesc(occurrencesTillEndOfDay()),   //
-            new IsLiveOccurrenceFilter()                         //
-        );
+        Set<Occurrence> filteredOccurrences = filteredLiveOccurrenceByViewerCount();
         return transformToEvents(filteredOccurrences, nFirst);
 	}
+
+    private Set<Occurrence> filteredLiveOccurrenceByViewerCount() {
+        return filter(           //
+                sortByViewerCountDesc(occurrencesTillEndOfDay()),   //
+                new IsLiveOccurrenceFilter()                         //
+            );
+    }
 
     private Set<Occurrence> occurrencesTillEndOfDay() {
         DateTime start = DateTimeUtils.toStartDay(new DateTime());
@@ -84,4 +89,13 @@ public class EventService {
         }
         return sortedLiveEvents;
     }
+
+    /**
+     * Get a list of live occurrences per hours
+     */
+    public Map<DateTime, Collection<Occurrence>> findLiveNow() {
+    	 return timeline.getTimeline().occurrencesPerHoursAt(new DateTime().minus(1), new DateTime().plusHours(2));
+    }
+
+	
 }

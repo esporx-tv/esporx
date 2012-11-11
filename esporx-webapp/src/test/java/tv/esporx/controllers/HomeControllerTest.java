@@ -32,7 +32,7 @@ public class HomeControllerTest {
 	private RequestUtils requestUtils;
 	private EventService eventService;
 
-	@Before
+    @Before
 	public void setup() {
 		channelRepository = mock(ChannelRepository.class);
 		eventRepository = mock(EventRepository.class);

@@ -1,23 +1,5 @@
 package tv.esporx.services.timeline;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.MapMaker;
-import com.google.common.collect.Multimap;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import tv.esporx.collections.functions.ByHourOccurrenceIndexer;
-import tv.esporx.collections.predicates.IsAfterStartHourFilter;
-import tv.esporx.collections.predicates.IsDerivedOccurrenceFilter;
-import tv.esporx.domain.Occurrence;
-import tv.esporx.repositories.OccurrenceRepository;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.not;
@@ -28,10 +10,43 @@ import static com.google.common.collect.Maps.filterKeys;
 import static com.google.common.collect.Maps.transformValues;
 import static com.google.common.collect.Multimaps.filterValues;
 import static com.google.common.collect.Multimaps.index;
+import static com.google.common.collect.Sets.filter;
 import static com.google.common.collect.Sets.newLinkedHashSet;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.Occurrence.BY_ASCENDING_START_DATE;
-import static tv.esporx.framework.time.DateTimeUtils.*;
+import static tv.esporx.framework.time.DateTimeUtils.diffInMonths;
+import static tv.esporx.framework.time.DateTimeUtils.signedDiffInHours;
+import static tv.esporx.framework.time.DateTimeUtils.toEndDay;
+import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
+import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import tv.esporx.collections.comparators.ChannelByMaxViewerComparator;
+import tv.esporx.collections.functions.ByHourOccurrenceIndexer;
+import tv.esporx.collections.predicates.IsAfterStartHourFilter;
+import tv.esporx.collections.predicates.IsDerivedOccurrenceFilter;
+import tv.esporx.collections.predicates.IsLiveOccurrenceFilter;
+import tv.esporx.domain.Channel;
+import tv.esporx.domain.Occurrence;
+import tv.esporx.repositories.OccurrenceRepository;
+
+import com.google.common.base.Function;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.MapMaker;
+import com.google.common.collect.Multimap;
 
 @Component
 public class Timeline {
@@ -125,7 +140,23 @@ public class Timeline {
         return (signedDiffInHours(start, end) == 0) ? occurrencesAt(start) : iterate(start, end);
     }
 
-    public Map<DateTime, Map<DateTime, Collection<Occurrence>>> occurrencesPerDaysAt(DateTime start, DateTime end) {
+    public Map<DateTime, Collection<Occurrence>> occurrencesPerHoursAt(DateTime start, DateTime end) {
+    	checkSanity(start, end);
+        DateTime current = start;
+        Map<DateTime, Collection<Occurrence>> result = new TreeMap<DateTime, Collection<Occurrence>>();
+        do {
+        	Multimap<DateTime, Occurrence> sortedOccurrences = hourFilteredOccurrencesAsMultimap(current);
+        	current = current.plusHours(1);
+        	if (!sortedOccurrences.isEmpty()) {
+        		result.putAll(sortedOccurrences.asMap());
+        	}
+        } while (current.isBefore(end.plusMillis(1)));
+        	
+        return result;
+    }
+    
+  
+	public Map<DateTime, Map<DateTime, Collection<Occurrence>>> occurrencesPerDaysAt(DateTime start, DateTime end) {
         checkSanity(start, end);
         DateTime current = start;
 
@@ -209,4 +240,33 @@ public class Timeline {
         occurrencesPerHour.putAll(toStartHour(current), occurrencesAt(current));
         return occurrencesPerHour;
     }
+    
+    /**
+     *  Return a multimap of occurrences at the start of the hour
+     *  
+     */
+    private Multimap<DateTime, Occurrence> hourFilteredOccurrencesAsMultimap(
+			DateTime current) {
+    	Multimap<DateTime, Occurrence> occurrencesPerHour = create();
+    	Set<Occurrence> filteredLiveOccurrences = filteredLiveOccurrence(occurrencesAt(current));
+    	// We order channels of an occurrence by viewer count DESC
+    	for (Occurrence occurrence : filteredLiveOccurrences) {
+    		Set<Channel> sortedChannels = new TreeSet<Channel>(new ChannelByMaxViewerComparator());
+    		sortedChannels.addAll(occurrence.getChannels());
+    		// I don't really how to sort a Set of an object, but this work for now.
+    		occurrence.setChannels(sortedChannels);
+    	}
+    	occurrencesPerHour.putAll(toStartHour(current), filteredLiveOccurrences);
+		return occurrencesPerHour;
+	}
+    
+    /**
+     * Return filtered set of live occurrences and ordered Set<Channel> for each occurrence
+     */
+    private Set<Occurrence> filteredLiveOccurrence(Set<Occurrence> occurrences) {
+        return filter(occurrences,   //
+                new IsLiveOccurrenceFilter()                         //
+         );
+    }
+
 }
