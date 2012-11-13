@@ -16,9 +16,12 @@ public class OccurrenceByMaxViewerComparator implements Comparator<Occurrence> {
         return firstMaxViewerCount.compareTo(secondMaxViewerCount);
     }
 
-    private Integer getMaxViewerCount(Occurrence occ1) {
+    private Integer getMaxViewerCount(Occurrence occurrence) {
+    	if(occurrence.getChannels().isEmpty()) {
+    		return 0;
+    	}
         Set<Channel> sortedChannels = newTreeSet(new ChannelByMaxViewerComparator());
-        sortedChannels.addAll(occ1.getChannels());
+        sortedChannels.addAll(occurrence.getChannels());
         return Integer.valueOf(sortedChannels.iterator().next().getViewerCount());
     }
 }
