@@ -14,10 +14,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<session-timeout>15</session-timeout>
 	</session-config>
 
-    <taglib>
-        <taglib-uri>/prettytime</taglib-uri>
-        <taglib-location>taglib/prettyTime.tld</taglib-location>
-    </taglib>
+	<jsp-config>
+	    <taglib>
+	        <taglib-uri>/prettytime</taglib-uri>
+	        <taglib-location>taglib/prettyTime.tld</taglib-location>
+	    </taglib>
+    </jsp-config>
 
 	<!-- Spring Security -->
 	<filter>
