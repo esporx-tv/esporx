@@ -31,6 +31,7 @@ import static com.ninja_squad.dbsetup.Operations.insertInto;
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static org.fest.assertions.Assertions.assertThat;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes;
+import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml",
@@ -41,8 +42,6 @@ public class TimelineIT {
 
     @Autowired
     private EventRepository eventRepository;
-    @Autowired
-    private OccurrenceRepository occurrenceRepository;
     @Autowired
     private TimelineService timeline;
     @Autowired
@@ -84,7 +83,7 @@ public class TimelineIT {
 
     @Test
     public void should_be_only_occurrence_happening_once() {
-        Collection<Occurrence> map = timeline.getTimeline(timelineStart, timelineStart.plusYears(2)).perHourMultimap().values();
+        Collection<Occurrence> map = timeline.getTimeline(toStartDay(timelineStart), timelineStart.plusYears(2)).perHourMultimap().values();
         Iterable<Occurrence> occurrencesHappeningOnce = filter(map, new IsRepeatingAtFrequencyFilter(FrequencyTypes.ONCE));
         assertThat(occurrencesHappeningOnce).hasSize(1);
         assertThat(occurrencesHappeningOnce.iterator().next()).isEqualTo(occurrence(timelineStart.withTime(23, 11, 0, 0), FrequencyTypes.ONCE));
