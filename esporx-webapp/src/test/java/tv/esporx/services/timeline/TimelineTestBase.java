@@ -1,7 +1,10 @@
 package tv.esporx.services.timeline;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.test.util.ReflectionTestUtils;
 import tv.esporx.domain.FrequencyType;
@@ -25,6 +28,16 @@ public class TimelineTestBase {
     protected TimelineService timeline;
     protected DateTime firstStartTime;
     protected DateTime secondStartTime;
+
+    @BeforeClass
+    public static void prepareAll() {
+        DateTimeUtils.setCurrentMillisFixed(new DateTime().getMillis());
+    }
+
+    @AfterClass
+    public static void cleanAll() {
+        DateTimeUtils.setCurrentMillisSystem();
+    }
 
     @Before
     public void setUp() {
