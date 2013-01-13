@@ -2,16 +2,15 @@ package tv.esporx.services.timeline;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tv.esporx.collections.predicates.IsRepeatingAtFrequencyFilter;
 import tv.esporx.domain.Occurrence;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Iterables.filter;
+import static org.slf4j.LoggerFactory.getLogger;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes;
 import static tv.esporx.framework.time.DateTimeUtils.earliest;
 import static tv.esporx.framework.time.DateTimeUtils.earliestEnd;
-import static tv.esporx.framework.time.DateTimeUtils.latestBeginning;
 
 /**
  * Template class for Occurrence repeaters.
@@ -20,7 +19,7 @@ import static tv.esporx.framework.time.DateTimeUtils.latestBeginning;
  */
 abstract class TimelineRepeater {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(TimelineDailyRepeater.class);
+    protected static final Logger LOGGER = getLogger(TimelineRepeater.class);
     protected final Timeline contents;
     protected FrequencyTypes frequency;
 
