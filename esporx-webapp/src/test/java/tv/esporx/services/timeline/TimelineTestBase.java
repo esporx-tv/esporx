@@ -3,9 +3,11 @@ package tv.esporx.services.timeline;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.mockito.stubbing.OngoingStubbing;
+import org.springframework.test.util.ReflectionTestUtils;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.OccurrenceRepository;
+import tv.esporx.services.TimelineService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +15,22 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.ONCE;
 
 public class TimelineTestBase {
 
     protected OccurrenceRepository occurrenceRepository;
-    protected Timeline timeline;
+    protected TimelineService timeline;
     protected DateTime firstStartTime;
     protected DateTime secondStartTime;
 
     @Before
     public void setUp() {
         occurrenceRepository = mock(OccurrenceRepository.class);
-        timeline = new Timeline(occurrenceRepository);
+        timeline = new TimelineService();
+        setField(timeline, "occurrenceRepository", occurrenceRepository);
         firstStartTime = new DateTime().withTime(22, 22, 0, 0);
         secondStartTime = firstStartTime.plusMinutes(20);
     }
@@ -54,9 +58,9 @@ public class TimelineTestBase {
         );
         when(occurrenceRepository.findAllInRange(               //
             firstStartTime,                                     //
-            secondStartTime.plusDays(1)                         //
+            secondStartTime.plusDays(1).plusMinutes(1)          //
         ))                                                      //
-                .thenReturn(occurrences);
+        .thenReturn(occurrences);
         when(occurrenceRepository.findAllInRange(               //
             firstStartTime,                                     //
             firstStartTime.plusHours(23)                        //

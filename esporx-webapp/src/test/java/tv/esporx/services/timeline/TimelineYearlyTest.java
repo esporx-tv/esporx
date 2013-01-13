@@ -1,7 +1,7 @@
 package tv.esporx.services.timeline;
 
+import com.google.common.collect.Multimap;
 import org.joda.time.DateTime;
-import org.junit.Before;
 import org.junit.Test;
 import tv.esporx.domain.Occurrence;
 
@@ -11,29 +11,23 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.MONTHLY;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.YEARLY;
+import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
 
 public class TimelineYearlyTest extends TimelineTestBase {
-
-    @Before
-    public void setUp() {
-        super.setUp();
-        //this is only allowed in tests
-        this.timeline.setMaxMonthsAroundToday(24);
-    }
 
     @Test
     public void should_have_two_slots_when_one_occurrence_repeats_within_the_timeline_range() {
         givenTwoOccurrencesWithAYearlyOne();
-        timeline.update(firstStartTime, secondStartTime.plusYears(1));
+        Multimap<DateTime,Occurrence> map = timeline.getTimeline(firstStartTime, secondStartTime.plusYears(1)).perHourMultimap();
 
-        assertThat(timeline.allOccurrences()).hasSize(3);
+        assertThat(map.values()).hasSize(3);
 
-        assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(//
+        assertThat(map.get(toStartHour(firstStartTime))).containsOnly(  //
             occurrenceStartingAt(firstStartTime, YEARLY),               //
             occurrenceStartingOnlyOnceAt(secondStartTime)               //
         );
         DateTime nextStart = firstStartTime.plusYears(1);
-        assertThat(timeline.occurrencesAt(nextStart)).containsOnly(     //
+        assertThat(map.get(toStartHour(nextStart))).containsOnly(       //
             // "same" occurrence, one year later                        //
             occurrenceStartingAt(nextStart, YEARLY)                     //
         );
@@ -46,13 +40,12 @@ public class TimelineYearlyTest extends TimelineTestBase {
     @Test
     public void should_have_one_slot_when_one_occurrence_repeats_OUT_OF_the_timeline_range() {
         givenTwoOccurrencesWithAYearlyOne();
-        timeline.update(firstStartTime,                                 //
-                firstStartTime.plusMonths(11).plusWeeks(3).plusDays(6)  //
-                        .plusHours(23));
+        Multimap<DateTime, Occurrence> map = timeline.getTimeline(firstStartTime,                                 //
+            firstStartTime.plusMonths(11).plusWeeks(3).plusDays(6).plusHours(23)).perHourMultimap();
 
-        assertThat(timeline.allOccurrences()).hasSize(2);
+        assertThat(map.values()).hasSize(2);
 
-        assertThat(timeline.occurrencesAt(firstStartTime)).containsOnly(//
+        assertThat(map.get(toStartHour(firstStartTime))).containsOnly(  //
             occurrenceStartingAt(firstStartTime, YEARLY),               //
             occurrenceStartingOnlyOnceAt(secondStartTime)               //
         );
@@ -67,12 +60,12 @@ public class TimelineYearlyTest extends TimelineTestBase {
     @Test
     public void should_have_13_slots_when_one_monthly_occurrence_in_an_inclusive_year_slot() {
         givenAMonthlyOccurrence();
-        timeline.update(firstStartTime, secondStartTime.plusYears(1));
+        Multimap<DateTime, Occurrence> map = timeline.getTimeline(firstStartTime, secondStartTime.plusYears(1)).perHourMultimap();
 
-        assertThat(timeline.allOccurrences()).hasSize(13);
+        assertThat(map.values()).hasSize(13);
         DateTime nextStart = firstStartTime;
         for (int i = 0; i < 13; i++) {
-            assertThat(timeline.occurrencesAt(nextStart)).containsOnly(occurrenceStartingAt(nextStart, MONTHLY));
+            assertThat(map.get(toStartHour(nextStart))).containsOnly(occurrenceStartingAt(nextStart, MONTHLY));
             nextStart = nextStart.plusMonths(1);
         }
         verify(occurrenceRepository).findAllInRange(                    //
@@ -101,8 +94,8 @@ public class TimelineYearlyTest extends TimelineTestBase {
             secondStartTime.plusYears(1)                                //
         ))                                                              //
         .thenReturn(newArrayList(                                       //
-                firstOccurrence,                                            //
-                secondOccurrence                                            //
+                firstOccurrence,                                        //
+                secondOccurrence                                        //
         ));
 
         when(occurrenceRepository.findAllInRange(                       //
@@ -111,8 +104,8 @@ public class TimelineYearlyTest extends TimelineTestBase {
                 .plusDays(6).plusHours(23)                              //
         ))                                                              //
         .thenReturn(newArrayList(                                       //
-                firstOccurrence,                                            //
-                secondOccurrence                                            //
+                firstOccurrence,                                        //
+                secondOccurrence                                        //
         ));
     }
 

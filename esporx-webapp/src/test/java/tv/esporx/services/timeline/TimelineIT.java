@@ -19,10 +19,12 @@ import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.EventRepository;
 import tv.esporx.repositories.OccurrenceRepository;
+import tv.esporx.services.TimelineService;
 
 import javax.sql.DataSource;
 
 import java.sql.Date;
+import java.util.Collection;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.ninja_squad.dbsetup.Operations.insertInto;
@@ -42,7 +44,7 @@ public class TimelineIT {
     @Autowired
     private OccurrenceRepository occurrenceRepository;
     @Autowired
-    private Timeline timeline;
+    private TimelineService timeline;
     @Autowired
     private DataSource dataSource;
     private Event event;
@@ -78,13 +80,12 @@ public class TimelineIT {
     public void setUp() {
         new DbSetup(new DataSourceDestination(dataSource), INSERT_OCCURRENCES).launch();
         event = eventRepository.findOne(EVENT_ID);
-        timeline.setMaxMonthsAroundToday(36);
     }
 
     @Test
     public void should_be_only_occurrence_happening_once() {
-        timeline.update(timelineStart, timelineStart.plusYears(2));
-        Iterable<Occurrence> occurrencesHappeningOnce = filter(timeline.allOccurrences(), new IsRepeatingAtFrequencyFilter(FrequencyTypes.ONCE));
+        Collection<Occurrence> map = timeline.getTimeline(timelineStart, timelineStart.plusYears(2)).perHourMultimap().values();
+        Iterable<Occurrence> occurrencesHappeningOnce = filter(map, new IsRepeatingAtFrequencyFilter(FrequencyTypes.ONCE));
         assertThat(occurrencesHappeningOnce).hasSize(1);
         assertThat(occurrencesHappeningOnce.iterator().next()).isEqualTo(occurrence(timelineStart.withTime(23, 11, 0, 0), FrequencyTypes.ONCE));
     }

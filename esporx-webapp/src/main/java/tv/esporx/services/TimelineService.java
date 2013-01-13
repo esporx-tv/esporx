@@ -1,38 +1,32 @@
 package tv.esporx.services;
 
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tv.esporx.repositories.OccurrenceRepository;
 import tv.esporx.services.timeline.Timeline;
 
-import javax.annotation.PostConstruct;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-@Component
-@Lazy(false)
+@Service
+@Transactional
 public class TimelineService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimelineService.class);
-    private final Timeline timeline;
-
     @Autowired
-    public TimelineService(Timeline timeline) {
-        this.timeline = timeline;
+    private OccurrenceRepository occurrenceRepository;
+
+    @Transactional(readOnly = true)
+    public Timeline getTimeline(DateTime start, DateTime end) {
+        checkSanity(start, end);
+        return new Timeline(start, end).from(occurrenceRepository.findAllInRange(start, end));
     }
 
-    @PostConstruct
-    public void buildCache() {
-        DateTime midnightToday = new DateTime().withTimeAtStartOfDay();
-        int maxOffset = this.timeline.getMaxMonthsAroundToday();
-        DateTime start = midnightToday.minusMonths(maxOffset).plusMillis(1);
-        DateTime end = midnightToday.plusMonths(maxOffset).minusMillis(1);
-        LOGGER.info("Building timeline cache between ["+ start +"] and [" + end + "].");
-        this.timeline.update(start, end);
+    private void checkSanity(DateTime startDay, DateTime endDay) {
+        checkNotNull(startDay);
+        checkNotNull(endDay);
+        checkArgument(startDay.isBefore(endDay));
     }
 
-    public Timeline getTimeline() {
-        return timeline;
-    }
 }

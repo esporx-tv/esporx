@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.joda.time.Days.daysBetween;
 import static org.joda.time.Hours.hoursBetween;
 import static org.joda.time.Months.monthsBetween;
@@ -73,6 +74,17 @@ public class DateTimeUtils {
         return Math.abs(yearsBetween(start, end).getYears());
     }
 
+
+    /**
+     * Computes the earliest dates of both provided
+     * @throws NullPointerException if ANY of them is null
+     */
+    public static DateTime earliest(DateTime start, DateTime end) {
+        checkNotNull(start);
+        checkNotNull(end);
+
+        return start.isBefore(end) ? start : end;
+    }
 
     /**
      * Computes the earliest of the two end dates.

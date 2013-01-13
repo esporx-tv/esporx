@@ -5,6 +5,7 @@ import tv.esporx.domain.Occurrence;
 
 import java.util.Comparator;
 import java.util.Set;
+import java.util.SortedSet;
 
 import static com.google.common.collect.Sets.newTreeSet;
 
@@ -17,8 +18,14 @@ public class OccurrenceByMaxViewerComparator implements Comparator<Occurrence> {
     }
 
     private Integer getMaxViewerCount(Occurrence occ1) {
-        Set<Channel> sortedChannels = newTreeSet(new ChannelByMaxViewerComparator());
-        sortedChannels.addAll(occ1.getChannels());
-        return Integer.valueOf(sortedChannels.iterator().next().getViewerCount());
+        Set<Channel> channels = occ1.getChannels();
+        if (channels.isEmpty()) {
+            return 0;
+        }
+        else {
+            SortedSet<Channel> sortedChannels = newTreeSet(new ChannelByMaxViewerComparator());
+            sortedChannels.addAll(channels);
+            return sortedChannels.first().getViewerCount();
+        }
     }
 }
