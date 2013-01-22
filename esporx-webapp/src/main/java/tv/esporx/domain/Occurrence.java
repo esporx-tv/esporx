@@ -33,13 +33,6 @@ import tv.esporx.framework.validation.CrossDateConstraints;
 @CrossDateConstraints(nullableColumns = {"endDate"})
 public class Occurrence implements Comparable<Occurrence> {
 
-    public static Comparator<Occurrence> BY_ASCENDING_START_DATE = new Comparator<Occurrence>() {
-        @Override
-        public int compare(Occurrence occurrence, Occurrence other) {
-        return occurrence.getStartDate().compareTo(other.getStartDate());
-        }
-    };
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", nullable = false)

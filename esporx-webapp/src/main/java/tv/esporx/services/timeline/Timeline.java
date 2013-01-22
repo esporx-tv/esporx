@@ -26,7 +26,7 @@ public class Timeline {
 
     private final DateTime start;
     private final DateTime end;
-    private Map<DateTime, Collection<Occurrence>> contents = new MapMaker().weakValues().makeMap();
+    private Map<DateTime, Collection<Occurrence>> contents = newHashMap();
 
     public Timeline(DateTime start, DateTime end) {
         this.start = start;
@@ -80,7 +80,7 @@ public class Timeline {
     }
 
     private void removePastOriginOccurrences() {
-        contents = new ConcurrentHashMap<DateTime, Collection<Occurrence>>(filterKeys(contents, new IsAfterStartHourFilter(start)));
+        contents = filterKeys(contents, new IsAfterStartHourFilter(start));
     }
 
     /**
