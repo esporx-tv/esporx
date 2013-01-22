@@ -1,5 +1,6 @@
 #calContent { width: 95%; padding: 0 0 20px; margin: 0 2.5%; display: table;}
-#calContent section { width: 30%; border-right: 1px solid#394567; display: table-cell;}
+#calContent section { width: 33%; display: table-cell;}
+#calContent section+section { border-left: 1px solid #394567;}
 #calContent section:last-child { border-width: 0;}
 #calContent section h2 { font-size:1em; padding: 0 10px 10px; border-bottom: 0 solid black; color:#9999AA; margin: 0;}
 
@@ -7,10 +8,10 @@
 #calContent section article a {text-decoration:none}
 #calContent article header, #calContent article footer { position: relative;}
 #calContent article footer { height: 10px;}
-#calContent article .time { display: block; font-size: .85em; color:#313748; text-shadow: 0 1px 0 rgba(37, 47, 69, 0.3);
+#calContent article .time { display: block; font-size: .85em; color: #313748; text-shadow: 0 1px 0 rgba(37, 47, 69, 0.3);
 							 min-width: 62px; padding: 0 0 0 8px; margin: 3px 7px 0 3px; background: rgba( 170, 190, 220, .9);
-							 border-width: 1px; border-style: solid; border-color:#5C6889#7F90BE#7F90BE#5C6889; border-radius: 4px; float: left;}
-#calContent article h3 { font-size: 12px; color:#DCDCF0; font-weight: normal; padding: 5px; border-bottom: 1px solid#ABC1FF;}
+							 border-width: 1px; border-style: solid; border-color: #5C6889 #7F90BE #7F90BE #5C6889; border-radius: 4px; float: left;}
+#calContent article h3 { font-size: 12px; color:#DCDCF0; font-weight: normal; padding: 5px; border-bottom: 1px solid #ABC1FF;}
 .eventDetails {color : white}
 .calEventChannels { max-height: 0; background: rgba(202, 202, 255, .04); overflow: hidden;}
 
@@ -18,9 +19,9 @@
 .eventDetails img { float: left;}
 .eventDetails p { font-size: .7em; font-weight: 500; margin: 5px 0 0 80px; float: none;}
 
-#arrowLeft, #arrowRight { width: 50px; height: 100%; position: absolute; top: 0; background: rgba(0,0,50,.01);}
-#arrowLeft { left: 0;}
-#arrowRight { right: 0;}
+#arrowLeft, #arrowRight { width: 50px; height: 100%; position: absolute; top: -20px; background: rgba(0,0,50,.01);}
+#arrowLeft { left: -30px;}
+#arrowRight { right: -30px;}
 #arrowLeft a, #arrowRight a { display:block; text-indent: -999em; width: 36px; height: 66px; margin-top: 80px; opacity: 0;}
 #arrowLeft a { margin-left: 10px; background: url('../img/navPrev.png') no-repeat;}
 #arrowRight a { margin-right: 10px; background: url('../img/navNext.png') no-repeat;}

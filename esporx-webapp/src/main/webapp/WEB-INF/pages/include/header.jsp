@@ -2,12 +2,14 @@
  <c:import url="/WEB-INF/pages/include/noIE6.jsp" />
 <header id="pageHeader">
 	<hgroup id="logoGroup">
-		<div id="TEHLogo">
+<!--
+	<div id="TEHLogo">
 			<span id="Player1"></span>
 			<span id="Player2"></span>
 			<span id="MidLine"></span>
 			<span id="Ball"></span>
 		</div>
+-->		
 		<h1 id="LogoTitle">ESPORX.TV</h1>
 		<h2 id="LogoBaseline">Premium Live Esports Broadcasts</h2>
 	</hgroup>

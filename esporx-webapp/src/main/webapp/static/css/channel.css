@@ -1,5 +1,5 @@
 #broadcastDate { cursor: pointer;}
-input.supportedUrl { border:2px solid green;}
+input.supportedUrl { border:2px solid rgba(70, 160, 255, 0.9);}
 input.unsupportedUrl { border:2px solid red;}
 
 /******* Channel List  **********/

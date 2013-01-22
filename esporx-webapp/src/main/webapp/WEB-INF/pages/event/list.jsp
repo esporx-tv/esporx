@@ -26,7 +26,7 @@
 				</c:forEach>
 	        </div>
 		</div>
-		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 	</div>
+		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 </body>
 </html>

@@ -26,7 +26,7 @@
 			<li>show next occurrences and channels?</li>
 			<li>show 3 hottest events</li>
 		</ul>
-		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 	</div>
+		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 </body>
 </html>

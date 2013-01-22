@@ -1,46 +1,48 @@
-.containerSelected {background-color:#444444; border-left:1px solid #19192D; border-top:1px solid #19192D; border-right:1px solid #19192D;
-width:20%; float:left; list-style:none; margin-left:10px; padding-left:10px; -moz-border-radius: 0px 5px 0 0;
-			  -webkit-border-radius: 0px 5px 0 0; }
-#adminMain h3 { width:70%; margin:20px auto}
-#adminMain form { border:1px solid #222; background-color:rgba(238,238,238,0.2); padding:20px 5px 15px 5px;}
-#adminMain form input { float:left; margin-left:15px;}
-#adminMain form label { padding-top:3px;}
-#adminMain .submit { margin-top:15px;}
-#adminMain .submit input { padding:2px; background-color:#DDD; border:none; float:none;}
+.containerSelected { background-color: #444; border-left:1px solid #19192D; border-top:1px solid #19192D; border-right:1px solid #19192D;
+width:20%; float:left; list-style:none; margin-left:10px; padding-left:10px; border-radius: 0px 5px 0 0;}
+#adminMain {}
+#adminMain:before {}
+#adminMain h3 { font-size: 2em; font-weight: 300; color: rgba(200, 220, 255, .25); text-transform: uppercase; width: 90%; margin: 20px auto; position: relative;}
+#adminMain h3:before { content: ""; width: 8px; height: 8px; background: #016AB6; position: absolute; bottom: 7px; left: -15px;}
+#adminMain form { width: 30%; padding: 3%; margin: 45px auto; background-color: rgba(20, 105, 255, .1); border: 1px solid #134F9E; border-radius: 100px/10px; box-shadow: 0 0 10px rgba(20, 105, 255, .3); position: relative;}
+#adminMain form .input input { margin: 0 5px 0 15px; width: 45%; float: left;}
+#adminMain form label { font-weight: 300; text-transform: uppercase; padding-top: 5px;}
+#adminMain .submit { margin-top: 25px;}
+#adminMain .submit input { padding: 3px 20px 5px;}
 
 
-.adminItem { color: #B9B9C0; width: 90%; margin: 0 0 12px 1.5%;  position: relative; float: left; overflow: auto;}
+.adminItem { width: 90%; margin: 0 auto;}
 .adminItem a { color: #999; text-decoration: none;}
-.adminItem a:hover { color: #BBB !important;}
-.adminItem>a { font-family: "Trebuchet MS"; font-size: 1.2em; letter-spacing: -0.2em; text-align: right;
+.adminItem a:hover { color: #CCC;}
+.adminItem>a { font-size: 1.2em; letter-spacing: -0.2em; text-align: right;
 			  padding-right: 15px; border-top: 1px solid #333; display: block; overflow: auto;}
-.adminItem .adminNav { width:100%; height:30px; margin:0; padding:0}
-.adminItem .adminNav .adminName { width:20%; float:left; list-style:none; margin-left:10px; padding-left:10px; -moz-border-radius: 0px 5px 0 0;
-			  -webkit-border-radius: 0px 5px 0 0; background:#333333}
-.adminContent { width:100%; float:left; margin-top:-3px; padding:0}
+.adminItem .adminNav { list-style-type: none; padding: 2px 0 0 2px; margin: 0 0 0 -1px; overflow: auto;}
+.ui-tabs-nav li { border: 1px solid #134F9E; border-width: 1px 1px 0 1px; border-radius: 5px 5px 0 0; float: left;}
+.ui-tabs-nav li.ui-tabs-active a { color: #CFCFCF !important; padding: 5px 50px;}
+.ui-tabs-panel { border: 1px solid #134F9E;}
+.adminContent {}
 
-
-
-.adminItem .adminName, .adminItem .containerSelected { font-size: .85em; line-height: 2em;  position: relative;}
-.adminItem .adminName a { font-size: 12px; color: #DCDCF0; font-weight: normal; display: block;}
-.adminInfos { font-size: .8em; list-style-type: none; overflow: auto; background: none rgba(25, 25, 45, 0.5);
+.ui-tabs-nav li a { font-size: 14px; color: #8EAACF !important; text-transform: uppercase; padding: 5px 30px; display: block;}
+.adminInfos { font-size: .8em; list-style-type: none; overflow: auto; background: rgba(20, 105, 255, .1);
 				border-bottom: 1px solid #111; position: relative;}
 .adminInfos a {font-size: 1.2em;}
 .adminItem .adminInfos { color: #AAB; font-size: 0.75em; font-weight: 500; font-style: italic; letter-spacing: .05em; line-height: 1.3em; 
-						padding: 1.5em; border: 1px solid #333;
-					   /* color: #99A0AA; background-color: rgba(20, 21, 28, 0.85); */}
+						padding: 1.5em; /* color: #99A0AA; background-color: rgba(20, 21, 28, 0.85); */}
 .adminItem blockquote p { height: 4.2em; overflow: hidden;}					   
 .adminItem:first-child blockquote p { height: 17.8em;}
 
-.adminItem #slidesList, .adminItem #channelsList, .adminItem #eventsList, .adminItem #slotsList { margin-left:20px ;background: none rgba(25, 25, 45, 1); }
+.adminItem #slidesList, .adminItem #channelsList, .adminItem #eventsList, .adminItem #slotsList { margin: 10px auto;}
 .adminItem #slidesList a, .adminItem #channelsList a, .adminItem #eventsList a, .adminItem #slotsList a { float:right; padding-right:10px;}
 .adminItem .gondolaBox, .adminItem .channelBox, .adminItem .eventBox, .adminItem .slotBox { padding:4px; font-size:1em}
-.adminInfos li {margin-bottom:4px;}
-.displayNone {display:none}
+.adminInfos ul { text-align: center; margin: 25px 0 10px;}
+.adminInfos li { padding: 5px 10px; display: inline;}
+.adminInfos li a, .adminInfos>a { font-weight: 400; font-style: normal; text-transform: uppercase; padding: 5px 20px 6px; background: rgba(20, 105, 255, .1);
+									border-radius: 4px;}
+.displayNone { display: none;}
 #showSlides, #showSlots, #showEvents, #showChannels { cursor: pointer;}
 
-#slotsList, #slidesList{float:left;width:90%}
-#slotsList .slotBox, #slidesList .gondolaBox, #eventsList .eventBox, #channelsList .channelBox{widht:100%;height:22px}
+/* #slotsList, #slidesList{float:left;width:90%} */
+#slotsList .slotBox, #slidesList .gondolaBox, #eventsList .eventBox, #channelsList .channelBox { margin: 2px 0; background: rgba(20, 105, 255, .1); overflow: auto;}
 #slotsList .slotBox .formSlot, #slidesList .gondolaBox .formSlide, #eventsList .eventBox .formEvent, #channelsList .channelBox .formChannel{width:auto;float:right;margin:0}
 #slotsList .slotBox a, #slidesList .gondolaBox a, #eventsList .eventBox a, #channelsList .channelBox a {margin-top:4px}
 #slotsList .slotBox span, #slidesList .gondolaBox span, #eventsList .eventBox span, #channelsList .channelBox span{margin-top: 4px;float: left;}

@@ -78,7 +78,7 @@
 						<%--<a href="#" class="carousel-control" id="arrowRight" rel="next">--%>
 							<%--<p>Next</p>--%>
 						<%--</a>--%>
-					</div>
+					</ul>
 				</div>
 			</section>
 			<section id="homeContent">
@@ -184,7 +184,7 @@
 				</section>
 			</section>
 		</div>
-		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 	</div>
+		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 </body>
 </html>
