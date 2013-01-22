@@ -20,7 +20,7 @@ public interface OccurrenceRepository extends CrudRepository<Occurrence,Long>, O
     @Query( "SELECT DISTINCT occ " +                                                //
             "FROM Occurrence occ " +                                                //
             "LEFT JOIN FETCH occ.channels " +                                       //
-            "WHERE occ.startDate <= :end " +    //
+            "WHERE occ.startDate <= :end " +                                        //
             "AND (occ.endDate IS NULL OR occ.endDate > :start) " +
             "ORDER BY occ.startDate ASC" )
     List<Occurrence> findAllInRange(@Param("start") DateTime startDate, @Param("end") DateTime endDate);

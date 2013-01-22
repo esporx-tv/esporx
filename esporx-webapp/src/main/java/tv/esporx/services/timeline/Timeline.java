@@ -1,6 +1,5 @@
 package tv.esporx.services.timeline;
 
-import com.google.common.collect.MapMaker;
 import com.google.common.collect.Multimap;
 import org.joda.time.DateTime;
 import tv.esporx.collections.predicates.IsAfterStartHourFilter;
@@ -12,13 +11,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ArrayListMultimap.create;
 import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Maps.filterKeys;
-import static com.google.common.collect.Maps.newTreeMap;
+import static com.google.common.collect.Maps.*;
 import static com.google.common.collect.Multimaps.unmodifiableMultimap;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.ONCE;

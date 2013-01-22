@@ -51,7 +51,6 @@ public class HomeController {
     @RequestMapping({"", "/"})
 	public ModelAndView landing() {
 		return new ModelAndView("index");
-		
 	}
 	
 	@RequestMapping(value="/home", method = GET)
