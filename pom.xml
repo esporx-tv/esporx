@@ -11,7 +11,6 @@
 
 	<modules>
 		<module>esporx-webapp</module>
-		<module>esporx-db-migrations</module>
 	</modules>
 
 	<!-- shared settings -->
