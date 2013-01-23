@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="remove_is_live_from_channel_and_add_update_timestamp" author="esporx_dev">
+    	<dropColumn tableName="channels" columnName="is_live"  />
+    	<addColumn tableName="channels">
+    		<column name="viewer_count_timestamp" type="datetime"></column>
+    	</addColumn>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="add_frequency_type_enumeration" author="esporx_dev">
+        <createTable tableName="frequency_types">
+            <column name="value" type="VARCHAR(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="insert_data" author="esporx_dev">
+        <insert tableName="frequency_types"><column name="value" value="ONCE" /></insert>
+        <insert tableName="frequency_types"><column name="value" value="DAILY" /></insert>
+        <insert tableName="frequency_types"><column name="value" value="WEEKLY" /></insert>
+        <insert tableName="frequency_types"><column name="value" value="MONTHLY" /></insert>
+        <insert tableName="frequency_types"><column name="value" value="YEARLY" /></insert>
+    </changeSet>
+    <changeSet id="add_occurrence" author="esporx_dev">
+        <createTable tableName="occurrences">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="start_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="end_date" type="datetime">
+                <constraints nullable="true" />
+            </column>
+            <column name="frequency_type" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addAutoIncrement tableName="occurrences" columnName="id" columnDataType="int"/>
+        <addForeignKeyConstraint constraintName="fk_occurrence_frequency_type"
+                                 baseTableName="occurrences" baseColumnNames="frequency_type"
+                                 referencedTableName="frequency_types" referencedColumnNames="value" />
+
+    </changeSet>
+</databaseChangeLog>
