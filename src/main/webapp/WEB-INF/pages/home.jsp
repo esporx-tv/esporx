@@ -142,13 +142,13 @@
 											</span>
 											<h3>${event.title}</h3>
 											<c:forEach var="channel" items="${channels}" end="0">
-											    <span><a href="${channel.videoUrl}">Watch now =></a></span>
+											    <span><a href="<c:url value="/channel/watch/${channel.id}"/>">Watch now =></a></span>
 											</c:forEach>
 										</div>
 										<table class="channelsList">
 							    			<c:forEach var="channel" items="${channels}">
 							    				<tr>
-							    					<td><a href="${channel.videoUrl}">${channel.title}</a></td>
+							    					<td><a href="<c:url value="/channel/watch/${channel.id}" />">${channel.title}</a></td>
 								    				<td>${channel.viewerCount} viewers</td>
 								    				<td>[${channel.language}]</td>
 							    				</tr>
