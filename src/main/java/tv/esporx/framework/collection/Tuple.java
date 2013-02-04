@@ -38,13 +38,13 @@ public class Tuple<L, R> {
      * @return
      */
 	public static <L, R> R findFirstRight(final List<Tuple<L, R>> tuples, final L left) {
-		return find(tuples, new Predicate<Tuple<L, R>>() {
+        return find(tuples, new Predicate<Tuple<L, R>>() {
 
-			@Override
-			public boolean apply(Tuple<L, R> tuple) {
-				return tuple.getLeft().equals(left);
-			}
-		}).getRight();
+            @Override
+            public boolean apply(Tuple<L, R> tuple) {
+                return tuple.getLeft().equals(left);
+            }
+        }).getRight();
 	}
 
 	

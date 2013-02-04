@@ -61,7 +61,7 @@ public class HomeController {
 		model.addAttribute("mostViewedChannels", channelRepository.findMostViewed());
 		model.addAttribute("upNextEvents", eventService.findUpNext());
 		model.addAttribute("gondolaSlides", gondolaRepository.findByLanguage(currentLocale));
-		model.addAttribute("slots", slotRepository.findByLanguage(currentLocale));
+		model.addAttribute("slots", slotRepository.findByLanguageOrderByPositionAsc(currentLocale));
         model.addAttribute("game", gameRepository.findByTitle(requestHelper.currentGame(incomingRequest)));
 		return new ModelAndView("home", model);
 	}

@@ -118,9 +118,10 @@ public class ChannelUpdaterJob implements Job {
         	new BatchPreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps, int i) throws SQLException {
-					ps.setInt(1, urlAndViewerCountTuples.get(i).getRight());
+                    Tuple<String, Integer> tuple = urlAndViewerCountTuples.get(i);
+                    ps.setInt(1, tuple.getRight());
 					ps.setTimestamp(2, timestamp);
-					ps.setString(3, urlAndViewerCountTuples.get(i).getLeft());
+					ps.setString(3, tuple.getLeft());
 				}
 				@Override
 				public int getBatchSize() {
@@ -137,7 +138,7 @@ public class ChannelUpdaterJob implements Job {
             @Override
             public Tuple<String, String> apply(Channel channel) {
                 String videoUrl = channel.getVideoUrl();
-				return new Tuple<String, String>(provider.extractChannelName(videoUrl), videoUrl);
+				return new Tuple<String, String>(provider.extractChannelName(videoUrl).toLowerCase(), videoUrl);
             }
         }));
     }
