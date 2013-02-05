@@ -13,7 +13,7 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
 	<context:component-scan base-package="tv.esporx" />
 	<context:annotation-config />
 	
-	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
+	<bean id="schedulerFactory" depends-on="liquibase" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
 
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 	   <property name="validationMessageSource" ref="messageSource"/>
