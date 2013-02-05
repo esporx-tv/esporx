@@ -17,4 +17,6 @@
     <include file="remove_is_live_from_channel_and_add_update_timestamp.xml" relativeToChangelogFile="true" />
     <include file="add_occurrence_channel.xml" relativeToChangelogFile="true" />
     <include file="remove_event_occurrence.xml" relativeToChangelogFile="true" />
+    <include file="autoplay_for_all_videos.xml" relativeToChangelogFile="true" />
+    <include file="delete_useless_providers.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

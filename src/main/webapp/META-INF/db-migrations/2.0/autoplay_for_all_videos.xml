@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="autoplay_for_all_videos" author="esporx_dev">
+      <sql endDelimiter=";"><![CDATA[
+         UPDATE `video_providers` SET `template` = '<iframe width="425" height="349" src="https://www.youtube.com/embed/{ID}?autoplay=1" frameborder="0" allowfullscreen></iframe>' WHERE `template` = '<iframe width="425" height="349" src="https://www.youtube.com/embed/{ID}" frameborder="0" allowfullscreen></iframe>';
+         UPDATE `video_providers` SET `template` = '<iframe frameborder="0" width="480" height="270" src="http://www.dailymotion.com/embed/video/{ID}?autoPlay=1"></iframe>' WHERE `template` = '<iframe frameborder="0" width="480" height="270" src="http://www.dailymotion.com/embed/video/{ID}"></iframe>';
+         UPDATE `video_providers` SET `template` = '<object type="application/x-shockwave-flash" height="300" width="400" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={ID}" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel={ID}&auto_play=true&start_volume=25" /></object>' WHERE `template` = '<object type="application/x-shockwave-flash" height="300" width="400" id="live_embed_player_flash" data="http://www.twitch.tv/widgets/live_embed_player.swf?channel={ID}" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.twitch.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="hostname=www.twitch.tv&channel={ID}&auto_play=false&start_volume=25" /></object>';
+         DELETE FROM `video_providers` WHERE `pattern` LIKE '%ustream.tv%';
+         INSERT INTO `video_providers`(pattern, template) VALUES('^(?:(?:https?)://)?(?:www.)?ustream.tv/channel/([0-9]+)', '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="480" height="296" id="utv100404">
+          <param name="flashvars" value="autoplay=true&brand=embed&cid={ID}&v3=1"/>
+          <param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/>
+          <param name="movie" value="http://www.ustream.tv/flash/viewer.swf"/>
+          <embed flashvars="autoplay=true&brand=embed&cid={ID}&v3=1" width="480" height="296" allowfullscreen="true" allowscriptaccess="always" src="http://www.ustream.tv/flash/viewer.swf" type="application/x-shockwave-flash" />
+         </object>');]]></sql>
+    </changeSet>
+</databaseChangeLog>
