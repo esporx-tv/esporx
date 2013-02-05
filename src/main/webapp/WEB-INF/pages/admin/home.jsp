@@ -90,8 +90,8 @@
 									</c:forEach>
 								</div>
                                 <ul>
-                                    <li><a href="<c:url value="/occurrence/manage" />">[+] Plan an event</a></li>
                                     <li><a href="<c:url value="/event/new" />">[+] Add an event</a></li>
+                                    <li><a href="<c:url value="/occurrence/manage" />">[+] Plan a broadcast</a></li>
                                 </ul>
 							</div>
 						</div>
