@@ -35,8 +35,10 @@
     <!-- data source definition -->
     <jdbc:embedded-database id="dataSource" type="H2" />
 
-    <!-- cancels eager-loading -->
+    <!-- cancels eager-loading, remove dependency from other normally-dependent beans -->
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase" />
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
+
 
     <jpa:repositories base-package="tv.esporx.repositories" />
 
