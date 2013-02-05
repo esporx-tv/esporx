@@ -20,7 +20,7 @@ public class Event {
 	@Column(name = "id")
 	private long id;
 	@NotBlank
-	@Length(max = 1000)
+	@Length(max = 400000)
 	@Column(name = "description", nullable = false)
 	private String description = "";
 	@NotBlank
