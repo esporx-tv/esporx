@@ -19,7 +19,7 @@ define(["jquery", "lib/externalLinkDetector", "text!css/slider.css", "ext/slider
                 animtype : 'slide',
                 responsive : false,
                 showcontrols: false,
-                showmarkers: false,
+                showmarkers: $(containerId + ' li').length > 1,
                 useCaptions: false,
                 width: $(containerId).width(),
                 height:'100%'
