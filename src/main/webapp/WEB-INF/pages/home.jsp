@@ -50,34 +50,7 @@
                                     </div>
                                 </div>
                             </li>
-                                <%--<article class="gFrame">--%>
-								<%--<a class="gLink " href="<c:url value="${slide.link}" />">--%>
-								    <%--<img class="gFImg" src="${slide.picture}" />--%>
-									<%--<div class="fText">--%>
-										<%--<section class="fInfos">--%>
-											<%--<h2 class="fTitle">${slide.title}</h2>--%>
-											<%--<p class="fTagline">${slide.tagLine}</p>--%>
-											<%--<p class="fDesc"><c:out value="${slide.description}" escapeXml="false" /></p>--%>
-										<%--</section>--%>
-										<%--<section class="fDetails">--%>
-											<%--<ul class="dList">--%>
-												<%--<li class="dLang"><span>Lang: </span><span>${slide.language}</span>--%>
-												<%--</li>--%>
-												<%--<li class="dPrice"><span>Prize: </span><span>${slide.prize}</span>--%>
-												<%--</li>--%>
-												<%--<li class="dDate"><span>Date: </span><span><fmt:formatDate--%>
-															<%--pattern=" dd MMMM yyyy" value="${slide.date}" /> </span></li>--%>
-											<%--</ul>--%>
-										<%--</section>--%>
-									<%--</div> </a>--%>
-							<%--</article>--%>
 						</c:forEach>
-						<%--<a href="#" class="carousel-control" id="arrowLeft" rel="prev">--%>
-							<%--<p>Previous</p>--%>
-						<%--</a>--%>
-						<%--<a href="#" class="carousel-control" id="arrowRight" rel="next">--%>
-							<%--<p>Next</p>--%>
-						<%--</a>--%>
 					</ul>
 				</div>
 			</section>
