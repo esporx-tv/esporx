@@ -345,6 +345,8 @@
                 <version>1.1</version>
                 <configuration>
                     <path>/</path>
+                    <!-- points to generated resources ;) -->
+                    <warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory>
                 </configuration>
             </plugin>
 			<plugin>
