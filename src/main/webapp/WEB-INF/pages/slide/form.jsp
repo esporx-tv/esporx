@@ -13,6 +13,7 @@
         require(['jquery', 'pages/slideAdmin', 'jqueryui'], function($, slideAdmin) {
             $(document).ready(function() {
                 slideAdmin.trigger();
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>

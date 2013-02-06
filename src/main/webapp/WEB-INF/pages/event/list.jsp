@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/event.css" />"	type="text/css" />
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
+    <script type="text/javascript">
+        require(['jquery'], function($) {
+            $(document.body).fadeTo('fast', 1);
+        });
+    </script>
 </head>
 <body>
 	<div id="pageContent">

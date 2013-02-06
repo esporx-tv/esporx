@@ -14,6 +14,7 @@
         require(['jquery', 'pages/login'], function($, login) {
             $(document).ready(function() {
                 login.focus("j_username");
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>

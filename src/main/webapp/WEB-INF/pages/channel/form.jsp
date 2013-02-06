@@ -13,6 +13,7 @@
         require(['jquery', 'pages/channel'], function($, channel) {
             $(document).ready(function() {
                 channel.trigger();
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>

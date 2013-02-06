@@ -14,6 +14,7 @@
         require(['jquery', 'pages/event'], function($, event) {
             $(document).ready(function() {
                 event.trigger();
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>

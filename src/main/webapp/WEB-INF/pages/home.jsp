@@ -14,6 +14,7 @@
         require(['jquery', 'pages/homepage'], function($, home) {
             $(document).ready(function() {
                 home.trigger();
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>

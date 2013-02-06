@@ -13,6 +13,7 @@
         require(['jquery', 'pages/admin', 'jqueryui'], function($, admin) {
             $(document).ready(function() {
                 admin.trigger();
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>

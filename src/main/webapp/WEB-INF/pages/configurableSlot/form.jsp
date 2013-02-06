@@ -11,6 +11,7 @@
         require(['jquery', 'pages/slot'], function($, slot) {
             $(document).ready(function() {
                 slot.trigger();
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>

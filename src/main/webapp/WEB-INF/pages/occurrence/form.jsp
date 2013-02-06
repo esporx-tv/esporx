@@ -15,6 +15,7 @@
         require(['jquery', 'pages/occurrence', 'jqueryui', "ext/noty/jquery.noty"], function($, occurrence) {
             $(document).ready(function() {
                 occurrence.trigger();
+                $(document.body).fadeTo('fast', 1);
             });
         });
     </script>
