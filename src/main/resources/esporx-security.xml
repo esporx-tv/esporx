@@ -32,6 +32,7 @@
 				<user name="adele" password="af06a809dc6d560e2e0b15b419c9705471f0ba2ca956dc4cef4861600c98701a" authorities="ROLE_USER, ROLE_ADMIN" />
 				<user name="jerem" password="78351fe482f152b44dbc1e8218a1abcbfb2abb41aae985325051f5509ab62811" authorities="ROLE_USER, ROLE_ADMIN" />
 				<user name="olivier" password="c32e8d84c8c0e0d45bb253933a5a7b2291740372dff5218d6063f0d3d0ad11e2" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="aurelien" password="95046e855f0d3ac767ffdb9de28a9f9b9771d58d12ee510edcc2f95846369972" authorities="ROLE_USER, ROLE_ADMIN" />
 			</user-service>
 		</authentication-provider>
 	</authentication-manager>
