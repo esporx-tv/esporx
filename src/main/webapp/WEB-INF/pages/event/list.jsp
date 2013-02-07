@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <c:import url="/WEB-INF/pages/include/commonMeta.jsp" />
-    <title><spring:message code="event.list.main_header" /></title>
+    <title><spring:message code="events.page.title" /></title>
 
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/event.css" />"	type="text/css" />

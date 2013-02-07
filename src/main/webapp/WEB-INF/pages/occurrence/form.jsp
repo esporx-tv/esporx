@@ -4,7 +4,7 @@
 <head>
     <c:import url="/WEB-INF/pages/include/commonMeta.jsp" />
 
-    <title><spring:message code="event.submission.header" /></title>
+    <title><spring:message code="event.page.title" /></title>
 
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/datepicker.css" />" type="text/css" />

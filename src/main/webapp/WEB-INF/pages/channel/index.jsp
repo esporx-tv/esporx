@@ -3,7 +3,10 @@
 <html lang="en">
 <head>
     <c:import url="/WEB-INF/pages/include/commonMeta.jsp" />
-    <title><spring:message code="channel.details.header" /></title>
+    <title><spring:message code="channel.page.title"
+                           arguments="${channel.title}"
+                           javaScriptEscape="true"
+                           argumentSeparator="|" /></title>
 
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
     <link rel="stylesheet" href="<c:url value="${staticRoot}/css/channel.css" />" type="text/css" />
