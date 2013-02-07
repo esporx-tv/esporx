@@ -18,7 +18,7 @@ public class TimelineDailyTest extends TimelineTestBase {
 
     @Test
     public void should_have_two_slots_when_one_occurrence_repeats_within_the_timeline_range() {
-        givenTwoOccurrencesWithADailyOne();
+        givenTwoOccurrencesIncludingADailyOne();
 
         Multimap<DateTime,Occurrence> map = timeline.getTimeline(firstStartTime, secondStartTime.plusDays(1).plusMinutes(1)).perHourMultimap();
 
@@ -42,7 +42,7 @@ public class TimelineDailyTest extends TimelineTestBase {
 
     @Test
     public void should_have_one_slot_when_one_occurrence_repeats_OUT_OF_the_timeline_range() {
-        givenTwoOccurrencesWithADailyOne();
+        givenTwoOccurrencesIncludingADailyOne();
         Multimap<DateTime, Occurrence> map = timeline.getTimeline(firstStartTime, firstStartTime.plusHours(23)).perHourMultimap();
 
         assertThat(map.values()).hasSize(2);

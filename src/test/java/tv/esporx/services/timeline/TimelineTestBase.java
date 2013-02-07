@@ -61,7 +61,7 @@ public class TimelineTestBase {
         ));
     }
 
-    protected void givenTwoOccurrencesWithADailyOne() {
+    protected void givenTwoOccurrencesIncludingADailyOne() {
         Occurrence firstOccurrence = occurrenceStartingAt(firstStartTime, DAILY);
         Occurrence secondOccurrence = occurrenceStartingOnlyOnceAt(secondStartTime);
 

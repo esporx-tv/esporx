@@ -5,10 +5,16 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import tv.esporx.domain.Occurrence;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
+import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
 import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
 
 public class TimelineTest extends TimelineTestBase {
@@ -22,6 +28,25 @@ public class TimelineTest extends TimelineTestBase {
             firstStartTime,
             secondStartTime
         );
+    }
+
+    @Test
+    public void should_sort_time_slots_chronologically() {
+        secondStartTime = firstStartTime.plusHours(1);
+        givenTwoOccurrencesIncludingADailyOne();
+
+        Set<Map.Entry<DateTime,Map<DateTime,Collection<Occurrence>>>> entries = timeline.getTimeline(firstStartTime, firstStartTime.plusHours(23)).perDayAndPerHourMap().entrySet();
+
+        assertThat(entries).hasSize(2);
+        Iterator<Map.Entry<DateTime,Map<DateTime,Collection<Occurrence>>>> iterator = entries.iterator();
+        Map.Entry<DateTime, Map<DateTime, Collection<Occurrence>>> firstDay = iterator.next();
+        assertThat(firstDay.getKey()).isEqualTo(toStartDay(firstStartTime));
+        assertThat(iterator.next().getKey()).isEqualTo(toStartDay(firstStartTime).plusDays(1));
+
+        Map<DateTime, Collection<Occurrence>> daySlots = firstDay.getValue();
+        assertThat(daySlots.keySet()).hasSize(2);
+        assertThat(daySlots.keySet().iterator().next()).isEqualTo(toStartHour(firstStartTime));
+
     }
 
     @Test
@@ -43,7 +68,7 @@ public class TimelineTest extends TimelineTestBase {
 
     @Test
     public void should_have_one_slot_when_one_occurrence_repeats_OUT_OF_the_timeline_range() {
-        givenTwoOccurrencesWithADailyOne();
+        givenTwoOccurrencesIncludingADailyOne();
         Multimap<DateTime, Occurrence> map = timeline.getTimeline(firstStartTime, firstStartTime.plusHours(23)).perHourMultimap();
 
         assertThat(map.values()).hasSize(2);

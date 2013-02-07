@@ -15,7 +15,8 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ArrayListMultimap.create;
 import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Maps.*;
+import static com.google.common.collect.Maps.filterKeys;
+import static com.google.common.collect.Maps.newTreeMap;
 import static com.google.common.collect.Multimaps.unmodifiableMultimap;
 import static java.util.Collections.unmodifiableMap;
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.ONCE;
@@ -26,7 +27,7 @@ public class Timeline {
 
     private final DateTime start;
     private final DateTime end;
-    private Map<DateTime, Collection<Occurrence>> contents = newHashMap();
+    private Map<DateTime, Collection<Occurrence>> contents = newTreeMap();
 
     public Timeline(DateTime start, DateTime end) {
         this.start = start;
@@ -46,8 +47,8 @@ public class Timeline {
 
     public Multimap<DateTime, Occurrence> perHourMultimap() {
         Multimap<DateTime, Occurrence> unfiltered = create();
-        for (DateTime key : contents.keySet()) {
-            unfiltered.putAll(key, contents.get(key));
+        for (Map.Entry<DateTime, Collection<Occurrence>> entry: contents.entrySet()) {
+            unfiltered.putAll(entry.getKey(), entry.getValue());
         }
         return unmodifiableMultimap(unfiltered);
     }
