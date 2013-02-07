@@ -42,7 +42,7 @@ public class Channel {
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
 	@NotBlank
-	@Length(max = 1000)
+	@Length(max = 400000)
 	@Column(name = "description", nullable = false)
 	private String description = "";
 	@NotBlank
