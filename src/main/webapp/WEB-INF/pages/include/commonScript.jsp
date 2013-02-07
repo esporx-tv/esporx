@@ -28,6 +28,12 @@
         }
     });
 </script>
+<noscript>
+    <%-- make the website visible to JS-allergic people --%>
+    <style>
+        body {opacity: 1}
+    </style>
+</noscript>
 <c:if test="${disableAnalytics != true}">
         <script type="text/javascript">
           var _gaq = _gaq || [];
