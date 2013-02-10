@@ -52,7 +52,7 @@ public class EventControllerIT {
 	public void when_saving_is_successful_then_homepage_view_is_returned() {
 		givenBeanHasBeenValidated();
 		ModelAndView modelAndView = eventController.save(event, bindingResult, new ModelAndView() );
-		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
+		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home?active=event");
 	}
 
 	@Test

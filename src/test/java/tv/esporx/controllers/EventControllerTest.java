@@ -31,7 +31,6 @@ public class EventControllerTest {
         givenMockedEventRepository();
 		eventController = new EventController(
             mock(OccurrenceRepository.class),
-            mock(ChannelRepository.class),
             repository,
             mock(DomainClassConverter.class)
         );

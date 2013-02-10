@@ -51,7 +51,6 @@ public class ChannelControllerIT {
 	private ChannelRepository channelRepository;
 	private BindingResult bindingResult;
 	private Channel channel;
-	private Game game;
 	@Autowired
 	private Validator validator;
 	@Autowired
@@ -94,7 +93,7 @@ public class ChannelControllerIT {
 	public void when_saving_is_successful_then_admin_homepageview_is_returned() {
 		givenBeanHasBeenValidated();
 		ModelAndView modelAndView = channelController.save(channel, bindingResult, new ModelAndView());
-		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
+		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home?active=channel");
 	}
 
 	@Test

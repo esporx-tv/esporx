@@ -96,7 +96,7 @@ public class ChannelControllerMappingIT {
 
 	@Test
 	public void when_requesting_channel_creation_page_then_routed_to_form() throws Exception {
-		mvc.perform(get("/channel/new")).andExpect(status().isOk()).andExpect(view().name("channel/form"));
+		mvc.perform(get("/admin/channel/new")).andExpect(status().isOk()).andExpect(view().name("channel/form"));
 	}
 
 	@Test
@@ -111,12 +111,12 @@ public class ChannelControllerMappingIT {
 
 	@Test
 	public void when_requesting_channel_edition_page_then_routed_to_form() throws Exception {
-		mvc.perform(get("/channel/edit/" + channel.getId())).andExpect(status().isOk()).andExpect(view().name("channel/form"));
+		mvc.perform(get("/admin/channel/edit/" + channel.getId())).andExpect(status().isOk()).andExpect(view().name("channel/form"));
 	}
 
 	@Test
 	public void when_requesting_channel_edition_page_with_wrong_id_then_error() throws Exception{
-		mvc.perform(get("/channel/edit/-10")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
+		mvc.perform(get("/admin/channel/edit/-10")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
 	}
 
 	@Test
@@ -126,22 +126,22 @@ public class ChannelControllerMappingIT {
 
 	@Test
 	public void when_requesting_non_existing_channel_edition_page_with_wrong_id_then_error() throws Exception {
-		mvc.perform(get("/channel/edit/" + (channel.getId() + 1000))).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
+		mvc.perform(get("/admin/channel/edit/" + (channel.getId() + 1000))).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
 	}
 
 	@Test
 	public void when_requesting_non_existing_channel_removal_then_error() throws Exception {
-		mvc.perform(post("/channel/remove").param("id", "100000")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
+		mvc.perform(post("/admin/channel/remove").param("id", "100000")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
 	}
 
 	@Test
 	public void when_saving_invalid_channel_then_routed_to_form() throws Exception {
-		mvc.perform(post("/channel/new").sessionAttr("currentGame", game.getTitle())).andExpect(status().isOk()).andExpect(view().name("channel/form"));
+		mvc.perform(post("/admin/channel/new").sessionAttr("currentGame", game.getTitle())).andExpect(status().isOk()).andExpect(view().name("channel/form"));
 	}
 
 	@Test
 	public void when_saving_valid_channel_then_routed_to_home() throws Exception {
-		mvc.perform(post("/channel/new").sessionAttr("currentGame", game.getTitle())
+		mvc.perform(post("/admin/channel/new").sessionAttr("currentGame", game.getTitle())
                 .param("description", "You forgot description for channels")
                 .param("language", "fr")
                 .param("title", "Channel Title")
@@ -153,12 +153,12 @@ public class ChannelControllerMappingIT {
 
 	@Test
 	public void when_updating_invalid_channel_then_routed_to_form() throws Exception {
-		mvc.perform(post("/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/admin/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
 	}
 
 	@Test
 	public void when_updating_valid_channel_then_routed_to_form() throws Exception {
-		mvc.perform(post("/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle()).param("title", "Channel Title Bis").param("videoUrl", "http://www.site.com").param("broadcastDate", "28/03/2015 12:13").param("description", "Same here")).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/admin/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle()).param("title", "Channel Title Bis").param("videoUrl", "http://www.site.com").param("broadcastDate", "28/03/2015 12:13").param("description", "Same here")).andExpect(view().name("redirect:/admin/home"));
 	}
 
 }

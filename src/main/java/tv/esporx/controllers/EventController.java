@@ -36,18 +36,14 @@ public class EventController {
 
 	private static final String COMMAND = "eventCommand";
 	private final OccurrenceRepository occurrenceRepository;
-	private final ChannelRepository channelRepository;
     //this does not make too much sense to have both a repository and a service here
 	private final EventRepository eventRepository;
     private final DomainClassConverter<?> entityConverter;
 
 	@Autowired
     public EventController(OccurrenceRepository occurrenceRepository,
-                           ChannelRepository channelRepository,
                            EventRepository eventRepository,
                            DomainClassConverter entityConverter) {
-
-        this.channelRepository = channelRepository;
         this.occurrenceRepository = occurrenceRepository;
         this.eventRepository = eventRepository;
         this.entityConverter = entityConverter;

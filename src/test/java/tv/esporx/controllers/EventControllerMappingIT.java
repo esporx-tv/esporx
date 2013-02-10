@@ -80,46 +80,36 @@ public class EventControllerMappingIT {
 
 	@Test
 	public void when_event_creation_page_then_routed_to_form() throws Exception {
-		mvc.perform(get("/event/new")).andExpect(status().isOk()).andExpect(view().name("event/form"));
+		mvc.perform(get("/admin/event/new")).andExpect(status().isOk()).andExpect(view().name("event/form"));
 	}
 
 	@Test
 	public void when_accessing_event_edition_then_routed_to_edition_page() throws Exception {
-		mvc.perform(get("/event/edit/" + event.getId())).andExpect(status().isOk()).andExpect(view().name("event/form"));
+		mvc.perform(get("/admin/event/edit/" + event.getId())).andExpect(status().isOk()).andExpect(view().name("event/form"));
 	}
 
 	@Test
 	public void when_accessing_event_edition_with_invalid_id_then_routed_to_not_found() throws Exception {
-		mvc.perform(get("/event/edit/-65")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
+		mvc.perform(get("/admin/event/edit/-65")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
 	}
 
 	@Test
 	public void when_saving_valid_event_then_routed_to_admin_home() throws Exception {
-		mvc.perform(post("/event/new").param("title", "Event Title").param("description", "Event description").param("startDate", "28/03/2015 12:13").param("endDate", "12/12/2018 12:12").param("highlighted", "0")).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/admin/event/new").param("title", "Event Title").param("description", "Event description").param("startDate", "28/03/2015 12:13").param("endDate", "12/12/2018 12:12").param("highlighted", "0")).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home?active=event"));
 	}
 
 	@Test
 	public void when_saving_invalid_event_then_routed_to_form() throws Exception {
-		mvc.perform(post("/event/new").param("description", "Event description").param("startDate", "28/03/2015 12:13").param("endDate", "12/12/2018 12:12")).andExpect(status().isOk()).andExpect(view().name("event/form"));
+		mvc.perform(post("/admin/event/new").param("description", "Event description").param("startDate", "28/03/2015 12:13").param("endDate", "12/12/2018 12:12")).andExpect(status().isOk()).andExpect(view().name("event/form"));
 	}
 
 	@Test
 	public void when_deleting_event_with_invalid_id_then_routed_to_not_found() throws Exception {
-		mvc.perform(post("/event/remove").param("id", "-10000")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
+		mvc.perform(post("/admin/event/remove").param("id", "-10000")).andExpect(status().isNotFound()).andExpect(view().name("channel/notFound"));
 	}
 
 	@Test
 	public void when_deleting_event_then_routed_to_home() throws Exception {
-		mvc.perform(post("/event/remove").param("id", "" + event.getId())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/admin/event/remove").param("id", "" + event.getId())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home?active=event"));
 	}
-
-	private void givenOneEventIsInserted() {
-		event = new Event();
-		event.setTitle("Zuper event");
-		event.setDescription("Awesome description");
-		event.setHighlighted(false);
-		assertThat(eventRepository).isNotNull();
-		eventRepository.save(event);
-	}
-
 }
