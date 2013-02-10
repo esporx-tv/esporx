@@ -88,8 +88,8 @@ public class GondolaSlideController {
 			return notFound(response, "channel/notFound");
 		}
 		repository.delete(slide);
-		return new ModelAndView("redirect:/admin/home");
-	}
+        return successfulRedirectionView();
+    }
 
     @InitBinder(COMMAND)
     protected void customizeConversions(final WebDataBinder binder) {
@@ -103,4 +103,8 @@ public class GondolaSlideController {
 		modelAndView.setViewName("slide/form");
 		return modelAndView;
 	}
+
+    private ModelAndView successfulRedirectionView() {
+        return new ModelAndView("redirect:/admin/home?active=gondola");
+    }
 }

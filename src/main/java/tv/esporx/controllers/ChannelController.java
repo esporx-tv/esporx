@@ -139,7 +139,7 @@ public class ChannelController {
     }
 
 	private ModelAndView successfulRedirectionView() {
-		return new ModelAndView("redirect:/admin/home");
+		return new ModelAndView("redirect:/admin/home?active=channel");
 	}
 
 	private ModelAndView populatedChannelForm(final ModelAndView modelAndView) {

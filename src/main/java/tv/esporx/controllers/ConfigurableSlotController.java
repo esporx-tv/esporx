@@ -82,8 +82,8 @@ public class ConfigurableSlotController {
 			return notFound(response, "channel/notFound");
 		}
 		repository.delete(slot);
-		return new ModelAndView("redirect:/admin/home");
-	}
+        return successfulRedirectionView();
+    }
 
 	@InitBinder(COMMAND)
 	protected void customizeConversions(final WebDataBinder binder) {
@@ -96,5 +96,9 @@ public class ConfigurableSlotController {
         modelAndView.setViewName("configurableSlot/form");
 		return modelAndView;
 	}
+
+    private ModelAndView successfulRedirectionView() {
+        return new ModelAndView("redirect:/admin/home?active=slot");
+    }
 
 }

@@ -53,7 +53,7 @@ public class GondolaSlideControllerTest {
 	@Test
 	public void when_submitting_slide_to_delete_then_view_is_retrieved() {
 		ModelAndView modelAndView = gondolaController.delete(0, response);
-		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home");
+		assertThat(modelAndView.getViewName()).isEqualTo("redirect:/admin/home?active=gondola");
 	}
 
 	@Test

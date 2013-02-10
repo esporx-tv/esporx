@@ -1,4 +1,3 @@
-/*global $: true*/
 define(["jquery", "lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/externalLinkDetector", "lib/gondola"], function($, logger, sanityChecker, domNavigationUtils, externalLinkDetector, gondola) {
     "use strict";
 

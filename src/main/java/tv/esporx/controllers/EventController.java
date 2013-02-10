@@ -127,14 +127,14 @@ public class EventController {
         ((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
 	}
 
-	private ModelAndView successfulRedirectionView() {
-		return new ModelAndView("redirect:/admin/home");
-	}
-
 	private ModelAndView populatedEventForm(final ModelAndView modelAndView) {
         modelAndView.addObject("disableAnalytics", true);
         modelAndView.setViewName("event/form");
 		return modelAndView;
 	}
+
+    private ModelAndView successfulRedirectionView() {
+        return new ModelAndView("redirect:/admin/home?active=event");
+    }
 
 }
