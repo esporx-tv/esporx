@@ -18,7 +18,9 @@
 			<li><a href="<c:url value="/home" />"><spring:message code="common.menu.home" /></a></li>
 			<li><a href="<c:url value="/calendar/browse" />"><spring:message code="common.menu.calendar" /></a></li>
 			<li><a href="<c:url value="/event/browse" />"><spring:message code="common.menu.events" /></a></li>
-			<li><a href="<c:url value="/admin/home" />">Admin</a></li>
+            <secu:authorize access="hasRole('ROLE_ADMIN')">
+                <li><a href="<c:url value="/admin/home" />">Admin</a></li>
+            </secu:authorize>
 		</ul>
 	</nav>
 </header>
