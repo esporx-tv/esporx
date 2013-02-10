@@ -70,7 +70,7 @@ public class GondolaSlideController {
 			return populateModelAndView(modelAndView);
 		}
 		repository.save(gondolaSlideCommand);
-		return new ModelAndView("redirect:/admin/home");
+		return successfulRedirectionView();
 	}
 
 	@RequestMapping(value = "/edit/{gondolaSlideCommand}", method = GET)

@@ -84,7 +84,7 @@ public class GondolaSlideControllerMappingIT {
 
 	@Test
 	public void when_saving_valid_gondola_slide_then_routed_to_home() throws Exception {
-		mvc.perform(post("/admin/slide/new").param("date", "28/03/2015 12:13").param("description", "blablabla").param("tagLine", "zuper tagline").param("language", "de").param("prize", "1 zillion €").param("title", "zuper title").param("link", "http://www.google.cn").param("picture", "yourface.gif")).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/admin/slide/new").param("date", "28/03/2015 12:13").param("description", "blablabla").param("tagLine", "zuper tagline").param("language", "de").param("prize", "1 zillion €").param("title", "zuper title").param("link", "http://www.google.cn").param("picture", "yourface.gif")).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home?active=gondola"));
 	}
 
 	@Test

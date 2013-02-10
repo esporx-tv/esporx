@@ -87,7 +87,7 @@ public class EventController {
 		return populatedEventForm(modelAndView);
 	}
 
-	@RequestMapping(value = { "/admin/event/new", "/admin/eventedit/{eventCommand}" }, method = POST)
+	@RequestMapping(value = { "/admin/event/new", "/admin/event/edit/{eventCommand}" }, method = POST)
 	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Event eventCommand, final BindingResult result, final ModelAndView modelAndView) {
 		if (result.hasErrors()) {
 			return populatedEventForm(modelAndView);

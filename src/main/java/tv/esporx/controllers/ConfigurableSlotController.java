@@ -56,7 +56,7 @@ public class ConfigurableSlotController {
 			return populatedConfigurableSlotForm(modelAndView);
 		}
 		repository.save(configurableSlotCommand);
-		return new ModelAndView("redirect:/admin/home");
+		return successfulRedirectionView();
 	}
 
 	@RequestMapping(value = "/new", method = GET)

@@ -148,17 +148,17 @@ public class ChannelControllerMappingIT {
                 .param("videoUrl", "http://www.site.com")
                 .param("viewerCount", "131325")
                 .param("videoProvider.id", videoProvider.getId().toString()))
-                .andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+                .andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home?active=channel"));
 	}
 
 	@Test
 	public void when_updating_invalid_channel_then_routed_to_form() throws Exception {
-		mvc.perform(post("/admin/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/admin/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle())).andExpect(status().isOk()).andExpect(view().name("redirect:/admin/home?active=channel"));
 	}
 
 	@Test
 	public void when_updating_valid_channel_then_routed_to_form() throws Exception {
-		mvc.perform(post("/admin/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle()).param("title", "Channel Title Bis").param("videoUrl", "http://www.site.com").param("broadcastDate", "28/03/2015 12:13").param("description", "Same here")).andExpect(view().name("redirect:/admin/home"));
+		mvc.perform(post("/admin/channel/edit/" + channel.getId()).sessionAttr("currentGame", game.getTitle()).param("title", "Channel Title Bis").param("videoUrl", "http://www.site.com").param("broadcastDate", "28/03/2015 12:13").param("description", "Same here")).andExpect(view().name("redirect:/admin/home?active=channel"));
 	}
 
 }
