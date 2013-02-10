@@ -37,7 +37,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 
 @Controller
-@RequestMapping("/occurrence")
 //FIXME: this controller totally sucks
 public class OccurrenceController {
 
@@ -67,14 +66,14 @@ public class OccurrenceController {
         ((GenericConversionService) binder.getConversionService()).addConverter(entityConverter);
     }*/
 
-    @RequestMapping(value = "/manage", method = GET)
+    @RequestMapping(value = "/admin/occurrence/manage", method = GET)
     public ModelAndView showForm() {
         ModelMap model = new ModelMap();
         model.addAttribute("events", eventRepository.findAll());
         return new ModelAndView("occurrence/form", model);
     }
 
-    @RequestMapping(value = "", method = POST)
+    @RequestMapping(value = "/admin/occurrence", method = POST)
     @ResponseBody
     public String saveOccurrence(@RequestParam HashMap<String, Object> rawOccurrence) {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -116,7 +115,7 @@ public class OccurrenceController {
         }
     }
     
-    @RequestMapping(value = "/{id}", method = DELETE)
+    @RequestMapping(value = "/admin/occurrence/{id}", method = DELETE)
     @ResponseBody
     public String delete(@PathVariable long id) {
     	Occurrence occurrence = repository.findOne(id);

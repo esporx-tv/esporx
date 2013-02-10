@@ -80,19 +80,19 @@
 									<c:forEach var="event" items="${events}">
 										<div class="eventBox">
 											<span><c:out value="${event.title}" /> </span>
-											<form class="formEvent" action="/event/remove" method="POST">
+											<form class="formEvent" action="/admin/event/remove" method="POST">
 												<input name="id" type="hidden" value="<c:out value="${event.id}" />" /> 
 												<div class="submit">
 													<input class="send" name="send" type="submit" value="Remove" />
 												</div>
 											</form>
-											<a href="<c:url value="/event/edit/${event.id}" />">Edit</a>
+											<a href="<c:url value="/admin/event/edit/${event.id}" />">Edit</a>
 										</div>
 									</c:forEach>
 								</div>
                                 <ul>
-                                    <li><a href="<c:url value="/event/new" />">[+] Add an event</a></li>
-                                    <li><a href="<c:url value="/occurrence/manage" />">[+] Plan a broadcast</a></li>
+                                    <li><a href="<c:url value="/admin/event/new" />">[+] Add an event</a></li>
+                                    <li><a href="<c:url value="/admin/occurrence/manage" />">[+] Plan a broadcast</a></li>
                                 </ul>
 							</div>
 						</div>
@@ -102,19 +102,19 @@
 									<c:forEach var="channel" items="${channels}">
 										<div class="channelBox">
 											<span><c:out value="${channel.title}" /> </span>
-											<form class="formChannel" action="/channel/remove" method="POST">
+											<form class="formChannel" action="/admin/channel/remove" method="POST">
 												<input name="id" type="hidden" value="<c:out value="${channel.id}" />" /> 
 												<div class="submit">
 													<input class="send" name="send" type="submit" value="Remove" />
 												</div>
 											</form>
-											<a href="<c:url value="/channel/edit/${channel.id}" />">Edit</a>
+											<a href="<c:url value="/admin/channel/edit/${channel.id}" />">Edit</a>
 										</div>
 									</c:forEach>
 								</div>
 								<ul>
 									<li>
-										<a href="/channel/new">[+] Add a channel</a>
+										<a href="/admin/channel/new">[+] Add a channel</a>
 									</li>
 								</ul>
 							</div>

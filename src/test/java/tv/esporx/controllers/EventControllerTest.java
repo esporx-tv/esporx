@@ -33,7 +33,6 @@ public class EventControllerTest {
             mock(OccurrenceRepository.class),
             mock(ChannelRepository.class),
             repository,
-            mock(EventService.class),
             mock(DomainClassConverter.class)
         );
 	}

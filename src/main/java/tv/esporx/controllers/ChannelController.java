@@ -36,7 +36,6 @@ import static tv.esporx.framework.mvc.ControllerUtils.notFound;
 import static tv.esporx.framework.time.DateTimeFormat.getDefaultDateFormat;
 
 @Controller
-@RequestMapping("/channel")
 public class ChannelController {
 
 	private static final String COMMAND = "channelCommand";
@@ -57,14 +56,33 @@ public class ChannelController {
     }
 
 
-	@ExceptionHandler({ TypeMismatchException.class,
-		IllegalArgumentException.class })
-	@ResponseStatus(value = NOT_FOUND)
-	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
-		return new ModelAndView("channel/notFound");
-	}
+    @RequestMapping(value = "/channel/watch/{id}", method = GET)
+    public ModelAndView index(@PathVariable final long id, final HttpServletResponse response) {
+        checkArgument(id > 0);
+        Channel channel = repository.findOne(id);
+        if (channel == null) {
+            return notFound(response, "channel/notFound");
+        }
+        ModelMap model = new ModelMap("channel", channel);
+        model.addAttribute("embeddedVideo", videoProviderRepository.getEmbeddedContents(channel.getVideoUrl()));
+        return new ModelAndView("channel/index", model);
+    }
 
-	@RequestMapping(value = "/remove", method = POST)
+    @RequestMapping(value = "/channel/all", method = GET)
+    @ResponseBody
+    public Iterable<JsonChannel> retrieveChannels() {
+        return transform(repository.findAll(), new Function<Channel, JsonChannel>() {
+            @Override
+            public JsonChannel apply(Channel channel) {
+                JsonChannel jsonChannel = new JsonChannel();
+                jsonChannel.id = channel.getId();
+                jsonChannel.name = channel.getTitle();
+                return jsonChannel;
+            }
+        });
+    }
+
+	@RequestMapping(value = "/admin/channel/remove", method = POST)
 	public ModelAndView delete(@RequestParam final long id, final HttpServletResponse response) {
 		Channel channel = repository.findOne(id);
 		if (channel == null) {
@@ -74,19 +92,7 @@ public class ChannelController {
 		return successfulRedirectionView();
 	}
 
-	@RequestMapping(value = "/watch/{id}", method = GET)
-	public ModelAndView index(@PathVariable final long id, final HttpServletResponse response) {
-		checkArgument(id > 0);
-		Channel channel = repository.findOne(id);
-		if (channel == null) {
-			return notFound(response, "channel/notFound");
-		}
-		ModelMap model = new ModelMap("channel", channel);
-		model.addAttribute("embeddedVideo", videoProviderRepository.getEmbeddedContents(channel.getVideoUrl()));
-		return new ModelAndView("channel/index", model);
-	}
-
-	@RequestMapping(value = { "/new", "edit/{channelCommand}" }, method = POST)
+	@RequestMapping(value = { "/admin/channel/new", "/admin/channel/edit/{channelCommand}" }, method = POST)
 	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Channel channelCommand, final BindingResult result, ModelAndView modelAndView) {
 		modelAndView = populatedChannelForm(modelAndView);
 		try {
@@ -101,14 +107,14 @@ public class ChannelController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/new", method = GET)
+	@RequestMapping(value = "/admin/channel/new", method = GET)
 	public ModelAndView creation(final ModelAndView modelAndView) {
 		Channel channel = new Channel();
 		channel.setVideoUrl("http://");
 		return populatedChannelForm(modelAndView).addObject(COMMAND, channel);
 	}
 
-	@RequestMapping(value = "/edit/{channelCommand}", method = GET)
+	@RequestMapping(value = "/admin/channel/edit/{channelCommand}", method = GET)
 	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Channel channelCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
 		if (channelCommand == null) {
 			return notFound(response, "channel/notFound");
@@ -116,18 +122,10 @@ public class ChannelController {
 		return populatedChannelForm(modelAndView);
 	}
 
-    @RequestMapping(value = "/all", method = GET)
-    @ResponseBody
-    public Iterable<JsonChannel> retrieveChannels() {
-        return transform(repository.findAll(), new Function<Channel, JsonChannel>() {
-            @Override
-            public JsonChannel apply(Channel channel) {
-                JsonChannel jsonChannel = new JsonChannel();
-                jsonChannel.id = channel.getId();
-                jsonChannel.name = channel.getTitle();
-                return jsonChannel;
-            }
-        });
+    @ExceptionHandler({ TypeMismatchException.class, IllegalArgumentException.class })
+    @ResponseStatus(value = NOT_FOUND)
+    public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
+        return new ModelAndView("channel/notFound");
     }
 
 	@InitBinder(COMMAND)
