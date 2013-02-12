@@ -29,6 +29,19 @@
 		<p id="eventDescription">
 			<c:out value="${event.description}" escapeXml="false" />
 		</p>
+        <h3>Tweets</h3>
+        <div id="tweets">
+            <ul>
+            <c:forEach var="tweet" items="${tweets}">
+                <li class="tweet">
+                    <span class="tweet_author"><c:out value="${tweet.fromUser}" /></span>
+                    <br />
+                    <span class="tweet_content"><c:out value="${tweet.text}" /></span>
+                </li>
+            </c:forEach>
+            </ul>
+        </div>
+
 		<h3>TODO?</h3>
 		<ul>
 			<li>show next occurrences and channels?</li>

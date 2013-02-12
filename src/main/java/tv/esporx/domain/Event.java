@@ -38,7 +38,7 @@ public class Event {
 	private boolean highlighted;
     @ValidHashtags
     @Column(name = "hashtags")
-    private String twitterHashtags;
+    private String twitterHashtags = "";
 
 	public String getDescription() {
 		return description;
