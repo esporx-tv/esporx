@@ -19,4 +19,5 @@
     <include file="remove_event_occurrence.xml" relativeToChangelogFile="true" />
     <include file="autoplay_for_all_videos.xml" relativeToChangelogFile="true" />
     <include file="delete_useless_providers.xml" relativeToChangelogFile="true" />
+    <include file="add_twitter_hashtags_to_events.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

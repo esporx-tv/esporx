@@ -1,11 +1,17 @@
 package tv.esporx.domain;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import tv.esporx.collections.functions.Trimmer;
 import tv.esporx.framework.string.MarkupKiller;
+import tv.esporx.framework.validation.ValidHashtags;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Objects.toStringHelper;
@@ -30,6 +36,9 @@ public class Event {
 	@NotNull
 	@Column(name = "highlight", nullable = false, columnDefinition = "BIT", length = 1)
 	private boolean highlighted;
+    @ValidHashtags
+    @Column(name = "hashtags")
+    private String twitterHashtags;
 
 	public String getDescription() {
 		return description;
@@ -47,6 +56,10 @@ public class Event {
 		return new MarkupKiller().stripTags(description);
 	}
 
+    public String getTwitterHashtags() {
+        return twitterHashtags;
+    }
+
     public void setId(final Long id) {
         this.id = id;
     }
@@ -60,6 +73,13 @@ public class Event {
 		checkArgument(title != null);
 		this.title = title;
 	}
+
+    public void setTwitterHashtags(String twitterHashtags) {
+        List<String> hashtags = Arrays.asList(twitterHashtags.split(","));
+        List<String> stringList = Lists.transform(hashtags, new Trimmer());
+
+        this.twitterHashtags = Joiner.on(',').join(stringList);
+    }
 
     public boolean isHighlighted() {
         return highlighted;
@@ -98,5 +118,4 @@ public class Event {
 				.add("title", title) //
 				.toString();
 	}
-	
 }

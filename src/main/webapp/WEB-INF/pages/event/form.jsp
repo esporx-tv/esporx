@@ -43,16 +43,26 @@
                         <form:errors path="highlighted" cssClass="errors" />
                     </div>
 
-					<div class="input">
-						<spring:message code="event.submission.title.placeholder"
-							var="titlePlaceholder" />
-						<form:label path="title" title="${titlePlaceholder}">
-							<spring:message code="event.submission.title" />
-						</form:label>
-						<form:input path="title" placeholder="${titlePlaceholder}" />
-						<form:errors path="title" cssClass="errors" />
-					</div>
-                    
+                    <div class="input">
+                        <spring:message code="event.submission.title.placeholder"
+                        var="titlePlaceholder" />
+                        <form:label path="title" title="${titlePlaceholder}">
+                            <spring:message code="event.submission.title" />
+                        </form:label>
+                        <form:input path="title" placeholder="${titlePlaceholder}" />
+                        <form:errors path="title" cssClass="errors" />
+                    </div>
+
+                    <div class="input">
+                        <spring:message code="event.submission.twitter_hashtag.placeholder"
+                                        var="twitterHashtagPlaceholder" />
+                        <form:label path="twitterHashtags" title="${twitterHashtagPlaceholder}">
+                            <spring:message code="event.submission.twitter_hashtag" />
+                        </form:label>
+                        <form:input path="twitterHashtags" placeholder="${twitterHashtagPlaceholder}" />
+                        <form:errors path="twitterHashtags" cssClass="errors" />
+                    </div>
+
                     <div class="input">
                         <spring:message code="event.submission.description.placeholder"
                             var="descriptionPlaceholder" />
