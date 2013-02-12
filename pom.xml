@@ -345,10 +345,11 @@
                 <version>${cloudfoundry-plugin.version}</version>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>tomcat-maven-plugin</artifactId>
-                <version>1.1</version>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat6-maven-plugin</artifactId>
+                <version>2.0</version>
                 <configuration>
+                    <update>true</update>
                     <path>/</path>
                     <!-- points to generated resources ;) -->
                     <warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory>
