@@ -30,7 +30,7 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="generateDdl" value="false" />
 				<property name="showSql" value="true" />
-				<property name="databasePlatform" value="${database.dialect}" />
+				<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
 			</bean>
 		</property>
 	</bean>
