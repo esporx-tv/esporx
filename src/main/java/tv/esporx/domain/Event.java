@@ -1,7 +1,7 @@
 package tv.esporx.domain;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
+import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import tv.esporx.collections.functions.Trimmer;
@@ -10,12 +10,14 @@ import tv.esporx.framework.validation.ValidHashtags;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.google.common.base.Objects.equal;
+import static com.google.common.base.Objects.firstNonNull;
 import static com.google.common.base.Objects.toStringHelper;
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.collect.Lists.transform;
+import static java.util.Arrays.asList;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -57,7 +59,7 @@ public class Event {
 	}
 
     public String getTwitterHashtags() {
-        return twitterHashtags;
+        return firstNonNull(twitterHashtags, "");
     }
 
     public void setId(final Long id) {
@@ -75,9 +77,8 @@ public class Event {
 	}
 
     public void setTwitterHashtags(String twitterHashtags) {
-        List<String> hashtags = Arrays.asList(twitterHashtags.split(","));
-        List<String> stringList = Lists.transform(hashtags, new Trimmer());
-
+        String hashtagSequence = firstNonNull(twitterHashtags, null);
+        List<String> stringList = transform(asList(hashtagSequence.split(",")), new Trimmer());
         this.twitterHashtags = Joiner.on(',').join(stringList);
     }
 

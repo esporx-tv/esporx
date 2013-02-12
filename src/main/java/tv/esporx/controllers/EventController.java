@@ -61,13 +61,10 @@ public class EventController {
 		}
 
         ModelMap model = new ModelMap("event", event);
-
         String pattern = event.getTwitterHashtags().replace(",", " OR ");
-
         if(!pattern.isEmpty()) {
             Twitter twitter = new TwitterTemplate();
             SearchResults searchResults = twitter.searchOperations().search(pattern, 1, 10);
-
             List<Tweet> tweets = searchResults.getTweets();
             model.addAttribute("tweets", tweets);
         }
