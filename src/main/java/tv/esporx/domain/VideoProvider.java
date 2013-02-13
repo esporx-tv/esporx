@@ -29,8 +29,10 @@ public class VideoProvider {
 	private String template;
     @Column(name = "endpoint")
     private String endpoint;
+    @Column(name = "case_mode", nullable = false)
+    private String caseMode;
 
-	public void setPattern(final String pattern) {
+    public void setPattern(final String pattern) {
 		this.pattern = pattern;
 	}
 
@@ -77,6 +79,14 @@ public class VideoProvider {
 
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
+    }
+
+    public String getCaseMode() {
+        return caseMode;
+    }
+
+    public void setCaseMode(String caseMode) {
+        this.caseMode = caseMode;
     }
 
     @Override

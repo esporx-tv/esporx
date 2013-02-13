@@ -22,6 +22,7 @@ import tv.esporx.domain.VideoProvider;
 import tv.esporx.framework.collection.Tuple;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.scheduling.wrappers.TwitchTVChannelResponse;
+import tv.esporx.scheduling.wrappers.YoutubeChannelResponse;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -30,6 +31,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
 import static com.google.common.collect.Multimaps.index;
 import static java.lang.Integer.parseInt;
@@ -41,11 +43,14 @@ public class ChannelUpdaterJob implements Job {
 	
     private static final String UPDATE_CHANNELS_QUERY = "UPDATE channels SET viewer_count = ?, viewer_count_timestamp = ? WHERE video_url = ?";
 	private static final Logger LOGGER = getLogger(ChannelUpdater.class);
-    private final Map<String, Class<? extends ChannelResponse[]>> apiEndpointResponseClassMapping;
-    
+    private final Map<String, Class<? extends ChannelResponse[]>> apiEndpointBatchResponseClassMapping;
+    private final Map<String, Class<? extends ChannelResponse>> apiEndpointSingleResponseClassMapping;
+
 	public ChannelUpdaterJob() {
-		apiEndpointResponseClassMapping = new HashMap<String, Class<? extends ChannelResponse[]>>();
-    	apiEndpointResponseClassMapping.put("http://api.justin.tv/api/stream/list.json?channel={ID}", TwitchTVChannelResponse[].class);
+		apiEndpointBatchResponseClassMapping = new HashMap<String, Class<? extends ChannelResponse[]>>();
+    	apiEndpointBatchResponseClassMapping.put("http://api.justin.tv/api/stream/list.json?channel={ID}", TwitchTVChannelResponse[].class);
+        apiEndpointSingleResponseClassMapping = new HashMap<String, Class<? extends ChannelResponse>>();
+        apiEndpointSingleResponseClassMapping.put("https://gdata.youtube.com/feeds/api/videos/{ID}?v=2&alt=json", YoutubeChannelResponse.class);
 	}
 	
     @Override
@@ -56,8 +61,7 @@ public class ChannelUpdaterJob implements Job {
         for (Map.Entry<VideoProvider, Collection<Channel>> channelsWithProvider : fetchAllChannels(channelRepository).entrySet()) {
             VideoProvider provider = channelsWithProvider.getKey();
             List<Tuple<String,String>> titleUrlCouples = channelName_URL(provider, channelsWithProvider.getValue());
-            String channelNames = getCombinedChannelNames(titleUrlCouples);
-
+            List<String> channelNames = getChannelNames(titleUrlCouples);
             if(!channelNames.isEmpty()) {
             	ChannelResponse[] responses = getChannelResponsesPerProvider(provider, channelNames);
             	if (responses.length > 0) {
@@ -76,21 +80,39 @@ public class ChannelUpdaterJob implements Job {
     }
 
 
-    private ChannelResponse[] getChannelResponsesPerProvider(VideoProvider provider, String channelNames) {
-    	ChannelResponse[] responses = new ChannelResponse[] {};
-
-		if(isProviderSupported(provider)) {
-            String endpointTemplate = provider.getEndpoint();
-	        LOGGER.info("About to query : " + endpointTemplate + " with: " + channelNames);
-
-            responses = restTemplate().getForObject(endpointTemplate, apiEndpointResponseClassMapping.get(provider.getEndpoint()), channelNames);
+    private ChannelResponse[] getChannelResponsesPerProvider(VideoProvider provider, List<String> channelNames) {
+        String endpointTemplate = provider.getEndpoint();
+        if (isBatchProviderSupported(provider)) {
+            return fetchBatchResponses(provider, channelNames, endpointTemplate);
 		}
+        else if (isSingleProviderSupported(provider)) {
+            return fetchSingleResponses(provider, channelNames, endpointTemplate);
+        }
+        return new ChannelResponse[] {};
+    }
 
+    private ChannelResponse[] fetchBatchResponses(VideoProvider provider, List<String> channelNames, String endpointTemplate) {
+        String channels = Joiner.on(",").skipNulls().join(channelNames);
+        LOGGER.info("About to query : " + endpointTemplate + " with: " + channels);
+        return restTemplate().getForObject(endpointTemplate, apiEndpointBatchResponseClassMapping.get(provider.getEndpoint()), channels);
+    }
+
+    private ChannelResponse[] fetchSingleResponses(VideoProvider provider, List<String> channelNames, String endpointTemplate) {
+        ChannelResponse[] responses = new ChannelResponse[channelNames.size()];
+        int index = 0;
+        for (String channel : channelNames) {
+            LOGGER.info("About to query : " + endpointTemplate + " with: " + channel);
+            responses[index++] = restTemplate().getForObject(endpointTemplate, apiEndpointSingleResponseClassMapping.get(provider.getEndpoint()), channel);
+        }
         return responses;
     }
 
-    private boolean isProviderSupported(VideoProvider provider) {
-        return apiEndpointResponseClassMapping.get(provider.getEndpoint()) != null;
+    private boolean isBatchProviderSupported(VideoProvider provider) {
+        return apiEndpointBatchResponseClassMapping.get(provider.getEndpoint()) != null;
+    }
+
+    private boolean isSingleProviderSupported(VideoProvider provider) {
+        return apiEndpointSingleResponseClassMapping.get(provider.getEndpoint()) != null;
     }
 
     private RestTemplate restTemplate() {
@@ -138,7 +160,14 @@ public class ChannelUpdaterJob implements Job {
             @Override
             public Tuple<String, String> apply(Channel channel) {
                 String videoUrl = channel.getVideoUrl();
-				return new Tuple<String, String>(provider.extractChannelName(videoUrl).toLowerCase(), videoUrl);
+                String channelName = provider.extractChannelName(videoUrl);
+                if ("LOWERCASE".equals(provider.getCaseMode())) {
+                    channelName = channelName.toLowerCase();
+                }
+                else if ("UPPERCASE".equals(provider.getCaseMode())) {
+                    channelName = channelName.toUpperCase();
+                }
+				return new Tuple<String, String>(channelName, videoUrl);
             }
         }));
     }
@@ -158,15 +187,13 @@ public class ChannelUpdaterJob implements Job {
 		});
     }
 
-    private String getCombinedChannelNames(List<Tuple<String, String>> urlTitleCouples) {
-        return Joiner.on(',').skipNulls().join(
-            transform(urlTitleCouples, new Function<Tuple<String, String>, String>() {
-                @Override
-                public String apply(Tuple<String, String> couple) {
-                    return couple.getLeft();
-                }
-            })
-        );
+    private List<String> getChannelNames(List<Tuple<String, String>> urlTitleCouples) {
+        return Lists.transform(urlTitleCouples, new Function<Tuple<String, String>, String>() {
+            @Override
+            public String apply(Tuple<String, String> couple) {
+                return couple.getLeft();
+            }
+        });
     }
 
     private Map<VideoProvider, Collection<Channel>> fetchAllChannels(ChannelRepository channelRepository) {
