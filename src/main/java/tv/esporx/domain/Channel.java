@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import tv.esporx.collections.functions.Trimmer;
 import tv.esporx.framework.validation.SupportedLanguage;
 import tv.esporx.framework.validation.ValidHashtags;
+import tv.esporx.framework.validation.ValidTwitterId;
 
 import javax.persistence.*;
 
@@ -58,6 +59,9 @@ public class Channel {
     @ValidHashtags
     @Column(name = "twitter_hashtags")
     private String twitterHashtags = "";
+    @ValidTwitterId
+    @Column(name = "twitter_id")
+    private String twitterId = "";
     
 	public long getId() {
 		return id;
@@ -128,6 +132,10 @@ public class Channel {
         return twitterHashtags;
     }
 
+    public String getTwitterId() {
+        return twitterId;
+    }
+
     public void setVideoProvider(VideoProvider videoProvider) {
         this.videoProvider = videoProvider;
     }
@@ -136,6 +144,17 @@ public class Channel {
         String hashtagSequence = firstNonNull(twitterHashtags, "");
         List<String> stringList = transform(asList(hashtagSequence.split(",")), new Trimmer());
         this.twitterHashtags = Joiner.on(',').join(stringList);
+    }
+
+    public void setTwitterId(String twitterId) {
+        String twitterIdSequence = firstNonNull(twitterId, "");
+        this.twitterId = twitterIdSequence.trim();
+    }
+
+    public String getTwitterSearch() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(twitterHashtags).append(",").append(twitterId);
+        return builder.toString();
     }
 
     @Override

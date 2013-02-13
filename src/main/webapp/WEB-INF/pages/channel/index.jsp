@@ -15,7 +15,7 @@
     <script type="text/javascript">
         require(['jquery', 'pages/channel'], function($, channel) {
             $(document).ready(function(){
-                channel.fetchTweets("<c:out value="${channel.twitterHashtags}" />");
+                channel.fetchTweets("<c:out value="${channel.twitterSearch}" />");
                 $(document.body).fadeTo('fast', 1);
             });
         });
