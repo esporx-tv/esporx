@@ -5,10 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.repository.support.DomainClassConverter;
-import org.springframework.social.twitter.api.SearchResults;
-import org.springframework.social.twitter.api.Tweet;
-import org.springframework.social.twitter.api.Twitter;
-import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -61,14 +56,6 @@ public class EventController {
 		}
 
         ModelMap model = new ModelMap("event", event);
-        String pattern = event.getTwitterHashtags().replace(",", " OR ");
-        if(!pattern.isEmpty()) {
-            Twitter twitter = new TwitterTemplate();
-            SearchResults searchResults = twitter.searchOperations().search(pattern, 1, 10);
-            List<Tweet> tweets = searchResults.getTweets();
-            model.addAttribute("tweets", tweets);
-        }
-
 		return new ModelAndView("event/index", model);
 	}
 

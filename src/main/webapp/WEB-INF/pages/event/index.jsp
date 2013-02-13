@@ -13,8 +13,11 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['jquery'], function($) {
-            $(document.body).fadeTo('fast', 1);
+        require(['jquery', 'pages/event'], function($, event) {
+            $(document).ready(function() {
+                event.fetchTweets("<c:out value="${event.twitterHashtags}" />");
+                $(document.body).fadeTo('fast', 1);
+            });
         });
     </script>
 </head>
@@ -31,15 +34,7 @@
 		</p>
         <h3>Tweets</h3>
         <div id="tweets">
-            <ul>
-            <c:forEach var="tweet" items="${tweets}">
-                <li class="tweet">
-                    <span class="tweet_author"><c:out value="${tweet.fromUser}" /></span>
-                    <br />
-                    <span class="tweet_content"><c:out value="${tweet.text}" /></span>
-                </li>
-            </c:forEach>
-            </ul>
+            <ul></ul>
         </div>
 
 		<h3>TODO?</h3>

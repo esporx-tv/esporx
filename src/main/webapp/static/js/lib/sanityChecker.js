@@ -1,8 +1,7 @@
 define(["jquery", "lib/logger"], function($, logger) {
     "use strict";
 
-    var target,
-        elementId;
+    var elementId;
 
     return {
         checkIfNotExists : function(elementIdOrClass, errorMessage) {
