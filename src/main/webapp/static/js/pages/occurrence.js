@@ -70,6 +70,9 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
             });
         },
         transformArrayToString = function(myArray) {
+            if (myArray === null) {
+                return "";
+            }
             return _.reduce(myArray, function(prev, id){ return prev + ',' + id;}, '').substring(1);
         },
 		insertOccurrence = function(loop, frequencyTypes, channels, selectedFrequencyType, selectedChannels, selectedStartDate, selectedEndDate, id) {
@@ -118,20 +121,52 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         observeSubmit = function() {
             $('#occurrenceCommand').submit(function(event) {
                 _.each($(occurrenceContainerClass), function(item) {
-                    var startDate, endDate, frequency, id, channelList,eventId;
+                    var valid = [],
+                        errors = [],
+                        startDate, endDate, frequency, id, channelList,eventId;
                     eventId = $(eventSelectId).val();
-                    if(eventId.trim() === '') {
-                        $(eventSelectId).css('border','1px solid red');
+                    startDate = $('.startDate', item).first().val();
+                    endDate = $('.endDate', item).first().val();
+                    frequency = $('.frequency', item).first().val();
+                    id = $('.occurrenceId', item).first().val();
+                    channelList = transformArrayToString($('.channels', item).first().val());
+
+                    if (eventId.trim() === '') {
+                        errors.push($(eventSelectId));
+                    }
+                    else {
+                        valid.push($(eventSelectId));
+                    }
+                    if (startDate.trim() === '') {
+                        errors.push($('.startDate', item).first());
+                    }
+                    else {
+                        valid.push($('.startDate', item).first());
+                    }
+                    if (frequency.trim() === '') {
+                        errors.push($('.frequency', item).first());
+                    }
+                    else {
+                        valid.push($('.frequency', item).first());
+                    }
+                    if (channelList.trim() === '') {
+                        errors.push($('.channels', item).first());
+                    }
+                    else {
+                        valid.push($('.channels', item).first());
+                    }
+
+                    logger.debug(errors, valid);
+                    if (errors.length > 0) {
+                        _.each(errors, function(element) {
+                            $(element).css('border','1px solid red');
+                        });
                         return false;
                     }
                     else {
-                        $(eventSelectId).css('border','inherit');
-
-                        startDate = $('.startDate', item).first().val();
-                        endDate = $('.endDate', item).first().val();
-                        frequency = $('.frequency', item).first().val();
-                        id = $('.occurrenceId', item).first().val();
-                        channelList = transformArrayToString($('.channels', item).first().val());
+                        _.each(valid, function(element) {
+                            $(element).css('border','inherit');
+                        });
                         $.post(occurrencePostUrl, {
                             data: {
                                 id:id,
