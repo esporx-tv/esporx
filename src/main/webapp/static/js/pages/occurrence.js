@@ -18,6 +18,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         channelUrl = '/channel/all',
         eventOccurrencesUrl = '/event/{ID}/occurrences',
         deleteOccurrenceUrl = '/occurrence/{ID}',
+        occurrencePostUrl = '/admin/occurrence',
 
         retrieveFrequencyTypes = function() {
             $.getJSON(frequencyUrl, function(data) {
@@ -131,7 +132,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                         frequency = $('.frequency', item).first().val();
                         id = $('.occurrenceId', item).first().val();
                         channelList = transformArrayToString($('.channels', item).first().val());
-                        $.post('/occurrence', {
+                        $.post(occurrencePostUrl, {
                             data: {
                                 id:id,
                                 startDate:startDate,
