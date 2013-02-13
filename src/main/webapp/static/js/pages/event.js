@@ -1,7 +1,13 @@
 /*global twitterlib: true*/
-define(
-    ["jquery", "lib/logger", "lib/sanityChecker", "underscore", "ext/twitterlib", "ext/ckeditor/ckeditor_basic"],
-    function($, logger, sanityChecker, _) {
+define([
+    "jquery",
+    "lib/logger",
+    "lib/sanityChecker",
+    "lib/handlebarsHelper",
+    "text!tpl/tweet.tpl",
+    "underscore",
+    "ext/twitterlib",
+    "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, tweetTemplate, _) {
 
         "use strict";
 
@@ -23,13 +29,10 @@ define(
             displayTweets: function(tweets) {
                 var htmlTweets = $("#tweets ul");
                 _.map(tweets, function(tweet) {
-                    var html = $(
-                        '<li class="tweet">' +
-                            '<span class="tweet_author">' + tweet.from_user + '</span> ' +
-                            '<br />' +
-                            '<span class="tweet_content">' + tweet.text + '</span> ' +
-                            '</li>'
-                    );
+                    var html = $(templateHelper.template(tweetTemplate, {
+                        "from_user": tweet.from_user,
+                        "text": tweet.text
+                    }));
                     htmlTweets.append(html);
                 });
             },
