@@ -13,8 +13,11 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['jquery'], function($) {
-            $(document.body).fadeTo('fast', 1);
+        require(['jquery', 'pages/channel'], function($, channel) {
+            $(document).ready(function(){
+                channel.fetchTweets("<c:out value="${channel.twitterHashtags}" />");
+                $(document.body).fadeTo('fast', 1);
+            });
         });
     </script>
 </head>
@@ -53,6 +56,10 @@
 									</c:otherwise>
 								</c:choose></li>
 						</ul>
+                        <h3>Tweets</h3>
+                        <div id="tweets">
+                            <ul></ul>
+                        </div>
 					</div>
 				</div>
 			</c:otherwise>

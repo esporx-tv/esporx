@@ -1,4 +1,14 @@
-define(["jquery", "lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker) {
+/*global twitterlib: true*/
+define([
+    "jquery",
+    "lib/logger",
+    "lib/sanityChecker",
+    "lib/handlebarsHelper",
+    "text!tpl/tweet.tpl",
+    "underscore",
+    "ext/twitterlib",
+    "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, tweetTemplate, _) {
+
     "use strict";
 
     //TODO: this should be configurable
@@ -78,6 +88,27 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "ext/ckeditor/ckeditor_basi
                 $(channelTitleInputId).focus();
                 $(formElementId).submit(function() {
                     $(videoProviderInputElementId).val($(videoUrlInputElementId).val());
+                });
+            }
+        },
+        displayTweets: function(tweets) {
+            var htmlTweets = $("#tweets ul");
+            _.map(tweets, function(tweet) {
+                var html = $(templateHelper.template(tweetTemplate, {
+                    "from_user": tweet.from_user,
+                    "text": tweet.text
+                }));
+                htmlTweets.append(html);
+            });
+        },
+        fetchTweets: function(str) {
+            if(typeof str === "undefined" || str.length === 0) {
+                return;
+            } else {
+                var pattern = str.replace(",", " OR "),
+                    that = this;
+                twitterlib.search(pattern, {limit: 10}, function(tweets, options) {
+                    that.displayTweets(tweets);
                 });
             }
         }

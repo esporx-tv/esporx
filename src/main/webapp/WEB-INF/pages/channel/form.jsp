@@ -75,6 +75,16 @@
 						<form:errors path="videoUrl" cssClass="errors" />
 					</div>
 
+                    <div class="input">
+                        <spring:message code="channel.submission.hashtags.placeholder"
+                                        var="hashtagsPlaceholder" />
+                        <form:label path="twitterHashtags" title="${hashtagsPlaceholder}">
+                            <spring:message code="channel.submission.hashtags" />
+                        </form:label>
+                        <form:input path="twitterHashtags" placeholder="${hashtagsPlaceholder}" />
+                        <form:errors path="twitterHashtags" cssClass="errors" />
+                    </div>
+
 					<div class="input">
 						<form:label path="description">
 							<spring:message code="channel.submission.description" />
