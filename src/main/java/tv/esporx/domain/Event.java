@@ -103,6 +103,12 @@ public class Event {
         this.highlighted = highlighted;
     }
 
+    public String getTwitterSearch() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(twitterHashtags).append(",").append(twitterId);
+        return builder.toString();
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj)
