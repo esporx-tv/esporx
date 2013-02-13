@@ -4,9 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -17,7 +14,6 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +33,6 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.newLinkedList;
 import static com.google.common.collect.Multimaps.index;
 import static java.lang.Integer.parseInt;
@@ -73,7 +68,7 @@ public class ChannelUpdaterJob {
 
     @Transactional
     @Scheduled(cron = "0/30 * * * * *")
-    public void execute() throws JobExecutionException {
+    public void execute() {
         for (Map.Entry<VideoProvider, Collection<Channel>> channelsWithProvider : fetchAllChannels(channelRepository).entrySet()) {
             VideoProvider provider = channelsWithProvider.getKey();
             List<Tuple<String,String>> titleUrlCouples = channelName_URL(provider, channelsWithProvider.getValue());
