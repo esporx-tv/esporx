@@ -12,30 +12,30 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
 http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-	<context:component-scan base-package="tv.esporx" />
-	<context:annotation-config />
-	
-	<bean id="schedulerFactory" depends-on="liquibase" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
+    <context:component-scan base-package="tv.esporx" />
+    <context:annotation-config />
+    <tx:annotation-driven />
+    <task:annotation-driven />
 
-	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-	   <property name="validationMessageSource" ref="messageSource"/>
-	</bean>
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
 
-	<!-- entity manager -->
-	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="localizer">
-		<property name="dataSource" ref="dataSource" />
+    <!-- entity manager -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="localizer">
+        <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="tv.esporx.domain" />
         <property name="jpaDialect">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
         </property>
-		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="false" />
-				<property name="showSql" value="true" />
-				<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
-			</bean>
-		</property>
-	</bean>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="false" />
+                <property name="showSql" value="true" />
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+            </bean>
+        </property>
+    </bean>
 
 
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase" lazy-init="false">
@@ -45,13 +45,11 @@ http://www.springframework.org/schema/data/jpa http://www.springframework.org/sc
 
     <jpa:repositories base-package="tv.esporx.repositories" />
 
-	<!-- transaction manager -->
-	<bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
+    <!-- transaction manager -->
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
 
-	<tx:annotation-driven />
-    <task:annotation-driven />
 
 	<beans profile="default,cloud">
        <!-- data source definition -->

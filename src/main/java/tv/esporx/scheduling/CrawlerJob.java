@@ -16,10 +16,6 @@ import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-/**
- *
- */
-
 @Component
 @Lazy(false)
 public class CrawlerJob {
@@ -29,13 +25,13 @@ public class CrawlerJob {
     CrawledEventRepository crawledEventRepository;
 
     public CrawlerJob() {
-        LOGGER.info("started");
+        LOGGER.info("Crawler started");
     }
 
     @Transactional
     @Scheduled(cron = "0 * * * * *")
     public void runCrawledEventFetching() {
-        LOGGER.info("Starting updates for crawled events from team liquid...");
+        LOGGER.info("Starting updates for crawled events from TeamLiquid...");
         //crawledEventRepository.deleteAllWithJPQL();
         LOGGER.debug("Truncated crawled events table successfully");
         List<CrawledEvent> events = fetchCrawledEvents();

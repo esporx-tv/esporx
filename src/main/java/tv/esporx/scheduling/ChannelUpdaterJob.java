@@ -8,13 +8,18 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import tv.esporx.collections.functions.ByVideoProviderChannelIndexer;
 import tv.esporx.domain.Channel;
@@ -24,6 +29,7 @@ import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.scheduling.wrappers.TwitchTVChannelResponse;
 import tv.esporx.scheduling.wrappers.YoutubeChannelResponse;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -39,25 +45,35 @@ import static java.util.Arrays.asList;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
-public class ChannelUpdaterJob implements Job {
+@Lazy(false)
+public class ChannelUpdaterJob {
 	
     private static final String UPDATE_CHANNELS_QUERY = "UPDATE channels SET viewer_count = ?, viewer_count_timestamp = ? WHERE video_url = ?";
-	private static final Logger LOGGER = getLogger(ChannelUpdater.class);
+	private static final Logger LOGGER = getLogger(ChannelUpdaterJob.class);
     private final Map<String, Class<? extends ChannelResponse[]>> apiEndpointBatchResponseClassMapping;
     private final Map<String, Class<? extends ChannelResponse>> apiEndpointSingleResponseClassMapping;
 
-	public ChannelUpdaterJob() {
+    @Autowired
+    private ChannelRepository channelRepository;
+    @Autowired
+    private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
+
+    public ChannelUpdaterJob() {
 		apiEndpointBatchResponseClassMapping = new HashMap<String, Class<? extends ChannelResponse[]>>();
     	apiEndpointBatchResponseClassMapping.put("http://api.justin.tv/api/stream/list.json?channel={ID}", TwitchTVChannelResponse[].class);
         apiEndpointSingleResponseClassMapping = new HashMap<String, Class<? extends ChannelResponse>>();
         apiEndpointSingleResponseClassMapping.put("https://gdata.youtube.com/feeds/api/videos/{ID}?v=2&alt=json", YoutubeChannelResponse.class);
 	}
-	
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        JdbcTemplate jdbcTemplate = createJdbcTemplate(jobExecutionContext);
-        ChannelRepository channelRepository = retrieveChannelRepository(jobExecutionContext);
 
+    @PostConstruct
+    public void setJdbcTemplate() {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    @Transactional
+    @Scheduled(cron = "0/30 * * * * *")
+    public void execute() throws JobExecutionException {
         for (Map.Entry<VideoProvider, Collection<Channel>> channelsWithProvider : fetchAllChannels(channelRepository).entrySet()) {
             VideoProvider provider = channelsWithProvider.getKey();
             List<Tuple<String,String>> titleUrlCouples = channelName_URL(provider, channelsWithProvider.getValue());
@@ -70,15 +86,6 @@ public class ChannelUpdaterJob implements Job {
             }
         }
     }
-
-    private ChannelRepository retrieveChannelRepository(JobExecutionContext jobExecutionContext) {
-        return (ChannelRepository) jobExecutionContext.getMergedJobDataMap().get("channelDao");
-    }
-
-    private JdbcTemplate createJdbcTemplate(JobExecutionContext jobExecutionContext) {
-        return new JdbcTemplate((DataSource) jobExecutionContext.getMergedJobDataMap().get("dataSource"));
-    }
-
 
     private ChannelResponse[] getChannelResponsesPerProvider(VideoProvider provider, List<String> channelNames) {
         String endpointTemplate = provider.getEndpoint();
