@@ -70,8 +70,8 @@ public class ChannelControllerMappingIT {
                     .build();
     private static final Operation INSERT_PROVIDER =
             insertInto("video_providers")
-                .columns("id", "pattern", "template", "endpoint")
-                .values(ID, " ^(?:(?:https?)://)?(?:www.)?youtube.com/watch?(?:.*)v=([A-Za-z0-9._%-]{11}).*", "<iframe width=\"425\" height=\"349\" src=\"https://www.youtube.com/embed/{ID}\" frameborder=\"0\" allowfullscreen></iframe>", null)
+                .columns("id", "pattern", "template", "endpoint", "case_mode")
+                .values(ID, " ^(?:(?:https?)://)?(?:www.)?youtube.com/watch?(?:.*)v=([A-Za-z0-9._%-]{11}).*", "<iframe width=\"425\" height=\"349\" src=\"https://www.youtube.com/embed/{ID}\" frameborder=\"0\" allowfullscreen></iframe>", null, "INSENSITIVE")
                 .build();
     private static final Operation INSERT_CHANNELS =
             sequenceOf(
