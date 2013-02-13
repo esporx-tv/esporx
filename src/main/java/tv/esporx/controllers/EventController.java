@@ -1,5 +1,6 @@
 package tv.esporx.controllers;
 
+import org.slf4j.Logger;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -23,6 +24,7 @@ import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -32,6 +34,7 @@ import static tv.esporx.framework.time.DateTimeFormat.getDefaultDateFormat;
 @Controller
 public class EventController {
 
+    private static final Logger LOGGER = getLogger(EventController.class);
 	private static final String COMMAND = "eventCommand";
 	private final OccurrenceRepository occurrenceRepository;
     //this does not make too much sense to have both a repository and a service here
@@ -107,7 +110,8 @@ public class EventController {
 
     @ExceptionHandler({ TypeMismatchException.class, IllegalArgumentException.class })
     @ResponseStatus(value = NOT_FOUND)
-    public ModelAndView handleExceptionArray() {
+    public ModelAndView handleErrors(Exception exception) {
+        LOGGER.error(exception.getMessage(), exception);
         return new ModelAndView("channel/notFound");
     }
 

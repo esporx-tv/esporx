@@ -1,5 +1,6 @@
 package tv.esporx.controllers;
 
+import org.slf4j.Logger;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -28,6 +30,7 @@ import static tv.esporx.framework.mvc.ControllerUtils.notFound;
 @RequestMapping("/admin/slot")
 public class ConfigurableSlotController {
 
+    private static final Logger LOGGER = getLogger(ConfigurableSlotController.class);
 	private static final String COMMAND = "configurableSlotCommand";
 	private final ConfigurableSlotRepository repository;
     private final DomainClassConverter<?> entityConverter;
@@ -45,8 +48,9 @@ public class ConfigurableSlotController {
 	@ExceptionHandler({ TypeMismatchException.class,
 		IllegalArgumentException.class })
 	@ResponseStatus(value = NOT_FOUND)
-	public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
-		return new ModelAndView("channel/notFound");
+	public ModelAndView handleErrors(final Exception exception, final HttpServletRequest request) {
+        LOGGER.error(exception.getMessage(), exception);
+        return new ModelAndView("slot/notFound");
 	}
 
 

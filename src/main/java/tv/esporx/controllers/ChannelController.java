@@ -1,6 +1,7 @@
 package tv.esporx.controllers;
 
 import com.google.common.base.Function;
+import org.slf4j.Logger;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Iterables.transform;
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -38,7 +40,8 @@ import static tv.esporx.framework.time.DateTimeFormat.getDefaultDateFormat;
 @Controller
 public class ChannelController {
 
-	private static final String COMMAND = "channelCommand";
+    private static final Logger LOGGER = getLogger(ChannelController.class);
+    private static final String COMMAND = "channelCommand";
 	private final ChannelRepository repository;
 	private final VideoProviderRepository videoProviderRepository;
     private final DomainClassConverter<?> entityConverter;
@@ -124,7 +127,8 @@ public class ChannelController {
 
     @ExceptionHandler({ TypeMismatchException.class, IllegalArgumentException.class })
     @ResponseStatus(value = NOT_FOUND)
-    public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
+    public ModelAndView handleErrors(final Exception exception, final HttpServletRequest request) {
+        LOGGER.error(exception.getMessage(), exception);
         return new ModelAndView("channel/notFound");
     }
 

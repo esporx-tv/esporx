@@ -42,6 +42,4 @@ public class TimelineController {
         model.addObject("nextStart", toStartDay(start).plusDays(3).toDate().getTime());
         return model;
     }
-
-
 }

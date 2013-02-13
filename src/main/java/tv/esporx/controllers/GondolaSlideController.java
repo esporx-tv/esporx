@@ -1,5 +1,6 @@
 package tv.esporx.controllers;
 
+import org.slf4j.Logger;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -22,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -32,6 +34,7 @@ import static tv.esporx.framework.time.DateTimeFormat.getDefaultDateFormat;
 @RequestMapping("/admin/slide")
 public class GondolaSlideController {
 
+    private static final Logger LOGGER = getLogger(GondolaSlideController.class);
 	private static final String COMMAND = "gondolaSlideCommand";
 	private final GondolaSlideRepository repository;
     private final DomainClassConverter<?> entityConverter;
@@ -48,8 +51,9 @@ public class GondolaSlideController {
 
 	@ExceptionHandler(TypeMismatchException.class)
 	@ResponseStatus(value = NOT_FOUND)
-	public ModelAndView handleIllegalArguments(final TypeMismatchException exception, final HttpServletRequest request) {
-		return new ModelAndView("slide/notFound");
+	public ModelAndView handleErrors(final TypeMismatchException exception, final HttpServletRequest request) {
+        LOGGER.error(exception.getMessage(), exception);
+        return new ModelAndView("slide/notFound");
 	}
 
 	@RequestMapping(value = "/new", method = GET)
