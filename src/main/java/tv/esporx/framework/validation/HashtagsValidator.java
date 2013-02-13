@@ -8,6 +8,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.google.common.base.Objects.firstNonNull;
 import static com.google.common.collect.Iterables.any;
 
 public class HashtagsValidator implements ConstraintValidator<ValidHashtags, String> {
@@ -18,7 +19,7 @@ public class HashtagsValidator implements ConstraintValidator<ValidHashtags, Str
 
     @Override
     public boolean isValid(String hashtags, ConstraintValidatorContext constraintValidatorContext) {
-        if(hashtags.trim().isEmpty())
+        if(firstNonNull(hashtags, "").trim().isEmpty())
             return true;
         else {
             List<String> splitted = Arrays.asList(hashtags.split(","));

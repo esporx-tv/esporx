@@ -3,6 +3,8 @@ package tv.esporx.framework.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import static com.google.common.base.Objects.firstNonNull;
+
 public class TwitterIdValidator implements ConstraintValidator<ValidTwitterId, String> {
     @Override
     public void initialize(ValidTwitterId validTwitterId) {
@@ -10,7 +12,7 @@ public class TwitterIdValidator implements ConstraintValidator<ValidTwitterId, S
 
     @Override
     public boolean isValid(String twitterId, ConstraintValidatorContext constraintValidatorContext) {
-        String trimmed = twitterId.trim();
+        String trimmed = firstNonNull(twitterId, "").trim();
 
         if(trimmed.isEmpty()) {
             return true;
