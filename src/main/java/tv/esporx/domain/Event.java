@@ -59,7 +59,7 @@ public class Event {
 	}
 
     public String getTwitterHashtags() {
-        return firstNonNull(twitterHashtags, "");
+        return twitterHashtags;
     }
 
     public void setId(final Long id) {
@@ -77,7 +77,7 @@ public class Event {
 	}
 
     public void setTwitterHashtags(String twitterHashtags) {
-        String hashtagSequence = firstNonNull(twitterHashtags, null);
+        String hashtagSequence = firstNonNull(twitterHashtags, "");
         List<String> stringList = transform(asList(hashtagSequence.split(",")), new Trimmer());
         this.twitterHashtags = Joiner.on(',').join(stringList);
     }
