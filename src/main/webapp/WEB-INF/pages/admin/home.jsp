@@ -31,6 +31,7 @@
                             <li class="adminName"><a href="#showSlots">Configurable Slot</a></li>
                             <li class="adminName"><a href="#showEvents">Event</a></li>
                             <li class="adminName"><a href="#showChannels">Channel</a></li>
+                            <li class="adminName"><a href="#showCrawled">Crawled</a></li>
                         </ul>
 						<div id="showSlides">
 							<div class="adminInfos">
@@ -111,6 +112,38 @@
 											<a href="<c:url value="/admin/channel/edit/${channel.id}" />">Edit</a>
 										</div>
 									</c:forEach>
+								</div>
+								<ul>
+									<li>
+										<a href="/admin/channel/new">[+] Add a channel</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div id="showCrawled">
+							<div class="adminInfos">
+								<div id="crawledChannelsList" >
+								    <div class="channelBox">
+								        <table>
+								            <c:forEach var="crawledChannel" items="${crawledChannels}">
+								            <tr>
+											    <td><c:out value="${crawledChannel.name}" /></td>
+											    <td><c:out value="${crawledChannel.link}" /></td>
+											    <td><form class="formChannel" action="/admin/channel/remove" method="POST">
+												    <input name="id" type="hidden" value="12" />
+												    <div class="submit">
+													<input class="send" name="send" type="submit" value="Remove" />
+												    </div>
+											    </form></td>
+											    <td>
+											        <div class="submit">
+											        <a class="send" href="<c:url value="/admin/channel/edit/1" />">Edit</a>
+											        </div>
+											    </td>
+											</tr>
+											</c:forEach>
+										</table>
+									</div>
 								</div>
 								<ul>
 									<li>

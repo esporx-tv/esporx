@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.conversion.VideoProviderConverter;
 import tv.esporx.domain.Channel;
+import tv.esporx.domain.CrawledChannel;
 import tv.esporx.domain.remote.JsonChannel;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.VideoProviderRepository;
@@ -39,9 +40,8 @@ import static tv.esporx.framework.time.DateTimeFormat.getDefaultDateFormat;
 
 @Controller
 public class ChannelController {
-
     private static final Logger LOGGER = getLogger(ChannelController.class);
-    private static final String COMMAND = "channelCommand";
+	private static final String COMMAND = "channelCommand";
 	private final ChannelRepository repository;
 	private final VideoProviderRepository videoProviderRepository;
     private final DomainClassConverter<?> entityConverter;
@@ -110,7 +110,16 @@ public class ChannelController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/admin/channel/new", method = GET)
+    @RequestMapping(value = "/admin/channel/new/crawled_{crawledChannelCommand}", method = GET)
+    public ModelAndView creationFromCrawler(final ModelAndView modelAndView,
+                                            @PathVariable final CrawledChannel crawledChannelCommand) {
+        Channel channel = crawledChannelCommand.toChannel();
+        modelAndView.addObject(COMMAND, channel);
+        return populatedChannelForm(modelAndView);
+    }
+
+
+    @RequestMapping(value = "/admin/channel/new", method = GET)
 	public ModelAndView creation(final ModelAndView modelAndView) {
 		Channel channel = new Channel();
 		channel.setVideoUrl("http://");
@@ -118,7 +127,9 @@ public class ChannelController {
 	}
 
 	@RequestMapping(value = "/admin/channel/edit/{channelCommand}", method = GET)
-	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Channel channelCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
+	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Channel channelCommand,
+                                final HttpServletResponse response,
+                                final ModelAndView modelAndView) {
 		if (channelCommand == null) {
 			return notFound(response, "channel/notFound");
 		}
@@ -127,7 +138,11 @@ public class ChannelController {
 
     @ExceptionHandler({ TypeMismatchException.class, IllegalArgumentException.class })
     @ResponseStatus(value = NOT_FOUND)
+<<<<<<< HEAD
     public ModelAndView handleErrors(final Exception exception, final HttpServletRequest request) {
+=======
+    public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
+>>>>>>> adding form for creating channels from crawled channels
         LOGGER.error(exception.getMessage(), exception);
         return new ModelAndView("channel/notFound");
     }

@@ -2,6 +2,7 @@ package tv.esporx.domain;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 
@@ -11,7 +12,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  *
  */
 @Entity
-@Table(name = "crawler_events")
+@Table(name = "crawler_channels")
 public class CrawledChannel {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -118,5 +119,16 @@ public class CrawledChannel {
         result = 31 * result + (numViewers != null ? numViewers.hashCode() : 0);
         result = 31 * result + (isImported ? 1 : 0);
         return result;
+    }
+
+    public Channel toChannel() {
+        Channel channel = new Channel();
+        channel.setTitle(this.getName());
+        channel.setVideoUrl(this.getLink());
+        if (this.getNumViewers() != null) {
+            channel.setViewerCount(this.getNumViewers().intValue());
+            channel.setViewerCountTimestamp(DateTime.now());
+        }
+        return channel;
     }
 }
