@@ -54,6 +54,16 @@
                     </div>
 
                     <div class="input">
+                        <spring:message code="event.submission.twitter_id.placeholder"
+                                        var="twitterIdPlaceholder" />
+                        <form:label path="twitterId" title="${twitterIdPlaceholder}">
+                            <spring:message code="event.submission.twitter_id" />
+                        </form:label>
+                        <form:input path="twitterId" placeholder="${twitterIdPlaceholder}" />
+                        <form:errors path="twitterId" cssClass="errors" />
+                    </div>
+
+                    <div class="input">
                         <spring:message code="event.submission.twitter_hashtag.placeholder"
                                         var="twitterHashtagPlaceholder" />
                         <form:label path="twitterHashtags" title="${twitterHashtagPlaceholder}">

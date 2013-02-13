@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import tv.esporx.collections.functions.Trimmer;
 import tv.esporx.framework.string.MarkupKiller;
 import tv.esporx.framework.validation.ValidHashtags;
+import tv.esporx.framework.validation.ValidTwitterId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,6 +42,9 @@ public class Event {
     @ValidHashtags
     @Column(name = "hashtags")
     private String twitterHashtags = "";
+    @ValidTwitterId
+    @Column(name = "twitter_id")
+    private String twitterId = "";
 
 	public String getDescription() {
 		return description;
@@ -62,6 +66,10 @@ public class Event {
         return twitterHashtags;
     }
 
+    public String getTwitterId() {
+        return twitterId;
+    }
+
     public void setId(final Long id) {
         this.id = id;
     }
@@ -80,6 +88,11 @@ public class Event {
         String hashtagSequence = firstNonNull(twitterHashtags, "");
         List<String> stringList = transform(asList(hashtagSequence.split(",")), new Trimmer());
         this.twitterHashtags = Joiner.on(',').join(stringList);
+    }
+
+    public void setTwitterId(String twitterId) {
+        String twitterIdSequence = firstNonNull(twitterId, "");
+        this.twitterId = twitterIdSequence.trim();
     }
 
     public boolean isHighlighted() {

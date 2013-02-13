@@ -23,4 +23,5 @@
     <include file="create_crawler_tables.xml" relativeToChangelogFile="true" />
     <include file="add_youtube_api_endpoint.xml" relativeToChangelogFile="true" />
     <include file="add_case_mode_for_video_providers.xml" relativeToChangelogFile="true" />
+    <include file="add_twitter_id_to_events.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
