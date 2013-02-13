@@ -138,11 +138,7 @@ public class ChannelController {
 
     @ExceptionHandler({ TypeMismatchException.class, IllegalArgumentException.class })
     @ResponseStatus(value = NOT_FOUND)
-<<<<<<< HEAD
     public ModelAndView handleErrors(final Exception exception, final HttpServletRequest request) {
-=======
-    public ModelAndView handleExceptionArray(final Exception exception, final HttpServletRequest request) {
->>>>>>> adding form for creating channels from crawled channels
         LOGGER.error(exception.getMessage(), exception);
         return new ModelAndView("channel/notFound");
     }
