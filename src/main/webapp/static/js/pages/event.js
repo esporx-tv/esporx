@@ -42,7 +42,7 @@ define([
                 } else {
                     var pattern = str.replace(",", " OR "),
                         that = this;
-                    twitterlib.search(pattern, {limit: 10}, function(tweets, options) {
+                    twitterlib.search(pattern, {limit: 10}, function(tweets) {
                         that.displayTweets(tweets);
                     });
                 }

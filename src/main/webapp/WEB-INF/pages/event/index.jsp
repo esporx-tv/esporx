@@ -32,10 +32,10 @@
 		<p id="eventDescription">
 			<c:out value="${event.description}" escapeXml="false" />
 		</p>
-        <h3>Tweets</h3>
-        <div id="tweets">
-            <ul></ul>
-        </div>
+
+        <c:import url="/WEB-INF/pages/include/tweetWall.jsp">
+            <c:param name="query" value="${event.twitterSearch}" />
+        </c:import>
 
 		<h3>TODO?</h3>
 		<ul>

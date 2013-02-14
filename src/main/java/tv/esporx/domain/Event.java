@@ -104,9 +104,14 @@ public class Event {
     }
 
     public String getTwitterSearch() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(twitterHashtags).append(",").append(twitterId);
-        return builder.toString();
+        String twitterId = firstNonNull(this.twitterId, "");
+        String twitterHashtags = firstNonNull(this.twitterHashtags, "");
+        boolean bothEmpty = (twitterHashtags != "" && twitterId != "");
+        return new StringBuilder()
+            .append(firstNonNull(twitterHashtags, ""))
+            .append(bothEmpty ? "," : "")
+            .append(firstNonNull(twitterId, ""))
+            .toString();
     }
 
     @Override

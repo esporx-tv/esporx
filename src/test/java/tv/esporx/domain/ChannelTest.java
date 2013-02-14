@@ -51,4 +51,11 @@ public class ChannelTest {
 	public void when_setting_null_title_then_throws_exception() {
 		channel.setTitle(null);
 	}
+
+    @Test
+    public void should_return_empty_twitter_search_query_when_both_id_and_tags_are_null() {
+        channel.setTwitterId(null);
+        channel.setTwitterHashtags(null);
+        assertThat(channel.getTwitterSearch()).isEqualTo("");
+    }
 }

@@ -56,10 +56,9 @@
 									</c:otherwise>
 								</c:choose></li>
 						</ul>
-                        <h3>Tweets</h3>
-                        <div id="tweets">
-                            <ul></ul>
-                        </div>
+                        <c:import url="/WEB-INF/pages/include/tweetWall.jsp">
+                            <c:param name="query" value="${channel.twitterSearch}" />
+                        </c:import>
 					</div>
 				</div>
 			</c:otherwise>

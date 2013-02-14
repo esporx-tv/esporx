@@ -45,4 +45,11 @@ public class EventTest {
 	public void when_setting_null_title_then_throws_exception() {
 		event.setTitle(null);
 	}
+
+    @Test
+    public void should_return_empty_twitter_search_query_when_both_id_and_tags_are_null() {
+        event.setTwitterId(null);
+        event.setTwitterHashtags(null);
+        assertThat(event.getTwitterSearch()).isEqualTo("");
+    }
 }
