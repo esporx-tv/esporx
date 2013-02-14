@@ -35,7 +35,7 @@ public class AdminController {
         this.eventRepository = eventRepository;
     }
 
-	@RequestMapping(value = "/home", method = GET)
+	@RequestMapping(value = {"/home", ""}, method = GET)
 	public ModelAndView home(final Principal principal) {
 		ModelMap model = new ModelMap();
         if (hasName(principal)) {
