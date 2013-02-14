@@ -1,13 +1,9 @@
-/*global twitterlib: true*/
 define([
     "jquery",
     "lib/logger",
     "lib/sanityChecker",
-    "lib/handlebarsHelper",
-    "text!tpl/tweet.tpl",
-    "underscore",
-    "ext/twitterlib",
-    "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, templateHelper, tweetTemplate, _) {
+    "lib/twitterHelper",
+    "ext/ckeditor/ckeditor_basic"], function($, logger, sanityChecker, twitterHelper) {
 
         "use strict";
 
@@ -26,26 +22,8 @@ define([
                     logger.debug('... done!');
                 }
             },
-            displayTweets: function(tweets) {
-                var htmlTweets = $("#tweets ul");
-                _.map(tweets, function(tweet) {
-                    var html = $(templateHelper.template(tweetTemplate, {
-                        "from_user": tweet.from_user,
-                        "text": tweet.text
-                    }));
-                    htmlTweets.append(html);
-                });
-            },
-            fetchTweets: function(str) {
-                if(typeof str === "undefined" || str.length === 0) {
-                    return;
-                } else {
-                    var pattern = str.replace(",", " OR "),
-                        that = this;
-                    twitterlib.search(pattern, {limit: 10}, function(tweets) {
-                        that.displayTweets(tweets);
-                    });
-                }
+            fetchTweets: function(accountId, search) {
+                twitterHelper.tweetWall(accountId, search);
             }
         };
     });

@@ -15,7 +15,10 @@
     <script type="text/javascript">
         require(['jquery', 'pages/event'], function($, event) {
             $(document).ready(function() {
-                event.fetchTweets("<c:out value="${event.twitterSearch}" />");
+                event.fetchTweets(
+                    "<c:out value="${event.twitterId}" />",
+                    "<c:out value="${event.twitterSearch}" />"
+                );
                 $(document.body).fadeTo('fast', 1);
             });
         });

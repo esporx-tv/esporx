@@ -15,7 +15,9 @@
     <script type="text/javascript">
         require(['jquery', 'pages/channel'], function($, channel) {
             $(document).ready(function(){
-                channel.fetchTweets("<c:out value="${channel.twitterSearch}" />");
+                channel.fetchTweets(
+                    "<c:out value="${channel.twitterId}" />",
+                    "<c:out value="${channel.twitterSearch}" />");
                 $(document.body).fadeTo('fast', 1);
             });
         });

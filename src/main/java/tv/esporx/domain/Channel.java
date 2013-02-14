@@ -152,13 +152,8 @@ public class Channel {
     }
 
     public String getTwitterSearch() {
-        String twitterId = firstNonNull(this.twitterId, "");
-        String twitterHashtags = firstNonNull(this.twitterHashtags, "");
-        boolean bothNotEmpty = (twitterHashtags != "" && twitterId != "");
         return new StringBuilder()
             .append(firstNonNull(twitterHashtags, ""))
-            .append(bothNotEmpty ? "," : "")
-            .append(firstNonNull(twitterId, ""))
             .toString();
     }
 
