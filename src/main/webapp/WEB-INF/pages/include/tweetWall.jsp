@@ -2,7 +2,7 @@
 <h3>Tweets</h3>
 <div id="tweets">
     <c:choose>
-        <c:when test="${param.query ne ''}">
+        <c:when test="${param.query ne '' || param.accountId ne ''}">
             <ul></ul>
         </c:when>
         <c:otherwise>

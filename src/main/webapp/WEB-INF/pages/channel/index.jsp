@@ -60,6 +60,7 @@
 						</ul>
                         <c:import url="/WEB-INF/pages/include/tweetWall.jsp">
                             <c:param name="query" value="${channel.twitterSearch}" />
+                            <c:param name="accountId" value="${channel.twitterId}" />
                         </c:import>
 					</div>
 				</div>

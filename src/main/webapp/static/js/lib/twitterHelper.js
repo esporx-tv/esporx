@@ -2,11 +2,12 @@
 define([
     "jquery",
     "lib/logger",
+    "lib/stringUtils",
     "lib/handlebarsHelper",
     "text!tpl/tweet.tpl",
     "underscore",
     "ext/async",
-    "ext/twitterlib"], function($, logger, templateHelper, tweetTemplate, _, async) {
+    "ext/twitterlib"], function($, logger, stringUtils, templateHelper, tweetTemplate, _, async) {
 
     var displayTweets = function(tweets) {
         var htmlTweets = $("#tweets ul");
@@ -17,24 +18,21 @@ define([
             }));
             htmlTweets.append(html);
         });
-    }, isEmpty = function(string) {
-        if (string === undefined || string === null || string.length === 0) {
-            return;
-        }
     };
 
     return {
         tweetWall: function(accountId, searchQuery) {
             var limit = {limit: 10};
-            if (isEmpty(searchQuery) && isEmpty(accountId)) {
+            if (stringUtils.isEmpty(searchQuery) && stringUtils.isEmpty(accountId)) {
                 return;
             } else {
                 async.parallel([
                     function(callback) {
-                        if (isEmpty(searchQuery)) {
+                        if (stringUtils.isEmpty(searchQuery)) {
                             callback(null, []);
                         }
                         else {
+                            logger.debug("About to fetch tweets matching: " + searchQuery);
                             var pattern = searchQuery.replace(",", " OR ");
                             twitterlib.search(pattern, limit, function(tweets) {
                                 callback(null, tweets);
@@ -42,10 +40,11 @@ define([
                         }
                     },
                     function(callback) {
-                        if (isEmpty(accountId)) {
+                        if (stringUtils.isEmpty(accountId)) {
                             callback(null, []);
                         }
                         else {
+                            logger.debug("About to fetch tweets from: " + accountId);
                             twitterlib.timeline(accountId, limit, function(tweets) {
                                 callback(
                                     null,
@@ -57,7 +56,7 @@ define([
                             });
                         }
                     }
-                ], function(err, results){
+                ], function(err, results) {
                     var tweets = _.sortBy(
                         _.union(results[0], results[1]),
                         function(tweet) {

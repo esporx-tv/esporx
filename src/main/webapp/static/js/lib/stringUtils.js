@@ -12,6 +12,9 @@ define([], function() {
             result = atoms.slice(0,1);
             result.push(atoms.slice(1).join(delimiter));
             return result;
+        },
+        isEmpty: function(string) {
+            return (string === undefined || string === null || string.length === 0);
         }
     };
 });

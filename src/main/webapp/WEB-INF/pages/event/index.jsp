@@ -38,6 +38,7 @@
 
         <c:import url="/WEB-INF/pages/include/tweetWall.jsp">
             <c:param name="query" value="${event.twitterSearch}" />
+            <c:param name="accountId" value="${event.twitterId}" />
         </c:import>
 
 		<h3>TODO?</h3>
