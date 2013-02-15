@@ -26,4 +26,5 @@
     <include file="add_twitter_id_to_events.xml" relativeToChangelogFile="true" />
     <include file="add_twitter_hashtags_to_channels.xml" relativeToChangelogFile="true" />
     <include file="add_twitter_id_to_channels.xml" relativeToChangelogFile="true" />
+    <include file="add_dailymotion_api_endpoint.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

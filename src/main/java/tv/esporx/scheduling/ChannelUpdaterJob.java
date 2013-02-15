@@ -22,6 +22,7 @@ import tv.esporx.domain.Channel;
 import tv.esporx.domain.VideoProvider;
 import tv.esporx.framework.collection.Tuple;
 import tv.esporx.repositories.ChannelRepository;
+import tv.esporx.scheduling.wrappers.DailymotionChannelResponse;
 import tv.esporx.scheduling.wrappers.TwitchTVChannelResponse;
 import tv.esporx.scheduling.wrappers.YoutubeChannelResponse;
 
@@ -59,6 +60,7 @@ public class ChannelUpdaterJob {
     	apiEndpointBatchResponseClassMapping.put("http://api.justin.tv/api/stream/list.json?channel={ID}", TwitchTVChannelResponse[].class);
         apiEndpointSingleResponseClassMapping = new HashMap<String, Class<? extends ChannelResponse>>();
         apiEndpointSingleResponseClassMapping.put("https://gdata.youtube.com/feeds/api/videos/{ID}?v=2&alt=json", YoutubeChannelResponse.class);
+        apiEndpointSingleResponseClassMapping.put("https://api.dailymotion.com/video/{ID}?fields=id,views_last_hour", DailymotionChannelResponse.class);
 	}
 
     @PostConstruct

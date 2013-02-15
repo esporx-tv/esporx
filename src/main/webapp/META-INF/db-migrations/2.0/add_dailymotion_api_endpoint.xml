@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="add_dailymotion_api_endpoint" author="esporx_dev">
+        <sql endDelimiter=";"><![CDATA[
+        UPDATE `video_providers` SET endpoint = 'https://api.dailymotion.com/video/{ID}?fields=id,views_last_hour' WHERE `pattern` = '^(?:(?:https?)://)?(?:www.)?dailymotion.com/video/([a-zA-Z0-9]+)_.*';
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>
