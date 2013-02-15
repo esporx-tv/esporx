@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="remove_previous_user_table" author="esporx_dev">
+        <dropTable tableName="user" />
+    </changeSet>
+
+    <changeSet id="create_authentication_tables" author="esporx_dev">
+        <createTable tableName="users">
+            <column name="id" type="integer">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="u_user_email" />
+            </column>
+            <column name="password" type="CHAR(80)">
+                <constraints nullable="false" uniqueConstraintName="u_user_email" />
+            </column>
+        </createTable>
+
+        <createTable tableName="roles">
+            <column name="id" type="integer">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="role" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="u_role_role" />
+            </column>
+        </createTable>
+
+        <createTable tableName="users_roles">
+            <column name="user_id" type="integer" />
+            <column name="role_id" type="integer" />
+        </createTable>
+
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=InnoDB DEFAULT CHARSET=utf8;"/>
+        </modifySql>
+    </changeSet>
+
+    <changeSet id="add_constraints_on_role_user_join_table" author="esporx_dev">
+        <addPrimaryKey tableName="users_roles" columnNames="user_id,role_id" />
+
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="user_id"
+                                 constraintName="fk_users_roles_user"
+                                 referencedTableName="users" referencedColumnNames="id" />
+
+        <addForeignKeyConstraint baseTableName="users_roles" baseColumnNames="role_id"
+                                 constraintName="fk_users_roles_role"
+                                 referencedTableName="roles" referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="add_role_and_user_auto_increment" author="esporx_dev">
+        <addAutoIncrement tableName="users" columnName="id" columnDataType="integer" />
+        <addAutoIncrement tableName="roles" columnName="id" columnDataType="integer" />
+    </changeSet>
+
+    <changeSet id="store_roles" author="esporx_dev">
+        <insert tableName="roles">
+            <column name="role" value="ROLE_ADMIN" />
+        </insert>
+        <insert tableName="roles">
+            <column name="role" value="ROLE_USER" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_admin_account" author="esporx_dev">
+        <sql endDelimiter=";"><![CDATA[
+        INSERT INTO `users` (`email`,`password`) VALUES
+            ('florent.biville@esporx.com', 'af5db0cb7085a3d782eb28b940277cf253b20104763074ec7904a8bc3770d5ca19dbc2c374948f47'),
+            ('guillaume.hurbault@esporx.com', '6d211570d9a8bc74f8c964bb5883a010f3d0c3fd3b759218a3e9f620f0b660b008fc539f68d30e22'),
+            ('jeremy.hagnere@esporx.com', 'dcb06cf56326c211d58be4ad65e16ae0870937f3bc6020e9c4642cfe53e6bd1bc94b518d43c54f73'),
+            ('bob.dalm@esporx.com', 'ce101ec56a62a54838b044f07cc6175aab6ca72ec6868e2b4a368aab321b7af7b234ff5a7b5bda3f'),
+            ('samuel.jamier@esporx.com', '2a7724e4e697b7cd19df92f96628b9e1ae956dd3df538490d6d8d6420e51ea1c8b136a62069d8a67'),
+            ('adele.hurbault@gmail.com', '48f78ab27bcc8c2ea67bcd7eb6250184c96de73404ada9b42e2cdc786d10fdc3b143f65155a9bb16'),
+            ('n.rey@lateral-thoughts.com', '7527f4b4f0592e0cbb86c9df4125822450abed35983b5f3a6945819b64aa352277a0244ddd72f22a'),
+            ('o.girardot@lateral-thoughts.com', '66239f42313260feac1dbb53726942b7b6e08a54dbecc3fe3bb8dac0f7fab42bd1eabc24cbe55043');
+
+        INSERT INTO `users_roles` (`user_id`, `role_id`) SELECT u.id, 1 FROM `users` u;
+        INSERT INTO `users_roles` (`user_id`, `role_id`) SELECT u.id, 2 FROM `users` u;
+    ]]></sql>
+    </changeSet>
+</databaseChangeLog>
