@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import tv.esporx.repositories.VideoProviderRepository;
 
 @Controller
-@RequestMapping("/video")
+@RequestMapping
 public class VideoController {
 
 	private final VideoProviderRepository videoProviderRepository;
@@ -18,7 +18,7 @@ public class VideoController {
         this.videoProviderRepository = videoProviderRepository;
     }
 
-	@RequestMapping("/matchProvider")
+	@RequestMapping("/admin/video/matchProvider")
 	@ResponseBody
 	public String matchProvider(@RequestParam final String url) {
 		return "" + videoProviderRepository.isValid(url);

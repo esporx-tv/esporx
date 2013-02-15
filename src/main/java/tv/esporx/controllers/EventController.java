@@ -69,7 +69,7 @@ public class EventController {
         return new ModelAndView("event/list", model);
     }
 
-    @RequestMapping(value = "/event/{id}/occurrences", method = GET)
+    @RequestMapping(value = "/admin/event/{id}/occurrences", method = GET)
     @ResponseBody
     public Collection<Occurrence> getOccurrences(@PathVariable("id") Event event) {
         checkNotNull(event, "Not a valid id");

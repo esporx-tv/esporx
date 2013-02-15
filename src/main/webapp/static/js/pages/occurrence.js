@@ -12,12 +12,12 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         closeButtonClass = ".close",
         hasErrors = false,
         frequencyTypes = [],
-        frequencyUrl = '/frequencyTypes',
         channels = [],
         maxLoop = 0,
-        channelUrl = '/channel/all',
-        eventOccurrencesUrl = '/event/{ID}/occurrences',
-        deleteOccurrenceUrl = '/occurrence/{ID}',
+        frequencyUrl = '/admin/frequencyTypes',
+        channelUrl = '/admin/channels',
+        eventOccurrencesUrl = '/admin/event/{ID}/occurrences',
+        deleteOccurrenceUrl = '/admin/occurrence/{ID}',
         occurrencePostUrl = '/admin/occurrence',
 
         retrieveFrequencyTypes = function() {
@@ -38,32 +38,32 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                 var parent = $(element).parent(occurrenceContainerClass),
                     occurrenceId = $('.occurrenceId', parent).val();
                 if (occurrenceId !== null && occurrenceId !== '') {
-                     noty({text: 'Do you really want to delete this occurrence', type: 'confirm', theme: 'defaultTheme', layout: 'center', dismissQueue: false,
-                     buttons: [
-                         {addClass: 'btn btn-primary', text: 'Ok', onClick: function($noty) {
-                            deleteOccurrenceUrl = deleteOccurrenceUrl.replace('{ID}', occurrenceId);
-                            $.ajax(deleteOccurrenceUrl, {
-                                type: 'DELETE'
-                            })
-                            .done(function(data) {
-                                if (data === "OK") {
-                                    $(parent).remove();
-                                    $noty.close();
-                                    noty({text: 'Deleted occurrence with ID :' + occurrenceId, type: 'success', theme: 'defaultTheme', layout: 'center'});
-                                }
-                                else {
-                                    $noty.close();
-                                    noty({text: 'Problem occurred while trying to delete occurrence with ID :' + occurrenceId, type: 'error', theme: 'defaultTheme', layout: 'center'});
-                                }
-                            });
-                           }
-                         },
-                         {addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
-                             $noty.close();
-                           }
-                         }
-                       ]
-                     });
+                    noty({text: 'Do you really want to delete this occurrence', type: 'confirm', theme: 'defaultTheme', layout: 'center', dismissQueue: false,
+                        buttons: [
+                            {addClass: 'btn btn-primary', text: 'Ok', onClick: function($noty) {
+                                deleteOccurrenceUrl = deleteOccurrenceUrl.replace('{ID}', occurrenceId);
+                                $.ajax(deleteOccurrenceUrl, {
+                                    type: 'DELETE'
+                                })
+                                    .done(function(data) {
+                                        if (data === "OK") {
+                                            $(parent).remove();
+                                            $noty.close();
+                                            noty({text: 'Deleted occurrence with ID :' + occurrenceId, type: 'success', theme: 'defaultTheme', layout: 'center'});
+                                        }
+                                        else {
+                                            $noty.close();
+                                            noty({text: 'Problem occurred while trying to delete occurrence with ID :' + occurrenceId, type: 'error', theme: 'defaultTheme', layout: 'center'});
+                                        }
+                                    });
+                            }
+                            },
+                            {addClass: 'btn btn-danger', text: 'Cancel', onClick: function($noty) {
+                                $noty.close();
+                            }
+                            }
+                        ]
+                    });
                 } else {
                     $(parent).remove();
                 }
@@ -75,16 +75,16 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
             }
             return _.reduce(myArray, function(prev, id){ return prev + ',' + id;}, '').substring(1);
         },
-		insertOccurrence = function(loop, frequencyTypes, channels, selectedFrequencyType, selectedChannels, selectedStartDate, selectedEndDate, id) {
+        insertOccurrence = function(loop, frequencyTypes, channels, selectedFrequencyType, selectedChannels, selectedStartDate, selectedEndDate, id) {
             selectedStartDate = dateUtils.formatDate(selectedStartDate, 'dd/MM/yyyy HH:mm');
-			selectedEndDate = dateUtils.formatDate(selectedEndDate, 'dd/MM/yyyy HH:mm');
+            selectedEndDate = dateUtils.formatDate(selectedEndDate, 'dd/MM/yyyy HH:mm');
             selectedFrequencyType = selectedFrequencyType || [];
-			selectedChannels = selectedChannels || [];
+            selectedChannels = selectedChannels || [];
             logger.debug('adding 1 occurrence...');
-            
+
             frequencyTypes.__selected__ = [selectedFrequencyType];
             channels.__selected__ = selectedChannels;
-            
+
             submitInput.before(
                 templateHelper.template(eventTemplate, {
                     icon : $.withBaseImgUrl("close-icon.gif"),
@@ -101,23 +101,23 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
             logger.debug('... done!');
         },
         observeEventChange = function() {
-			$(eventSelectId).change(function() {
-				var i,
-					occurrence,
-					eventId = $(eventSelectId).val(),
-				url = eventOccurrencesUrl.replace('{ID}', eventId);
-				$(occurrenceContainerClass).remove();
-				if (eventId !== '') {
-					$.getJSON(url, function(data) {
-						maxLoop = 0;
-						for(i = 0; i < data.length; i++) {
-							occurrence = data[i];
-							insertOccurrence(maxLoop++, frequencyTypes, channels, occurrence.frequencyType, _.map(occurrence.channels, simplifyChannel), occurrence.startDate, occurrence.endDate, occurrence.id);
-						}
-					});
-				}
-			});
-		},
+            $(eventSelectId).change(function() {
+                var i,
+                    occurrence,
+                    eventId = $(eventSelectId).val(),
+                    url = eventOccurrencesUrl.replace('{ID}', eventId);
+                $(occurrenceContainerClass).remove();
+                if (eventId !== '') {
+                    $.getJSON(url, function(data) {
+                        maxLoop = 0;
+                        for(i = 0; i < data.length; i++) {
+                            occurrence = data[i];
+                            insertOccurrence(maxLoop++, frequencyTypes, channels, occurrence.frequencyType, _.map(occurrence.channels, simplifyChannel), occurrence.startDate, occurrence.endDate, occurrence.id);
+                        }
+                    });
+                }
+            });
+        },
         observeSubmit = function() {
             $('#occurrenceCommand').submit(function(event) {
                 _.each($(occurrenceContainerClass), function(item) {
@@ -156,7 +156,6 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                         valid.push($('.channels', item).first());
                     }
 
-                    logger.debug(errors, valid);
                     if (errors.length > 0) {
                         _.each(errors, function(element) {
                             $(element).css('border','1px solid red');
@@ -177,12 +176,12 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                                 eventId:eventId
                             }
                         }).done(function (result) {
-                            var id = parseInt(result, 10);
-                            if(!isNaN(id)) {
-                                noty({text: 'Saved occurrence with ID :' + id, theme: 'defaultTheme', layout: 'bottomRight'});
-                                $('.occurrenceId', item).first().val(id);
-                            }
-                        });
+                                var id = parseInt(result, 10);
+                                if(!isNaN(id)) {
+                                    noty({text: 'Saved occurrence with ID :' + id, theme: 'defaultTheme', layout: 'bottomRight'});
+                                    $('.occurrenceId', item).first().val(id);
+                                }
+                            });
                     }
                 });
                 event.stopPropagation();

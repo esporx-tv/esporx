@@ -71,7 +71,7 @@ public class ChannelController {
         return new ModelAndView("channel/index", model);
     }
 
-    @RequestMapping(value = "/channel/all", method = GET)
+    @RequestMapping(value = "/admin/channels", method = GET)
     @ResponseBody
     public Iterable<JsonChannel> retrieveChannels() {
         return transform(repository.findAll(), new Function<Channel, JsonChannel>() {

@@ -12,7 +12,7 @@ import static com.google.common.collect.Iterables.transform;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
-@RequestMapping(value = "/frequencyTypes")
+@RequestMapping
 public class FrequencyTypeController {
 
     private final FrequencyTypeRepository repository;
@@ -23,7 +23,7 @@ public class FrequencyTypeController {
     }
 
 
-    @RequestMapping(method = GET)
+    @RequestMapping(value = "/admin/frequencyTypes", method = GET)
     @ResponseBody
     public Iterable<String> retrieveFrequencyTypes() {
         return transform(repository.findAll(), new Function<FrequencyType, String>() {

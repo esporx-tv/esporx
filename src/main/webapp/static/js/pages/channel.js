@@ -17,7 +17,7 @@ define([
         videoProviderInputElementId = "#provider",
         supportedUrlClass = 'supportedUrl',
         unsupportedUrlClass = 'unsupportedUrl',
-        findVideoProviderUrl = '/video/matchProvider',
+        findVideoProviderUrl = '/admin/video/matchProvider',
         hasErrors = false,
         input,
         request,
@@ -61,7 +61,7 @@ define([
             if(url !== '' && url !== 'http://') {
                 checkProvider(videoUrlInputElementId);
             }
-            $urlInput.focusout(function(event) {
+            $urlInput.focusout(function() {
                 checkProvider(videoUrlInputElementId);
             });
         };
