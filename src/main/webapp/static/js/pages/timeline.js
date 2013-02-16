@@ -18,11 +18,13 @@ define([
             } else {
                 logger.debug('Initializing game filter...');
                 $(filterId).bind("change", function() {
-                    var selectedGameId = parseInt($(filterId).val(), 10),
-                        allOccurrences = $("article[data-game]");
+                    var selectedGameIds = _.map($(filterId).val(), function(gameId) {
+                        return parseInt(gameId, 10);
+                    }),
+                    allOccurrences = $("article[data-game]");
 
                     _.map(allOccurrences, function(occ) {
-                        if(selectedGameId === -1 || $(occ).data("game") === selectedGameId) {
+                        if(_.indexOf(selectedGameIds, $(occ).data("game")) !== -1) {
                             $(occ).show();
                         } else {
                             $(occ).hide();

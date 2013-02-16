@@ -28,8 +28,7 @@
 			<div id="catContent">
                 <form action="">
                     <label id="gameFilterLabel" for="gameFilter">Select a game</label>
-                    <select id="gameFilter">
-                        <option value="-1">All</option>
+                    <select id="gameFilter" multiple="true">
                         <c:forEach var="game" items="${games}">
                             <option value="<c:out value="${game.id}" />">
                                 <c:out value="${game.title}" />
