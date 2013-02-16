@@ -14,7 +14,7 @@
             <c:if test="${param.query ne ''}">
                 <p>
                     Search
-                    <a href="http://twitter.com/search?q=<c:out value='${fn:replace(param.query, "#", "%23")}' />">
+                    <a href="http://twitter.com/search?q=<c:out value='${fn:replace(fn:replace(param.query, ",", "%20OR%20"), "#", "%23")}' />">
                         <strong><c:out value="${param.query}" /></strong>
                     </a> on Twitter.
                 </p>
