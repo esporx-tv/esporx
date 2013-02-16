@@ -30,6 +30,7 @@ import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.EventRepository;
 import tv.esporx.repositories.FrequencyTypeRepository;
+import tv.esporx.repositories.GameRepository;
 import tv.esporx.repositories.OccurrenceRepository;
 import tv.esporx.services.OccurrenceService;
 
@@ -44,20 +45,23 @@ public class OccurrenceController {
     private final EventRepository eventRepository;
     private final FrequencyTypeRepository frequencyTypeRepository;
     private final OccurrenceService occurrenceService;
-    private final DomainClassConverter<?> entityConverter;
+    private final GameRepository gameRepository;
+    //private final DomainClassConverter<?> entityConverter;
 
     @Autowired
     public OccurrenceController(OccurrenceRepository repository,
                                 EventRepository eventRepository,
                                 FrequencyTypeRepository frequencyTypeRepository,
                                 OccurrenceService occurrenceService,
-                                DomainClassConverter<?> entityConverter) {
+                                GameRepository gameRepository/*,
+                                DomainClassConverter<?> entityConverter*/) {
 
         this.repository = repository;
         this.eventRepository = eventRepository;
         this.frequencyTypeRepository = frequencyTypeRepository;
 		this.occurrenceService = occurrenceService;
-        this.entityConverter = entityConverter;
+		this.gameRepository = gameRepository;
+        //this.entityConverter = entityConverter;
     }
 
     /*@InitBinder
@@ -88,14 +92,17 @@ public class OccurrenceController {
             String rawEndDate = String.valueOf(rawOccurrence.get("data[endDate]"));
             Date endDate = rawEndDate.isEmpty() ? null : df.parse(rawEndDate);
             List<Long> channelIds = transform(
-                    newArrayList(Splitter.on(',').omitEmptyStrings().trimResults().split(String.valueOf(rawOccurrence.get("data[channels]")))),
-                    new Function<String, Long>() {
-                        @Override
-                        public Long apply(String rawId) {
-                            return parseLong(rawId);
-                        }
+                newArrayList(Splitter.on(',').omitEmptyStrings().trimResults().split(String.valueOf(rawOccurrence.get("data[channels]")))),
+                new Function<String, Long>() {
+                    @Override
+                    public Long apply(String rawId) {
+                        return parseLong(rawId);
                     }
+                }
             );
+            String rawGameId = String.valueOf(rawOccurrence.get("data[gameId]"));
+            checkNotNull(rawGameId);
+
             if (id != null) {
                 //beware this can become a security flaw if not everyone is allowed to modify occurrences
                 occurrence = repository.findOne(id);
@@ -106,6 +113,7 @@ public class OccurrenceController {
             occurrence.setEvent(event);
             occurrence.setStartDate(startDate);
             occurrence.setEndDate(endDate);
+            occurrence.setGame(gameRepository.findOne(Long.valueOf(rawGameId)));
             FrequencyType frequencyType = frequencyTypeRepository.findOne(String.valueOf(rawOccurrence.get("data[frequencyType]")));
             occurrence.setFrequencyType(frequencyType);
             return occurrenceService.saveWithAssociations(occurrence, channelIds).toString();

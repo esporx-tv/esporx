@@ -23,6 +23,9 @@ public class Game {
 	@Length(max = 100)
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
+	@Length(max = 255)
+	@Column(name = "icon_url", nullable = false)
+	private String iconUrl = "";
 
 	public String getDescription() {
 		return description;
@@ -46,4 +49,11 @@ public class Game {
 		this.title = title;
 	}
 
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
 }

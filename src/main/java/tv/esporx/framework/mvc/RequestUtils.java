@@ -11,7 +11,6 @@ import java.util.Locale;
 
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 import static org.springframework.web.servlet.support.RequestContextUtils.getLocaleResolver;
-import static tv.esporx.filters.GameFilter.GAME_PARAMETER_NAME;
 
 @Component
 @Scope(SCOPE_PROTOTYPE)
@@ -33,7 +32,4 @@ public class RequestUtils {
 		return result;
 	}
 
-	public String currentGame(final HttpServletRequest incomingRequest) {
-		return (String) incomingRequest.getSession().getAttribute(GAME_PARAMETER_NAME);
-	}
 }

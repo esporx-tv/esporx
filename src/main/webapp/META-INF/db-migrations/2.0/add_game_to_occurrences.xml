@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="add_game_to_occurrences" author="esporx_dev">
+        <addColumn tableName="occurrences">
+            <column name="game_id" type="bigint(20)">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="force_starcraft_to_old_occurrences" author="esporx_dev">
+        <update tableName="occurrences">
+            <column name="game_id" valueNumeric="1"/>
+        </update>
+    </changeSet>
+    <changeSet id="add_foreign_constraint_to_game_id" author="esporx_dev">
+        <sql endDelimiter=";"><![CDATA[
+            ALTER TABLE games ENGINE=InnoDB;
+            ALTER TABLE gondola_slides ENGINE=InnoDB;
+            ALTER TABLE channel_casters ENGINE=InnoDB;
+            ALTER TABLE configurable_slots ENGINE=InnoDB;
+            ALTER TABLE user ENGINE=InnoDB;
+            ALTER TABLE video_providers ENGINE=InnoDB;
+        ]]></sql>
+        <addForeignKeyConstraint constraintName="fk_occurrences_games"
+                                 baseTableName="occurrences"
+                                 baseColumnNames="game_id"
+                                 referencedTableName="games"
+                                 referencedColumnNames="id"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE" />
+    </changeSet>
+    <changeSet id="add_icon_url_to_games" author="esporx_dev">
+        <addColumn tableName="games">
+            <column name="icon_url" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <update tableName="games">
+            <column name="icon_url" value="http://i.imgur.com/p3M7mtS.png" />
+        </update>
+    </changeSet>
+</databaseChangeLog>

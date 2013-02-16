@@ -55,6 +55,9 @@ public class Occurrence implements Comparable<Occurrence> {
     	joinColumns = {@JoinColumn(name="occurrence_id", referencedColumnName="id")},
     	inverseJoinColumns = {@JoinColumn(name="channel_id", referencedColumnName="id")})
     private Set<Channel> channels = newHashSet();
+    @ManyToOne
+    @JoinColumn(name = "game_id", nullable = false)
+    private Game game;
     @Transient
     private Occurrence origin = null;
 
@@ -199,6 +202,24 @@ public class Occurrence implements Comparable<Occurrence> {
 		return result;
 	}
 
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    private Occurrence datelessCopy() {
+        Occurrence occurrence = new Occurrence();
+        occurrence.event = event;
+        occurrence.channels = channels;
+        occurrence.frequencyType = frequencyType;
+        occurrence.game = game;
+        occurrence.origin = this;
+        return occurrence;
+    }
+
 	@Override
 	public String toString() {
 		return toStringHelper(this) //
@@ -208,14 +229,4 @@ public class Occurrence implements Comparable<Occurrence> {
 				.add("channels", channels) //
 				.toString();
 	}
-
-    private Occurrence datelessCopy() {
-        Occurrence occurrence = new Occurrence();
-        occurrence.event = event;
-        occurrence.channels = channels;
-        occurrence.frequencyType = frequencyType;
-        occurrence.origin = this;
-        return occurrence;
-    }
-
 }

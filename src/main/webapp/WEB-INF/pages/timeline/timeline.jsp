@@ -10,8 +10,11 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['jquery'], function($) {
-            $(document.body).fadeTo('fast', 1);
+        require(['jquery', 'underscore', "pages/timeline"], function($, _, timeline) {
+            $(document).ready(function() {
+                timeline.trigger();
+                $(document.body).fadeTo('fast', 1);
+            });
         });
     </script>
 </head>
@@ -23,6 +26,17 @@
 				<spring:message code="timeline.prog.header" />
 			</h1>
 			<div id="catContent">
+                <form action="">
+                    <label id="gameFilterLabel" for="gameFilter">Select a game</label>
+                    <select id="gameFilter">
+                        <option value="-1">All</option>
+                        <c:forEach var="game" items="${games}">
+                            <option value="<c:out value="${game.id}" />">
+                                <c:out value="${game.title}" />
+                            </option>
+                        </c:forEach>
+                    </select>
+                </form>
 				<div id="calContent">
 					<c:choose>
 						<c:when test="${empty timeline}">
@@ -38,24 +52,24 @@
 										<c:forEach var="occurrence" items="${occurrencesPerHour.value}">
 											<c:set var="event" value="${occurrence.event}" />
 											<c:set var="channels" value="${occurrence.channels}" />
-											<article>
+											<article data-game="<c:out value="${occurrence.game.id}" />">
 												<a href="/event/see/${event.id}">
 													<header>
                                                         <span class="time">
-                                                          <joda:format pattern="HH:mm" value="${occurrencesPerHour.key}" />
+                                                            <joda:format pattern="HH:mm" value="${occurrencesPerHour.key}" />
                                                         </span>
-														<h3>${event.title}</h3>
+														<h3><c:out value="${event.title}" /></h3>
 													</header>
 													<div class="calEventDesc">
 														<c:if test="${event.highlighted}">
 															<div class="eventDetails">
-																<img class="gFImg" src="<c:url value="${staticRoot}/img/events/SC2Event.png" />" />
+                                                                <img class="gFImg" src="<c:out value="${occurrence.game.iconUrl}" />" alt="${occurrence.game.title}"/>
 																<p>
 																	<c:out escapeXml="false" value="${fn:substring(event.strippedDescription, 0, 140)} ..." />
 																</p>
 															</div>
 														</c:if>
-													</a>
+                                                    </div>
 													<div class="calEventChannels">
 														<c:forEach var="channel" items="${channels}">
 															<a href="<c:url value="/channel/watch/${channel.id}" />"> <c:out value="${channel.title}" /></a>

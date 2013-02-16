@@ -3,10 +3,7 @@ package tv.esporx.controllers;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
-import tv.esporx.repositories.ChannelRepository;
-import tv.esporx.repositories.ConfigurableSlotRepository;
-import tv.esporx.repositories.EventRepository;
-import tv.esporx.repositories.GondolaSlideRepository;
+import tv.esporx.repositories.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -21,7 +18,8 @@ public class AdminControllerTest {
             mock(GondolaSlideRepository.class),         //
             mock(ConfigurableSlotRepository.class),     //
             mock(ChannelRepository.class),      //
-            mock(EventRepository.class)         //
+            mock(EventRepository.class),        //
+            mock(GameRepository.class)
         );
 	}
 

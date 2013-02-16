@@ -5,10 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import tv.esporx.repositories.ChannelRepository;
-import tv.esporx.repositories.ConfigurableSlotRepository;
-import tv.esporx.repositories.EventRepository;
-import tv.esporx.repositories.GondolaSlideRepository;
+import tv.esporx.repositories.*;
 
 import java.security.Principal;
 
@@ -22,17 +19,20 @@ public class AdminController {
 	private final ConfigurableSlotRepository slotRepository;
 	private final ChannelRepository channelRepository;
 	private final EventRepository eventRepository;
+	private final GameRepository gameRepository;
 
 	@Autowired
     public AdminController(GondolaSlideRepository slideRepository,
                            ConfigurableSlotRepository slotRepository,
                            ChannelRepository channelRepository,
-                           EventRepository eventRepository) {
+                           EventRepository eventRepository,
+                           GameRepository gameRepository) {
 
         this.slideRepository = slideRepository;
         this.slotRepository = slotRepository;
         this.channelRepository = channelRepository;
         this.eventRepository = eventRepository;
+        this.gameRepository = gameRepository;
     }
 
 	@RequestMapping(value = {"/home", ""}, method = GET)
@@ -45,6 +45,7 @@ public class AdminController {
 			model.addAttribute("slots", slotRepository.findAll());
 			model.addAttribute("channels", channelRepository.findAll());
 			model.addAttribute("events", eventRepository.findAll());
+			model.addAttribute("games", gameRepository.findAll());
             model.addAttribute("disableAnalytics", true);
 		}
 		return new ModelAndView("admin/home", model);

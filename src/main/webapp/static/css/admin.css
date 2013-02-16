@@ -31,9 +31,9 @@ width:20%; float:left; list-style:none; margin-left:10px; padding-left:10px; bor
 .adminItem blockquote p { height: 4.2em; overflow: hidden;}					   
 .adminItem:first-child blockquote p { height: 17.8em;}
 
-.adminItem #slidesList, .adminItem #channelsList, .adminItem #eventsList, .adminItem #slotsList { margin: 10px auto;}
-.adminItem #slidesList a, .adminItem #channelsList a, .adminItem #eventsList a, .adminItem #slotsList a { float:right; padding-right:10px;}
-.adminItem .gondolaBox, .adminItem .channelBox, .adminItem .eventBox, .adminItem .slotBox { padding:4px; font-size:1em}
+.adminItem #slidesList, .adminItem #channelsList, .adminItem #eventsList, .adminItem #slotsList, .adminItem #gameList  { margin: 10px auto;}
+.adminItem #slidesList a, .adminItem #channelsList a, .adminItem #eventsList a, .adminItem #slotsList a, .adminItem #gameList a { float:right; padding-right:10px;}
+.adminItem .gondolaBox, .adminItem .channelBox, .adminItem .eventBox, .adminItem .slotBox, .adminItem .gameBox { padding:4px; font-size:1em}
 .adminInfos ul { text-align: center; margin: 25px 0 10px;}
 .adminInfos li { padding: 5px 10px; display: inline;}
 .adminInfos li a, .adminInfos>a { font-weight: 400; font-style: normal; text-transform: uppercase; padding: 5px 20px 6px; background: rgba(20, 105, 255, .1);
@@ -42,8 +42,8 @@ width:20%; float:left; list-style:none; margin-left:10px; padding-left:10px; bor
 #showSlides, #showSlots, #showEvents, #showChannels { cursor: pointer;}
 
 /* #slotsList, #slidesList{float:left;width:90%} */
-#slotsList .slotBox, #slidesList .gondolaBox, #eventsList .eventBox, #channelsList .channelBox { margin: 2px 0; background: rgba(20, 105, 255, .1); overflow: auto;}
-#slotsList .slotBox .formSlot, #slidesList .gondolaBox .formSlide, #eventsList .eventBox .formEvent, #channelsList .channelBox .formChannel{width:auto;float:right;margin:0}
-#slotsList .slotBox a, #slidesList .gondolaBox a, #eventsList .eventBox a, #channelsList .channelBox a {margin-top:4px}
-#slotsList .slotBox span, #slidesList .gondolaBox span, #eventsList .eventBox span, #channelsList .channelBox span{margin-top: 4px;float: left;}
-#slotsList .slotBox .send, #slidesList .gondolaBox .send, #eventsList .eventBox .send, #channelsList .channelBox .send{ cursor:pointer;}
+#slotsList .slotBox, #slidesList .gondolaBox, #eventsList .eventBox, #channelsList .channelBox, #gameList .gameBox { margin: 2px 0; background: rgba(20, 105, 255, .1); overflow: auto;}
+#slotsList .slotBox .formSlot, #slidesList .gondolaBox .formSlide, #eventsList .eventBox .formEvent, #channelsList .channelBox .formChannel, #gameList .gameBox .formGame {width:auto;float:right;margin:0}
+#slotsList .slotBox a, #slidesList .gondolaBox a, #eventsList .eventBox a, #channelsList .channelBox a, #gameList .gameBox a {margin-top:4px}
+#slotsList .slotBox span, #slidesList .gondolaBox span, #eventsList .eventBox span, #channelsList .channelBox span, #gameList .gameBox span{margin-top: 4px;float: left;}
+#slotsList .slotBox .send, #slidesList .gondolaBox .send, #eventsList .eventBox .send, #channelsList .channelBox .send, #gameList .gameBox .send{ cursor:pointer;}

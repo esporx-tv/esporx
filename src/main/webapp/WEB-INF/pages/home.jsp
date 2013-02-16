@@ -114,7 +114,11 @@
 											<span class="time">
 												<joda:format value="${occurrencesPerHour.key}" pattern="HH:mm" />
 											</span>
-											<h3>${event.title}</h3>
+                                            <span class="gamePic">
+                                                <img src="<c:out value="${occurrence.game.iconUrl}" />"
+                                                     alt="<c:out value="${occurrence.game.title}" />" />
+                                            </span>
+											<h3><c:out value="${event.title}" /></h3>
 											<c:forEach var="channel" items="${channels}" end="0">
 											    <span><a href="<c:url value="/channel/watch/${channel.id}"/>">Watch now =></a></span>
 											</c:forEach>

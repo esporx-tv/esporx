@@ -2,7 +2,7 @@
 #calContent section { width: 33%; display: table-cell;}
 #calContent section+section { border-left: 1px solid #394567;}
 #calContent section:last-child { border-width: 0;}
-#calContent section h2 { font-size:1em; padding: 0 10px 10px; border-bottom: 0 solid black; color:#9999AA; margin: 0;}
+#calContent section h2, #gameFilterLabel { font-size:1em; padding: 0 10px 10px; border-bottom: 0 solid black; color:#9999AA; margin: 0;}
 
 #calContent section article { margin: 0 10px 5px;}
 #calContent section article a {text-decoration:none}
@@ -19,13 +19,12 @@
 .eventDetails img { float: left;}
 .eventDetails p { font-size: .7em; font-weight: 500; margin: 5px 0 0 80px; float: none;}
 
-#arrowLeft, #arrowRight { width: 50px; height: 100%; position: absolute; top: -20px; background: rgba(0,0,50,.01);}
+#arrowLeft, #arrowRight { cursor: pointer; width: 50px; height: 100%; position: absolute; top: -20px; background: rgba(0,0,50,.01);}
 #arrowLeft { left: -30px;}
 #arrowRight { right: -30px;}
-#arrowLeft a, #arrowRight a { display:block; text-indent: -999em; width: 36px; height: 66px; margin-top: 80px; opacity: 0;}
+#arrowLeft a, #arrowRight a { display:block; text-indent: -999em; width: 36px; height: 66px; margin-top: 80px; opacity: 0.3;}
 #arrowLeft a { margin-left: 10px; background: url('../img/navPrev.png') no-repeat;}
 #arrowRight a { margin-right: 10px; background: url('../img/navNext.png') no-repeat;}
 
-#arrowLeft:hover, #arrowRight:hover { cursor: pointer;}
-:hover#arrowLeft a, :hover#arrowRight a { opacity: .3;}
-#arrowLeft:hover a, #arrowRight:hover a { opacity: 1;}
+#arrowLeft:hover a, #arrowRight:hover a { opacity:1;}
+img.gFImg { width:70px; height:70px;}

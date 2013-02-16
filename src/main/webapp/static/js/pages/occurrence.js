@@ -13,9 +13,11 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         hasErrors = false,
         frequencyTypes = [],
         channels = [],
+        games = [],
         maxLoop = 0,
         frequencyUrl = '/admin/frequencyTypes',
         channelUrl = '/admin/channels',
+        gameUrl = '/admin/games',
         eventOccurrencesUrl = '/admin/event/{ID}/occurrences',
         deleteOccurrenceUrl = '/admin/occurrence/{ID}',
         occurrencePostUrl = '/admin/occurrence',
@@ -28,15 +30,24 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
         simplifyChannel = function(item) {
             return {value: item.id, name: item.name};
         },
+        simplifyGame = function(item) {
+            return {value: item.id, name: item.title};
+        },
         retrieveChannels = function() {
             $.getJSON(channelUrl, function(data) {
                 channels = _.map(data, simplifyChannel);
+            });
+        },
+        retrieveGames = function() {
+            $.getJSON(gameUrl, function(data) {
+                games = _.map(data, simplifyGame);
             });
         },
         observeClose = function(element) {
             $(element).click(function() {
                 var parent = $(element).parent(occurrenceContainerClass),
                     occurrenceId = $('.occurrenceId', parent).val();
+
                 if (occurrenceId !== null && occurrenceId !== '') {
                     noty({text: 'Do you really want to delete this occurrence', type: 'confirm', theme: 'defaultTheme', layout: 'center', dismissQueue: false,
                         buttons: [
@@ -75,15 +86,17 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
             }
             return _.reduce(myArray, function(prev, id){ return prev + ',' + id;}, '').substring(1);
         },
-        insertOccurrence = function(loop, frequencyTypes, channels, selectedFrequencyType, selectedChannels, selectedStartDate, selectedEndDate, id) {
+		insertOccurrence = function(loop, frequencyTypes, channels, games, selectedFrequencyType, selectedChannels, selectedStartDate, selectedEndDate, selectedGame, id) {
             selectedStartDate = dateUtils.formatDate(selectedStartDate, 'dd/MM/yyyy HH:mm');
             selectedEndDate = dateUtils.formatDate(selectedEndDate, 'dd/MM/yyyy HH:mm');
             selectedFrequencyType = selectedFrequencyType || [];
-            selectedChannels = selectedChannels || [];
+			selectedChannels = selectedChannels || [];
+			selectedGame = selectedGame || [];
             logger.debug('adding 1 occurrence...');
 
             frequencyTypes.__selected__ = [selectedFrequencyType];
             channels.__selected__ = selectedChannels;
+            games.__selected__ = [selectedGame];
 
             submitInput.before(
                 templateHelper.template(eventTemplate, {
@@ -91,6 +104,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                     loop : loop,
                     frequencies : frequencyTypes,
                     channels : channels,
+                    games : games,
                     startDate : selectedStartDate,
                     endDate : selectedEndDate,
                     id : id
@@ -101,34 +115,35 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
             logger.debug('... done!');
         },
         observeEventChange = function() {
-            $(eventSelectId).change(function() {
-                var i,
-                    occurrence,
-                    eventId = $(eventSelectId).val(),
-                    url = eventOccurrencesUrl.replace('{ID}', eventId);
-                $(occurrenceContainerClass).remove();
-                if (eventId !== '') {
-                    $.getJSON(url, function(data) {
-                        maxLoop = 0;
-                        for(i = 0; i < data.length; i++) {
-                            occurrence = data[i];
-                            insertOccurrence(maxLoop++, frequencyTypes, channels, occurrence.frequencyType, _.map(occurrence.channels, simplifyChannel), occurrence.startDate, occurrence.endDate, occurrence.id);
-                        }
-                    });
-                }
-            });
-        },
+			$(eventSelectId).change(function() {
+				var i,
+					occurrence,
+					eventId = $(eventSelectId).val(),
+				url = eventOccurrencesUrl.replace('{ID}', eventId);
+				$(occurrenceContainerClass).remove();
+				if (eventId !== '') {
+					$.getJSON(url, function(data) {
+						maxLoop = 0;
+						for(i = 0; i < data.length; i++) {
+							occurrence = data[i];
+							insertOccurrence(maxLoop++, frequencyTypes, channels, games, occurrence.frequencyType, _.map(occurrence.channels, simplifyChannel), occurrence.startDate, occurrence.endDate, simplifyGame(occurrence.game), occurrence.id);
+						}
+					});
+				}
+			});
+		},
         observeSubmit = function() {
             $('#occurrenceCommand').submit(function(event) {
                 _.each($(occurrenceContainerClass), function(item) {
                     var valid = [],
                         errors = [],
-                        startDate, endDate, frequency, id, channelList,eventId;
+                        startDate, endDate, frequency, id, channelList,eventId,game;
                     eventId = $(eventSelectId).val();
                     startDate = $('.startDate', item).first().val();
                     endDate = $('.endDate', item).first().val();
                     frequency = $('.frequency', item).first().val();
                     id = $('.occurrenceId', item).first().val();
+                    game = $('.games', item).first().val();
                     channelList = transformArrayToString($('.channels', item).first().val());
 
                     if (eventId.trim() === '') {
@@ -155,6 +170,12 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                     else {
                         valid.push($('.channels', item).first());
                     }
+                    if (game.trim() === '') {
+                        errors.push($('.games', item).first());
+                    }
+                    else {
+                        valid.push($('.games', item).first());
+                    }
 
                     if (errors.length > 0) {
                         _.each(errors, function(element) {
@@ -173,7 +194,8 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                                 endDate:endDate,
                                 frequencyType:frequency,
                                 channels: channelList,
-                                eventId:eventId
+                                eventId:eventId,
+                                gameId:game
                             }
                         }).done(function (result) {
                                 var id = parseInt(result, 10);
@@ -202,12 +224,13 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/handlebarsHelper", "te
                 dateUtils.init();
                 retrieveFrequencyTypes();
                 retrieveChannels();
+                retrieveGames();
                 submitInput = $(submitInputId);
                 $(eventSelectId).focus();
                 observeEventChange();
                 maxLoop = $(occurrenceContainerClass).length;
                 $(occurrenceCreationId).click(function() {
-                    insertOccurrence(maxLoop++, frequencyTypes, channels);
+                    insertOccurrence(maxLoop++, frequencyTypes, channels, games);
                 });
                 observeSubmit();
                 logger.debug('... done!');

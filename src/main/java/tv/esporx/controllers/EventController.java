@@ -82,7 +82,11 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "/admin/event/edit/{eventCommand}", method = GET)
-	public ModelAndView edition(@ModelAttribute(COMMAND) @PathVariable @Valid final Event eventCommand, final HttpServletResponse response, final ModelAndView modelAndView) {
+	public ModelAndView edition(
+            @ModelAttribute(COMMAND) @PathVariable @Valid final Event eventCommand,
+            final HttpServletResponse response,
+            final ModelAndView modelAndView) {
+
 		if (eventCommand == null) {
 			return notFound(response, "channel/notFound");
 		}
@@ -90,7 +94,11 @@ public class EventController {
 	}
 
 	@RequestMapping(value = { "/admin/event/new", "/admin/event/edit/{eventCommand}" }, method = POST)
-	public ModelAndView save(@ModelAttribute(COMMAND) @Valid final Event eventCommand, final BindingResult result, final ModelAndView modelAndView) {
+	public ModelAndView save(
+            @ModelAttribute(COMMAND) @Valid final Event eventCommand,
+            final BindingResult result,
+            final ModelAndView modelAndView) {
+
 		if (result.hasErrors()) {
 			return populatedEventForm(modelAndView);
 		}

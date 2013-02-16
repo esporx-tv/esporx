@@ -152,3 +152,5 @@ div .newsLink:hover { background: linear-gradient(to bottom, rgba(26,26,26,1) 16
 .newsLink .channelsList a:hover:after { background-image: url(../img/receptionR.gif);}
 .newsLink .channelsList tr:hover { color: #55BBFF; text-decoration: none;}
 .newsLink .channelsList tr td:first-child { width: 50%;}
+
+.gamePic img { width:35px; height:35px;}

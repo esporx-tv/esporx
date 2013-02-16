@@ -26,4 +26,10 @@
             {{#options channels}}{{name}}{{/options}}
         </select>
     </div>
+    <div class="input">
+        <label for="games_{{loop}}">Game</label>
+        <select id="games_{{loop}}" name="games_{{loop}}" class="games" size=5>
+            {{#options games}}{{name}}{{/options}}
+        </select>
+    </div>
 </fieldset>
