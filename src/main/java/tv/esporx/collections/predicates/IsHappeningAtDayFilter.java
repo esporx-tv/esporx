@@ -3,8 +3,6 @@ package tv.esporx.collections.predicates;
 import com.google.common.base.Predicate;
 import org.joda.time.DateTime;
 
-import javax.annotation.Nullable;
-
 import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
 
 public class IsHappeningAtDayFilter implements Predicate<DateTime> {

@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.framework.mvc.RequestUtils;
 import tv.esporx.repositories.ConfigurableSlotRepository;
 import tv.esporx.repositories.GondolaSlideRepository;
-import tv.esporx.services.EventService;
+import tv.esporx.services.BroadcastService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,16 +21,16 @@ public class HomeControllerTest {
 	private HomeController homeController;
 	private ConfigurableSlotRepository slotRepository;
 	private RequestUtils requestUtils;
-	private EventService eventService;
+	private BroadcastService broadcastService;
 
     @Before
 	public void setup() {
 		gondolaRepository = mock(GondolaSlideRepository.class);
 		slotRepository = mock(ConfigurableSlotRepository.class);
-		eventService = mock(EventService.class);
+		broadcastService = mock(BroadcastService.class);
 		requestUtils = mock(RequestUtils.class);
         givenFrenchIsTheCurrentLanguage();
-        homeController = new HomeController(gondolaRepository, slotRepository, requestUtils, eventService);
+        homeController = new HomeController(gondolaRepository, slotRepository, requestUtils, broadcastService);
 	}
 
 	@Test
@@ -72,13 +72,13 @@ public class HomeControllerTest {
 	@Test
 	public void when_accessing_page_then_most_viewed_events_are_retrieved() {
 		homeController.index(null);
-		verify(eventService).findMostViewed();
+		verify(broadcastService).findMostViewed();
 	}
 
 	@Test
 	public void when_accessing_page_then_up_next_events_are_retrieved() {
 		homeController.index(null);
-		verify(eventService).findUpNext();
+		verify(broadcastService).findUpNext();
 	}
 
 	@Test

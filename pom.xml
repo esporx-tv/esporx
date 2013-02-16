@@ -77,7 +77,7 @@
         <mysql-connector-java.version>5.1.17</mysql-connector-java.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <javax-mail.version>1.4</javax-mail.version>
-        <guava.version>11.0.1</guava.version>
+        <guava.version>13.0.1</guava.version>
         <joda-time.version>2.0</joda-time.version>
         <usertype-jodatime.version>2.0</usertype-jodatime.version>
         <liquibase.version>2.0.3</liquibase.version>

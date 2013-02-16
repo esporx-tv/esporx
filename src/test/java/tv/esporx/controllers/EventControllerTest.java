@@ -5,10 +5,8 @@ import org.junit.Test;
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.domain.Event;
-import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.EventRepository;
 import tv.esporx.repositories.OccurrenceRepository;
-import tv.esporx.services.EventService;
 
 import javax.servlet.http.HttpServletResponse;
 
