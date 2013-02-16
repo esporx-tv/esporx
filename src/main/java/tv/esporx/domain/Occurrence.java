@@ -188,6 +188,7 @@ public class Occurrence implements Comparable<Occurrence> {
         return equal(startDate, other.startDate)                //
                 && equal(endDate, other.endDate)                //
                 && equal(frequencyType, other.frequencyType)    //
+                && equal(game, other.game)    //
                 && equal(channels, other.channels);
     }
 
@@ -198,6 +199,7 @@ public class Occurrence implements Comparable<Occurrence> {
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((frequencyType == null) ? 0 : frequencyType.hashCode());
+		result = prime * result + ((game == null) ? 0 : game.hashCode());
 		result = prime * result + ((channels == null) ? 0 : channels.hashCode());
 		return result;
 	}

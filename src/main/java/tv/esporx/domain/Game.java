@@ -56,4 +56,26 @@ public class Game {
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Game game = (Game) o;
+
+        if (description != null ? !description.equals(game.description) : game.description != null) return false;
+        if (iconUrl != null ? !iconUrl.equals(game.iconUrl) : game.iconUrl != null) return false;
+        if (title != null ? !title.equals(game.title) : game.title != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = description != null ? description.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (iconUrl != null ? iconUrl.hashCode() : 0);
+        return result;
+    }
 }
