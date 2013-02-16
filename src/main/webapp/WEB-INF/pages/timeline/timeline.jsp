@@ -57,6 +57,9 @@
                                                         <span class="time">
                                                             <joda:format pattern="HH:mm" value="${occurrencesPerHour.key}" />
                                                         </span>
+                                                        <c:if test="${!event.highlighted}">
+                                                            <img class="gameIcon" src="<c:out value="${occurrence.game.iconUrl}" />" alt="${occurrence.game.title}"/>
+                                                        </c:if>
 														<h3><c:out value="${event.title}" /></h3>
 													</header>
 													<div class="calEventDesc">
