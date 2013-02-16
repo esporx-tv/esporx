@@ -21,7 +21,6 @@
             ALTER TABLE gondola_slides ENGINE=InnoDB;
             ALTER TABLE channel_casters ENGINE=InnoDB;
             ALTER TABLE configurable_slots ENGINE=InnoDB;
-            ALTER TABLE user ENGINE=InnoDB;
             ALTER TABLE video_providers ENGINE=InnoDB;
         ]]></sql>
         <addForeignKeyConstraint constraintName="fk_occurrences_games"
