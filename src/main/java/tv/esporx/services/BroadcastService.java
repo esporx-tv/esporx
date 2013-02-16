@@ -123,14 +123,15 @@ public class BroadcastService {
 
     private Collection<Occurrence> liveByViewerCountDesc() {
         return filter(                                          //
-            byViewerCountDesc(tillEndOfDay()),                  //
+            byViewerCountDesc(untilNow()),                      //
             new IsLiveOccurrenceFilter()                        //
         );
     }
 
-    private Collection<Occurrence> tillEndOfDay() {
-        DateTime start = toStartDay(new DateTime());
-        DateTime end = toEndDay(start);
+    private Collection<Occurrence> untilNow() {
+        DateTime now = new DateTime();
+        DateTime start = toStartDay(now);
+        DateTime end = toStartHour(now).plusHours(1);
         return timeline.getTimeline(start, end).perHourMultimap().values();
     }
 
