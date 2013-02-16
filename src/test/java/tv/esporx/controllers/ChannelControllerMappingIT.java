@@ -65,8 +65,8 @@ public class ChannelControllerMappingIT {
             deleteAllFrom("games", "channels", "video_providers");
     private static final Operation INSERT_GAME =
             insertInto("games")
-                    .columns("id", "description", "title")
-                    .values(ID, "starcraft2", "Birds are REALLY angry this time")
+                    .columns("id", "description", "title", "icon_url")
+                    .values(ID, "starcraft2", "Birds are REALLY angry this time", "http://i.imgur.com/YpyBYip.jpg")
                     .build();
     private static final Operation INSERT_PROVIDER =
             insertInto("video_providers")
