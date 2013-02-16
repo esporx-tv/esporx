@@ -139,12 +139,11 @@
 						<article class="newsBox">
 							<h5>Up next</h5>
 							<div class="newsLinks">
-								<c:forEach var="occurrence" items="${upNextEvents}">
-								    <c:set var="event" value="${occurrence.event}" />
+								<c:forEach var="event" items="${upNextEvents}">
 								    <p><pretty:format date="${occurrence.startDateTime}" /></p>
-									<a class="newsLink"
-										href="<c:url value="/event/see/${event.id}" />"><c:out
-											value="${event.title}" /> </a>
+									<a class="newsLink" href="<c:url value="/event/see/${event.id}" />">
+                                        <c:out value="${event.title}" />
+                                    </a>
 								</c:forEach>
 							</div>
 						</article>

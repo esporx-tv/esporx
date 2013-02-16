@@ -1,6 +1,7 @@
 package tv.esporx.services;
 
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Multimaps.filterValues;
+import static com.google.common.collect.Sets.newLinkedHashSet;
 import static com.google.common.collect.Sets.newTreeSet;
 import static tv.esporx.framework.time.DateTimeUtils.*;
 
@@ -83,23 +85,29 @@ public class BroadcastService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<Occurrence> findUpNext() {
+    public Collection<Event> findUpNext() {
         return findUpNext(DEFAULT_UP_NEXT_EVENT_COUNT);
     }
 
     @Transactional(readOnly = true)
-    public Collection<Occurrence> findUpNext(int limit) {
+    public Collection<Event> findUpNext(int limit) {
+        Collection<Event> events = newLinkedHashSet();
         DateTime start = toStartHour(new DateTime()).plusHours(1);
         DateTime end = start.plusHours(8);
-        Map<DateTime, Collection<Occurrence>> broadcastsPerHour = retainFirstEntries(limit, timeline.getTimeline(start, end).perHourMultimap().asMap());
-        return newTreeSet(concat(broadcastsPerHour.values()));
+        Map<DateTime, Collection<Occurrence>> broadcastsPerHour = timeline.getTimeline(start, end).perHourMultimap().asMap();
+        for (Occurrence occurrence : newTreeSet(concat(broadcastsPerHour.values()))) {
+            if (events.size() == limit) {
+                break;
+            }
+            events.add(occurrence.getEvent());
+        }
+        return events;
     }
 
     private Map<DateTime, Collection<Occurrence>> retainFirstEntries(int limit, Map<DateTime, Collection<Occurrence>> map) {
         Map<DateTime, Collection<Occurrence>> result = new HashMap<DateTime, Collection<Occurrence>>();
         int added = 0;
         outer: for (Map.Entry<DateTime, Collection<Occurrence>> entries : map.entrySet()) {
-            DateTime key = entries.getKey();
             Collection<Occurrence> occurrences = newArrayList();
             for (Occurrence occurrence : entries.getValue()) {
                 if (added++ > limit) {
@@ -107,6 +115,7 @@ public class BroadcastService {
                 }
                 occurrences.add(occurrence);
             }
+            DateTime key = entries.getKey();
             result.put(key, occurrences);
         }
         return result;

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import tv.esporx.domain.Event;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.ChannelRepository;
@@ -43,7 +44,7 @@ public class BroadcastServiceTest {
     @Test
     public void should_sort_broadcasts_per_start_date() {
         givenTwoNextOccurrences();
-        Collection<Occurrence> occurrences = service.findUpNext(2);
+        Collection<Event> occurrences = service.findUpNext(2);
         assertThat(occurrences).hasSize(2).onProperty("id").containsOnly(1L, 2L);
         assertThat(occurrences.iterator().next().getId()).isEqualTo(1L);
     }
@@ -61,9 +62,12 @@ public class BroadcastServiceTest {
 
     private Occurrence occurrence(Long id, DateTime start) {
         Occurrence occurrence = new Occurrence();
-        occurrence.setId(id);
         occurrence.setFrequencyType(new FrequencyType(ONCE));
         occurrence.setStartDate(start.toDate());
+        Event event = new Event();
+        event.setId(id);
+        event.setTitle("Event #" + id);
+        occurrence.setEvent(event);
         return occurrence;
     }
 }
