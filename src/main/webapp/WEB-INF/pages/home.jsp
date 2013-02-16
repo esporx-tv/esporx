@@ -66,7 +66,7 @@
 									<c:if test="${not empty slot.link}"><a href="<c:url value="${slot.link}" />"></c:if>
 										<div class="shortDesc">
 											<p>${slot.title}</p>
-										</div> 
+										</div>
 									<c:if test="${not empty slot.link}"></a></c:if>
 								</div>
 							</article>
@@ -79,7 +79,7 @@
                                     <c:if test="${not empty slot.link}"><a href="<c:url value="${slot.link}" />"></c:if>
 										<div class="shortDesc">
 											<p>${slot.title}</p>
-										</div> 
+										</div>
                                     <c:if test="${not empty slot.link}"></a></c:if>
 								</div>
 							</article>
@@ -160,8 +160,11 @@
 					</div>
 				</section>
 			</section>
+            <c:import url="/WEB-INF/pages/include/tweetWall.jsp">
+                <c:param name="accountId" value="@esporxtv" />
+            </c:import>
 		</div>
 	</div>
-		<c:import url="/WEB-INF/pages/include/footer.jsp" />
+    <c:import url="/WEB-INF/pages/include/footer.jsp" />
 </body>
 </html>

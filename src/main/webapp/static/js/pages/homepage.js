@@ -1,4 +1,12 @@
-define(["jquery", "lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "lib/externalLinkDetector", "lib/gondola"], function($, logger, sanityChecker, domNavigationUtils, externalLinkDetector, gondola) {
+define([
+    "jquery",
+    "lib/logger",
+    "lib/sanityChecker",
+    "lib/domNavigationUtils",
+    "lib/externalLinkDetector",
+    "lib/gondola",
+    "lib/twitterHelper"], function($, logger, sanityChecker, domNavigationUtils, externalLinkDetector, gondola, twitterHelper) {
+
     "use strict";
 
     var slideContainerId = '#homeGondola',
@@ -9,7 +17,8 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "
         eventBoxes,
         clickedElement,
         eventBoxRoot,
-        link;
+        link,
+        accountId = "@esporxtv";
 
     return {
         trigger : function() {
@@ -34,6 +43,7 @@ define(["jquery", "lib/logger", "lib/sanityChecker", "lib/domNavigationUtils", "
                     });
                 });
                 gondola.trigger(slideContainerId, slideSelector);
+                twitterHelper.tweetWall(accountId);
                 logger.debug('... done!');
             }
         }
