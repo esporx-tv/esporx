@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = TwitterIdValidator.class)
 public @interface ValidTwitterId {
-    String message() default "{event.submission.error.hashtags}";
+    String message() default "{event.submission.error.twitterId}";
 
     /* mandatory */
     Class<?>[] groups() default {};
