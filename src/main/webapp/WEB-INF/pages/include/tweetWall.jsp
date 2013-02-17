@@ -2,8 +2,8 @@
 <div id="tweets">
     <h3>Tweets</h3>
     <c:choose>
-        <c:when test="${param.query ne '' || param.accountId ne ''}">
-            <c:if test="${param.accountId ne ''}">
+        <c:when test="${not empty param.query || not empty param.accountId}">
+            <c:if test="${not empty param.accountId}">
                 <p>
                     Follow
                     <a href="http://twitter.com/<c:out value="${fn:substringAfter(param.accountId,'@')}" />">
@@ -11,7 +11,7 @@
                     </a> on Twitter.
                 </p>
             </c:if>
-            <c:if test="${param.query ne ''}">
+            <c:if test="${not empty param.query}">
                 <p>
                     Search
                     <a href="http://twitter.com/search?q=<c:out value='${fn:replace(fn:replace(param.query, ",", "%20OR%20"), "#", "%23")}' />">
