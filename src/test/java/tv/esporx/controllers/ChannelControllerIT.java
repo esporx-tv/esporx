@@ -36,8 +36,6 @@ locations = { "classpath:esporx-servlet.xml",
 public class ChannelControllerIT {
 
     @Autowired
-	private GameRepository gameRepository;
-    @Autowired
 	private ChannelRepository channelRepository;
 	private BindingResult bindingResult;
 	private Channel channel;
