@@ -53,8 +53,8 @@ public class ChannelControllerIT {
             deleteAllFrom("games", "channels", "video_providers");
     private static final Operation INSERT_GAME =
             insertInto("games")
-                    .columns("id", "description", "title")
-                    .values(ID, "starcraft2", "Birds are REALLY angry this time")
+                    .columns("id", "description", "title", "icon_url")
+                    .values(ID, "starcraft2", "Birds are REALLY angry this time", "http://www.geekandgame.com/wp-content/uploads/2012/06/4bb.gif")
                     .build();
     private static final Operation INSERT_PROVIDER =
             insertInto("video_providers")
