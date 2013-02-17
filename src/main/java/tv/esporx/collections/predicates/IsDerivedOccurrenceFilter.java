@@ -3,9 +3,6 @@ package tv.esporx.collections.predicates;
 import com.google.common.base.Predicate;
 import tv.esporx.domain.Occurrence;
 
-import static com.google.common.base.Objects.firstNonNull;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Checks that an occurrence is either the provided occurrence or
  * an echo of it.

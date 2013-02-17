@@ -22,12 +22,9 @@ import tv.esporx.framework.TestGenericWebXmlContextLoader;
 import tv.esporx.repositories.GondolaSlideRepository;
 
 import javax.sql.DataSource;
-
 import java.sql.Date;
 
-import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
-import static com.ninja_squad.dbsetup.Operations.insertInto;
-import static com.ninja_squad.dbsetup.Operations.sequenceOf;
+import static com.ninja_squad.dbsetup.Operations.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;

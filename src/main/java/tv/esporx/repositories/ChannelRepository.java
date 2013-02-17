@@ -1,12 +1,11 @@
 package tv.esporx.repositories;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
 import tv.esporx.domain.Channel;
+
+import java.util.List;
 
 public interface ChannelRepository extends CrudRepository<Channel,Long> {
 

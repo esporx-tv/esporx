@@ -11,9 +11,7 @@ import tv.esporx.repositories.GameRepository;
 import tv.esporx.services.TimelineService;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static tv.esporx.framework.time.DateTimeUtils.toEndDay;
-import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
-import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
+import static tv.esporx.framework.time.DateTimeUtils.*;
 
 @Controller
 @RequestMapping("/calendar")

@@ -5,8 +5,6 @@ import org.joda.time.DateTime;
 import tv.esporx.domain.Occurrence;
 
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.MONTHLY;
-import static tv.esporx.framework.time.DateTimeUtils.diffInMonths;
-import static tv.esporx.framework.time.DateTimeUtils.earliest;
 
 class TimelineMonthlyRepeater extends TimelineRepeater {
 

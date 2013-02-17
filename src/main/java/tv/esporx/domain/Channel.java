@@ -13,12 +13,9 @@ import tv.esporx.framework.validation.ValidHashtags;
 import tv.esporx.framework.validation.ValidTwitterId;
 
 import javax.persistence.*;
-
 import java.util.List;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.firstNonNull;
-import static com.google.common.base.Objects.toStringHelper;
+import static com.google.common.base.Objects.*;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.transform;
 import static java.util.Arrays.asList;

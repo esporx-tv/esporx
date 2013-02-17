@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tv.esporx.domain.CrawledEvent;
 import tv.esporx.repositories.CrawledEventRepository;
 
-import javax.sql.DataSource;
-
 import java.util.Collections;
 import java.util.List;
 

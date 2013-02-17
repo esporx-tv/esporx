@@ -1,7 +1,6 @@
 package tv.esporx.services;
 
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Multimaps.filterValues;
 import static com.google.common.collect.Sets.newLinkedHashSet;
 import static com.google.common.collect.Sets.newTreeSet;
-import static tv.esporx.framework.time.DateTimeUtils.*;
+import static tv.esporx.framework.time.DateTimeUtils.toStartDay;
+import static tv.esporx.framework.time.DateTimeUtils.toStartHour;
 
 @Service
 @Transactional

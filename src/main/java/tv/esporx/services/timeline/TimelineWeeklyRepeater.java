@@ -4,8 +4,6 @@ import org.joda.time.DateTime;
 import tv.esporx.domain.Occurrence;
 
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.WEEKLY;
-import static tv.esporx.framework.time.DateTimeUtils.diffInWeeks;
-import static tv.esporx.framework.time.DateTimeUtils.earliest;
 
 class TimelineWeeklyRepeater extends TimelineRepeater {
 

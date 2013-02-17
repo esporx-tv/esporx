@@ -1,7 +1,6 @@
 package tv.esporx.domain;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import tv.esporx.collections.functions.Trimmer;
@@ -13,9 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Objects.firstNonNull;
-import static com.google.common.base.Objects.toStringHelper;
+import static com.google.common.base.Objects.*;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.transform;
 import static java.util.Arrays.asList;

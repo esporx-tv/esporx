@@ -19,11 +19,9 @@ import tv.esporx.domain.Event;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.EventRepository;
-import tv.esporx.repositories.OccurrenceRepository;
 import tv.esporx.services.TimelineService;
 
 import javax.sql.DataSource;
-
 import java.sql.Date;
 import java.util.Collection;
 

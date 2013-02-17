@@ -1,8 +1,6 @@
 package tv.esporx.collections.predicates;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
-import org.joda.time.DateTime;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.Occurrence;
 

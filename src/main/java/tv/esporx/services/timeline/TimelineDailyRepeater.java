@@ -4,9 +4,6 @@ import org.joda.time.DateTime;
 import tv.esporx.domain.Occurrence;
 
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.DAILY;
-import static tv.esporx.framework.time.DateTimeUtils.diffInDays;
-import static tv.esporx.framework.time.DateTimeUtils.earliest;
-import static tv.esporx.framework.time.DateTimeUtils.earliestEnd;
 
 class TimelineDailyRepeater extends TimelineRepeater {
 

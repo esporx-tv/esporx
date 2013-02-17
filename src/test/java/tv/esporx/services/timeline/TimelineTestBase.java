@@ -6,7 +6,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mockito.stubbing.OngoingStubbing;
-import org.springframework.test.util.ReflectionTestUtils;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.OccurrenceRepository;

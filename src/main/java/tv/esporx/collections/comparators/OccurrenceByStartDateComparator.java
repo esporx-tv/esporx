@@ -1,8 +1,8 @@
 package tv.esporx.collections.comparators;
 
-import java.util.Comparator;
-
 import tv.esporx.domain.Occurrence;
+
+import java.util.Comparator;
 
 public class OccurrenceByStartDateComparator implements	Comparator<Occurrence> {
 	

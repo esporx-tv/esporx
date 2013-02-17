@@ -22,10 +22,7 @@ import tv.esporx.repositories.ConfigurableSlotRepository;
 
 import javax.sql.DataSource;
 
-import static com.ninja_squad.dbsetup.Operations.deleteAllFrom;
-import static com.ninja_squad.dbsetup.Operations.insertInto;
-import static com.ninja_squad.dbsetup.Operations.sequenceOf;
-import static org.fest.assertions.Assertions.assertThat;
+import static com.ninja_squad.dbsetup.Operations.*;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.server.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.server.result.MockMvcResultMatchers.status;

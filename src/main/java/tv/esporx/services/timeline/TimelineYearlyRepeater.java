@@ -4,8 +4,6 @@ import org.joda.time.DateTime;
 import tv.esporx.domain.Occurrence;
 
 import static tv.esporx.domain.FrequencyType.FrequencyTypes.YEARLY;
-import static tv.esporx.framework.time.DateTimeUtils.diffInYears;
-import static tv.esporx.framework.time.DateTimeUtils.earliest;
 
 class TimelineYearlyRepeater extends TimelineRepeater {
 

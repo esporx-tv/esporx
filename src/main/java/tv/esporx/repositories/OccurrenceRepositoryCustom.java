@@ -1,8 +1,8 @@
 package tv.esporx.repositories;
 
-import java.util.List;
-
 import tv.esporx.domain.Occurrence;
+
+import java.util.List;
 
 interface OccurrenceRepositoryCustom {
     /**

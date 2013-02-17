@@ -1,6 +1,5 @@
 package tv.esporx.repositories;
 
-import org.springframework.transaction.annotation.Transactional;
 import tv.esporx.domain.VideoProvider;
 
 interface VideoProviderRepositoryCustom {

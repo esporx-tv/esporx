@@ -1,22 +1,8 @@
 package tv.esporx.controllers;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.transform;
-import static java.lang.Long.parseLong;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
+import com.google.common.base.Function;
+import com.google.common.base.Splitter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import tv.esporx.domain.Event;
 import tv.esporx.domain.FrequencyType;
 import tv.esporx.domain.Occurrence;
@@ -34,8 +19,18 @@ import tv.esporx.repositories.GameRepository;
 import tv.esporx.repositories.OccurrenceRepository;
 import tv.esporx.services.OccurrenceService;
 
-import com.google.common.base.Function;
-import com.google.common.base.Splitter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.transform;
+import static java.lang.Long.parseLong;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
 //FIXME: this controller totally sucks
