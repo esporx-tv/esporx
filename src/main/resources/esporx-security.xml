@@ -9,17 +9,18 @@
     <http pattern="/favicon.ico" security="none"/>
     <http pattern="/static/img/**" security="none"/>
     <http pattern="/s/**" security="none"/>
-    <http pattern="/" security="none"/>
+    <http pattern="/" security="none" />
 
-	<http auto-config='true' use-expressions='true' realm="eSporx, your premium live esports broadcasts">
+	<http auto-config='true' use-expressions='true' realm="esporx.tv: your premium live esports broadcasts">
 		<form-login   login-page="/admin/login"
 		              default-target-url="/admin/home"
 		              authentication-failure-url="/admin/login" />
 		<logout />
 
-		<intercept-url pattern="/admin/login" access="isAnonymous()" />
-		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/admin/login" access="isAnonymous()" />
+        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/user/register" access="isAnonymous()" />
+        <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 	</http>
 
     <beans:bean id="encoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">

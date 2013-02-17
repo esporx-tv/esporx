@@ -1,6 +1,10 @@
 package tv.esporx.domain;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
+import tv.esporx.framework.validation.PasswordRepeatConstraint;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,19 +15,26 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "users")
+@PasswordRepeatConstraint
 public class Esporxer implements UserDetails {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @Column(name = "email", nullable = false, unique = true)
+    @NotBlank
+    @Email
     private String email;
     @Column(name = "password", nullable = false)
+    @NotBlank
+    @Length(min = 6, max = 100)
     private String password;
     @ManyToMany
     @JoinTable(name = "users_roles", //
         joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
         inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")})
     private Set<Role> authorities = newHashSet();
+    @Transient
+    private String passwordConfirmation;
 
     public Long getId() {
         return id;
@@ -82,6 +93,14 @@ public class Esporxer implements UserDetails {
 
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
+    }
+
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
     }
 
     @Override

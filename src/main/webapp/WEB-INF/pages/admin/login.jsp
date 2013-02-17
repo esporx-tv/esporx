@@ -34,6 +34,7 @@
 				    <input type="password" name="j_password" placeholder="Shhh! your password..." />
                 </div>
                 <div class="submit">
+                    <a href="<c:url value="/user/register" />">No account yet? Join now!</a>
 					<input type="submit" value="Submit" />
 				</div>
 			</form>

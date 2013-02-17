@@ -1,5 +1,8 @@
 package tv.esporx.framework.validation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.beans.IntrospectionException;
@@ -14,7 +17,8 @@ import static java.util.Arrays.asList;
 
 public class CrossDateConstraintsValidator implements ConstraintValidator<CrossDateConstraints, Object> {
 
-	private String startDateField;
+    private final static Logger LOGGER = LoggerFactory.getLogger(CrossDateConstraintsValidator.class);
+    private String startDateField;
 	private String endDateField;
 	private String message;
     private List<String> nullables = new ArrayList<String>();
@@ -47,6 +51,7 @@ public class CrossDateConstraintsValidator implements ConstraintValidator<CrossD
 			return isValid;
 		}
 		catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
 			return isValid;
 		}
 	}
