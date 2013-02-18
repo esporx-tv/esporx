@@ -7,11 +7,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import tv.esporx.domain.Esporxer;
 import tv.esporx.repositories.EsporxerRepository;
 import tv.esporx.repositories.RoleRepository;
 
 import javax.validation.Valid;
+
+import java.util.Date;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -37,12 +40,15 @@ public class EsporxerController {
     }
 
     @RequestMapping(value = "/user/register", method = POST)
-    public ModelAndView register(@ModelAttribute("userCommand") @Valid Esporxer user, final BindingResult result) {
+    public ModelAndView register(@ModelAttribute("userCommand") @Valid Esporxer user,
+                                 final BindingResult result,
+                                 final RedirectAttributes redirectionAttributes) {
         ModelAndView view = new ModelAndView("user/register");
         if (!result.hasErrors()) {
             prePersist(user);
             esporxerRepository.save(user);
-            view = new ModelAndView("redirect:/home");
+            redirectionAttributes.addFlashAttribute("justRegistered", "Please first confirm your account: a confirmation email has been sent.");
+            view = new ModelAndView("redirect:/admin/login");
         }
         return view;
     }

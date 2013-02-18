@@ -29,4 +29,5 @@
     <include file="add_game_to_occurrences.xml" relativeToChangelogFile="true" />
     <include file="add_dailymotion_api_endpoint.xml" relativeToChangelogFile="true" />
     <include file="create_authentication_tables.xml" relativeToChangelogFile="true" />
+    <include file="add_columns_to_users.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

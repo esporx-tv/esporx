@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import tv.esporx.framework.validation.PasswordRepeatConstraint;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 import static com.google.common.base.Objects.toStringHelper;
@@ -35,6 +36,10 @@ public class Esporxer implements UserDetails {
     private Set<Role> authorities = newHashSet();
     @Transient
     private String passwordConfirmation;
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
+    @Column(name = "creation_date", nullable = false)
+    private Date accountCreationDate;
 
     public Long getId() {
         return id;
@@ -74,7 +79,7 @@ public class Esporxer implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override
@@ -101,6 +106,18 @@ public class Esporxer implements UserDetails {
 
     public void setPasswordConfirmation(String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Date getAccountCreationDate() {
+        return accountCreationDate;
+    }
+
+    public void setAccountCreationDate(Date accountCreationDate) {
+        this.accountCreationDate = accountCreationDate;
     }
 
     @Override

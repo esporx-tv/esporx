@@ -22,8 +22,11 @@
 <body>
 	<div id="pageContent">
 		<c:import url="/WEB-INF/pages/include/header.jsp" />
-		<div id="adminMain">
+        <div id="adminMain">
             <h3>Restricted area</h3>
+            <c:if test="${not empty justRegistered}">
+                <p><strong><c:out value="${justRegistered}" /></strong></p>
+            </c:if>
 			<form name="adminForm" action="<c:url value="j_spring_security_check" />" method="POST">
                 <div class="input">
                     <label>Login</label>
@@ -41,5 +44,9 @@
 		</div>
 	</div>
 		<c:import url="/WEB-INF/pages/include/footer.jsp" />
+
+    <div style="display:none">
+        <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+    </div>
 </body>
 </html>
