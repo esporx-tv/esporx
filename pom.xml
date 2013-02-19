@@ -459,7 +459,6 @@
                 <configuration>
                     <specRunnerTemplate>REQUIRE_JS</specRunnerTemplate>
                     <jsSrcDir>${project.basedir}/src/main/webapp/static/js</jsSrcDir>
-                    <srcDirectoryName>${project.basedir}/src/main/webapp/static/js</srcDirectoryName>
                     <scriptLoaderPath>ext/require-jquery.js</scriptLoaderPath>
                     <sourceIncludes>
                         <include>ext/require-jquery.js</include>
