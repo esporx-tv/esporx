@@ -23,9 +23,13 @@ public class Game {
 	@Length(max = 100)
 	@Column(name = "title", nullable = false, unique = true)
 	private String title = "";
+    @NotBlank
 	@Length(max = 255)
 	@Column(name = "icon_url", nullable = false)
 	private String iconUrl = "";
+	@Length(max = 255)
+	@Column(name = "background_url", nullable = true)
+	private String backgroundUrl = "";
 
 	public String getDescription() {
 		return description;
@@ -55,6 +59,14 @@ public class Game {
 
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
+    }
+
+    public String getBackgroundUrl() {
+        return backgroundUrl;
+    }
+
+    public void setBackgroundUrl(String backgroundUrl) {
+        this.backgroundUrl = backgroundUrl;
     }
 
     @Override

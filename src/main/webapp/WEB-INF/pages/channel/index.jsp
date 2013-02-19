@@ -23,7 +23,7 @@
         });
     </script>
 </head>
-<body>
+<body<c:if test="${not empty currentGame && not empty currentGame.backgroundUrl}"><c:out value=' style="background-image:url(${currentGame.backgroundUrl})"' escapeXml="false" /></c:if>>
 	<div id="pageContent">
 		<c:import url="/WEB-INF/pages/include/header.jsp" />
 		<div id="catMain">

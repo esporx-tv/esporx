@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.domain.Channel;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.VideoProviderRepository;
+import tv.esporx.services.TimelineService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ChannelControllerTest {
         dummyChannel();
         mockedChannelRepository();
         mockedEventRepository();
-		channelController = new ChannelController(channelRepository, videoProviderRepository, mock(DomainClassConverter.class));
+		channelController = new ChannelController(channelRepository, videoProviderRepository, mock(TimelineService.class), mock(DomainClassConverter.class));
 	}
 
     @Test

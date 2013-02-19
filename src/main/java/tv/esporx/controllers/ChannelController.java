@@ -16,9 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import tv.esporx.conversion.VideoProviderConverter;
 import tv.esporx.domain.Channel;
 import tv.esporx.domain.CrawledChannel;
+import tv.esporx.domain.Occurrence;
 import tv.esporx.domain.remote.JsonChannel;
 import tv.esporx.repositories.ChannelRepository;
 import tv.esporx.repositories.VideoProviderRepository;
+import tv.esporx.services.TimelineService;
 
 import javax.annotation.Resource;
 import javax.persistence.PersistenceException;
@@ -45,16 +47,19 @@ public class ChannelController {
 	private final ChannelRepository repository;
 	private final VideoProviderRepository videoProviderRepository;
     private final DomainClassConverter<?> entityConverter;
-	@Resource(name = "supportedLanguages")
+    private final TimelineService timelineService;
+    @Resource(name = "supportedLanguages")
 	private final Set<String> allowedLocales = new HashSet<String>();
 
-	@Autowired
+    @Autowired
     public ChannelController(ChannelRepository repository,
                              VideoProviderRepository videoProviderRepository,
+                             TimelineService timelineService,
                              DomainClassConverter<?> entityConverter) {
 
         this.repository = repository;
         this.videoProviderRepository = videoProviderRepository;
+        this.timelineService = timelineService;
         this.entityConverter = entityConverter;
     }
 
@@ -66,7 +71,9 @@ public class ChannelController {
         if (channel == null) {
             return notFound(response, "channel/notFound");
         }
+        Occurrence broadcast = timelineService.findCurrentBroadcastByChannel(channel);
         ModelMap model = new ModelMap("channel", channel);
+        model.addAttribute("currentGame", broadcast == null ? null : broadcast.getGame());
         model.addAttribute("embeddedVideo", videoProviderRepository.getEmbeddedContents(channel.getVideoUrl()));
         return new ModelAndView("channel/index", model);
     }

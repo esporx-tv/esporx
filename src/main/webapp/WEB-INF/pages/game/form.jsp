@@ -54,12 +54,22 @@
 
                     <div class="input">
                         <spring:message code="game.submission.icon.placeholder"
-                            var="descriptionPlaceholder" />
-                        <form:label path="iconUrl" title="${descriptionPlaceholder}">
+                            var="placeholder" />
+                        <form:label path="iconUrl" title="${placeholder}">
                             <spring:message code="game.submission.icon" />
                         </form:label>
                         <form:input path="iconUrl" />
                         <form:errors path="iconUrl" cssClass="errors" />
+                    </div>
+
+                    <div class="input">
+                        <spring:message code="game.submission.background.placeholder"
+                            var="placeholder" />
+                        <form:label path="backgroundUrl" title="${placeholder}">
+                            <spring:message code="game.submission.background" />
+                        </form:label>
+                        <form:input path="backgroundUrl" />
+                        <form:errors path="backgroundUrl" cssClass="errors" />
                     </div>
 
 					<div id="submit" class="submit">
