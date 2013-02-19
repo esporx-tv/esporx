@@ -27,14 +27,15 @@
 			</h1>
 			<div id="catContent">
                 <form action="">
-                    <label id="gameFilterLabel" for="gameFilter">Select a game</label>
-                    <select id="gameFilter" multiple="true">
+                    <ul id="gameFilter">Select a game</p>
                         <c:forEach var="game" items="${games}">
-                            <option value="<c:out value="${game.id}" />">
-                                <c:out value="${game.title}" />
-                            </option>
+                            <li><img class="gameIcon"
+                                     src="<c:out value="${game.iconUrl}" />"
+                                     alt="<c:out value="${game.title}" />"
+                                     data-game-id="<c:out value="${game.id}" />" />
+                            </li>
                         </c:forEach>
-                    </select>
+                    </ul>
                 </form>
 				<div id="calContent">
 					<c:choose>

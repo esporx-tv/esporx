@@ -28,3 +28,5 @@
 
 #arrowLeft:hover a, #arrowRight:hover a { opacity:1;}
 img.gFImg { width:70px; height:70px;}
+
+.gameIcon.selected { border:3px solid pink;}
