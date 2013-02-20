@@ -11,6 +11,8 @@ import tv.esporx.domain.Occurrence;
 import tv.esporx.repositories.OccurrenceRepository;
 import tv.esporx.services.timeline.Timeline;
 
+import java.util.NoSuchElementException;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.find;
@@ -33,12 +35,17 @@ public class TimelineService {
     public Occurrence findCurrentBroadcastByChannel(final Channel channel) {
         DateTime start = toStartHour(new DateTime());
         Timeline timeline = this.getTimeline(start, start.plusHours(1));
-        return find(timeline.perHourMultimap().values(), new Predicate<Occurrence>() {
-            @Override
-            public boolean apply(Occurrence input) {
-                return input.getChannels().contains(channel);
-            }
-        });
+        try {
+            return find(timeline.perHourMultimap().values(), new Predicate<Occurrence>() {
+                @Override
+                public boolean apply(Occurrence input) {
+                    return input.getChannels().contains(channel);
+                }
+            });
+        }
+        catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     private void checkSanity(DateTime startDay, DateTime endDay) {
