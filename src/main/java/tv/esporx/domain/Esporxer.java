@@ -40,6 +40,8 @@ public class Esporxer implements UserDetails {
     private boolean enabled;
     @Column(name = "creation_date", nullable = false)
     private Date accountCreationDate;
+    @Column(name = "account_confirmation_hash", unique = true)
+    private String accountConfirmationHash;
 
     public Long getId() {
         return id;
@@ -125,5 +127,13 @@ public class Esporxer implements UserDetails {
         return toStringHelper(this)
             .add("email", email)
             .toString();
+    }
+
+    public String getAccountConfirmationHash() {
+        return accountConfirmationHash;
+    }
+
+    public void setAccountConfirmationHash(String accountConfirmationHash) {
+        this.accountConfirmationHash = accountConfirmationHash;
     }
 }

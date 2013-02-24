@@ -15,11 +15,13 @@
 		<form-login   login-page="/admin/login"
 		              default-target-url="/home"
 		              authentication-failure-url="/admin/login" />
-		<logout />
+
+        <logout logout-success-url="/admin/login" />
 
         <intercept-url pattern="/admin/login" access="isAnonymous()" />
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
         <intercept-url pattern="/user/register" access="isAnonymous()" />
+        <intercept-url pattern="/user/confirm" access="isAnonymous()" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 	</http>
 

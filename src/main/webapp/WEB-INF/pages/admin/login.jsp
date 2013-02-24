@@ -24,8 +24,8 @@
 		<c:import url="/WEB-INF/pages/include/header.jsp" />
         <div id="adminMain">
             <h3>Restricted area</h3>
-            <c:if test="${not empty justRegistered}">
-                <p><strong><c:out value="${justRegistered}" /></strong></p>
+            <c:if test="${not empty flash}">
+                <p><strong><c:out value="${flash}" /></strong></p>
             </c:if>
 			<form name="adminForm" action="<c:url value="j_spring_security_check" />" method="POST">
                 <div class="input">

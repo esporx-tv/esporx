@@ -290,6 +290,18 @@
             <version>${jsp-api.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase-core.version}</version>
+        </dependency>
+
+        <!-- mailing -->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.17</version>
+        </dependency>
 
         <!-- tests -->
         <dependency>
@@ -333,11 +345,6 @@
             <artifactId>DbSetup</artifactId>
             <version>${dbsetup.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase-core.version}</version>
         </dependency>
     </dependencies>
 

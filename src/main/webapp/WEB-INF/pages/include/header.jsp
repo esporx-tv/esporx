@@ -21,6 +21,9 @@
             <secu:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="<c:url value="/admin/home" />">Admin</a></li>
             </secu:authorize>
+            <secu:authorize access="isAuthenticated()">
+                <li><a href="<c:url value="j_spring_security_logout" />" > Logout</a></li>
+            </secu:authorize>
 		</ul>
 	</nav>
 </header>
