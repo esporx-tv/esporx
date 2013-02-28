@@ -1,5 +1,7 @@
 <li class="tweet">
-    <span class="tweet_author">{{from_user}}}</span>
-    <br />
-    <span class="tweet_content">{{text}}</span>
+    <ul>
+        <li class="tweet_author">{{from_user}}}</li>
+        <li class="tweet_time">{{time}}}</li>
+        <li class="tweet_content">{{text}}}</li>
+    </ul>
 </li>

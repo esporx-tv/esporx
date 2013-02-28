@@ -1,4 +1,5 @@
-/*global twitterlib: true*/
+/*global twitterlib: true
+prettyDate: true*/
 define([
     "jquery",
     "lib/logger",
@@ -7,6 +8,7 @@ define([
     "text!tpl/tweet.tpl",
     "underscore",
     "ext/async",
+    "ext/jquery-prettydate",
     "ext/twitterlib"], function($, logger, stringUtils, templateHelper, tweetTemplate, _, async) {
 
     var displayTweets = function(tweets) {
@@ -14,7 +16,8 @@ define([
         _.map(tweets, function(tweet) {
             var html = $(templateHelper.template(tweetTemplate, {
                 "from_user": tweet.from_user,
-                "text": tweet.text
+                "text": tweet.text,
+                "time": prettyDate(tweet.created_at)
             }));
             htmlTweets.append(html);
         });
