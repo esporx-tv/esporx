@@ -16,13 +16,16 @@
 	<nav id="siteNav">
 		<ul>
 			<li><a href="<c:url value="/home" />"><spring:message code="common.menu.home" /></a></li>
+            <secu:authorize access="isAuthenticated()">
+                <li><a href="<c:url value="/user/profile" />" > Profile</a></li>
+            </secu:authorize>
 			<li><a href="<c:url value="/calendar/browse" />"><spring:message code="common.menu.calendar" /></a></li>
 			<li><a href="<c:url value="/event/browse" />"><spring:message code="common.menu.events" /></a></li>
             <secu:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="<c:url value="/admin/home" />">Admin</a></li>
             </secu:authorize>
             <secu:authorize access="isAuthenticated()">
-                <li><a href="<c:url value="j_spring_security_logout" />" > Logout</a></li>
+                <li><a href="<c:url value="/j_spring_security_logout" />" > Logout</a></li>
             </secu:authorize>
 		</ul>
 	</nav>
