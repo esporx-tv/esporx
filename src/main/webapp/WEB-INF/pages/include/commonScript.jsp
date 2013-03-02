@@ -13,20 +13,22 @@
     });
 
     // loader configuration
-    require.config({
-        baseUrl : "<c:url value="${staticRoot}/js" />",
-        map : {
-            '*' : {
-                'text' : 'ext/text',
-                'css' : '../css',
-                'tpl' : '../tpl'
+    if (require) {
+        require.config({
+            baseUrl : "<c:url value="${staticRoot}/js" />",
+            map : {
+                '*' : {
+                    'text' : 'ext/text',
+                    'css' : '../css',
+                    'tpl' : '../tpl'
+                }
+            },
+            paths : {
+                jqueryui: 'ext/jquery-ui-custom',
+                underscore: 'ext/underscore'
             }
-        },
-        paths : {
-            jqueryui: 'ext/jquery-ui-custom',
-            underscore: 'ext/underscore'
-        }
-    });
+        });
+    }
 </script>
 <noscript>
     <%-- make the website visible to JS-allergic people --%>
