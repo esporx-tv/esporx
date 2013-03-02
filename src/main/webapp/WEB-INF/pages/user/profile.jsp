@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="input">
-                    <spring:message code="user.profile.page.old_password" var="oldPasswordPlaceholder"/>
+                    <spring:message code="user.profile.page.old_password.placeholder" var="oldPasswordPlaceholder"/>
                     <label title="${oldPasswordPlaceholder}">
                         <spring:message code="user.profile.page.old_password" />
                     </label>
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="input">
-                    <spring:message code="user.registration.page.password.placeholder"
+                    <spring:message code="user.profile.page.new_password.placeholder"
                                     var="passwordPlaceholder"/>
                     <form:label path="password" title="${passwordPlaceholder}">
                         <spring:message code="user.profile.page.new_password" />
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="input">
-                    <spring:message code="user.registration.page.password.repeat.placeholder"
+                    <spring:message code="user.profile.page.new_password_bis.placeholder"
                                     var="passwordRepeatPlaceholder"/>
                     <form:label path="passwordConfirmation" title="${passwordRepeatPlaceholder}">
                         <spring:message code="user.profile.page.new_password_bis" />

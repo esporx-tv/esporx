@@ -104,8 +104,8 @@ public class EsporxerController {
 
     @RequestMapping(value = "/profile", method = POST)
     public ModelAndView profile(@ModelAttribute(COMMAND) @Valid Esporxer user,
+                                BindingResult bindingResult,//this must follow the object under validation
                                 @RequestParam("oldPassword") String oldPassword,
-                                BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
         ModelAndView view = new ModelAndView("user/profile");
         Map<String, String> errors = validateFurther(user, oldPassword);
