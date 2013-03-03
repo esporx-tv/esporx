@@ -87,8 +87,8 @@ define([
                 });
             }
         },
-        fetchTweets: function(accountId, search) {
-            twitterHelper.tweetWall(accountId, search);
+        fetchTweets: function(selector, accountId, search) {
+            twitterHelper.tweetWall(selector, accountId, search);
         }
     };
 });

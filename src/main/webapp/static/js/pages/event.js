@@ -22,8 +22,8 @@ define([
                     logger.debug('... done!');
                 }
             },
-            fetchTweets: function(accountId, search) {
-                twitterHelper.tweetWall(accountId, search);
+            fetchTweets: function(selector, accountId, search) {
+                twitterHelper.tweetWall(selector, accountId, search);
             }
         };
     });

@@ -14,6 +14,7 @@ public interface OccurrenceRepository extends CrudRepository<Occurrence,Long>, O
             "FROM Occurrence occ " +                                                //
             "LEFT JOIN FETCH occ.channels " +                                       //
             "LEFT JOIN FETCH occ.game " +                                           //
+            "LEFT JOIN FETCH occ.event " +                                          //
             "WHERE occ.event = ?1 " +
             "ORDER BY occ.startDate ASC" )
     List<Occurrence> findByEvent(Event event);
@@ -22,8 +23,10 @@ public interface OccurrenceRepository extends CrudRepository<Occurrence,Long>, O
             "FROM Occurrence occ " +                                                //
             "LEFT JOIN FETCH occ.channels " +                                       //
             "LEFT JOIN FETCH occ.game " +                                           //
+            "LEFT JOIN FETCH occ.event " +                                          //
             "WHERE occ.startDate <= :end " +                                        //
             "AND (occ.endDate IS NULL OR occ.endDate > :start) " +
             "ORDER BY occ.startDate ASC" )
     List<Occurrence> findAllInRange(@Param("start") DateTime startDate, @Param("end") DateTime endDate);
+
 }

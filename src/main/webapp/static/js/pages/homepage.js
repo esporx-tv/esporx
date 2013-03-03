@@ -43,7 +43,7 @@ define([
                     });
                 });
                 gondola.trigger(slideContainerId, slideSelector);
-                twitterHelper.tweetWall(accountId);
+                twitterHelper.tweetWall('.tweets', accountId);
                 logger.debug('... done!');
             }
         }

@@ -1,5 +1,5 @@
 <%@ include file="commonTaglib.jsp"%>
-<div id="tweets">
+<div class="tweets">
     <h3>Tweets</h3>
     <c:choose>
         <c:when test="${not empty param.query || not empty param.accountId}">

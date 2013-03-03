@@ -16,6 +16,7 @@
         require(['jquery', 'pages/event'], function($, event) {
             $(document).ready(function() {
                 event.fetchTweets(
+                    ".tweets",
                     "<c:out value="${event.twitterId}" />",
                     "<c:out value="${event.twitterSearch}" />"
                 );

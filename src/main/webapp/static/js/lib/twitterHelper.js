@@ -11,8 +11,8 @@ define([
     "ext/jquery-prettydate",
     "ext/twitterlib"], function($, logger, stringUtils, templateHelper, tweetTemplate, _, async) {
 
-    var displayTweets = function(tweets) {
-        var htmlTweets = $("#tweets ul");
+    var displayTweets = function(tweets, selector) {
+        var htmlTweets = $(selector + " ul").first();
         _.map(tweets, function(tweet) {
             var html = $(templateHelper.template(tweetTemplate, {
                 "from_user": tweet.from_user,
@@ -24,7 +24,7 @@ define([
     };
 
     return {
-        tweetWall: function(accountId, searchQuery) {
+        tweetWall: function(selector, accountId, searchQuery) {
             var limit = {limit: 10};
             if (stringUtils.isEmpty(searchQuery) && stringUtils.isEmpty(accountId)) {
                 return;
@@ -66,7 +66,7 @@ define([
                             return -1 * tweet.id;
                         }
                     ).slice(0,10);
-                    displayTweets(tweets);
+                    displayTweets(tweets, selector);
                 });
             }
         }

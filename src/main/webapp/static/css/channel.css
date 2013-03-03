@@ -29,8 +29,11 @@ input.unsupportedUrl { border:2px solid red;}
 .videoPlayer { position: relative; text-align: center; padding-top:25px; height:0; padding-bottom: 56.25%; /* 16:9 */}
 .videoPlayer iframe, .videoPlayer object, .videoPlayer embed { position: absolute; top: 0; left: 5%; width: 90%; height: 100%;}
 
+.eventDetails.half { float:left; width:50%;}
 
+#catContent { overflow:auto;}
 .channelDetails { margin-bottom: 20px;}
+.channelDetails.half { float:left; width:49%;}
 .channelDetails blockquote { color: #555; font-size: 0.7em; font-weight: 500; font-style: italic; letter-spacing: .06em; line-height: 1.12em;
 							width: 90%; margin: 0 auto; background-color: rgba(20, 21, 22, 0.5); overflow: auto; border-radius: 4px 4px 0 0;}
 .channelDetails blockquote p { color: #A9A9B0; margin: 1.5em;}
