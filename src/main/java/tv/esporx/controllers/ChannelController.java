@@ -82,7 +82,8 @@ public class ChannelController {
             model.addAttribute("currentBroadcast", broadcast);
             Map<DateTime,Collection<Occurrence>> liveNow = broadcastService.findLiveNow();
             model.addAttribute("liveNowEvents", liveNow);
-            model.addAttribute("firstLiveBroadcasts", liveNow.entrySet().iterator().next().getValue());
+            Iterator<Map.Entry<DateTime, Collection<Occurrence>>> iterator = liveNow.entrySet().iterator();
+            model.addAttribute("firstLiveBroadcasts", iterator.hasNext() ? iterator.next().getValue() : new ArrayList<Occurrence>());
             model.addAttribute("nextBroadcastsByEvent", this.timelineService.findNextBroadcastsByEvent(event));
         }
         model.addAttribute("nextBroadcastsByChannel", this.timelineService.findNextBroadcastsByChannel(channel));
