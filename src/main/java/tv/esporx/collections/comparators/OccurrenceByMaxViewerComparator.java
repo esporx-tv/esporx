@@ -10,10 +10,11 @@ import java.util.SortedSet;
 import static com.google.common.collect.Sets.newTreeSet;
 
 public class OccurrenceByMaxViewerComparator implements Comparator<Occurrence> {
+
     @Override
-    public int compare(Occurrence occ1, Occurrence occ2) {
-        Integer firstMaxViewerCount = getMaxViewerCount(occ1);
-        Integer secondMaxViewerCount = getMaxViewerCount(occ2);
+    public int compare(Occurrence left, Occurrence right) {
+        Integer firstMaxViewerCount = getMaxViewerCount(left);
+        Integer secondMaxViewerCount = getMaxViewerCount(right);
         return firstMaxViewerCount.compareTo(secondMaxViewerCount);
     }
 

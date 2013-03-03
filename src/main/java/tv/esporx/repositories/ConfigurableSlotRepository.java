@@ -6,5 +6,5 @@ import tv.esporx.domain.ConfigurableSlot;
 import java.util.List;
 
 public interface ConfigurableSlotRepository extends CrudRepository<ConfigurableSlot, Long> {
-	List<ConfigurableSlot> findByLanguageOrderByPositionAsc(String language);
+	List<ConfigurableSlot> findByLanguageAndActiveOrderByOrdinateAsc(String language, boolean active);
 }

@@ -8,9 +8,8 @@
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">
-        require(['jquery', 'pages/slot'], function($, slot) {
+        require(['jquery'], function($) {
             $(document).ready(function() {
-                slot.trigger();
                 $(document.body).fadeTo('fast', 1);
             });
         });
@@ -82,24 +81,6 @@
                     </div>
 					
 					<div class="input">
-						<form:label path="position">
-							<spring:message code="slot.submission.position" />
-						</form:label>
-						<form:select path="position">
-							<form:option value="1">
-								<spring:message code="slot.submission.position.options.topLeft" />
-							</form:option>
-							<form:option value="2">
-								<spring:message code="slot.submission.position.options.topRight" />
-							</form:option>
-							<form:option value="3">
-								<spring:message code="slot.submission.position.options.bottom" />
-							</form:option>
-						</form:select>
-						<form:errors path="position" cssClass="errors" />
-					</div>
-					
-					<div class="input">
                         <spring:message code="slot.submission.active.placeholder"
                             var="activePlaceholder" />
                         <form:label path="active" title="${activePlaceholder}">
@@ -108,7 +89,15 @@
                         <form:checkbox class="checkbox" path="active" value="0" />
                         <form:errors path="active" cssClass="errors" />
                     </div>
-                    
+
+                    <div class="input">
+                        <form:label path="double">
+                            <spring:message code="slot.submission.width.select" />
+                        </form:label>
+                        <form:checkbox class="checkbox" path="double" value="0" />
+                        <form:errors path="double" cssClass="errors" />
+                    </div>
+
                     <div class="input">
                         <form:label path="description">
                             <spring:message code="slot.submission.description" />

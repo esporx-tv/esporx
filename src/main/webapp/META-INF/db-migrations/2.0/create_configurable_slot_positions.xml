@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet id="create_configurable_slot_positions" author="esporx_dev">
+        <addColumn tableName="configurable_slots">
+            <column name="position_x" type="integer" />
+        </addColumn>
+        <addColumn tableName="configurable_slots">
+            <column name="position_y" type="integer" />
+        </addColumn>
+        <addColumn tableName="configurable_slots">
+            <column name="width" type="integer" />
+        </addColumn>
+        <update tableName="configurable_slots">
+            <column name="position_x" value="1" />
+            <column name="position_y" value="1" />
+            <column name="width" value="1" />
+            <where>position=1</where>
+        </update>
+        <update tableName="configurable_slots">
+            <column name="position_x" value="2" />
+            <column name="position_y" value="1" />
+            <column name="width" value="1" />
+            <where>position=2</where>
+        </update>
+        <update tableName="configurable_slots">
+            <column name="position_x" value="1" />
+            <column name="position_y" value="2" />
+            <column name="width" value="2" />
+            <where>position=3</where>
+        </update>
+        <dropColumn tableName="configurable_slots" columnName="position" />
+    </changeSet>
+</databaseChangeLog>

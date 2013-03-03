@@ -5,12 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import tv.esporx.collections.SlotOrganizer;
+import tv.esporx.domain.ConfigurableSlot;
 import tv.esporx.framework.mvc.RequestUtils;
 import tv.esporx.repositories.ConfigurableSlotRepository;
 import tv.esporx.repositories.GondolaSlideRepository;
 import tv.esporx.services.BroadcastService;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -47,9 +51,9 @@ public class HomeController {
         model.addAttribute("liveNowEvents", broadcastService.findLiveNow());
 		model.addAttribute("upNextEvents", broadcastService.findUpNext());
 		model.addAttribute("gondolaSlides", gondolaRepository.findByLanguage(currentLocale));
-		model.addAttribute("slots", slotRepository.findByLanguageOrderByPositionAsc(currentLocale));
+        List<ConfigurableSlot> slots = slotRepository.findByLanguageAndActiveOrderByOrdinateAsc("en", true);
+        model.addAttribute("slots", new SlotOrganizer(slots).reorganize().order().slots());
 		return new ModelAndView("home", model);
 	}
-	
-	
+
 }

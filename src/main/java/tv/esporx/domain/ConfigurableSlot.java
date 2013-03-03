@@ -29,10 +29,13 @@ public class ConfigurableSlot {
 	@Length(max = 100)
 	@Column(name = "title", nullable = false)
 	private String title = "";
-	@NotNull
-	@Column(name = "position", nullable = false)
-	private long position;
-	@NotNull
+	@Column(name = "position_x")
+	private int abscissa;
+    @Column(name = "position_y")
+    private int ordinate;
+    @Column(name = "width")
+    private int width;
+    @NotNull
 	@Column(name = "is_active", nullable = false, columnDefinition = "BIT", length = 1)
 	private boolean active;
 	@Column(name = "language", nullable = false)
@@ -96,11 +99,6 @@ public class ConfigurableSlot {
 		return title;
 	}
 
-	public long getPosition() {
-		return position;
-	}
-
-
 	public boolean isActive() {
 		return active;
 	}
@@ -144,10 +142,6 @@ public class ConfigurableSlot {
 		this.title = title;
 	}
 
-	public void setPosition(final long position) {
-		this.position = position;
-	}
-
 	@Override
 	public String toString() {
 		return "ConfigurableSlot [description=" + description + ", link=" + link + ", picture=" + picture + ", title=" + title + "]";
@@ -161,4 +155,39 @@ public class ConfigurableSlot {
 		this.boxTitle = boxTitle;
 	}
 
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setDouble(boolean isDouble) {
+        this.width = isDouble ? 2 : 1;
+    }
+
+    public boolean isDouble() {
+        return width == 2;
+    }
+
+    public int getOrdinate() {
+        return ordinate;
+    }
+
+    public void setOrdinate(int ordinate) {
+        this.ordinate = ordinate;
+    }
+
+    public int getAbscissa() {
+        return abscissa;
+    }
+
+    public void setAbscissa(int abscissa) {
+        this.abscissa = abscissa;
+    }
+
+    public boolean isLaidOut() {
+        return abscissa != 0 && ordinate != 0;
+    }
 }

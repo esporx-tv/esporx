@@ -62,12 +62,6 @@ public class ConfigurableSlotTest {
 	}
 
 	@Test
-	public void when_setting_position_then_is_retrieted() {
-		slot.setPosition(2);
-		assertThat(slot.getPosition()).isEqualTo(2);
-	}
-
-	@Test
 	public void when_setting_title_then_is_retrieved() {
 		String title = "This is a title";
 		slot.setTitle(title);

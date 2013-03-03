@@ -73,6 +73,7 @@
 								</div>
 								<ul>
 									<li><a href="<c:url value="/admin/slot/new" />">[+] Add a new configurable slot</a></li>
+                                    <li><a href="<c:url value="/admin/slot/layout" />">[+] Lay slots out</a></li>
 								</ul>
 							</div>
 						</div>

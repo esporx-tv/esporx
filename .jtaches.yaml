@@ -1,0 +1,6 @@
+- !!com.github.athieriot.jtaches.taches.CopyTache [{
+    path: "./src/main/webapp",
+    copyTo: "./target/esporx_tv",
+    makePath: "true",
+    excludes: ".*\\.xml;.*\\.less;.*___jb.*"
+}]

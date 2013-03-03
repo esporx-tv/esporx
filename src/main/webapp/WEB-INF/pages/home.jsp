@@ -58,7 +58,7 @@
 			<section id="homeContent">
 				<section id="homeHilits">
 					<c:forEach var="slot" items="${slots}">
-						<c:if test="${slot.position == 1}">
+						<c:if test="${slot.width == 1}">
 							<article class="evBox oneCol <c:if test="${not empty slot.link}"> pointer</c:if>">
 								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">
@@ -71,20 +71,7 @@
 								</div>
 							</article>
 						</c:if>
-						<c:if test="${slot.position == 2}">
-							<article class="evBox oneCol <c:if test="${not empty slot.link}"> pointer</c:if>">
-								<h4>${slot.boxTitle}</h4>
-								<div class="evContent">
-									<img class="gFImg" src="${slot.picture}" />
-                                    <c:if test="${not empty slot.link}"><a href="<c:url value="${slot.link}" />"></c:if>
-										<div class="shortDesc">
-											<p>${slot.title}</p>
-										</div>
-                                    <c:if test="${not empty slot.link}"></a></c:if>
-								</div>
-							</article>
-						</c:if>
-						<c:if test="${slot.position == 3}">
+						<c:if test="${slot.width == 2}">
 							<article class="evBox twoCols <c:if test="${not empty slot.link}"> pointer</c:if>">
 								<h4>${slot.boxTitle}</h4>
 								<div class="evContent">

@@ -1,0 +1,23 @@
+.gridster {
+    margin: 0 auto;
+    width: 350px;
+}
+
+.gridster ul {
+    list-style: none;
+    position: relative;
+}
+
+.gridster li {
+    background-color: white;
+    color: #00008b;
+    font-size: 16px;
+    vertical-align:middle;
+    text-align: center;
+}
+
+.gridster li.invalid {
+    border: 2px solid red;
+}
+
+

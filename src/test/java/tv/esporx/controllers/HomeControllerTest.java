@@ -42,7 +42,7 @@ public class HomeControllerTest {
 	@Test
 	public void when_accessing_index_page_then_configurable_slots_are_retrieved() {
 		homeController.index(mock(HttpServletRequest.class));
-		verify(slotRepository).findByLanguageOrderByPositionAsc("fr");
+		verify(slotRepository).findByLanguageAndActiveOrderByOrdinateAsc("en", true);
 	}
 
 	@Test

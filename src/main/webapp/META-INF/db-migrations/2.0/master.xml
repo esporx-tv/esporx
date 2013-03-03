@@ -32,4 +32,5 @@
     <include file="add_columns_to_users.xml" relativeToChangelogFile="true" />
     <include file="add_background_image_to_game.xml" relativeToChangelogFile="true" />
     <include file="add_confirmation_hash_to_users.xml" relativeToChangelogFile="true" />
+    <include file="create_configurable_slot_positions.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>
