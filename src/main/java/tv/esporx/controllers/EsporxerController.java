@@ -140,9 +140,11 @@ public class EsporxerController {
     }
 
     private Esporxer prePersist(Esporxer user) {
-        user = preUpdate(user);
         user.setAuthorities(newHashSet(roleRepository.findByAuthority("ROLE_USER")));
         user.setAccountConfirmationHash(new HashGenerator().generateHash());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setPasswordConfirmation(encodedPassword);
         return user;
     }
 
