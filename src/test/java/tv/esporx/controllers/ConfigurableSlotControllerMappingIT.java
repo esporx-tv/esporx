@@ -55,8 +55,8 @@ public class ConfigurableSlotControllerMappingIT {
             sequenceOf(
                     DELETE_CONFIGURABLE_SLOTS,
                     insertInto("configurable_slots")
-                            .columns("id", "description", "link", "picture", "title", "position", "language", "is_active", "box_title")
-                            .values(ID, "Super description", "http://www.link.com", "picture.gif", "Super Slot", 1L, "en", true, "Super box title")
+                            .columns("id", "description", "link", "picture", "title", "position_x", "position_y", "width", "language", "is_active", "box_title")
+                            .values(ID, "Super description", "http://www.link.com", "picture.gif", "Super Slot", 1L, 1L, 2, "en", true, "Super box title")
                             .build()
             );
 
