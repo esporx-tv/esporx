@@ -23,7 +23,11 @@
         <intercept-url pattern="/user/register" access="isAnonymous()" />
         <intercept-url pattern="/user/confirm" access="isAnonymous()" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+
+        <custom-filter ref="logoutPolicyFilter" position="LAST" />
 	</http>
+
+    <beans:bean id="logoutPolicyFilter" class="tv.esporx.filters.LogoutPolicyFilter" />
 
     <beans:bean id="encoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
         <beans:constructor-arg value="runNingMarm3l4d3Sh0e" />
