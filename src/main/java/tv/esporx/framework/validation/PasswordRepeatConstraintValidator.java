@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class PasswordRepeatConstraintValidator implements ConstraintValidator<PasswordRepeatConstraint, Object> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CrossDateConstraintsValidator.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PasswordRepeatConstraintValidator.class);
     private String passworldField;
     private String passworldConfirmationField;
     private String message;
