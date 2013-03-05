@@ -11,8 +11,7 @@
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="tv.esporx.domain" />
 		<property name="jpaVendorAdapter">
@@ -32,12 +31,18 @@
         </property>
 	</bean>
 
-    <!-- data source definition -->
-    <jdbc:embedded-database id="dataSource" type="H2" />
-
     <!-- cancels eager-loading, remove dependency from other normally-dependent beans -->
     <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase" lazy-init="true" />
 
     <jpa:repositories base-package="tv.esporx.repositories" />
+
+    <beans profile="default">
+        <jdbc:embedded-database id="dataSource" type="H2" />
+    </beans>
+    <beans profile="selenium">
+        <jdbc:embedded-database id="dataSource" type="H2">
+            <jdbc:script location="classpath:roles.sql" />
+        </jdbc:embedded-database>
+    </beans>
 
 </beans>

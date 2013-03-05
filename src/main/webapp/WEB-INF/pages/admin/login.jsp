@@ -45,7 +45,7 @@
 	</div>
 		<c:import url="/WEB-INF/pages/include/footer.jsp" />
 
-    <div style="display:none">
+    <div id="reason" style="height:0; width:0;">
         <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
     </div>
 </body>
