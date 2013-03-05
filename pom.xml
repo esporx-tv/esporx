@@ -20,6 +20,17 @@
             <name>Springframework Maven SNAPSHOT Repository</name>
             <url>http://maven.springframework.org/snapshot</url>
         </repository>
+
+        <repository>
+            <id>saucelabs-public-release</id>
+            <url>https://repository-saucelabs.forge.cloudbees.com/release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -359,6 +370,12 @@
             <version>${fluentlenium.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.saucelabs</groupId>
+            <artifactId>sauce_junit</artifactId>
+            <version>1.0.17</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -385,6 +402,12 @@
                 <artifactId>tomcat6-maven-plugin</artifactId>
                 <version>2.0</version>
                 <configuration>
+                    <dependency>
+                        <groupId>com.saucelabs</groupId>
+                        <artifactId>sauce_junit</artifactId>
+                        <version>1.0.17</version>
+                        <scope>test</scope>
+                    </dependency>
                     <update>true</update>
                     <path>/</path>
                     <!-- points to generated resources ;) -->
@@ -576,21 +599,12 @@
     </build>
     <profiles>
         <profile>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <id>selenium</id>
             <dependencies>
                 <dependency>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
                     <version>${h2.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.saucelabs</groupId>
-                    <artifactId>sauce_junit</artifactId>
-                    <version>1.0.17</version>
-                    <scope>test</scope>
                 </dependency>
             </dependencies>
             <build>
@@ -711,18 +725,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <repositories>
-                <repository>
-                    <id>saucelabs-public-release</id>
-                    <url>https://repository-saucelabs.forge.cloudbees.com/release</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </repository>
-            </repositories>
         </profile>
     </profiles>
 </project>
