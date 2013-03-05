@@ -21,6 +21,7 @@ import tv.esporx.repositories.RoleRepository;
 import tv.esporx.services.EmailingService;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -145,6 +146,7 @@ public class EsporxerController {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setPasswordConfirmation(encodedPassword);
+        user.setAccountCreationDate(new Date());
         return user;
     }
 
