@@ -56,10 +56,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <jdk.version>1.7</jdk.version>
+        <jdk.version>1.6</jdk.version>
         <compiler-plugin.version>2.3.2</compiler-plugin.version>
         <maven-range.version>[3.0.0,)</maven-range.version>
-        <jdk-range.version>[1.7.0,)</jdk-range.version>
+        <jdk-range.version>[1.6.0,)</jdk-range.version>
 
         <!-- deployment -->
         <cloudbees-maven-plugin.version>1.3.2</cloudbees-maven-plugin.version>
@@ -391,6 +391,7 @@
 
     <build>
         <finalName>esporx_tv</finalName>
+        <defaultGoal>clean verify package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.cloudfoundry</groupId>
