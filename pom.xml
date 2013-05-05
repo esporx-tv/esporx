@@ -556,8 +556,7 @@
                     <assumeABrowser>true</assumeABrowser>
                     <sourceJsFolder>src/main/webapp/static/js/</sourceJsFolder>
                     <excludes>
-                        <exclude>ext/</exclude>
-                        <exclude>ext\</exclude>
+                        <exclude>ext${file.separator}</exclude>
                     </excludes>
                     <predefinedVars>require,define,alert,window</predefinedVars>
                 </configuration>
