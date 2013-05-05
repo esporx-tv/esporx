@@ -23,12 +23,12 @@ define([
                 "from_user": tweet.from_user,
                 "text": tweet.text,
                 "time": prettyDate(tweet.created_at),
-                "class": index == 0 ? "active":""
+                "class": index === 0 ? "active":""
             });
             tweetControlContents += templateHelper.template(tweetControlsTemplate, {
                 "target": "#tweetWall",
                 "index": 1+index,
-                "class": index == 0 ? "active":""
+                "class": index === 0 ? "active":""
             });
         });
 
