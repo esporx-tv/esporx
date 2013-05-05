@@ -1,7 +1,6 @@
-<li class="tweet">
-    <ul>
-        <li class="tweet_author">{{from_user}}}</li>
-        <li class="tweet_time">{{time}}}</li>
-        <li class="tweet_content">{{text}}}</li>
-    </ul>
-</li>
+<blockquote class="item {{class}}}">
+    <p class="tweet_content">{{text}}}</p>
+    <small class="tweet_author">
+        <cite title="{{from_user}}}">{{from_user}}}</cite> / {{time}}}
+    </small>
+</blockquote>

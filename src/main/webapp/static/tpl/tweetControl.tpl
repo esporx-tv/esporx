@@ -1,0 +1,1 @@
+    <li class="{{class}}}" data-target="{{target}}}" data-slide-to="{{index}}}"></li>

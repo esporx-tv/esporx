@@ -4,13 +4,11 @@ define([
     "lib/sanityChecker",
     "lib/domNavigationUtils",
     "lib/externalLinkDetector",
-    "lib/gondola",
-    "lib/twitterHelper"], function($, logger, sanityChecker, domNavigationUtils, externalLinkDetector, gondola, twitterHelper) {
+    "lib/twitterHelper"], function($, logger, sanityChecker, domNavigationUtils, externalLinkDetector, twitterHelper) {
 
     "use strict";
 
     var slideContainerId = '#homeGondola',
-        slideSelector = '.bjqs-slide',
         highLightsContainerId = 'homeHilits',
         eventBoxClassName = 'evBox',
         hasErrors = false,
@@ -42,7 +40,6 @@ define([
                         }
                     });
                 });
-                gondola.trigger(slideContainerId, slideSelector);
                 twitterHelper.tweetWall('.tweets', accountId);
                 logger.debug('... done!');
             }

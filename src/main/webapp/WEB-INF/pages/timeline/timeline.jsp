@@ -6,7 +6,6 @@
     <title><spring:message code="home.header" /></title>
 
     <c:import url="/WEB-INF/pages/include/commonStyle.jsp" />
-    <link rel="stylesheet" href="<c:url value="${staticRoot}/css/timeline.css" />" type="text/css" />
 
     <c:import url="/WEB-INF/pages/include/commonScript.jsp" />
     <script type="text/javascript">

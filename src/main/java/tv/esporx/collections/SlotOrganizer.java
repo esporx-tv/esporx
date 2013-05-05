@@ -1,10 +1,6 @@
 package tv.esporx.collections;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Ordering;
 import tv.esporx.collections.comparators.SlotByAbscissaComparator;
 import tv.esporx.collections.comparators.SlotByOrdinateComparator;
 import tv.esporx.collections.comparators.SlotByWidthComparator;
@@ -13,12 +9,10 @@ import tv.esporx.collections.predicates.SlotWithOrdinatePredicate;
 import tv.esporx.domain.ConfigurableSlot;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.google.common.base.Objects.firstNonNull;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;

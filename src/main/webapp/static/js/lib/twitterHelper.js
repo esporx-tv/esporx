@@ -5,22 +5,35 @@ define([
     "lib/logger",
     "lib/stringUtils",
     "lib/handlebarsHelper",
+    "text!tpl/tweetControl.tpl",
     "text!tpl/tweet.tpl",
     "underscore",
     "ext/async",
     "ext/jquery-prettydate",
-    "ext/twitterlib"], function($, logger, stringUtils, templateHelper, tweetTemplate, _, async) {
+    "ext/twitterlib"], function($, logger, stringUtils, templateHelper, tweetControlsTemplate, tweetTemplate, _, async) {
 
     var displayTweets = function(tweets, selector) {
-        var htmlTweets = $(selector + " ul").first();
-        _.map(tweets, function(tweet) {
-            var html = $(templateHelper.template(tweetTemplate, {
+        var tweetWall = $(selector + " .carousel-inner").first(),
+            tweetControls = $(selector + " ol.carousel-indicators").first(),
+            tweetContents = '',
+            tweetControlContents = '';
+
+        _.map(tweets, function(tweet, index) {
+            tweetContents += templateHelper.template(tweetTemplate, {
                 "from_user": tweet.from_user,
                 "text": tweet.text,
-                "time": prettyDate(tweet.created_at)
-            }));
-            htmlTweets.append(html);
+                "time": prettyDate(tweet.created_at),
+                "class": index == 0 ? "active":""
+            });
+            tweetControlContents += templateHelper.template(tweetControlsTemplate, {
+                "target": "#tweetWall",
+                "index": 1+index,
+                "class": index == 0 ? "active":""
+            });
         });
+
+        tweetWall.append($(tweetContents));
+        tweetControls.append($(tweetControlContents));
     };
 
     return {
